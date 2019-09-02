@@ -17,6 +17,14 @@ Make your PR's to the frontend or backend branch of the super and **never** to t
 ### Conflict Avoidance
 Ensure you are not modifying the same file as another member in order to avoid merge conflicts. Make use of LiveShare for pair programming or concurrent development.
 
+### PR Guide
+- Commit all files
+- `git pull super master`
+- `git push <local>`
+- Open PR to corresponding super branch (frontend or backend)
+
+Remember to **always** pull from the super master before pushing and making a PR.
+
 ## Front-End Design
 
 ### Screens
