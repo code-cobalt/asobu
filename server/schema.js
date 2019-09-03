@@ -72,6 +72,8 @@ const schema = buildSchema(`
         Users: [User]
         User(email: String!): User
         Events: [Event]
+        Event(id: String!): Event
+        Messages(chats: [Int]): [Message]
     }
 `)
 

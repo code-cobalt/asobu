@@ -1,43 +1,36 @@
-const mongoose = require('mongoose')
-const [User, Event, Message] = [require('./models/user'), require('./models/event'), require('./models/message')]
-const { GraphQLDateTime } = require('graphql-iso-date')
-
+const [User, Event, Message] = [
+  require("./models/user"),
+  require("./models/event"),
+  require("./models/message")
+];
+const { GraphQLDateTime } = require("graphql-iso-date");
 
 const root = {
-    test: () => {
-        return 'Test Resolver'
-    },
+  DateTime: GraphQLDateTime,
 
-    DateTime: GraphQLDateTime,
+  Users: () => {
+    return User.find();
+  },
 
-    Users: () => {
-        // User.find({}, (err, val) => {
-        //      console.log(val)
-        // })
-        return User.find()
-        // User.find().then((results) => {
-        //     return results
-        // })
-        // console.log(User.collection)
-        // console.log(result)
-        // return result
-    },
+  User: async email => {
+    return await User.findOne(email);
+  },
 
-    User: async email => {
-        return await User.findOne(email)
-    },
+  Events: args => {
+    return Event.find();
+  },
 
-    Events: args => {
-        return Event.find()
-    },
+  Event: async args => {
+    return await Event.findById(args.id);
+  },
 
-    Event: async args => {
-        
-    }  
+  Messages: async chats => {
+    const ids = [];
+    for (const chat_id of chats.chats) {
+      ids.push({ chat_id });
+    }
+    return await Message.find({ $or: ids });
+  }
+};
 
-
-
-
-}
-
-module.exports = root
+module.exports = root;
