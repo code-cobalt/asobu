@@ -8,14 +8,14 @@ const schema = buildSchema(`
         value: Int
     }
 
-    type OtherUser {
+    type UserLimited {
         first_name: String
         email: String
     }
 
     type Chat {
         chat_id: Int
-        participants: [OtherUser]
+        participants: [UserLimited]
     }
 
     type UserEvent {
@@ -24,7 +24,7 @@ const schema = buildSchema(`
     }
 
     type Comment {
-        from: OtherUser
+        from: UserLimited
         content: String
         timestamp: DateTime
     }
@@ -50,20 +50,20 @@ const schema = buildSchema(`
         name: String
         description: String
         cover_photo: String
-        creator: OtherUser
+        creator: UserLimited
         start: DateTime
         end: DateTime
         location: String
         limit: Int
         tags: [String]
-        attendees: [OtherUser]
+        attendees: [UserLimited]
         comments: [Comment]
     }
 
     type Message {
         id: String
         chat_id: Int
-        from: OtherUser
+        from: UserLimited
         timestamp: DateTime
         content: String
     }
