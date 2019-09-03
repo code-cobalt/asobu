@@ -1,3 +1,9 @@
+## Project Description
+
+This is a reactNative mobile social application. It contains game-ified elements designed to encourage users to find new people to meet. Profiles will contain user level (which is increased by using the application in various ways), profile photo, hobbies, interests, and a collection of badges, which are earned by using the application and being "reviewed" by others aftering meeting. Users will have the option to login and make themselves available for hanging out with other nearby members, and other nearby members will appear in a search result list. When selecting someone, you can send them an invite to hangout. If the other member accepts, a direct chat is opened up. Once you meet, you can register in the app that you've met in person and started your hangout. Once finished, you close the hangout and credit the other person's personality using a limited number of points. For example, if the person was particularly humorous, you can credit their "funny" stat. This is directly linked to the badges system in which users can gain special badges by receiving a certain amount of points in a stat.
+
+The application also includes an "events" list in which users can create or find relevant events near them to participate in and similarly review other users after the event is over.
+
 ## Project Guidelines
 
 ### Coding Style
