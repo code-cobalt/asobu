@@ -29,9 +29,8 @@ const schema = buildSchema(`
         phone_number: String
         password_hash: String
         interests: [String]
-        hobbies: [String]
         exp: Int
-        level: Int
+        lvl: Int
         stats: [Stat]
         chats: [Chat]
         events: [UserEvent]
