@@ -1,7 +1,10 @@
 import { setUserName } from '../actions/userActions'
 
 const initialState = {
-  username: ""
+  username: "",
+  activeUsers: ["Mark", "Matt", "TJ", "Brittany"],
+  activeEvents: ["Soccer", "Climbing", "Music", "Programming"],
+  currentView: "meets"
 }
 
 const reducer = (state = initialState, action) => {
@@ -9,6 +12,11 @@ const reducer = (state = initialState, action) => {
     case "SET_USERNAME": {
       const copiedState = Object.assign({}, state);
       copiedState.username = action.username
+      return copiedState
+    }
+    case "SET_VIEW": {
+      const copiedState = Object.assign({}, state);
+      copiedState.currentView = action.currentView
       return copiedState
     }
     default: {

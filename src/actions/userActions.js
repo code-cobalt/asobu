@@ -6,4 +6,12 @@ const setUserName = (data) => {
   return actionObj;
 }
 
+const toggleView = (data) => {
+  const actionObj = {
+    type: "SET_VIEW",
+    currentView: data
+  }
+  return actionObj;
+}
+
 export { setUserName };
