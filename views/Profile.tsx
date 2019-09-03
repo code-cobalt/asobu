@@ -11,11 +11,11 @@ export class Profile extends Component {
   render() {
     return (
       <View>
-        <View style={styles.profile}>
+        <View>
           <Text>Level 24</Text>
-          <Image source="...url"/>
+          <Text>Profile Pic Goes Here</Text>
         </View>
-        <View style={styles.username}>
+        <View>
           <Text>{this.props.username}</Text>
         </View>
         <View>
@@ -39,9 +39,9 @@ export class Profile extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+// const styles = StyleSheet.create({
   
-})
+// })
 
 const mapStateToProps = state => {
   return {
