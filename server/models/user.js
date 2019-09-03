@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
   first_name: String,
@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
     { chat_id: Number, participants: [{ first_name: String, email: String }] }
   ],
   events: [{ event_id: String, is_creator: Boolean }]
-});
+})
 
-const User = mongoose.model("User", UserSchema);
-module.exports = User;
+const User = mongoose.model('User', UserSchema)
+module.exports = User
