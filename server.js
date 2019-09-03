@@ -7,7 +7,8 @@ const mongoose = require('mongoose')
 const schema = require("./server/schema")
 const root = require("./server/root")
 
-mongoose.connect(process.env.DB_URL)
+// mongoose.connect(process.env.DB_URL)
+mongoose.connect('mongodb://localhost:27017/usersTest', {useNewUrlParser: true})
 const db = mongoose.connection
 db.once('open', () => console.log('Connected to DB'))
 
