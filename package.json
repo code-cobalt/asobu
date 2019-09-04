@@ -43,5 +43,5 @@
     "typescript": "^3.4.5"
   },
   "private": true,
-  "proxy": "121.1.253.218"
+  "proxy": "http://121.1.253.218:3000"
 }
