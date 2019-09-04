@@ -157,3 +157,5 @@ Remember to **always** pull from the super master before pushing and making a PR
       - profile_photo (file)
     - content (string)
     - timestamp (datetime)
+
+## Database
