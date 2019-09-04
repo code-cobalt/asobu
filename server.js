@@ -32,10 +32,10 @@ mongoose.connect(process.env.DB_URL, { useNewUrlParser: true })
 const db = mongoose.connection
 db.once('open', () => console.log('Connected to DB'))
 
-const config = {
-  database: process.env.DB_URL,
-  dropDatabase: true
-}
+// const config = {
+//   database: process.env.DB_URL,
+//   dropDatabase: true
+// }
 
 // NOTE: To avoid overages on our MongoDB/Cloudinary, please refrain from
 // seeding, querying, and uploading too often!
