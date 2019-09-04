@@ -77,6 +77,15 @@ const schema = buildSchema(`
         Event(id: String!): Event
         Messages(chats: [Int]): [Message]
     }
+
+    type Mutation {
+        updateImage(input: ImageInput): User
+    }
+
+    input ImageInput {
+        filename: String,
+        base64: String
+    }
 `)
 
 module.exports = schema
