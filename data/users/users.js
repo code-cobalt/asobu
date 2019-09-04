@@ -47,8 +47,8 @@ const users = [
     ],
     events: [
       {
-        event_id: 1,
-        is_creator: false
+        event_id: 2,
+        is_creator: true
       }
     ],
     imei: '358363043724657'
@@ -87,7 +87,7 @@ const users = [
     ],
     events: [
       {
-        event_id: 1,
+        event_id: 2,
         is_creator: false
       }
     ],
@@ -127,7 +127,7 @@ const users = [
     ],
     events: [
       {
-        event_id: 1,
+        event_id: 2,
         is_creator: false
       }
     ],
@@ -208,7 +208,7 @@ const users = [
     events: [
       {
         event_id: 1,
-        is_creator: false
+        is_creator: true
       }
     ],
     imei: '20309624801284'
