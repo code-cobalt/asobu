@@ -11,6 +11,7 @@ const schema = buildSchema(`
     type UserLimited {
         first_name: String
         email: String
+        profile_photo: String
     }
 
     type Chat {
@@ -36,6 +37,7 @@ const schema = buildSchema(`
         email: String
         phone_number: String
         password_hash: String
+        profile_photo: String
         interests: [String]
         exp: Int
         lvl: Int
