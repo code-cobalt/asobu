@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
+import { Text, View, TouchableOpacity, TextInput, StyleSheet, ImageBackground } from 'react-native'
 
 interface State {
   email: string
@@ -18,7 +18,7 @@ class Login extends Component<{}, State> {
 
   render() {
     return (
-      <View style={styles.login}>
+      <ImageBackground source={require("../assets/login.jpg")} style={styles.login}>
         <View style={styles.login__formgroup}>
           <Text style={styles.login__label}>Email</Text>
           <TextInput value={this.state.email} onChangeText={text => this.setState({ email: text })} style={styles.login__input} />
@@ -30,7 +30,7 @@ class Login extends Component<{}, State> {
         <TouchableOpacity onPress={this.handleLogin} style={styles.login__button}>
           <Text style={styles.login__button__text}>Login</Text>
         </TouchableOpacity>
-      </View>
+      </ImageBackground>
     )
   }
 }
@@ -46,7 +46,8 @@ const styles = StyleSheet.create({
   },
   login__label: {
     marginLeft: 15,
-    marginBottom: 5
+    marginBottom: 5,
+    color: "#fff"
   },
   login__input: {
     height: 50,
@@ -54,13 +55,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 15,
     borderRadius: 50,
-    textAlign: "center"
+    textAlign: "center",
+    backgroundColor: "#fff",
+    opacity: 0.8
   },
   login__button: {
     width: "50%",
     backgroundColor: "#73d961",
     padding: 15,
-    borderRadius: 50
+    borderRadius: 50,
+    marginTop: 15
   },
   login__button__text: {
     textAlign: "center",
