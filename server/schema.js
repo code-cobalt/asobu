@@ -14,7 +14,7 @@ const schema = buildSchema(`
         profile_photo: String
     }
 
-    type Chat {
+    type UserChat {
         chat_id: Int
         participants: [UserLimited]
     }
@@ -42,7 +42,7 @@ const schema = buildSchema(`
         exp: Int
         lvl: Int
         stats: [Stat]
-        chats: [Chat]
+        chats: [UserChat]
         events: [UserEvent]
         imei: String
     }
@@ -64,10 +64,14 @@ const schema = buildSchema(`
 
     type Message {
         id: String
-        chat_id: Int
         from: UserLimited
         timestamp: DateTime
         content: String
+    }
+
+    type Chat {
+        _id: Int,
+        messages: [Message]
     }
 
     type Query {
@@ -75,7 +79,7 @@ const schema = buildSchema(`
         User(email: String!): User
         Events: [Event]
         Event(id: String!): Event
-        Messages(chats: [Int]): [Message]
+        Chats(ids: [Int]): [Chat]
     }
 
     type Mutation {

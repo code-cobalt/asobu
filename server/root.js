@@ -24,12 +24,23 @@ const root = {
     return await Event.findById(args.id)
   },
 
-  Messages: async chats => {
-    const ids = []
-    for (const chat_id of chats.chats) {
-      ids.push({ chat_id })
-    }
-    return await Message.find({ $or: ids })
+  Chats: async ids => {
+    return await Message.aggregate([
+      { $match: { chat_id: { $in: ids.ids } } },
+      {
+        $group: {
+          _id: '$chat_id',
+          messages: {
+            $push: {
+              id: '$_id',
+              content: '$content',
+              timestamp: '$timestamp',
+              from: '$from'
+            }
+          }
+        }
+      }
+    ])
   }
 }
 
