@@ -24,26 +24,23 @@ const root = {
     return await Event.findById(args.id)
   },
 
-  Messages: async chats => {
-    const res = await Message.aggregate(
-      [
-        { $match: { chat_id: { $in: chats.chats } } },
-        {
-          $group: {
-            _id: '$chat_id',
-            messages: { $push: { content: '$content' } }
+  Chats: async ids => {
+    return await Message.aggregate([
+      { $match: { chat_id: { $in: ids.ids } } },
+      {
+        $group: {
+          _id: '$chat_id',
+          messages: {
+            $push: {
+              id: '$_id',
+              content: '$content',
+              timestamp: '$timestamp',
+              from: '$from'
+            }
           }
         }
-      ],
-      (err, result) => {
-        if (err) {
-          console.log(err)
-        } else {
-          console.log(result)
-        }
       }
-    )
-    return res
+    ])
   }
 }
 
