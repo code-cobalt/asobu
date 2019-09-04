@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
   email: String,
   phone_number: String,
   password_hash: String,
+  profile_photo: String,
   interests: [String],
   hobbies: [String],
   exp: Number,
@@ -19,7 +20,12 @@ const UserSchema = new mongoose.Schema({
     interesting: Number
   },
   chats: [
-    { chat_id: Number, participants: [{ first_name: String, email: String }] }
+    {
+      chat_id: Number,
+      participants: [
+        { first_name: String, email: String, profile_photo: String }
+      ]
+    }
   ],
   events: [{ event_id: String, is_creator: Boolean }]
 })
