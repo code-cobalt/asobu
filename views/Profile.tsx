@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {View, Text, Image, StyleSheet, TextInput} from "react-native"
+import { View, Text, Image, StyleSheet, TextInput } from "react-native"
 import { connect } from "react-redux"
 import Badges from "./../components/Badges"
 
@@ -20,7 +20,7 @@ export class Profile extends Component {
         </View>
         <View>
           <Text>Equipped Badges</Text>
-          <Badges/>
+          <Badges />
         </View>
         <View>
           <Text>Hobbies</Text>
@@ -32,16 +32,19 @@ export class Profile extends Component {
         </View>
         <View>
           <Text>All Badges</Text>
-          <Badges/>
+          <Badges />
         </View>
       </View>
     )
   }
 }
 
-// const styles = StyleSheet.create({
-  
-// })
+const styles = StyleSheet.create({
+  profile: {
+    flex: 1,
+    backgroundColor: "purple",
+  }
+})
 
 const mapStateToProps = state => {
   return {
@@ -53,8 +56,8 @@ const mapDispatchToProps = dispatch => {
   return {
     setUserName: (username) => {
       dispatch({
-        type:"SET_USERNAME",
-        username: username 
+        type: "SET_USERNAME",
+        username: username
       })
     }
   }
