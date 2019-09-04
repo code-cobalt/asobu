@@ -6,16 +6,16 @@ class Navbar extends Component {
     render() {
         return (
             <View style={styles.navbar}>
-                <TouchableOpacity style={styles.navbar__item} onClick={() => this.props.setActiveView("profile")}>
+                <TouchableOpacity style={styles.navbar__item} onPress={() => this.props.setActiveView("profile")}>
                     <Image style={styles.navbar__image} source={require("../assets/Profile.png")}></Image>
                     <Text style={styles.navbar__text}>Profile</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.navbar__item} onClick={() => this.props.setActiveView("main")}>
+                <TouchableOpacity style={styles.navbar__item} onPress={() => this.props.setActiveView("events")}>
                     <Image style={styles.navbar__image} source={require("../assets/Main.png")}></Image>
                     <Text style={styles.navbar__text}>Main</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.navbar__item} onClick={() => this.props.setActiveView("chats")}>
+                <TouchableOpacity style={styles.navbar__item} onPress={() => this.props.setActiveView("meets")}>
                     <Image style={styles.navbar__image} source={require("../assets/Chat.png")}></Image>
                     <Text style={styles.navbar__text}>Chats</Text>
                 </TouchableOpacity>
