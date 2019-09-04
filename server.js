@@ -37,6 +37,8 @@ const config = {
   dropDatabase: true
 }
 
+// NOTE: To avoid overages on our MongoDB/Cloudinary, please refrain from
+// seeding, querying, and uploading too often!
 // const seeder = new Seeder(config)
 // const collections = seeder.readCollectionsFromPath(path.resolve('./data'))
 
