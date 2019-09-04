@@ -157,3 +157,11 @@ Remember to **always** pull from the super master before pushing and making a PR
       - profile_photo (file)
     - content (string)
     - timestamp (datetime)
+
+## Database
+
+The database is <span style="color:lightblue">**MongoDB**</span> hosted by Atlas. The credentials are in your .env files. You can make use of <span style="color:lightblue">**Compass**</span> as a MongoDB Administrative GUI to see and live-edit data. Using the credentials in your .env, you'll have the information you need for setup.
+
+## Cloud Storage
+
+Cloud storage is provided by <span style="color:lightblue">**Cloudinary**</span>. Credentials, including an API key, are included in your .env file. There is currently no way to access the database itself without proper login credentials, so please refer to the tech lead for access. Keep in mind that the free tier will limit retrievals and uploads, so please keep these to a minimum during production.
