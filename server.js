@@ -21,11 +21,11 @@ cloudinary.config({
 const moment = require('moment')
 const port = process.env.PORT || 3000
 const mongoose = require('mongoose')
-const [User, Event, Message] = [
-  require('./models/user'),
-  require('./models/event'),
-  require('./models/message')
-]
+// const [User, Event, Message] = [
+//   require('./models/user'),
+//   require('./models/event'),
+//   require('./models/message')
+// ]
 const schema = require('./server/schema')
 const root = require('./server/root')
 const { Seeder } = require('mongo-seeding')
@@ -40,13 +40,13 @@ const config = {
   dropDatabase: true
 }
 
-const seeder = new Seeder(config)
-const collections = seeder.readCollectionsFromPath(path.resolve('./data'))
+// const seeder = new Seeder(config)
+// const collections = seeder.readCollectionsFromPath(path.resolve('./data'))
 
-seeder
-  .import(collections)
-  .then(() => console.log('Successfully seeded database'))
-  .catch(err => console.log('Error seeding database', err))
+// seeder
+//   .import(collections)
+//   .then(() => console.log('Successfully seeded database'))
+//   .catch(err => console.log('Error seeding database', err))
 
 app.use(
   '/graphql',
