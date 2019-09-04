@@ -3,19 +3,44 @@ import { View, Button, Text, Image, StyleSheet, TextInput } from "react-native"
 import { connect } from "react-redux"
 import Meets from "./Meets"
 import Events from "./Events"
+import Profile from "./Profile"
+import axios from "axios"
 
 class Main extends Component {
-    componentDidMount() {
+    async componentDidMount() {
         this.props.toggleView("meets")
+
+        await axios.post("/graphql", {
+            data: {
+                query: `
+                    Users {
+                        id
+                        first_name
+                        last_name
+                        email
+                        phone_number
+                        password_hash
+                        profile_photo
+                        interests
+                        exp
+                        lvl
+                    }
+                `
+            }
+        }).then((result) => {
+            console.log(result.data)
+        });
     }
 
     render() {
         let mainView;
 
-        if (this.props.currentView === "events") {
+        if (this.props.activeView === "events") {
             mainView = <Events />
-        } else if (this.props.currentView === "meets") {
+        } else if (this.props.activeView === "meets") {
             mainView = <Meets />
+        } else if (this.props.activeView === "profile") {
+            mainView = <Profile />
         }
         return (
             <View style={styles.main}>
@@ -34,7 +59,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        currentView: state.currentView
+        activeView: state.activeView
+
     }
 }
 
@@ -45,11 +71,19 @@ const mapDispatchToProps = dispatch => {
                 type: "SET_VIEW",
                 currentView: currentView
             })
+        },
+        setAllUsers: (allUsers) => {
+            dispatch({
+                type: "SET_ALL_USERS",
+                allUsers: allUsers
+            })
         }
     }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main)
+
+
 {/* <Button 
     title="Toggle Button" 
     onPress={() => {

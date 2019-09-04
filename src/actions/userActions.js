@@ -1,4 +1,4 @@
-const setUserName = (data) => {
+const setUserName = data => {
   const actionObj = {
     type: "SET_USERNAME",
     username: data
@@ -6,7 +6,7 @@ const setUserName = (data) => {
   return actionObj;
 }
 
-const toggleView = (data) => {
+const toggleView = data => {
   const actionObj = {
     type: "SET_VIEW",
     currentView: data
@@ -14,4 +14,18 @@ const toggleView = (data) => {
   return actionObj;
 }
 
-export { setUserName };
+const setActiveView = data => {
+  const actionObj = {
+    type: "SET_ACTIVE_VIEW",
+    activeView: data
+  }
+}
+
+const setAllUsers = data => {
+  const actionObj = {
+    type: "SET_ALL_USERS",
+    allUsers: data
+  }
+}
+
+export { setUserName, setActiveView };
