@@ -1,24 +1,31 @@
 import React, { Component } from 'react'
-import {View, Text, Image, StyleSheet, TextInput} from "react-native"
+import { View, Text, Image, StyleSheet, TextInput } from "react-native"
 import { connect } from "react-redux"
 
 export class Meets extends Component {
- 
-    render () {
+
+    render() {
         const dummyUsers = this.props.activeUsers.map((user, index) => {
             return (
-                <Text key={index} >{user}</Text>
+                <Text style={{ color: "white" }} key={index} >{user}</Text>
             )
         })
 
         return (
-            <View>
-                <Text>This is the meets component</Text>
+            <View style={styles.meets}>
+                <Text style={{ color: "white" }}>This is the meets component</Text>
                 <>{dummyUsers}</>
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    meets: {
+        flex: 1,
+        backgroundColor: "red",
+    }
+})
 
 const mapStateToProps = state => {
     return {
@@ -27,7 +34,7 @@ const mapStateToProps = state => {
 }
 
 // const mapDispatchToProps = dispatch => {
-  
+
 // }
 
 export default connect(mapStateToProps)(Meets)

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import {View, Text, Image, StyleSheet, TextInput} from "react-native"
+import { View, Text, Image, StyleSheet, TextInput } from "react-native"
 import { connect } from "react-redux"
 
 export class Events extends Component {
-    render () {
+    render() {
         const dummyEvents = this.props.activeEvents.map((event, index) => {
             return (
                 <Text key={index} >{event}</Text>
@@ -11,7 +11,7 @@ export class Events extends Component {
         })
 
         return (
-            <View>
+            <View style={styles.events}>
                 <Text>This is the events component</Text>
                 <>{dummyEvents}</>
             </View>
@@ -25,8 +25,15 @@ const mapStateToProps = state => {
     }
 }
 
+const styles = StyleSheet.create({
+    events: {
+        flex: 1,
+        backgroundColor: "red",
+    }
+})
+
 // const mapDispatchToProps = dispatch => {
-  
+
 // }
 
 export default connect(mapStateToProps)(Events)
