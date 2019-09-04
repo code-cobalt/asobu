@@ -5,15 +5,16 @@ const EventSchema = new mongoose.Schema({
   email: String,
   description: String,
   cover_photo: String,
-  creator: { first_name: String, email: String },
+  creator: { first_name: String, email: String, profile_photo: String },
   start: Date,
   end: Date,
   location: String,
   limit: Number,
   tags: [String],
+  attendees: [{ first_name: String, email: String, profile_photo: String }],
   comments: [
     {
-      from: { first_name: String, email: String },
+      from: { first_name: String, email: String, profile_photo: String },
       content: String,
       timestamp: Date
     }
