@@ -28,7 +28,7 @@ const mapStateToProps = state => {
 const styles = StyleSheet.create({
     events: {
         flex: 1,
-        backgroundColor: "red",
+        backgroundColor: "purple",
     }
 })
 
