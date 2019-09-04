@@ -15,9 +15,9 @@ db.once('open', () => console.log('Connected to DB'))
 
 const config = {
   database: process.env.DB_URL,
-  dropDatabase: false
+  dropDatabase: true
 }
-//not allowed to dropDatabase
+
 const seeder = new Seeder(config)
 const collections = seeder.readCollectionsFromPath(path.resolve('./data'))
 

@@ -17,7 +17,7 @@ const root = {
   },
 
   Events: args => {
-    return Event.find()
+    return Event.find().sort({ start: -1 })
   },
 
   Event: async args => {
