@@ -1,0 +1,32 @@
+import React, { Component } from 'react'
+import {View, Text, Image, StyleSheet, TextInput} from "react-native"
+import { connect } from "react-redux"
+
+export class Events extends Component {
+    render () {
+        const dummyEvents = this.props.activeEvents.map((event, index) => {
+            return (
+                <Text key={index} >{event}</Text>
+            )
+        })
+
+        return (
+            <View>
+                <Text>This is the events component</Text>
+                <>{dummyEvents}</>
+            </View>
+        )
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        activeEvents: state.activeEvents,
+    }
+}
+
+// const mapDispatchToProps = dispatch => {
+  
+// }
+
+export default connect(mapStateToProps)(Events)
