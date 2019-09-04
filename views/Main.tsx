@@ -7,29 +7,31 @@ import Profile from "./Profile"
 import axios from "axios"
 
 class Main extends Component {
-    async componentDidMount() {
+    componentDidMount() {
         this.props.toggleView("meets")
 
-        await axios.post("/graphql", {
-            data: {
-                query: `
-                    Users {
-                        id
-                        first_name
-                        last_name
-                        email
-                        phone_number
-                        password_hash
-                        profile_photo
-                        interests
-                        exp
-                        lvl
-                    }
-                `
-            }
-        }).then((result) => {
-            console.log(result.data)
-        });
+        // return axios.post("/graphql", {
+        //     data: {
+        //         query: `
+        //             Users {
+        //                 id
+        //                 first_name
+        //                 last_name
+        //                 email
+        //                 phone_number
+        //                 password_hash
+        //                 profile_photo
+        //                 interests
+        //                 exp
+        //                 lvl
+        //             }
+        //         `
+        //     }
+        // }).then((response) => {
+        //     console.log(response.data)
+        // }).catch(function (err) {
+        //     console.error("Failure!", err.message)
+        // })
     }
 
     render() {
