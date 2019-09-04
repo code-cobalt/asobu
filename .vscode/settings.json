@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
     "liveshare.allowGuestDebugControl": true,
     "liveshare.allowGuestTaskControl": true
+=======
+    "editor.formatOnSave": true
+>>>>>>> d1751d080cff1a7fba3efda3931bb61911425850
 }
