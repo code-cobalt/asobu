@@ -37,12 +37,12 @@ const root = {
     return await User.findOne({ email: params.userEmail })
   },
 
-  Events: async args => {
+  Events: async () => {
     return await Event.find().sort({ start: -1 })
   },
 
-  Event: async args => {
-    return await Event.findById(args.eventId)
+  Event: async params => {
+    return await Event.findById(params.eventId)
   },
 
   Chats: async params => {
