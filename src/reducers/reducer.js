@@ -5,7 +5,8 @@ const initialState = {
   activeUsers: ["Mark", "Matt", "TJ", "Brittany"],
   activeEvents: ["Soccer", "Climbing", "Music", "Programming"],
   activeView: "meets",
-  allUsers: []
+  allUsers: [],
+  isLoggedIn: true
 }
 
 const reducer = (state = initialState, action) => {
