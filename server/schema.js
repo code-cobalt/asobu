@@ -82,13 +82,76 @@ const schema = buildSchema(`
         Chats(ids: [Int]): [Chat]
     }
 
-    type Mutation {
-        updateImage(input: ImageInput): User
+
+    input NewEvent {
+        name: String!
+        description: String!
+        cover_photo: String
+        creator: UserLimited!
+        start: DateTime!
+        end: DateTime!
+        location: String!
+        limit: Int
+        tags: [String]
     }
 
-    input ImageInput {
-        filename: String,
-        base64: String
+    input UpdatedEvent {
+        name: String
+        description: String
+        cover_photo: String
+        start: DateTime
+        end: DateTime
+        location: String
+        limit: Int
+        tags: [String]
+        attendees: [UserLimited]
+        comments: [Comment]
+    }
+
+    input NewUser {
+        first_name: String!
+        last_name: String!
+        email: String!
+        phone_number: String!
+        password_hash: String!
+        interests: [String]
+        exp: Int
+        lvl: Int
+        stats: [Stat]
+        imei: String
+    }
+
+    input UpdatedUser {
+        first_name: String
+        last_name: String
+        email: String
+        phone_number: String
+        password_hash: String
+        profile_photo: String
+        interests: [String]
+        exp: Int
+        lvl: Int
+        stats: [Stat]
+        chats: [UserChat]
+        events: [UserEvent]
+        imei: String
+    }
+
+    input Message {
+        id: String!
+        from: UserLimited!
+        timestamp: DateTime!
+        content: String!
+    }
+
+    type Mutation {
+        CreateEvent(newEvent: NewEvent): Event
+        UpdateEvent(updatedEvent: UpdatedEvent): Event
+        DeleteEvent(eventId: String): String
+        CreateUser(newUser: NewUser): User
+        UpdateUser(updatedUser: UpdatedUser): User
+        DeleteUser(userId: String): String
+        CreateMessage(newMessage: Message): Message
     }
 `)
 
