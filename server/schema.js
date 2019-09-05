@@ -176,7 +176,7 @@ const schema = buildSchema(`
         DeleteComment(eventId: String!, commentId: String!): String
         CreateUser(newUser: NewUser!): User
         UpdateUser(userEmail: String!, updatedUser: UpdatedUser!): User
-        DeleteUser(userId: String!): String
+        DeleteUser(userEmail: String!): String
         CreateMessage(newMessage: NewMessage!): Message
         AttendEvent(eventId: String!, user: UserLimitedInput!): String
         AddStats(userEmail: String!, newStats: [StatInput]!): [Stat]

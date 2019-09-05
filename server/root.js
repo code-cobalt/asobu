@@ -102,11 +102,16 @@ const root = {
       { _id: params.eventId },
       { $pull: { comments: { _id: params.commentId } } }
     )
+    return res.nModified === 1
+      ? 'Successfully deleted comment.'
+      : 'Did not delete any comments. Double-check the ids are correct.'
   },
 
   DeleteEvent: async params => {
-    await Event.deleteOne({ _id: params.eventId })
-    return 'Successfully deleted event.'
+    const res = await Event.deleteOne({ _id: params.eventId })
+    return res.deletedCount === 1
+      ? 'Successfully deleted event.'
+      : 'No event with that id found.'
   },
 
   CreateUser: async params => {
@@ -133,8 +138,10 @@ const root = {
   },
 
   DeleteUser: async params => {
-    await User.deleteOne({ _id: params.userId })
-    return 'Successfully deleted user account.'
+    const res = await User.deleteOne({ email: params.email })
+    return res.deletedCount === 1
+      ? 'Successfully deleted user account.'
+      : 'No user with that id found.'
   },
 
   CreateMessage: async params => {
