@@ -79,8 +79,8 @@ const schema = buildSchema(`
         Users: [User]
         User(email: String!): User
         Events: [Event]
-        Event(id: String!): Event
-        Chats(ids: [Int]!): [Chat]
+        Event(eventId: String!): Event
+        Chats(chatIds: [Int]!): [Chat]
     }
 
     input UserLimitedInput {
