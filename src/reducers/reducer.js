@@ -1,4 +1,4 @@
-import { setUserName, setActiveView } from '../actions/userActions'
+import { setUserName, setActiveView, setUser } from '../actions/userActions'
 
 const initialState = {
   username: "",
@@ -6,7 +6,8 @@ const initialState = {
   activeEvents: ["Soccer", "Climbing", "Music", "Programming"],
   activeView: "meets",
   allUsers: [],
-  isLoggedIn: true
+  isLoggedIn: true,
+  user: {}
 }
 
 const reducer = (state = initialState, action) => {
@@ -29,6 +30,11 @@ const reducer = (state = initialState, action) => {
     case "SET_ALL_USERS": {
       const copiedState = Object.assign({}, state);
       copiedState.allUsers = action.allUsers;
+      return copiedState
+    }
+    case "SET_USER": {
+      const copiedState = Object.assign({}, state)
+      copiedState.user = Object.assign({}, action.user)
       return copiedState
     }
     default: {
