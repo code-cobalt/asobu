@@ -1,5 +1,5 @@
-import { db } from './server'
-import User from './server/models/user'
+const db = require('./server')
+const User = require('./server/models/user')
 const bcrypt = require('bcrypt')
 
 const registerUser = (userObj) => {
