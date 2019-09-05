@@ -29,7 +29,7 @@ const { Seeder } = require('mongo-seeding')
 const path = require('path')
 
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true })
-const db = mongoose.connection
+export const db = mongoose.connection
 db.once('open', () => console.log('Connected to DB'))
 
 // const config = {
@@ -58,6 +58,20 @@ app.use(
 
 app.get('/api/test', (req, res) => {
   // res.sendStatus(200)
+})
+
+import { loginUser } from './auth'
+app.get('/auth', (req, res) => {
+  const userObj = req.query
+  loginUser(userObj)
+    .then((result) => { return result })
+})
+
+import { registerUser } from './auth'
+app.post('/auth', (req, res) => {
+  const userObj = req.body
+  registerUser(userObj)
+    .then((result) => { return result })
 })
 
 app.post('/upload', parser.single('image'), (req, res) => {
