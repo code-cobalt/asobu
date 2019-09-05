@@ -28,4 +28,12 @@ const setAllUsers = data => {
   }
 }
 
-export { setUserName, setActiveView }
+const setUser = user => {
+  const actionObj = {
+    type: "SET_USER",
+    user
+  }
+  return actionObj
+}
+
+export { setUserName, setActiveView, setUser };
