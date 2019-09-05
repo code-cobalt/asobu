@@ -6,7 +6,7 @@ const initialState = {
   activeEvents: ["Soccer", "Climbing", "Music", "Programming"],
   activeView: "meets",
   allUsers: [],
-  isLoggedIn: false,
+  isLoggedIn: true,
   user: {}
 }
 

@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
 import { View, Text, Image, StyleSheet, TextInput } from "react-native"
 import { connect } from "react-redux"
+import UserList from "../components/UserList"
+import EventList from "../components/EventList"
 
 export class Meets extends Component {
 
     render() {
-        const dummyUsers = this.props.activeUsers.map((user, index) => {
+        const dummyUsers = this.props.allUsers.map((user, index) => {
             return (
-                <Text style={{ color: "white" }} key={index} >{user}</Text>
+                <Text key={index} >{user.first_name}</Text>
             )
         })
-
         return (
             <View style={styles.meets}>
                 <Text style={{ color: "white" }}>This is the meets component</Text>
-                <>{dummyUsers}</>
+                {dummyUsers}
             </View>
         )
     }
@@ -30,6 +31,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         activeUsers: state.activeUsers,
+        allUsers: state.allUsers
     }
 }
 

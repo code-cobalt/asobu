@@ -4,16 +4,9 @@ import { connect } from "react-redux"
 
 export class Events extends Component {
     render() {
-        const dummyEvents = this.props.activeEvents.map((event, index) => {
-            return (
-                <Text key={index} >{event}</Text>
-            )
-        })
-
         return (
             <View style={styles.events}>
                 <Text>This is the events component</Text>
-                <>{dummyEvents}</>
             </View>
         )
     }

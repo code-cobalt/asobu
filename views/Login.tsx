@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   login__input: {
+    fontWeight: "900",
     height: 50,
     borderColor: 'gray',
     borderWidth: 1,
