@@ -36,17 +36,17 @@ const root = {
     return await User.findOne(email)
   },
 
-  Events: args => {
-    return Event.find().sort({ start: -1 })
+  Events: async args => {
+    return await Event.find().sort({ start: -1 })
   },
 
   Event: async args => {
-    return await Event.findById(args.id)
+    return await Event.findById(args.eventId)
   },
 
-  Chats: async ids => {
+  Chats: async params => {
     return await Message.aggregate([
-      { $match: { chat_id: { $in: ids.ids } } },
+      { $match: { chat_id: { $in: params.chatIds } } },
       {
         $group: {
           _id: '$chat_id',
@@ -79,23 +79,27 @@ const root = {
     if (validation !== 'valid') {
       return validation
     } else {
-      Event.updateOne({ _id: params.eventId }, params.updatedEvent)
-      //return updated event
+      return await Event.findOneAndUpdate(
+        { _id: params.eventId },
+        params.updatedEvent,
+        { new: true }
+      )
     }
   },
 
   CreateComment: async params => {
     const timestamp = new Date()
     const newComment = Object.assign({ timestamp }, params.newComment)
-    Event.updateOne(
+    await Event.updateOne(
       { _id: params.eventId },
       { $push: { comments: newComment } }
     )
+    return newComment
   },
 
   DeleteEvent: async params => {
     await Event.deleteOne({ _id: params.eventId })
-    return 'Deleted event'
+    return 'Successfully deleted event.'
   },
 
   CreateUser: async params => {
@@ -113,14 +117,17 @@ const root = {
     if (validation !== 'valid') {
       return validation
     } else {
-      await User.updateOne({ email: params.userEmail }, params.updatedUser)
-      //return udpated user
+      await User.findOneAndUpdate(
+        { email: params.userEmail },
+        params.updatedUser,
+        { new: true }
+      )
     }
   },
 
   DeleteUser: async params => {
     await User.deleteOne({ _id: params.userId })
-    return 'Deleted user'
+    return 'Successfully deleted user account.'
   },
 
   CreateMessage: async params => {
@@ -128,10 +135,8 @@ const root = {
     if (validation !== 'valid') {
       return validation
     } else {
-      const timestamp = new Date()
-      const data = Object.assign({ timestamp }, params.newMessage)
-      await Message.create(data)
-      return params.newMessage
+      const data = Object.assign({ timestamp: new Date() }, params.newMessage)
+      return await Message.create(data)
     }
   }
 }
