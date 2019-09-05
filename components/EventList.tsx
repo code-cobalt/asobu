@@ -1,25 +1,28 @@
 import React, { Component } from 'react'
 import { View, Text, Image, StyleSheet, TextInput } from "react-native"
 import { connect } from "react-redux"
+import Event from "../components/Event"
 
-export class User extends Component {
+export class Meets extends Component {
 
     render() {
         return (
-            <View>
-                <Text>This is a User</Text>
+            <View style={styles.meets}>
+                <Text style={{ color: "white" }}>This is the meets component</Text>
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-
+    meets: {
+        flex: 1,
+        backgroundColor: "red",
+    }
 })
 
 const mapStateToProps = state => {
     return {
-
     }
 }
 
@@ -27,4 +30,4 @@ const mapStateToProps = state => {
 
 // }
 
-export default connect(mapStateToProps)(User)
+export default connect(mapStateToProps)(Meets)

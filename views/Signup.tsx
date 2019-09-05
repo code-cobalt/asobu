@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, TextInput, StyleSheet, ImageBackground } from 'react-native'
+import { Text, View, TouchableOpacity, TextInput, StyleSheet, ImageBackground, AsyncStorage } from 'react-native'
 import axios from "axios"
 import { connect } from "react-redux"
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
 
 interface State {
   email: string,
