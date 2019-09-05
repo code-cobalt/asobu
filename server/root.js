@@ -5,6 +5,7 @@ const [User, Event, Message] = [
 ]
 const { GraphQLDateTime } = require('graphql-iso-date')
 
+// validation methods will return string with error message if not valid
 const validateNewUser = user => {
   return 'valid'
 }
@@ -66,30 +67,34 @@ const root = {
 
   CreateEvent: async params => {
     const validation = validateNewEvent(params.newEvent)
-    if (validation !== 'valid') {
-      return validation
-    } else {
-      await Event.create(params.newEvent)
-      return params.newEvent
-    }
+    return validation === 'valid'
+      ? await Event.create(params.newEvent)
+      : validation
   },
 
   UpdateEvent: async params => {
     const validation = validateUpdatedEvent(params.updatedEvent)
-    if (validation !== 'valid') {
-      return validation
-    } else {
-      return await Event.findOneAndUpdate(
-        { _id: params.eventId },
-        params.updatedEvent,
-        { new: true }
-      )
-    }
+    return validation === valid
+      ? await Event.findOneAndUpdate(
+          { _id: params.eventId },
+          params.updatedEvent,
+          { new: true }
+        )
+      : validation
+  },
+
+  DeleteEvent: async params => {
+    const res = await Event.deleteOne({ _id: params.eventId })
+    return res.deletedCount === 1
+      ? 'Successfully deleted event.'
+      : 'No event with that id found.'
   },
 
   CreateComment: async params => {
-    const timestamp = new Date()
-    const newComment = Object.assign({ timestamp }, params.newComment)
+    const newComment = Object.assign(
+      { timestamp: new Date() },
+      params.newComment
+    )
     await Event.updateOne(
       { _id: params.eventId },
       { $push: { comments: newComment } }
@@ -107,34 +112,22 @@ const root = {
       : 'Did not delete any comments. Double-check the ids are correct.'
   },
 
-  DeleteEvent: async params => {
-    const res = await Event.deleteOne({ _id: params.eventId })
-    return res.deletedCount === 1
-      ? 'Successfully deleted event.'
-      : 'No event with that id found.'
-  },
-
   CreateUser: async params => {
     const validation = validateNewUser(params.newUser)
-    if (validation !== 'valid') {
-      return validation
-    } else {
-      await User.create(params.newUser)
-      return params.newUser
-    }
+    return validation === 'valid'
+      ? await User.create(params.newUser)
+      : validation
   },
 
   UpdateUser: async params => {
     const validation = validateUpdatedUser(params.updatedUser)
-    if (validation !== 'valid') {
-      return validation
-    } else {
-      await User.findOneAndUpdate(
-        { email: params.userEmail },
-        params.updatedUser,
-        { new: true }
-      )
-    }
+    return validation === 'valid'
+      ? await User.findOneAndUpdate(
+          { email: params.userEmail },
+          params.updatedUser,
+          { new: true }
+        )
+      : validation
   },
 
   DeleteUser: async params => {
@@ -146,12 +139,8 @@ const root = {
 
   CreateMessage: async params => {
     const validation = validateMessage(params.newMessage)
-    if (validation !== 'valid') {
-      return validation
-    } else {
-      const data = Object.assign({ timestamp: new Date() }, params.newMessage)
-      return await Message.create(data)
-    }
+    const data = Object.assign({ timestamp: new Date() }, params.newMessage)
+    return validation === 'valid' ? await Message.create(data) : validation
   },
 
   AttendEvent: async params => {},

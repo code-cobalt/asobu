@@ -28,7 +28,7 @@ const root = require('./server/root')
 const { Seeder } = require('mongo-seeding')
 const path = require('path')
 
-// setting useFindAndModify to false resolves MongoDB Node.js deprecation warnings from using certain Mongoose warnings
+// setting useFindAndModify to false resolves MongoDB Node.js deprecation warnings from using certain Mongoose methods
 // setting useCreateIndex true to allow unique constraint in user email
 mongoose.connect(process.env.DB_URL, {
   useNewUrlParser: true,
