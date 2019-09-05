@@ -47,7 +47,7 @@ const users = [
     ],
     events: [
       {
-        event_id: 2,
+        event_id: '5d70e48e3364a43942219906',
         is_creator: true
       }
     ],
@@ -87,7 +87,7 @@ const users = [
     ],
     events: [
       {
-        event_id: 2,
+        event_id: '5d70e48e3364a43942219906',
         is_creator: false
       }
     ],
@@ -127,7 +127,7 @@ const users = [
     ],
     events: [
       {
-        event_id: 2,
+        event_id: '5d70e48e3364a43942219906',
         is_creator: false
       }
     ],
@@ -167,7 +167,7 @@ const users = [
     ],
     events: [
       {
-        event_id: 1,
+        event_id: '5d70e48e3364a43942219905',
         is_creator: false
       }
     ],
@@ -207,7 +207,7 @@ const users = [
     ],
     events: [
       {
-        event_id: 1,
+        event_id: '5d70e48e3364a43942219905',
         is_creator: true
       }
     ],

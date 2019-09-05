@@ -2,7 +2,6 @@
 
 const events = [
   {
-    _id: 1,
     name: 'Quidditch After Party',
     description: 'Gryffindor Rocks',
     cover_photo: '',
@@ -28,7 +27,6 @@ const events = [
     comments: []
   },
   {
-    _id: 2,
     name: 'Language Exchange',
     description: "Let's practice Japanese",
     cover_photo: '',
