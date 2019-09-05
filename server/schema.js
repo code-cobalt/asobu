@@ -64,6 +64,7 @@ const schema = buildSchema(`
 
     type Message {
         id: String
+        chat_id: Int
         from: UserLimited
         timestamp: DateTime
         content: String
@@ -164,15 +165,20 @@ const schema = buildSchema(`
     }
 
     input NewMessage {
-        id: String!
+        chat_id: Int!
         from: UserLimitedInput
-        timestamp: DateTime!
         content: String!
+    }
+
+    input NewComment {
+        from: UserLimitedInput
+        content: String
     }
 
     type Mutation {
         CreateEvent(newEvent: NewEvent): Event
         UpdateEvent(eventId: String, updatedEvent: UpdatedEvent): Event
+        CreateComment(eventId: String, newComment: NewComment): Comment
         DeleteEvent(eventId: String): String
         CreateUser(newUser: NewUser): User
         UpdateUser(userEmail: String, updatedUser: UpdatedUser): User

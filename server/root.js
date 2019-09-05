@@ -53,6 +53,7 @@ const root = {
           messages: {
             $push: {
               id: '$_id',
+              chat_id: '$chat_id',
               content: '$content',
               timestamp: '$timestamp',
               from: '$from'
@@ -64,11 +65,11 @@ const root = {
   },
 
   CreateEvent: async params => {
-    const validation = validateUpdatedEvent(params.newEvent)
+    const validation = validateNewEvent(params.newEvent)
     if (validation !== 'valid') {
       return validation
     } else {
-      await Event.insertMany(params.newEvent)
+      await Event.create(params.newEvent)
       return params.newEvent
     }
   },
@@ -83,6 +84,15 @@ const root = {
     }
   },
 
+  CreateComment: async params => {
+    const timestamp = new Date()
+    const newComment = Object.assign({ timestamp }, params.newComment)
+    Event.updateOne(
+      { _id: params.eventId },
+      { $push: { comments: newComment } }
+    )
+  },
+
   DeleteEvent: async params => {
     await Event.deleteOne({ _id: params.eventId })
     return 'Deleted event'
@@ -93,7 +103,7 @@ const root = {
     if (validation !== 'valid') {
       return validation
     } else {
-      await User.insertOne(params.newUser)
+      await User.create(params.newUser)
       return params.newUser
     }
   },
@@ -118,7 +128,9 @@ const root = {
     if (validation !== 'valid') {
       return validation
     } else {
-      await Message.insertOne(params.newMessage)
+      const timestamp = new Date()
+      const data = Object.assign({ timestamp }, params.newMessage)
+      await Message.create(data)
       return params.newMessage
     }
   }
