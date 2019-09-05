@@ -79,15 +79,41 @@ const schema = buildSchema(`
         User(email: String!): User
         Events: [Event]
         Event(id: String!): Event
-        Chats(ids: [Int]): [Chat]
+        Chats(ids: [Int]!): [Chat]
     }
 
+    input UserLimitedInput {
+        first_name: String
+        email: String
+        profile_photo: String
+    }
+
+    input CommentInput {
+        from: UserLimitedInput
+        content: String
+        timestamp: DateTime
+    }
+
+    input StatInput {
+        name: String
+        value: Int
+    }
+
+    input UserChatInput {
+        chat_id: Int
+        participants: [UserLimitedInput]
+    }
+
+    input UserEventInput {
+        event_id: Int
+        is_creator: Boolean
+    }
 
     input NewEvent {
         name: String!
         description: String!
         cover_photo: String
-        creator: UserLimited!
+        creator: UserLimitedInput
         start: DateTime!
         end: DateTime!
         location: String!
@@ -104,8 +130,8 @@ const schema = buildSchema(`
         location: String
         limit: Int
         tags: [String]
-        attendees: [UserLimited]
-        comments: [Comment]
+        attendees: [UserLimitedInput]
+        comments: [CommentInput]
     }
 
     input NewUser {
@@ -117,7 +143,7 @@ const schema = buildSchema(`
         interests: [String]
         exp: Int
         lvl: Int
-        stats: [Stat]
+        stats: [StatInput]
         imei: String
     }
 
@@ -131,15 +157,15 @@ const schema = buildSchema(`
         interests: [String]
         exp: Int
         lvl: Int
-        stats: [Stat]
-        chats: [UserChat]
-        events: [UserEvent]
+        stats: [StatInput]
+        chats: [UserChatInput]
+        events: [UserEventInput]
         imei: String
     }
 
-    input Message {
+    input NewMessage {
         id: String!
-        from: UserLimited!
+        from: UserLimitedInput
         timestamp: DateTime!
         content: String!
     }
@@ -151,7 +177,7 @@ const schema = buildSchema(`
         CreateUser(newUser: NewUser): User
         UpdateUser(updatedUser: UpdatedUser): User
         DeleteUser(userId: String): String
-        CreateMessage(newMessage: Message): Message
+        CreateMessage(newMessage: NewMessage): Message
     }
 `)
 
