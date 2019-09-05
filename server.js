@@ -29,9 +29,11 @@ const { Seeder } = require('mongo-seeding')
 const path = require('path')
 
 // setting useFindAndModify to false resolves MongoDB Node.js deprecation warnings from using certain Mongoose warnings
+// setting useCreateIndex true to allow unique constraint in user email
 mongoose.connect(process.env.DB_URL, {
   useNewUrlParser: true,
-  useFindAndModify: false
+  useFindAndModify: false,
+  useCreateIndex: true
 })
 
 const db = mongoose.connection
