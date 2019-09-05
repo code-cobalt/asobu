@@ -143,7 +143,9 @@ const root = {
     return validation === 'valid' ? await Message.create(data) : validation
   },
 
-  AttendEvent: async params => {},
+  AttendEvent: async params => {
+    //should update user events AND event attendees
+  },
 
   AddStats: async params => {}
 }
