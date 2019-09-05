@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { connect } from 'react-redux'
+import { Provider, connect } from 'react-redux'
+import { store } from './src/store'
 import Main from "./views/Main"
 import Navbar from "./components/Navbar"
 import Login from "./views/Login"
 import SignUp from "./views/Signup"
 import Axios from 'axios'
 
-class App extends Component {
+export default class App extends Component {
 
   componentDidMount() {
 
@@ -15,12 +16,11 @@ class App extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        {this.props.isLoggedIn ? <Main /> : null}
-        {this.props.isLoggedIn ? <Navbar /> : null}
-        {!this.props.isLoggedIn ? <Login /> : null}
-      </View>
-    
+      <Provider store={store}>
+        <View style={styles.container}>
+          <Login />
+        </View>
+      </Provider>
     )
   }
 }
@@ -36,11 +36,11 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 })
-
+/*
 const mapStateToProps = state => {
-    return {
-        isLoggedIn: state.isLoggedIn
-    }
+  return {
+    isLoggedIn: state.isLoggedIn
+  }
 }
 
-export default connect(mapStateToProps, null)(App)
+export default connect(mapStateToProps, null)(App) */
