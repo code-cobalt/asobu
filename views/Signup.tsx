@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Text, View, TouchableOpacity, TextInput, StyleSheet, ImageBackground, AsyncStorage } from 'react-native'
 import axios from "axios"
 import { connect } from "react-redux"
-// import AsyncStorage from '@react-native-community/async-storage';
 
 interface State {
   email: string,
@@ -54,13 +53,14 @@ class Signup extends Component<Props, State> {
   }
 
   handleSignup = async () => {
-    const user = await axios.post<ServerData, Error>('/auth', {
+    const user = await axios.post<ServerData, Error>('http://192.168.10.127:3000/auth', {
       email: this.state.email,
       first_name: this.state.first_name,
       last_name: this.state.last_name,
       phone: this.state.phone,
       password: this.state.password
     }).then(async (response) => {
+      console.log(response)
       const user = response
       if (user.err) {
         console.log(user.err)

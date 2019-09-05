@@ -65,7 +65,7 @@ const loginUser = require('./auth')
 app.get('/auth', (req, res) => {
   const userObj = req.query
   loginUser(userObj)
-    .then((result) => { return result })
+    .then((result) => { res.send(result) })
 })
 
 // import registerUser from './auth'
@@ -73,7 +73,7 @@ const registerUser = require('./auth')
 app.post('/auth', (req, res) => {
   const userObj = req.body
   registerUser(userObj)
-    .then((result) => { return result })
+    .then((result) => { res.send(result) })
 })
 
 app.post('/upload', parser.single('image'), (req, res) => {

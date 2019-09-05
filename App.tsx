@@ -1,14 +1,8 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Provider, connect } from 'react-redux'
+import { Provider } from 'react-redux'
 import { store } from './src/store'
-import Main from "./views/Main"
-import Navbar from "./components/Navbar"
-import Login from "./views/Login"
-import SignUp from "./views/Signup"
-import Profile from "./views/Profile"
-import Chats from "./views/Chats"
-import Axios from 'axios'
+import Wrapper from "./views/Wrapper"
 
 export default class App extends Component {
 
@@ -20,10 +14,7 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <View style={styles.container}>
-          {/* <SignUp /> */}
-          {/* <Login /> */}
-          <Main />
-          <Navbar />
+          <Wrapper />
         </View>
       </Provider>
     )
@@ -41,11 +32,3 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 })
-/*
-const mapStateToProps = state => {
-  return {
-    isLoggedIn: state.isLoggedIn
-  }
-}
-
-export default connect(mapStateToProps, null)(App) */

@@ -44,18 +44,21 @@ class Login extends Component<Props, State> {
   }
 
   handleLogin = async () => {
-    const user = await axios.get<ServerData, Error>("/auth", {
+    console.log("Inside")
+    const user = await axios.get<ServerData, Error>("http://192.168.10.127:3000/auth", {
       params: {
         email: this.state.email,
         password: this.state.password
       }
     }).then(async (response) => {
+      console.log(response)
       try {
         const user = response
+        console.log(user)
         if (user.err) {
           console.log(user.err)
         }
-
+        console.log(user)
         await AsyncStorage.setItem("token", JSON.stringify(user))
         this.props.setUser(user)
       } catch (error) {
