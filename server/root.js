@@ -32,8 +32,8 @@ const root = {
     return User.find()
   },
 
-  User: async email => {
-    return await User.findOne(email)
+  User: async params => {
+    return await User.findOne({ email: params.userEmail })
   },
 
   Events: async args => {
@@ -97,6 +97,13 @@ const root = {
     return newComment
   },
 
+  DeleteComment: async params => {
+    const res = await Event.updateOne(
+      { _id: params.eventId },
+      { $pull: { comments: { _id: params.commentId } } }
+    )
+  },
+
   DeleteEvent: async params => {
     await Event.deleteOne({ _id: params.eventId })
     return 'Successfully deleted event.'
@@ -138,7 +145,11 @@ const root = {
       const data = Object.assign({ timestamp: new Date() }, params.newMessage)
       return await Message.create(data)
     }
-  }
+  },
+
+  AttendEvent: async params => {},
+
+  AddStats: async params => {}
 }
 
 module.exports = root
