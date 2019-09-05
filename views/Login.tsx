@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, TextInput, StyleSheet, ImageBackground } from 'react-native'
+import { Text, View, TouchableOpacity, TextInput, StyleSheet, ImageBackground, AsyncStorage } from 'react-native'
 import axios from "axios"
-import AsyncStorage from '@react-native-community/async-storage';
+import { connect } from "react-redux"
+/* import AsyncStorage from '@react-native-community/async-storage'; */
 
 interface State {
   email: string
@@ -32,7 +33,11 @@ interface ServerResponse {
   data: ServerData
 }
 
-class Login extends Component<{}, State> {
+interface Props {
+  setUser: Function
+}
+
+class Login extends Component<Props, State> {
   state = {
     email: "",
     password: ""
@@ -44,6 +49,19 @@ class Login extends Component<{}, State> {
         email: this.state.email,
         password: this.state.password
       }
+    }).then(async (response) => {
+      try {
+        const user = response
+        if (user.err) {
+          console.log(user.err)
+        }
+
+        await AsyncStorage.setItem("token", JSON.stringify(user))
+        this.props.setUser(user)
+      } catch (error) {
+        console.log(error)
+      }
+
     })
   }
 
@@ -105,4 +123,15 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Login
+const mapDispatchToProps = dispatch => {
+  return {
+    setUser: (user) => {
+      dispatch({
+        type: "SET_USER",
+        user
+      })
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Login)

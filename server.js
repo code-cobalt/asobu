@@ -29,7 +29,7 @@ const { Seeder } = require('mongo-seeding')
 const path = require('path')
 
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true })
-export const db = mongoose.connection
+const db = mongoose.connection
 db.once('open', () => console.log('Connected to DB'))
 
 // const config = {
@@ -60,14 +60,16 @@ app.get('/api/test', (req, res) => {
   // res.sendStatus(200)
 })
 
-import { loginUser } from './auth'
+// import loginUser from './auth'
+const loginUser = require('./auth')
 app.get('/auth', (req, res) => {
   const userObj = req.query
   loginUser(userObj)
     .then((result) => { return result })
 })
 
-import { registerUser } from './auth'
+// import registerUser from './auth'
+const registerUser = require('./auth')
 app.post('/auth', (req, res) => {
   const userObj = req.body
   registerUser(userObj)
@@ -82,3 +84,5 @@ app.post('/upload', parser.single('image'), (req, res) => {
 })
 
 app.listen(port, () => console.log(`Listening on ${port}`))
+
+module.exports = { db }
