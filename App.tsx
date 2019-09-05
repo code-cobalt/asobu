@@ -6,6 +6,8 @@ import Main from "./views/Main"
 import Navbar from "./components/Navbar"
 import Login from "./views/Login"
 import SignUp from "./views/Signup"
+import Profile from "./views/Profile"
+import Chats from "./views/Chats"
 import Axios from 'axios'
 
 export default class App extends Component {
@@ -18,7 +20,10 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <View style={styles.container}>
+          {/* <SignUp /> */}
+          {/* <Login /> */}
           <Main />
+          <Navbar />
         </View>
       </Provider>
     )
