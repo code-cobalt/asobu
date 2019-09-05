@@ -2,7 +2,7 @@ const db = require('./server')
 const User = require('./server/models/user')
 const bcrypt = require('bcrypt')
 
-const registerUser = (userObj) => {
+module.exports = registerUser = (userObj) => {
   return User.findOne({ email: userObj.email }, (err, result) => {
     if (err) return { err }
     if (result) return { err: 'Email Already Exists' }
@@ -35,7 +35,7 @@ const registerUser = (userObj) => {
   })
 }
 
-const loginUser = (userObj) => {
+module.exports = loginUser = (userObj) => {
   return User.findOne({ email: userObj.email }, (err, result) => {
     if (err) return { err }
     if (!result) return { err: 'Account Not Found' }
@@ -51,5 +51,3 @@ const loginUser = (userObj) => {
     }
   })
 }
-
-module.exports = { registerUser, loginUser }
