@@ -1,4 +1,4 @@
-/* "use strict";
+"use strict";
 exports.__esModule = true;
 import React, { Component } from 'react'
 import { Provider, connect } from 'react-redux'
@@ -25,4 +25,3 @@ var styles = StyleSheet.create({
     flex: 1,
   }
 });
- */
