@@ -28,7 +28,14 @@ const root = require('./server/root')
 const { Seeder } = require('mongo-seeding')
 const path = require('path')
 
-mongoose.connect(process.env.DB_URL, { useNewUrlParser: true })
+// setting useFindAndModify to false resolves MongoDB Node.js deprecation warnings from using certain Mongoose methods
+// setting useCreateIndex true to allow unique constraint in user email
+mongoose.connect(process.env.DB_URL, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true
+})
+
 const db = mongoose.connection
 db.once('open', () => console.log('Connected to DB'))
 
@@ -64,16 +71,18 @@ app.get('/api/test', (req, res) => {
 const loginUser = require('./auth')
 app.get('/auth', (req, res) => {
   const userObj = req.query
-  loginUser(userObj)
-    .then((result) => { res.send(result) })
+  loginUser(userObj).then(result => {
+    res.send(result)
+  })
 })
 
 // import registerUser from './auth'
 const registerUser = require('./auth')
 app.post('/auth', (req, res) => {
   const userObj = req.body
-  registerUser(userObj)
-    .then((result) => { res.send(result) })
+  registerUser(userObj).then(result => {
+    res.send(result)
+  })
 })
 
 app.post('/upload', parser.single('image'), (req, res) => {

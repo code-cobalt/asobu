@@ -25,6 +25,7 @@ const schema = buildSchema(`
     }
 
     type Comment {
+        id: String
         from: UserLimited
         content: String
         timestamp: DateTime
@@ -64,6 +65,7 @@ const schema = buildSchema(`
 
     type Message {
         id: String
+        chat_id: Int
         from: UserLimited
         timestamp: DateTime
         content: String
@@ -76,27 +78,21 @@ const schema = buildSchema(`
 
     type Query {
         Users: [User]
-        User(email: String!): User
+        User(userEmail: String!): User
         Events: [Event]
-        Event(id: String!): Event
-        Chats(ids: [Int]!): [Chat]
+        Event(eventId: String!): Event
+        Chats(chatIds: [Int]!): [Chat]
     }
 
     input UserLimitedInput {
-        first_name: String
-        email: String
+        first_name: String!
+        email: String!
         profile_photo: String
     }
 
-    input CommentInput {
-        from: UserLimitedInput
-        content: String
-        timestamp: DateTime
-    }
-
     input StatInput {
-        name: String
-        value: Int
+        name: String!
+        value: Int!
     }
 
     input UserChatInput {
@@ -113,7 +109,7 @@ const schema = buildSchema(`
         name: String!
         description: String!
         cover_photo: String
-        creator: UserLimitedInput
+        creator: UserLimitedInput!
         start: DateTime!
         end: DateTime!
         location: String!
@@ -130,8 +126,6 @@ const schema = buildSchema(`
         location: String
         limit: Int
         tags: [String]
-        attendees: [UserLimitedInput]
-        comments: [CommentInput]
     }
 
     input NewUser {
@@ -164,20 +158,28 @@ const schema = buildSchema(`
     }
 
     input NewMessage {
-        id: String!
-        from: UserLimitedInput
-        timestamp: DateTime!
+        chat_id: Int!
+        from: UserLimitedInput!
+        content: String!
+    }
+
+    input NewComment {
+        from: UserLimitedInput!
         content: String!
     }
 
     type Mutation {
-        CreateEvent(newEvent: NewEvent): Event
-        UpdateEvent(updatedEvent: UpdatedEvent): Event
-        DeleteEvent(eventId: String): String
-        CreateUser(newUser: NewUser): User
-        UpdateUser(updatedUser: UpdatedUser): User
-        DeleteUser(userId: String): String
-        CreateMessage(newMessage: NewMessage): Message
+        CreateEvent(newEvent: NewEvent!): Event
+        UpdateEvent(eventId: String!, updatedEvent: UpdatedEvent!): Event
+        DeleteEvent(eventId: String!): String
+        CreateComment(eventId: String!, newComment: NewComment!): Comment
+        DeleteComment(eventId: String!, commentId: String!): String
+        CreateUser(newUser: NewUser!): User
+        UpdateUser(userEmail: String!, updatedUser: UpdatedUser!): User
+        DeleteUser(userEmail: String!): String
+        CreateMessage(newMessage: NewMessage!): Message
+        AttendEvent(eventId: String!, user: UserLimitedInput!): String
+        AddStats(userEmail: String!, newStats: [StatInput]!): [Stat]
     }
 `)
 
