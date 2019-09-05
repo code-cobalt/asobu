@@ -172,10 +172,10 @@ const schema = buildSchema(`
 
     type Mutation {
         CreateEvent(newEvent: NewEvent): Event
-        UpdateEvent(updatedEvent: UpdatedEvent): Event
+        UpdateEvent(eventId: String, updatedEvent: UpdatedEvent): Event
         DeleteEvent(eventId: String): String
         CreateUser(newUser: NewUser): User
-        UpdateUser(updatedUser: UpdatedUser): User
+        UpdateUser(userEmail: String, updatedUser: UpdatedUser): User
         DeleteUser(userId: String): String
         CreateMessage(newMessage: NewMessage): Message
     }
