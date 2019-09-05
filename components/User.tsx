@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { View, Text, Image, StyleSheet, TextInput } from "react-native"
 import { connect } from "react-redux"
 
-export class Event extends Component {
+export class User extends Component {
 
     render() {
         return (
             <View>
-                <Text>This is an Event</Text>
+                <Text>This is a User</Text>
             </View>
         )
     }
@@ -27,4 +27,4 @@ const mapStateToProps = state => {
 
 // }
 
-export default connect(mapStateToProps)(Event)
+export default connect(mapStateToProps)(User)
