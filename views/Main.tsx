@@ -8,31 +8,17 @@ import getApiUrl from '../environment.js'
 import axios from 'axios'
 
 class Main extends Component {
-  async componentDidMount() {
-    debugger
-    await axios
-      .post(`${getApiUrl()}/graphql`, {
-        data: {
-          query: `
-                Users {
-                    id
-                    first_name
-                    last_name
-                    email
-                    phone_number
-                    password_hash
-                    profile_photo
-                    interests
-                    exp
-                    lvl
-                }
-            `
-        }
-      })
-      .then(result => {
-        console.log(result.data)
-      })
-  }
+  // async componentDidMount() {
+  //   const res = await axios.post(`${getApiUrl()}/graphql`, {
+  //     query: `
+  //       query { Users {
+  //           first_name
+  //       }
+  //     }
+  //   `
+  //   })
+  //Users = res.data.data.Users
+  // }
 
   render() {
     let mainView
