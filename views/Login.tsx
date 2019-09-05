@@ -1,9 +1,35 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity, TextInput, StyleSheet, ImageBackground } from 'react-native'
+import axios from "axios"
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface State {
   email: string
   password: string
+}
+
+interface Error {
+  err: string
+}
+
+interface ServerData {
+  email: string,
+  first_name: string,
+  last_name: string,
+  phone: string,
+  password_hash: null,
+  interests: Array<string>,
+  hobbies: Array<string>,
+  exp: number,
+  lvl: number,
+  stats: Object,
+  chats: Array<Object>
+  events: Array<Object>,
+  err: Error
+}
+
+interface ServerResponse {
+  data: ServerData
 }
 
 class Login extends Component<{}, State> {
@@ -12,8 +38,13 @@ class Login extends Component<{}, State> {
     password: ""
   }
 
-  handleLogin = () => {
-    //handle login
+  handleLogin = async () => {
+    const user = await axios.get<ServerData, Error>("/auth", {
+      params: {
+        email: this.state.email,
+        password: this.state.password
+      }
+    })
   }
 
   render() {

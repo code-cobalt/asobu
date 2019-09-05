@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity, TextInput, StyleSheet, ImageBackground } from 'react-native'
+import axios from "axios"
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface State {
   email: string,
@@ -7,6 +9,34 @@ interface State {
   last_name: string,
   phone: string,
   password: string
+}
+
+interface User {
+  err: string
+}
+
+interface ServerResponse {
+  data: ServerData
+}
+
+interface ServerData {
+  email: string,
+  first_name: string,
+  last_name: string,
+  phone: string,
+  password_hash: null,
+  interests: Array<string>,
+  hobbies: Array<string>,
+  exp: number,
+  lvl: number,
+  stats: Object,
+  chats: Array<Object>
+  events: Array<Object>,
+  err: Error
+}
+
+interface Error {
+  err: string
 }
 
 class Signup extends Component<{}, State> {
@@ -18,8 +48,21 @@ class Signup extends Component<{}, State> {
     password: ""
   }
 
-  handleSignup = () => {
-    //handle signup
+  handleSignup = async () => {
+    const user = await axios.post<ServerData, Error>('/auth', {
+      email: this.state.email,
+      first_name: this.state.first_name,
+      last_name: this.state.last_name,
+      phone: this.state.phone,
+      password: this.state.password
+    }).then(async (response) => {
+      const user = response
+      if (user.err) {
+        console.log(user.err)
+      }
+      await AsyncStorage.setItem('token', JSON.stringify(user))
+      //update store with crendentials
+    })
   }
 
   render() {
@@ -44,6 +87,10 @@ class Signup extends Component<{}, State> {
         <View style={styles.signup__formgroup}>
           <Text style={styles.signup__label}>Password</Text>
           <TextInput value={this.state.password} secureTextEntry={true} onChangeText={text => this.setState({ password: text })} style={styles.signup__input} />
+        </View>
+        <View style={styles.signup__formgroup}>
+          <Text style={styles.signup__label}>Repeat Password</Text>
+          <TextInput value={this.state.password} secureTextEntry={true} style={styles.signup__input} />
         </View>
         <TouchableOpacity onPress={this.handleSignup} style={styles.signup__button}>
           <Text style={styles.signup__button__text}>Sign Up</Text>
