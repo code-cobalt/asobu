@@ -5,9 +5,9 @@ import { connect } from "react-redux"
 export class Meets extends Component {
 
     render() {
-        const dummyUsers = this.props.activeUsers.map((user, index) => {
+        const dummyUsers = this.props.allUsers.map((user, index) => {
             return (
-                <Text style={{ color: "white" }} key={index} >{user}</Text>
+                <Text style={{ color: "white" }} key={index} >{user.first_name}</Text>
             )
         })
 
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         activeUsers: state.activeUsers,
+        allUsers: state.allUsers
     }
 }
 

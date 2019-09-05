@@ -18,7 +18,7 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <View style={styles.container}>
-          <Login />
+          <Main />
         </View>
       </Provider>
     )
