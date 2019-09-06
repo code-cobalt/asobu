@@ -20,7 +20,7 @@ const schema = buildSchema(`
     }
 
     type UserEvent {
-        event_id: Int
+        event_id: String
         is_creator: Boolean
     }
 
@@ -101,7 +101,7 @@ const schema = buildSchema(`
     }
 
     input UserEventInput {
-        event_id: Int
+        event_id: String
         is_creator: Boolean
     }
 
@@ -179,6 +179,7 @@ const schema = buildSchema(`
         DeleteUser(userEmail: String!): String
         CreateMessage(newMessage: NewMessage!): Message
         AttendEvent(eventId: String!, user: UserLimitedInput!): String
+        UnattendEvent(eventId: String!, userEmail: String!): String
         AddStats(userEmail: String!, newStats: [StatInput]!): [Stat]
     }
 `)

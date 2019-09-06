@@ -144,8 +144,18 @@ const root = {
   },
 
   AttendEvent: async params => {
-    //should update user events AND event attendees
+    const event = await Event.findOneAndUpdate(
+      { _id: params.eventId },
+      { $push: { attendees: params.user } }
+    )
+    await User.updateOne(
+      { email: params.user.email },
+      { $push: { events: { event_id: event._id, is_creator: false } } }
+    )
+    return `${params.user.first_name} will be attending ${event.name}.`
   },
+
+  UnattendEvent: async params => {},
 
   AddStats: async params => {}
 }
