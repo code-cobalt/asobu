@@ -4,8 +4,9 @@ import { connect } from "react-redux"
 import axios from "axios"
 import { any } from 'prop-types'
 import getApiUrl from '../environment.js'
-import Meets from "./Meets"
-import Events from "./Events"
+import Profile from './Profile'
+import Results from './Results'
+import Chats from './Chats'
 
 interface Props {
     toggleView: Function,
@@ -14,7 +15,6 @@ interface Props {
 
 class Main extends Component<Props> {
     async componentDidMount() {
-        this.props.toggleView("meets")
 
         const res = await axios.post(`${getApiUrl()}/graphql`, {
             query: `
@@ -42,10 +42,12 @@ class Main extends Component<Props> {
     render() {
         let mainView;
 
-        if (this.props.activeView === "events") {
-            mainView = <Events />
-        } else if (this.props.activeView === "meets") {
-            mainView = <Meets />
+        if (this.props.activeView === "profile") {
+            mainView = <Profile />
+        } else if (this.props.activeView === "results") {
+            mainView = <Results />
+        } else if (this.props.activeView === "chats") {
+            mainView = <Chats />
         }
         return (
             <View style={styles.main}>
@@ -71,10 +73,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        toggleView: (currentView) => {
+        setActiveView: (activeView) => {
             dispatch({
-                type: "SET_VIEW",
-                currentView: currentView
+                type: "SET_ACTIVE_VIEW",
+                activeView: activeView
             })
         },
         setAllUsers: (allUsers) => {
