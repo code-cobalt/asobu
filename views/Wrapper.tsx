@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
 import { connect } from "react-redux"
-import Main from "./Main"
-import Navbar from "../components/Navbar"
 import Auth from "../components/Auth"
+import Application from "./Application"
 
 interface Props {
   isLoggedIn: boolean
@@ -13,9 +12,7 @@ class Wrapper extends Component<Props> {
   render() {
     return (
       <>
-        {this.props.isLoggedIn ? <Main /> : null}
-        {this.props.isLoggedIn ? <Navbar /> : null}
-        {!this.props.isLoggedIn ? <Auth /> : null}
+        {this.props.isLoggedIn ? <Application /> : <Auth />}
       </>
     )
   }
