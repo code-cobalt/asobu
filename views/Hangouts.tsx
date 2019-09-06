@@ -4,18 +4,18 @@ import { connect } from "react-redux"
 import UserList from "../components/UserList"
 import EventList from "../components/EventList"
 
-export class Meets extends Component {
+export class Hangouts extends Component {
 
     render() {
-        const dummyUsers = this.props.allUsers.map((user, index) => {
-            return (
-                <Text key={index} >{user.first_name}</Text>
-            )
-        })
+        // const dummyUsers = this.props.allUsers.map((user, index) => {
+        //     return (
+        //         <Text key={index} >{user.first_name}</Text>
+        //     )
+        // })
         return (
             <View style={styles.meets}>
-                <Text style={{ color: "white" }}>This is the meets component</Text>
-                {dummyUsers}
+                <Text style={{ color: "white" }}>This is the hangouts component</Text>
+                <UserList />
             </View>
         )
     }
@@ -23,6 +23,8 @@ export class Meets extends Component {
 
 const styles = StyleSheet.create({
     meets: {
+        justifyContent: "center",
+        alignContent: "center",
         flex: 1,
         backgroundColor: "red",
     }
@@ -39,4 +41,4 @@ const mapStateToProps = state => {
 
 // }
 
-export default connect(mapStateToProps)(Meets)
+export default connect(mapStateToProps)(Hangouts)

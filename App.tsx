@@ -7,7 +7,6 @@ import Wrapper from "./views/Wrapper"
 export default class App extends Component {
 
   componentDidMount() {
-
   }
 
   render() {

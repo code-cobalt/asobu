@@ -32,6 +32,7 @@
     "react": "16.8.3",
     "react-dom": "^16.8.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
+    "react-native-switch-selector": "^1.1.14",
     "react-native-typescript-transformer": "^1.2.13",
     "react-native-web": "^0.11.4",
     "react-redux": "^7.1.1",
