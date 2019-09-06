@@ -29,8 +29,8 @@ const moment = require('moment')
 const port = process.env.PORT || 3000
 //Mongoose for MongoDB queries
 const mongoose = require('mongoose')
-const schema = require('./server/schema')
-const root = require('./server/root')
+const schema = require('./server/schema.ts')
+const root = require('./server/root.ts')
 const { Seeder } = require('mongo-seeding')
 //Path for static files
 const path = require('path')
@@ -134,9 +134,10 @@ app.post('/upload', parser.single('image'), (req, res) => {
     url: string
     id: string
   }
-  const image = <UploadedImage>{}
-  image.url = req.file.url
-  image.id = req.file.public_id
+  const image = <UploadedImage>{
+    url: req.file.url,
+    id: req.fild.public_id
+  }
   res.send(image)
 })
 
