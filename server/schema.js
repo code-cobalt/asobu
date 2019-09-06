@@ -41,7 +41,6 @@ const schema = buildSchema(`
         last_name: String
         email: String
         phone_number: String
-        password_hash: String
         profile_photo: String
         interests: [String]
         exp: Int
@@ -80,9 +79,14 @@ const schema = buildSchema(`
         messages: [Message]
     }
 
+    type Error {
+        err: String
+    }
+
     type Query {
         Users: [User]
         User(userEmail: String!): User
+        Login(userEmail: String!, userPassword: String!): User | Error
         Events: [Event]
         Event(eventId: String!): Event
         Chats(chatIds: [Int]!): [Chat]
@@ -142,6 +146,7 @@ const schema = buildSchema(`
         email: String!
         phone_number: String!
         password_hash: String!
+        pin: Int!
         interests: [String]
         exp: Int
         lvl: Int
@@ -154,14 +159,8 @@ const schema = buildSchema(`
         last_name: String
         email: String
         phone_number: String
-        password_hash: String
         profile_photo: String
         interests: [String]
-        exp: Int
-        lvl: Int
-        stats: StatsInput
-        chats: [UserChatInput]
-        events: [UserEventInput]
         imei: String
     }
 
@@ -182,13 +181,15 @@ const schema = buildSchema(`
         DeleteEvent(eventId: String!): String
         CreateComment(eventId: String!, newComment: NewComment!): Comment
         DeleteComment(eventId: String!, commentId: String!): String
-        CreateUser(newUser: NewUser!): User
+        CreateUser(newUser: NewUser!): User : Error
         UpdateUser(userEmail: String!, updatedUser: UpdatedUser!): User
-        DeleteUser(userEmail: String!): String
+        ResetPassword(userEmail: String!, userPin: Int, newPassword: String): User : Error
+        DeleteUser(userEmail: String!, userPassword: String!): String : Error
         CreateMessage(newMessage: NewMessage!): Message
         AttendEvent(eventId: String!, user: UserLimitedInput!): String
         UnattendEvent(eventId: String!, userEmail: String!): String
         AddStats(userEmail: String!, newStats: StatsInput!): Stats
+        AddExp(): String
     }
 `)
 
