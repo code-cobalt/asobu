@@ -24,7 +24,6 @@ class Main extends Component<Props> {
                 last_name
                 email
                 phone_number
-                password_hash
                 profile_photo
                 interests
                 lvl
@@ -60,7 +59,7 @@ class Main extends Component<Props> {
 const styles = StyleSheet.create({
     main: {
         flex: 11,
-        backgroundColor: "green",
+        backgroundColor: "black",
     }
 })
 
