@@ -11,6 +11,7 @@ export class UserList extends Component {
             //then, build the 'user' component for each user
             //return user
             const userObject = {
+                stateIndex: index,
                 userFirstName: user.first_name,
                 userLastName: user.last_name,
                 userId: user.id,
@@ -20,7 +21,7 @@ export class UserList extends Component {
             }
 
             return (
-                <User />
+                <User {...userObject} />
             )
         })
 
