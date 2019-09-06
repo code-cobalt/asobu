@@ -167,7 +167,15 @@ const root = {
     return `${user.first_name} will no longer be attending ${event.name}.`
   },
 
-  AddStats: async params => {}
+  AddStats: async params => {
+    const user = await User.findOne({ email: params.userEmail })
+    const updatedStats = Object.assign({}, user.stats)
+    for (const stat in params.newStats) {
+      updatedStats[stat] += params.newStats[stat]
+    }
+    await User.updateOne({ email: params.userEmail }, { stats: updatedStats })
+    return updatedStats
+  }
 }
 
 module.exports = root
