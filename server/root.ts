@@ -180,10 +180,10 @@ const root = {
     const validation = validateUpdatedEvent(params.updatedEvent)
     return validation === 'valid'
       ? await Event.findOneAndUpdate(
-          { _id: params.eventId },
-          params.updatedEvent,
-          { new: true }
-        )
+        { _id: params.eventId },
+        params.updatedEvent,
+        { new: true }
+      )
       : { err: validation }
   },
 
@@ -219,8 +219,8 @@ const root = {
     return res.nModified === 1
       ? 'Successfully deleted comment.'
       : {
-          err: 'Did not delete any comments. Double-check the ids are correct.'
-        }
+        err: 'Did not delete any comments. Double-check the ids are correct.'
+      }
   },
 
   CreateUser: async params => {
@@ -252,10 +252,10 @@ const root = {
     const validation = validateUpdatedUser(params.updatedUser)
     return validation === 'valid'
       ? await User.findOneAndUpdate(
-          { email: params.userEmail },
-          params.updatedUser,
-          { new: true }
-        )
+        { email: params.userEmail },
+        params.updatedUser,
+        { new: true }
+      )
       : { err: validation }
   },
 
@@ -334,7 +334,7 @@ const root = {
     return updatedStats
   },
 
-  AddExp: async params => {}
+  AddExp: async params => { }
 }
 
 export = root

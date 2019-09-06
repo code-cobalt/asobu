@@ -2,7 +2,6 @@ import { setUserName, setActiveView, setUser, toggleAuth, toggleResultsView } fr
 
 const initialState = {
   username: "",
-  activeUsers: ["Mark", "Matt", "TJ", "Brittany"],
   activeEvents: ["Soccer", "Climbing", "Music", "Programming"],
   activeView: "results",
   showLogin: true,

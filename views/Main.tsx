@@ -15,6 +15,8 @@ interface Props {
 
 class Main extends Component<Props> {
     async componentDidMount() {
+        console.log(getApiUrl())
+        console.log(this.props.allUsers)
 
         const res = await axios.post(`${getApiUrl()}/graphql`, {
             query: `
@@ -32,9 +34,9 @@ class Main extends Component<Props> {
             }
         `
         })
-        // console.log(res.data.data.Users)
+        console.log("inside the axios query")
         this.props.setAllUsers(res.data.data.Users)
-        console.log(this.props.allUsers[0], "all users using the app")
+        console.log(this.props.allUsers, "all users using the app")
     }
     //Users = res.data.data.Users
 
@@ -59,7 +61,7 @@ class Main extends Component<Props> {
 const styles = StyleSheet.create({
     main: {
         flex: 11,
-        backgroundColor: "black",
+        backgroundColor: "white",
     }
 })
 
