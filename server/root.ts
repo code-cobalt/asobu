@@ -1,7 +1,7 @@
 const [User, Event, Message] = [
-  require('./models/user'),
-  require('./models/event'),
-  require('./models/message')
+  require('./models/user.ts'),
+  require('./models/event.ts'),
+  require('./models/message.ts')
 ]
 const { GraphQLDateTime } = require('graphql-iso-date')
 const bcrypt = require('bcrypt')
