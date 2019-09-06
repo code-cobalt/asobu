@@ -155,7 +155,17 @@ const root = {
     return `${params.user.first_name} will be attending ${event.name}.`
   },
 
-  UnattendEvent: async params => {},
+  UnattendEvent: async params => {
+    const event = await Event.findOneAndUpdate(
+      { _id: params.eventId },
+      { $pull: { attendees: { email: params.userEmail } } }
+    )
+    const user = await User.findOneAndUpdate(
+      { email: params.userEmail },
+      { $pull: { events: { event_id: params.eventId } } }
+    )
+    return `${user.first_name} will no longer be attending ${event.name}.`
+  },
 
   AddStats: async params => {}
 }
