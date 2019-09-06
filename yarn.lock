@@ -5293,6 +5293,11 @@ react-native-branch@~3.0.1:
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-3.0.1.tgz#5b07b61cbd290168cd3c3662e017ebe0f356d2ca"
   integrity sha512-vbcYxPZlpF5f39GAEUF8kuGQqCNeD3E6zEdvtOq8oCGZunHXlWlKgAS6dgBKCvsHvXgHuMtpvs39VgOp8DaKig==
 
+react-native-switch-selector@^1.1.14:
+  version "1.1.14"
+  resolved "https://registry.yarnpkg.com/react-native-switch-selector/-/react-native-switch-selector-1.1.14.tgz#953fc2fb1f1feb97e9a3a1fc7f87718a7b4c2a5b"
+  integrity sha512-VhmasNtYuJpG5B0954vyMSvOcT1qM6WQeZ1hrx6OxgcH6kdfZynC77MKlj8w022wI1AccyPCQrttgne+WSe5Wg==
+
 react-native-typescript-transformer@^1.2.13:
   version "1.2.13"
   resolved "https://registry.yarnpkg.com/react-native-typescript-transformer/-/react-native-typescript-transformer-1.2.13.tgz#be92a3d110dbb2cf2f4aebe60a935be124cfb7ed"
