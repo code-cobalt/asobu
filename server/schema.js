@@ -86,7 +86,7 @@ const schema = buildSchema(`
     type Query {
         Users: [User]
         User(userEmail: String!): User
-        Login(userEmail: String!, userPassword: String!): User | Error
+        Login(userEmail: String!, userPassword: String!): User
         Events: [Event]
         Event(eventId: String!): Event
         Chats(chatIds: [Int]!): [Chat]
@@ -181,15 +181,14 @@ const schema = buildSchema(`
         DeleteEvent(eventId: String!): String
         CreateComment(eventId: String!, newComment: NewComment!): Comment
         DeleteComment(eventId: String!, commentId: String!): String
-        CreateUser(newUser: NewUser!): User : Error
+        CreateUser(newUser: NewUser!): User
         UpdateUser(userEmail: String!, updatedUser: UpdatedUser!): User
-        ResetPassword(userEmail: String!, userPin: Int, newPassword: String): User : Error
-        DeleteUser(userEmail: String!, userPassword: String!): String : Error
+        ResetPassword(userEmail: String!, userPin: Int, newPassword: String): User
+        DeleteUser(userEmail: String!, userPassword: String!): String
         CreateMessage(newMessage: NewMessage!): Message
         AttendEvent(eventId: String!, user: UserLimitedInput!): String
         UnattendEvent(eventId: String!, userEmail: String!): String
         AddStats(userEmail: String!, newStats: StatsInput!): Stats
-        AddExp(): String
     }
 `)
 

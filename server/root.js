@@ -95,10 +95,10 @@ const root = {
     const validation = validateUpdatedEvent(params.updatedEvent)
     return validation === valid
       ? await Event.findOneAndUpdate(
-          { _id: params.eventId },
-          params.updatedEvent,
-          { new: true }
-        )
+        { _id: params.eventId },
+        params.updatedEvent,
+        { new: true }
+      )
       : validation
   },
 
@@ -148,7 +148,7 @@ const root = {
       userObj.stats.interesting = 0
       userObj.chats = []
       userObj.events = []
-      await bcrypt.hash(userObj.password, 10, (err, hash) => {
+      await bcrypt.hash(userObj.password, 10, async (err, hash) => {
         if (err) return { err }
         return await User.create(userObj)
       })
@@ -161,18 +161,18 @@ const root = {
     const validation = validateUpdatedUser(params.updatedUser)
     return validation === 'valid'
       ? await User.findOneAndUpdate(
-          { email: params.userEmail },
-          params.updatedUser,
-          { new: true }
-        )
+        { email: params.userEmail },
+        params.updatedUser,
+        { new: true }
+      )
       : validation
   },
 
   ResetPassword: async params => {
-    const user = await User.findOne({email: params.userEmail})
+    const user = await User.findOne({ email: params.userEmail })
     if (!user) return { err: 'Incorrect email.' }
     if (user.pin === params.userPin) {
-      bcrypt.hash(params.newPassword, 10, (err, hash) => {
+      bcrypt.hash(params.newPassword, 10, async (err, hash) => {
         if (err) return { err }
         return await User.findOneAndUpdate({ email: params.userEmail }, { password_hash: hash })
       })
@@ -182,7 +182,7 @@ const root = {
   DeleteUser: async params => {
     const user = await User.findOne({ email: params.email })
     if (!user) return { err: 'User Not Found' }
-    bcrypt.compare(params.userPassword, user.password_hash, (err, valid) => {
+    bcrypt.compare(params.userPassword, user.password_hash, async (err, valid) => {
       if (err) return { err }
       if (!valid) return { err: 'Invalid Password' }
       if (valid) {
@@ -234,7 +234,7 @@ const root = {
     return updatedStats
   },
 
-  AddExp: async params => {}
+  AddExp: async params => { }
 }
 
 module.exports = root
