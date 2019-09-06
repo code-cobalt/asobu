@@ -34,7 +34,8 @@ interface ServerResponse {
 }
 
 interface Props {
-  setUser: Function
+  setUser: Function,
+  toggleAuth: Function
 }
 
 class Login extends Component<Props, State> {
@@ -82,6 +83,7 @@ class Login extends Component<Props, State> {
         <TouchableOpacity onPress={this.handleLogin} style={styles.login__button}>
           <Text style={styles.login__button__text}>Login</Text>
         </TouchableOpacity>
+        <Text style={styles.login__signup} onPress={this.props.toggleAuth}>Sign Up</Text>
       </ImageBackground>
     )
   }
@@ -124,6 +126,12 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 18
+  },
+  login__signup: {
+    color: "#fff",
+    position: "relative",
+    top: 50,
+    fontSize: 16
   }
 })
 
@@ -133,6 +141,11 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "SET_USER",
         user
+      })
+    },
+    toggleAuth: () => {
+      dispatch({
+        type: "TOGGLE_AUTH",
       })
     }
   }

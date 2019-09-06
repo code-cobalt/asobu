@@ -1,12 +1,13 @@
-import { setUserName, setActiveView, setUser } from '../actions/userActions'
+import { setUserName, setActiveView, setUser, toggleAuth } from '../actions/userActions'
 
 const initialState = {
   username: "",
   activeUsers: ["Mark", "Matt", "TJ", "Brittany"],
   activeEvents: ["Soccer", "Climbing", "Music", "Programming"],
   activeView: "meets",
+  showLogin: true,
   allUsers: [],
-  isLoggedIn: true,
+  isLoggedIn: false,
   user: {}
 }
 
@@ -35,6 +36,11 @@ const reducer = (state = initialState, action) => {
     case "SET_USER": {
       const copiedState = Object.assign({}, state)
       copiedState.user = Object.assign({}, action.user)
+      return copiedState
+    }
+    case "TOGGLE_AUTH": {
+      const copiedState = Object.assign({}, state)
+      copiedState.showLogin = !copiedState.showLogin
       return copiedState
     }
     default: {
