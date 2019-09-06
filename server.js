@@ -1,10 +1,13 @@
 require('dotenv').config()
 const express = require('express')
+//GraphQL
 const graphqlHTTP = require('express-graphql')
 const app = express()
+//Body Parser
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+//Multer/Cloudinary for Uploads
 const multer = require('multer')
 const cloudinary = require('cloudinary')
 cloudinary.config({
@@ -20,13 +23,20 @@ const storage = cloudinaryStorage({
   transformation: [{ width: 500, height: 500, crop: 'limit' }]
 })
 const parser = multer({ storage })
+//Moment for Timestamps
 const moment = require('moment')
+//Port config
 const port = process.env.PORT || 3000
+//Mongoose for MongoDB queries
 const mongoose = require('mongoose')
 const schema = require('./server/schema')
 const root = require('./server/root')
 const { Seeder } = require('mongo-seeding')
+//Path for static files
 const path = require('path')
+const User = require('./server/models/user')
+//Bcrypt for hashing
+const bcrypt = require('bcrypt')
 
 // setting useFindAndModify to false resolves MongoDB Node.js deprecation warnings from using certain Mongoose methods
 // setting useCreateIndex true to allow unique constraint in user email
@@ -44,6 +54,7 @@ db.once('open', () => console.log('Connected to DB'))
 //   dropDatabase: true
 // }
 
+// **DO NOT DELETE**
 // NOTE: To avoid overages on our MongoDB/Cloudinary, please refrain from
 // seeding, querying, and uploading too often!
 // const seeder = new Seeder(config)
@@ -67,21 +78,57 @@ app.get('/api/test', (req, res) => {
   // res.sendStatus(200)
 })
 
-// import loginUser from './auth'
-const loginUser = require('./auth')
 app.get('/auth', (req, res) => {
   const userObj = req.query
-  loginUser(userObj).then(result => {
-    res.send(result)
+  User.findOne({ email: userObj.email }, (err, result) => {
+    if (err) res.send({ err })
+    if (!result) res.send({ err: 'Account Not Found' })
+    if (result) {
+      bcrypt.compare(userObj.password, result.password_hash, (err, valid) => {
+        if (err) res.send({ err })
+        if (!valid) res.send({ err: 'Invalid Password' })
+        if (valid) {
+          result.password_hash = null
+          console.log(result)
+          res.send(result)
+        }
+      })
+    }
   })
 })
 
-// import registerUser from './auth'
-const registerUser = require('./auth')
 app.post('/auth', (req, res) => {
   const userObj = req.body
-  registerUser(userObj).then(result => {
-    res.send(result)
+  User.findOne({ email: userObj.email }, (err, result) => {
+    if (err) return { err }
+    if (result) return { err: 'Email Already Exists' }
+    if (!result) {
+      userObj.interests = []
+      userObj.hobbies = []
+      userObj.exp = 0
+      userObj.lvl = 1
+      userObj.stats = {}
+      userObj.stats.funny = 0
+      userObj.stats.intellectual = 0
+      userObj.stats.fun = 0
+      userObj.stats.kind = 0
+      userObj.stats.therapeutic = 0
+      userObj.stats.interesting = 0
+      userObj.chats = []
+      userObj.events = []
+      bcrypt.hash(userObj.password, 10, (err, hash) => {
+        userObj.password_hash = hash
+        userObj.password = null
+        User.create(userObj)
+          .then((document) => {
+            if (document) {
+              document.password_hash = null
+              res.send(document)
+            }
+            else res.send({ err: 'Database Error' })
+          })
+      })
+    }
   })
 })
 

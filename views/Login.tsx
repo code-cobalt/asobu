@@ -45,22 +45,19 @@ class Login extends Component<Props, State> {
   }
 
   handleLogin = async () => {
-    console.log("Inside")
     const user = await axios.get<ServerData, Error>("http://192.168.10.127:3000/auth", {
       params: {
         email: this.state.email,
         password: this.state.password
       }
     }).then(async (response) => {
-      console.log(response)
       try {
         const user = response
-        console.log(user)
         if (user.err) {
           console.log(user.err)
         }
-        console.log(user)
-        await AsyncStorage.setItem("token", JSON.stringify(user))
+        await AsyncStorage.setItem("token", JSON.stringify(user.data))
+        const storage = await AsyncStorage.getItem("token");
         this.props.setUser(user)
       } catch (error) {
         console.log(error)
