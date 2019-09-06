@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet, TextInput } from "react-native"
+import { View, Text, Image, StyleSheet, TextInput, ScrollView } from "react-native"
 import { connect } from "react-redux"
 import User from "../components/User"
 
@@ -10,9 +10,9 @@ const UserList = props => {
         )
     })
     return (
-        <View>
+        <ScrollView>
             {userList}
-        </View>
+        </ScrollView>
     )
 }
 
