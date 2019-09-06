@@ -144,10 +144,38 @@ const root = {
   },
 
   AttendEvent: async params => {
-    //should update user events AND event attendees
+    const event = await Event.findOneAndUpdate(
+      { _id: params.eventId },
+      { $push: { attendees: params.user } }
+    )
+    await User.updateOne(
+      { email: params.user.email },
+      { $push: { events: { event_id: event._id, is_creator: false } } }
+    )
+    return `${params.user.first_name} will be attending ${event.name}.`
   },
 
-  AddStats: async params => {}
+  UnattendEvent: async params => {
+    const event = await Event.findOneAndUpdate(
+      { _id: params.eventId },
+      { $pull: { attendees: { email: params.userEmail } } }
+    )
+    const user = await User.findOneAndUpdate(
+      { email: params.userEmail },
+      { $pull: { events: { event_id: params.eventId } } }
+    )
+    return `${user.first_name} will no longer be attending ${event.name}.`
+  },
+
+  AddStats: async params => {
+    const user = await User.findOne({ email: params.userEmail })
+    const updatedStats = Object.assign({}, user.stats)
+    for (const stat in params.newStats) {
+      updatedStats[stat] += params.newStats[stat]
+    }
+    await User.updateOne({ email: params.userEmail }, { stats: updatedStats })
+    return updatedStats
+  }
 }
 
 module.exports = root

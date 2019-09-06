@@ -3,9 +3,13 @@ const { buildSchema } = require('graphql')
 const schema = buildSchema(`
     scalar DateTime 
 
-    type Stat {
-        name: String
-        value: Int
+    type Stats {
+        funny: Int
+        intellectual: Int
+        fun: Int
+        kind: Int
+        therapeutic: Int
+        interesting: Int
     }
 
     type UserLimited {
@@ -20,7 +24,7 @@ const schema = buildSchema(`
     }
 
     type UserEvent {
-        event_id: Int
+        event_id: String
         is_creator: Boolean
     }
 
@@ -42,7 +46,7 @@ const schema = buildSchema(`
         interests: [String]
         exp: Int
         lvl: Int
-        stats: [Stat]
+        stats: Stats
         chats: [UserChat]
         events: [UserEvent]
         imei: String
@@ -90,9 +94,13 @@ const schema = buildSchema(`
         profile_photo: String
     }
 
-    input StatInput {
-        name: String!
-        value: Int!
+    input StatsInput {
+        funny: Int
+        intellectual: Int
+        fun: Int
+        kind: Int
+        therapeutic: Int
+        interesting: Int
     }
 
     input UserChatInput {
@@ -101,7 +109,7 @@ const schema = buildSchema(`
     }
 
     input UserEventInput {
-        event_id: Int
+        event_id: String
         is_creator: Boolean
     }
 
@@ -137,7 +145,7 @@ const schema = buildSchema(`
         interests: [String]
         exp: Int
         lvl: Int
-        stats: [StatInput]
+        stats: StatsInput
         imei: String
     }
 
@@ -151,7 +159,7 @@ const schema = buildSchema(`
         interests: [String]
         exp: Int
         lvl: Int
-        stats: [StatInput]
+        stats: StatsInput
         chats: [UserChatInput]
         events: [UserEventInput]
         imei: String
@@ -179,7 +187,8 @@ const schema = buildSchema(`
         DeleteUser(userEmail: String!): String
         CreateMessage(newMessage: NewMessage!): Message
         AttendEvent(eventId: String!, user: UserLimitedInput!): String
-        AddStats(userEmail: String!, newStats: [StatInput]!): [Stat]
+        UnattendEvent(eventId: String!, userEmail: String!): String
+        AddStats(userEmail: String!, newStats: StatsInput!): Stats
     }
 `)
 
