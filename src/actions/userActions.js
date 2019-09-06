@@ -45,4 +45,12 @@ const toggleAuth = () => {
   return actionObj
 }
 
-export { setUserName, setActiveView, setUser, toggleAuth, setAllUsers };
+const toggleResultsView = (activeView) => {
+  const actionObj = {
+    type: "TOGGLE_RESULTS_VIEW",
+    activeView
+  }
+  return actionObj
+}
+
+export { setUserName, setActiveView, setUser, toggleAuth, setAllUsers, toggleResultsView };
