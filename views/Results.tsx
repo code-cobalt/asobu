@@ -21,7 +21,7 @@ const Results = props => {
 
 const styles = StyleSheet.create({
     results__switch: {
-        marginTop: 35
+        /* marginTop: 35 */
     }
 })
 const mapStateToProps = state => {
