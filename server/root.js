@@ -4,6 +4,7 @@ const [User, Event, Message] = [
   require('./models/message')
 ]
 const { GraphQLDateTime } = require('graphql-iso-date')
+const bcrypt = require('bcrypt')
 
 // validation methods will return string with error message if not valid
 const validateNewUser = user => {
@@ -35,6 +36,24 @@ const root = {
 
   User: async params => {
     return await User.findOne({ email: params.userEmail })
+  },
+
+  Login: async params => {
+    const document = await User.findOne({ email: params.userEmail })
+    if (document) {
+      bcrypt.compare(
+        params.userPassword,
+        document.password_hash,
+        (err, valid) => {
+          if (err) return { err }
+          return valid ? document : { err: 'Invalid Credentials' }
+        }
+      )
+    } else {
+      return {
+        err: 'No user account associated with that email address found.'
+      }
+    }
   },
 
   Events: async () => {
@@ -114,9 +133,28 @@ const root = {
 
   CreateUser: async params => {
     const validation = validateNewUser(params.newUser)
-    return validation === 'valid'
-      ? await User.create(params.newUser)
-      : validation
+    if (validation === 'valid') {
+      const userObj = Object.assign({}, params.newUser)
+      userObj.interests = []
+      userObj.hobbies = []
+      userObj.exp = 0
+      userObj.lvl = 1
+      userObj.stats = {}
+      userObj.stats.funny = 0
+      userObj.stats.intellectual = 0
+      userObj.stats.fun = 0
+      userObj.stats.kind = 0
+      userObj.stats.therapeutic = 0
+      userObj.stats.interesting = 0
+      userObj.chats = []
+      userObj.events = []
+      await bcrypt.hash(userObj.password, 10, (err, hash) => {
+        if (err) return { err }
+        return await User.create(userObj)
+      })
+    } else {
+      return validation
+    }
   },
 
   UpdateUser: async params => {
@@ -130,11 +168,30 @@ const root = {
       : validation
   },
 
+  ResetPassword: async params => {
+    const user = await User.findOne({email: params.userEmail})
+    if (!user) return { err: 'Incorrect email.' }
+    if (user.pin === params.userPin) {
+      bcrypt.hash(params.newPassword, 10, (err, hash) => {
+        if (err) return { err }
+        return await User.findOneAndUpdate({ email: params.userEmail }, { password_hash: hash })
+      })
+    }
+  },
+
   DeleteUser: async params => {
-    const res = await User.deleteOne({ email: params.email })
-    return res.deletedCount === 1
-      ? 'Successfully deleted user account.'
-      : 'No user with that id found.'
+    const user = await User.findOne({ email: params.email })
+    if (!user) return { err: 'User Not Found' }
+    bcrypt.compare(params.userPassword, user.password_hash, (err, valid) => {
+      if (err) return { err }
+      if (!valid) return { err: 'Invalid Password' }
+      if (valid) {
+        const res = await User.deleteOne({ email: params.email })
+        return res.deletedCount === 1
+          ? 'Successfully deleted user account.'
+          : 'No user with that id found.'
+      }
+    })
   },
 
   CreateMessage: async params => {
@@ -175,7 +232,9 @@ const root = {
     }
     await User.updateOne({ email: params.userEmail }, { stats: updatedStats })
     return updatedStats
-  }
+  },
+
+  AddExp: async params => {}
 }
 
 module.exports = root
