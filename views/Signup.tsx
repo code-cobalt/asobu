@@ -40,7 +40,8 @@ interface Error {
 }
 
 interface Props {
-  setUser: Function
+  setUser: Function,
+  toggleAuth: Function
 }
 
 class Signup extends Component<Props, State> {
@@ -100,6 +101,7 @@ class Signup extends Component<Props, State> {
         <TouchableOpacity onPress={this.handleSignup} style={styles.signup__button}>
           <Text style={styles.signup__button__text}>Sign Up</Text>
         </TouchableOpacity>
+        <Text style={styles.signup__login} onPress={this.props.toggleAuth}>Login</Text>
       </ImageBackground>
     )
   }
@@ -141,6 +143,12 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 18
+  },
+  signup__login: {
+    color: "#fff",
+    position: "relative",
+    top: 30,
+    fontSize: 16
   }
 })
 
@@ -150,6 +158,11 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "SET_USER",
         user
+      })
+    },
+    toggleAuth: () => {
+      dispatch({
+        type: "TOGGLE_AUTH",
       })
     }
   }
