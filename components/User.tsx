@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
         flexDirection: "column"
     },
     user__text: {
-        fontSize: 16
+        fontSize: 16,
+        color: "white"
     },
     user__badges: {
         justifyContent: "center",

@@ -9,7 +9,6 @@ const UserSchema = new mongoose.Schema({
   password_hash: String,
   profile_photo: String,
   interests: [String],
-  hobbies: [String],
   exp: Number,
   lvl: Number,
   stats: {
@@ -32,4 +31,4 @@ const UserSchema = new mongoose.Schema({
 })
 
 const User = mongoose.model('User', UserSchema)
-module.exports = User
+export = User

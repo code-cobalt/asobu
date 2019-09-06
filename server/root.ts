@@ -1,29 +1,110 @@
 const [User, Event, Message] = [
-  require('./models/user'),
-  require('./models/event'),
-  require('./models/message')
+  require('./models/user.ts'),
+  require('./models/event.ts'),
+  require('./models/message.ts')
 ]
 const { GraphQLDateTime } = require('graphql-iso-date')
 const bcrypt = require('bcrypt')
 
+interface NewUser {
+  first_name: string
+  last_name: string
+  email: string
+  phone_number: string
+  pin: number
+  password_hash: string
+  profile_photo: string
+  interests: Array<string>
+  exp: number
+  lvl: number
+  stats: Stats
+  imei: string
+}
+
+interface UpdatedUser {
+  first_name: string
+  last_name: string
+  email: string
+  phone_number: string
+  profile_photo: string
+  interests: Array<string>
+}
+
+interface Stats {
+  funny: number
+  intellectual: number
+  fun: number
+  kind: number
+  therapeutic: number
+  interesting: number
+}
+
+interface UserLimited {
+  first_name: String
+  email: String
+  profile_photo: String
+}
+
+interface NewEvent {
+  name: string
+  email: string
+  description: string
+  cover_photo: string
+  creator: UserLimited
+  start: Date
+  end: Date
+  location: string
+  limit: number
+  tags: Array<string>
+}
+
+interface UpdatedEvent {
+  name: string
+  email: string
+  description: string
+  cover_photo: string
+  start: Date
+  end: Date
+  location: string
+  limit: number
+  tags: Array<string>
+}
+
+interface Comment {
+  from: UserLimited
+  content: string
+  timestamp: Date
+}
+
+interface Message {
+  chat_id: number
+  from: UserLimited
+  timestamp: Date
+  content: string
+}
+
 // validation methods will return string with error message if not valid
-const validateNewUser = user => {
+const validateNewUser = (newUser: NewUser) => {
   return 'valid'
 }
 
-const validateUpdatedUser = user => {
+const validateUpdatedUser = (updatedUser: UpdatedUser) => {
   return 'valid'
 }
 
-const validateNewEvent = event => {
+const validateNewEvent = (newEvent: NewEvent) => {
   return 'valid'
 }
 
-const validateUpdatedEvent = event => {
+const validateUpdatedEvent = (updatedEvent: UpdatedEvent) => {
   return 'valid'
 }
 
-const validateMessage = message => {
+const validateComment = (comment: Comment) => {
+  return 'valid'
+}
+
+const validateMessage = (message: Message) => {
   return 'valid'
 }
 
@@ -86,39 +167,48 @@ const root = {
 
   CreateEvent: async params => {
     const validation = validateNewEvent(params.newEvent)
+    const newEvent = Object.assign({}, params.newEvent, {
+      attendees: [],
+      comments: []
+    })
     return validation === 'valid'
-      ? await Event.create(params.newEvent)
-      : validation
+      ? await Event.create(newEvent)
+      : { err: validation }
   },
 
   UpdateEvent: async params => {
     const validation = validateUpdatedEvent(params.updatedEvent)
-    return validation === valid
+    return validation === 'valid'
       ? await Event.findOneAndUpdate(
         { _id: params.eventId },
         params.updatedEvent,
         { new: true }
       )
-      : validation
+      : { err: validation }
   },
 
   DeleteEvent: async params => {
     const res = await Event.deleteOne({ _id: params.eventId })
     return res.deletedCount === 1
       ? 'Successfully deleted event.'
-      : 'No event with that id found.'
+      : { err: 'No event with that id found.' }
   },
 
   CreateComment: async params => {
-    const newComment = Object.assign(
-      { timestamp: new Date() },
-      params.newComment
-    )
-    await Event.updateOne(
-      { _id: params.eventId },
-      { $push: { comments: newComment } }
-    )
-    return newComment
+    const validation = validateComment(params.newComment)
+    if (validation === 'valid') {
+      const newComment = Object.assign(
+        { timestamp: new Date() },
+        params.newComment
+      )
+      await Event.updateOne(
+        { _id: params.eventId },
+        { $push: { comments: newComment } }
+      )
+      return newComment
+    } else {
+      return { err: validation }
+    }
   },
 
   DeleteComment: async params => {
@@ -128,7 +218,9 @@ const root = {
     )
     return res.nModified === 1
       ? 'Successfully deleted comment.'
-      : 'Did not delete any comments. Double-check the ids are correct.'
+      : {
+        err: 'Did not delete any comments. Double-check the ids are correct.'
+      }
   },
 
   CreateUser: async params => {
@@ -136,7 +228,6 @@ const root = {
     if (validation === 'valid') {
       const userObj = Object.assign({}, params.newUser)
       userObj.interests = []
-      userObj.hobbies = []
       userObj.exp = 0
       userObj.lvl = 1
       userObj.stats = {}
@@ -153,7 +244,7 @@ const root = {
         return await User.create(userObj)
       })
     } else {
-      return validation
+      return { err: validation }
     }
   },
 
@@ -165,7 +256,7 @@ const root = {
         params.updatedUser,
         { new: true }
       )
-      : validation
+      : { err: validation }
   },
 
   ResetPassword: async params => {
@@ -174,7 +265,10 @@ const root = {
     if (user.pin === params.userPin) {
       bcrypt.hash(params.newPassword, 10, async (err, hash) => {
         if (err) return { err }
-        return await User.findOneAndUpdate({ email: params.userEmail }, { password_hash: hash })
+        return await User.findOneAndUpdate(
+          { email: params.userEmail },
+          { password_hash: hash }
+        )
       })
     }
   },
@@ -182,22 +276,28 @@ const root = {
   DeleteUser: async params => {
     const user = await User.findOne({ email: params.email })
     if (!user) return { err: 'User Not Found' }
-    bcrypt.compare(params.userPassword, user.password_hash, async (err, valid) => {
-      if (err) return { err }
-      if (!valid) return { err: 'Invalid Password' }
-      if (valid) {
-        const res = await User.deleteOne({ email: params.email })
-        return res.deletedCount === 1
-          ? 'Successfully deleted user account.'
-          : 'No user with that id found.'
+    bcrypt.compare(
+      params.userPassword,
+      user.password_hash,
+      async (err, valid) => {
+        if (err) return { err }
+        if (!valid) return { err: 'Invalid Password' }
+        if (valid) {
+          const res = await User.deleteOne({ email: params.email })
+          return res.deletedCount === 1
+            ? 'Successfully deleted user account.'
+            : { err: 'No user with that id found.' }
+        }
       }
-    })
+    )
   },
 
   CreateMessage: async params => {
     const validation = validateMessage(params.newMessage)
     const data = Object.assign({ timestamp: new Date() }, params.newMessage)
-    return validation === 'valid' ? await Message.create(data) : validation
+    return validation === 'valid'
+      ? await Message.create(data)
+      : { err: validation }
   },
 
   AttendEvent: async params => {
@@ -237,4 +337,4 @@ const root = {
   AddExp: async params => { }
 }
 
-module.exports = root
+export = root

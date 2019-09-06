@@ -29,8 +29,8 @@ const moment = require('moment')
 const port = process.env.PORT || 3000
 //Mongoose for MongoDB queries
 const mongoose = require('mongoose')
-const schema = require('./server/schema')
-const root = require('./server/root')
+const schema = require('./server/schema.ts')
+const root = require('./server/root.ts')
 const { Seeder } = require('mongo-seeding')
 //Path for static files
 const path = require('path')
@@ -104,7 +104,6 @@ app.post('/auth', (req, res) => {
     if (result) return { err: 'Email Already Exists' }
     if (!result) {
       userObj.interests = []
-      userObj.hobbies = []
       userObj.exp = 0
       userObj.lvl = 1
       userObj.stats = {}
@@ -119,26 +118,29 @@ app.post('/auth', (req, res) => {
       bcrypt.hash(userObj.password, 10, (err, hash) => {
         userObj.password_hash = hash
         userObj.password = null
-        User.create(userObj)
-          .then((document) => {
-            if (document) {
-              document.password_hash = null
-              res.send(document)
-            }
-            else res.send({ err: 'Database Error' })
-          })
+        User.create(userObj).then(document => {
+          if (document) {
+            document.password_hash = null
+            res.send(document)
+          } else res.send({ err: 'Database Error' })
+        })
       })
     }
   })
 })
 
 app.post('/upload', parser.single('image'), (req, res) => {
-  const image = {}
-  image.url = req.file.url
-  image.id = req.file.public_id
-  console.log(image)
+  interface UploadedImage {
+    url: string
+    id: string
+  }
+  const image = <UploadedImage>{
+    url: req.file.url,
+    id: req.fild.public_id
+  }
+  res.send(image)
 })
 
 app.listen(port, () => console.log(`Listening on ${port}`))
 
-module.exports = { db }
+export = { db }

@@ -161,7 +161,6 @@ const schema = buildSchema(`
         phone_number: String
         profile_photo: String
         interests: [String]
-        imei: String
     }
 
     input NewMessage {
