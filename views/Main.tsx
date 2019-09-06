@@ -19,8 +19,14 @@ class Main extends Component<Props> {
         const res = await axios.post(`${getApiUrl()}/graphql`, {
             query: `
             query { Users {
+                id
                 first_name
                 last_name
+                email
+                phone_number
+                password_hash
+                profile_photo
+                interests
                 lvl
                 exp
                 }
@@ -29,7 +35,7 @@ class Main extends Component<Props> {
         })
         // console.log(res.data.data.Users)
         this.props.setAllUsers(res.data.data.Users)
-        console.log(this.props.allUsers, "all users using the app")
+        console.log(this.props.allUsers[0], "all users using the app")
     }
     //Users = res.data.data.Users
 

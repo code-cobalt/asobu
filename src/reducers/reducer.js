@@ -7,11 +7,12 @@ const initialState = {
   activeView: "meets",
   allUsers: [],
   isLoggedIn: true,
-  user: {}
+  user: {},
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+
     case "SET_USERNAME": {
       const copiedState = Object.assign({}, state);
       copiedState.username = action.username
@@ -37,6 +38,7 @@ const reducer = (state = initialState, action) => {
       copiedState.user = Object.assign({}, action.user)
       return copiedState
     }
+
     default: {
       return state
     }

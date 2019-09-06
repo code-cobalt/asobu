@@ -19,6 +19,7 @@ const setActiveView = data => {
     type: 'SET_ACTIVE_VIEW',
     activeView: data
   }
+  return actionObj
 }
 
 const setAllUsers = data => {
@@ -26,6 +27,7 @@ const setAllUsers = data => {
     type: 'SET_ALL_USERS',
     allUsers: data
   }
+  return actionObj
 }
 
 const setUser = user => {
@@ -36,4 +38,5 @@ const setUser = user => {
   return actionObj
 }
 
-export { setUserName, setActiveView, setUser };
+
+export { setUserName, setActiveView, setUser, toggleView, setAllUsers };
