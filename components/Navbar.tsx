@@ -11,11 +11,11 @@ class Navbar extends Component {
                     <Text style={styles.navbar__text}>Profile</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.navbar__item} onPress={() => this.props.setActiveView("events")}>
+                <TouchableOpacity style={styles.navbar__item} onPress={() => this.props.setActiveView("results")}>
                     <Image style={styles.navbar__image} source={require("../assets/Main.png")}></Image>
-                    <Text style={styles.navbar__text}>Main</Text>
+                    <Text style={styles.navbar__text}>Results</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.navbar__item} onPress={() => this.props.setActiveView("meets")}>
+                <TouchableOpacity style={styles.navbar__item} onPress={() => this.props.setActiveView("chats")}>
                     <Image style={styles.navbar__image} source={require("../assets/Chat.png")}></Image>
                     <Text style={styles.navbar__text}>Chats</Text>
                 </TouchableOpacity>

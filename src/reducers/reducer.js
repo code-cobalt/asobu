@@ -1,26 +1,24 @@
-import { setUserName, setActiveView, setUser, toggleAuth } from '../actions/userActions'
+import { setUserName, setActiveView, setUser, toggleAuth, toggleResultsView, showProfile, closeProfile } from '../actions/userActions'
 
 const initialState = {
   username: "",
-  activeUsers: ["Mark", "Matt", "TJ", "Brittany"],
   activeEvents: ["Soccer", "Climbing", "Music", "Programming"],
-  activeView: "meets",
+  activeView: "results",
   showLogin: true,
   allUsers: [],
-  isLoggedIn: false,
-  user: {}
+  isLoggedIn: true,
+  user: {},
+  resultsSwitch: 'hangouts',
+  showProfile: false,
+  currentProfile: {}
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+
     case "SET_USERNAME": {
       const copiedState = Object.assign({}, state);
       copiedState.username = action.username
-      return copiedState
-    }
-    case "SET_VIEW": {
-      const copiedState = Object.assign({}, state);
-      copiedState.currentView = action.currentView
       return copiedState
     }
     case "SET_ACTIVE_VIEW": {
@@ -41,6 +39,23 @@ const reducer = (state = initialState, action) => {
     case "TOGGLE_AUTH": {
       const copiedState = Object.assign({}, state)
       copiedState.showLogin = !copiedState.showLogin
+      return copiedState
+    }
+    case "TOGGLE_RESULTS_VIEW": {
+      const copiedState = Object.assign({}, state)
+      copiedState.resultsSwitch = action.activeView
+      return copiedState
+    }
+    case "SHOW_PROFILE": {
+      const copiedState = Object.assign({}, state)
+      copiedState.currentProfile = Object.assign(copiedState.currentProfile, action.profile)
+      copiedState.showProfile = true
+      return copiedState
+    }
+    case "CLOSE_PROFILE": {
+      const copiedState = Object.assign({}, state)
+      copiedState.currentProfile = Object.assign(copiedState.currentProfile, {})
+      copiedState.showProfile = false
       return copiedState
     }
     default: {

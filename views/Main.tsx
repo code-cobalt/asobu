@@ -4,8 +4,9 @@ import { connect } from "react-redux"
 import axios from "axios"
 import { any } from 'prop-types'
 import getApiUrl from '../environment.js'
-import Meets from "./Meets"
-import Events from "./Events"
+import Profile from './Profile'
+import Results from './Results'
+import Chats from './Chats'
 
 interface Props {
     toggleView: Function,
@@ -14,20 +15,26 @@ interface Props {
 
 class Main extends Component<Props> {
     async componentDidMount() {
-        this.props.toggleView("meets")
+        console.log(getApiUrl())
+        console.log(this.props.allUsers)
 
         const res = await axios.post(`${getApiUrl()}/graphql`, {
             query: `
             query { Users {
+                id
                 first_name
                 last_name
+                email
+                phone_number
+                profile_photo
+                interests
                 lvl
                 exp
                 }
             }
         `
         })
-        // console.log(res.data.data.Users)
+        console.log("inside the axios query")
         this.props.setAllUsers(res.data.data.Users)
         console.log(this.props.allUsers, "all users using the app")
     }
@@ -36,10 +43,12 @@ class Main extends Component<Props> {
     render() {
         let mainView;
 
-        if (this.props.activeView === "events") {
-            mainView = <Events />
-        } else if (this.props.activeView === "meets") {
-            mainView = <Meets />
+        if (this.props.activeView === "profile") {
+            mainView = <Profile />
+        } else if (this.props.activeView === "results") {
+            mainView = <Results />
+        } else if (this.props.activeView === "chats") {
+            mainView = <Chats />
         }
         return (
             <View style={styles.main}>
@@ -52,7 +61,7 @@ class Main extends Component<Props> {
 const styles = StyleSheet.create({
     main: {
         flex: 11,
-        backgroundColor: "green",
+        backgroundColor: "white",
     }
 })
 
@@ -65,10 +74,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        toggleView: (currentView) => {
+        setActiveView: (activeView) => {
             dispatch({
-                type: "SET_VIEW",
-                currentView: currentView
+                type: "SET_ACTIVE_VIEW",
+                activeView: activeView
             })
         },
         setAllUsers: (allUsers) => {

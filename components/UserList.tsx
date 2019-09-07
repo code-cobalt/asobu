@@ -1,32 +1,25 @@
-import React, { Component } from 'react'
-import { View, Text, Image, StyleSheet, TextInput } from "react-native"
+import React from 'react'
+import { StyleSheet, ScrollView } from "react-native"
 import { connect } from "react-redux"
 import User from "../components/User"
 
-export class UserList extends Component {
-
-    render() {
+const UserList = props => {
+    const userList = props.allUsers.map(user => {
         return (
-            <View>
-                <Text>This is the User List</Text>
-            </View>
+            <User key={user.id} user={user} />
         )
-    }
+    })
+    return (
+        <ScrollView>
+            {userList}
+        </ScrollView>
+    )
 }
-
-const styles = StyleSheet.create({
-
-})
 
 const mapStateToProps = state => {
     return {
-        activeUsers: state.activeUsers,
-        allUsers: state.allUsers
+        allUsers: state.allUsers,
     }
 }
-
-// const mapDispatchToProps = dispatch => {
-
-// }
 
 export default connect(mapStateToProps)(UserList)
