@@ -4,6 +4,14 @@ const url = 'http://localhost:3000'
 const request = require('supertest')(url)
 
 describe('GraphQL Queries', () => {
+  const testUser = {
+    first_name: 'Jerry',
+    last_name: 'Berry',
+    email: 'jberr@email.com',
+    phone_number: '+18186662312',
+    profile_photo:
+      'https://cdn.thedailymash.co.uk/wp-content/uploads/20190324205229/40-something-man-2-1.jpg'
+  }
   it('should return all Users', done => {
     const usersQuery = {
       query: `query {
@@ -52,14 +60,6 @@ describe('GraphQL Queries', () => {
       })
   })
   it('should return one User by email', done => {
-    const testUser = {
-      first_name: 'Jerry',
-      last_name: 'Berry',
-      email: 'jberr@email.com',
-      phone_number: '+18186662312',
-      profile_photo:
-        'https://cdn.thedailymash.co.uk/wp-content/uploads/20190324205229/40-something-man-2-1.jpg'
-    }
     const userQuery = {
       query: `query {
             User(userEmail: "jberr@email.com") {
@@ -79,6 +79,29 @@ describe('GraphQL Queries', () => {
         if (err) return done(err)
         expect(res.body.data.User).to.be.an('object')
         expect(res.body.data.User).to.deep.equal(testUser)
+        done()
+      })
+  })
+  it('should return user object with successful login', done => {
+    const loginQuery = {
+      query: `query {
+              Login(userEmail: "jberr@email.com", userPassword: "password") {
+                first_name
+                last_name
+                email
+                phone_number
+                profile_photo
+              }
+          }`
+    }
+    request
+      .post('/graphql')
+      .send(loginQuery)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err)
+        expect(res.body.data.Login).to.be.an('object')
+        expect(res.body.data.Login).to.deep.equal(testUser)
         done()
       })
   })
