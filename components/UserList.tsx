@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet, TextInput, ScrollView } from "react-native"
+import { StyleSheet, ScrollView } from "react-native"
 import { connect } from "react-redux"
 import User from "../components/User"
 
@@ -15,12 +15,6 @@ const UserList = props => {
         </ScrollView>
     )
 }
-
-
-
-const styles = StyleSheet.create({
-
-})
 
 const mapStateToProps = state => {
     return {
