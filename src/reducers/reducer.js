@@ -1,4 +1,4 @@
-import { setUserName, setActiveView, setUser, toggleAuth, toggleResultsView } from '../actions/userActions'
+import { setUserName, setActiveView, setUser, toggleAuth, toggleResultsView, showProfile, closeProfile } from '../actions/userActions'
 
 const initialState = {
   username: "",
@@ -8,7 +8,9 @@ const initialState = {
   allUsers: [],
   isLoggedIn: true,
   user: {},
-  resultsSwitch: 'hangouts'
+  resultsSwitch: 'hangouts',
+  showProfile: false,
+  currentProfile: {}
 }
 
 const reducer = (state = initialState, action) => {
@@ -42,6 +44,18 @@ const reducer = (state = initialState, action) => {
     case "TOGGLE_RESULTS_VIEW": {
       const copiedState = Object.assign({}, state)
       copiedState.resultsSwitch = action.activeView
+      return copiedState
+    }
+    case "SHOW_PROFILE": {
+      const copiedState = Object.assign({}, state)
+      copiedState.currentProfile = Object.assign(copiedState.currentProfile, action.profile)
+      copiedState.showProfile = true
+      return copiedState
+    }
+    case "CLOSE_PROFILE": {
+      const copiedState = Object.assign({}, state)
+      copiedState.currentProfile = Object.assign(copiedState.currentProfile, {})
+      copiedState.showProfile = false
       return copiedState
     }
     default: {

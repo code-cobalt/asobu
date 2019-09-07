@@ -45,7 +45,7 @@ const toggleAuth = () => {
   return actionObj
 }
 
-const toggleResultsView = (activeView) => {
+const toggleResultsView = activeView => {
   const actionObj = {
     type: "TOGGLE_RESULTS_VIEW",
     activeView
@@ -53,4 +53,19 @@ const toggleResultsView = (activeView) => {
   return actionObj
 }
 
-export { setUserName, setActiveView, setUser, toggleAuth, setAllUsers, toggleResultsView };
+const showProfile = profile => {
+  const actionObj = {
+    type: "SHOW_PROFILE",
+    profile
+  }
+  return actionObj
+}
+
+const closeProfile = () => {
+  const actionObj = {
+    type: "CLOSE_PROFILE"
+  }
+  return actionObj
+}
+
+export { setUserName, setActiveView, setUser, toggleAuth, setAllUsers, toggleResultsView, showProfile, closeProfile };
