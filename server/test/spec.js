@@ -12,7 +12,11 @@ describe('GraphQL Queries', () => {
     profile_photo:
       'https://cdn.thedailymash.co.uk/wp-content/uploads/20190324205229/40-something-man-2-1.jpg'
   }
-  it('should return all Users', done => {
+
+  let testEventId
+  let testEvent
+
+  it('should query all Users', done => {
     const usersQuery = {
       query: `query {
                 Users {
@@ -59,7 +63,7 @@ describe('GraphQL Queries', () => {
         done()
       })
   })
-  it('should return one User by email', done => {
+  it('should query one User by email', done => {
     const userQuery = {
       query: `query {
             User(userEmail: "jberr@email.com") {
@@ -82,7 +86,7 @@ describe('GraphQL Queries', () => {
         done()
       })
   })
-  it('should return user object with successful login', done => {
+  it('should return user object with successful login query', done => {
     const loginQuery = {
       query: `query {
               Login(userEmail: "jberr@email.com", userPassword: "password") {
@@ -102,6 +106,101 @@ describe('GraphQL Queries', () => {
         if (err) return done(err)
         expect(res.body.data.Login).to.be.an('object')
         expect(res.body.data.Login).to.deep.equal(testUser)
+        done()
+      })
+  })
+  it('should query all events', done => {
+    const eventsQuery = {
+      query: `query {
+              Events {
+                id
+                name
+                description
+                cover_photo
+                creator {
+                    first_name
+                    email
+                    profile_photo
+                }
+                start
+                end
+                location
+                limit
+                tags
+                attendees {
+                    first_name
+                    email
+                    profile_photo
+                }
+                comments {
+                    id
+                    from {
+                        first_name
+                        email
+                        profile_photo
+                    }
+                    content
+                    timestamp
+                }
+              }
+          }`
+    }
+    request
+      .post('/graphql')
+      .send(eventsQuery)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err)
+        expect(Array.isArray(res.body.data.Events)).to.be.true
+        testEvent = res.body.data.Events[0]
+        testEventId = testEvent.id
+        done()
+      })
+  })
+  it('should query one event by event id', done => {
+    const eventQuery = {
+      query: `query {
+              Event(eventId: "${testEventId}") {
+                id
+                name
+                description
+                cover_photo
+                creator {
+                    first_name
+                    email
+                    profile_photo
+                }
+                start
+                end
+                location
+                limit
+                tags
+                attendees {
+                    first_name
+                    email
+                    profile_photo
+                }
+                comments {
+                    id
+                    from {
+                        first_name
+                        email
+                        profile_photo
+                    }
+                    content
+                    timestamp
+                }
+              }
+          }`
+    }
+    request
+      .post('/graphql')
+      .send(eventQuery)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err)
+        expect(res.body.data.Event).to.be.an('object')
+        expect(res.body.data.Event).to.deep.equal(testEvent)
         done()
       })
   })
