@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import SwitchSelector from "react-native-switch-selector"
 import Hangouts from './Hangouts'
 import Events from './Events'
+import AnimatedProfile from "./AnimatedProfile"
 
 const options = [
     { label: "Hangouts", value: "hangouts" },
@@ -15,6 +16,7 @@ const Results = props => {
         <>
             <SwitchSelector options={options} initial={0} style={styles.results__switch} onPress={value => props.toggleResultsView(value)} />
             {props.resultsSwitch === "hangouts" ? <Hangouts /> : <Events />}
+            <AnimatedProfile />
         </>
     )
 }
