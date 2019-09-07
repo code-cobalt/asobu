@@ -122,14 +122,14 @@ const root = {
   Login: async params => {
     const document = await User.findOne({ email: params.userEmail })
     if (document) {
-      bcrypt.compare(
+      // after writing a spec, realized that this function was returning null,
+      // not the user document object. In the previous code, the document was only being returned by
+      // the bcrypt.compare() callback function, but that wasn't really doing anything for us...it's working how we wanted now.
+      const match = await bcrypt.compare(
         params.userPassword,
-        document.password_hash,
-        (err, valid) => {
-          if (err) return { err }
-          return valid ? document : { err: 'Invalid Credentials' }
-        }
+        document.password_hash
       )
+      return match ? document : { err: 'Invalid Credentials' }
     } else {
       return {
         err: 'No user account associated with that email address found.'
