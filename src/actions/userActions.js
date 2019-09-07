@@ -68,4 +68,22 @@ const closeProfile = () => {
   return actionObj
 }
 
-export { setUserName, setActiveView, setUser, toggleAuth, setAllUsers, toggleResultsView, showProfile, closeProfile };
+const getChats = chats => {
+  const actionObj = {
+    type: "GET_CHATS",
+    chats
+  }
+  return actionObj
+}
+
+export {
+  setUserName,
+  setActiveView,
+  setUser,
+  toggleAuth,
+  setAllUsers,
+  toggleResultsView,
+  showProfile,
+  closeProfile,
+  getChats
+};
