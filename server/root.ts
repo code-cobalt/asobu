@@ -5,6 +5,7 @@ const [User, Event, Message] = [
 ]
 const { GraphQLDateTime } = require('graphql-iso-date')
 const bcrypt = require('bcrypt')
+import errors from './errors'
 
 interface NewUser {
   first_name: string
@@ -116,7 +117,12 @@ const root = {
   },
 
   User: async params => {
-    return await User.findOne({ email: params.userEmail })
+    const user = await User.findOne({ email: params.userEmail })
+    if (user) {
+      return user
+    } else {
+      throw new errors.InvalidEmailError()
+    }
   },
 
   Login: async params => {
@@ -129,11 +135,13 @@ const root = {
         params.userPassword,
         document.password_hash
       )
-      return match ? document : { err: 'Invalid Credentials' }
-    } else {
-      return {
-        err: 'No user account associated with that email address found.'
+      if (match) {
+        return document
+      } else {
+        throw new errors.InvalidPasswordError()
       }
+    } else {
+      throw new errors.InvalidEmailError()
     }
   },
 
@@ -142,7 +150,12 @@ const root = {
   },
 
   Event: async params => {
-    return await Event.findById(params.eventId)
+    const event = await Event.findById(params.eventId)
+    if (event) {
+      return event
+    } else {
+      throw new errors.InvalidEventIdError()
+    }
   },
 
   Chats: async params => {
@@ -171,27 +184,35 @@ const root = {
       attendees: [],
       comments: []
     })
-    return validation === 'valid'
-      ? await Event.create(newEvent)
-      : { err: validation }
+    if (validation === 'valid') {
+      return await Event.create(newEvent)
+    } else {
+      //specific validation error will be nested inside error object
+      throw new errors.InvalidEventError({ data: { err: validation } })
+    }
   },
 
   UpdateEvent: async params => {
     const validation = validateUpdatedEvent(params.updatedEvent)
-    return validation === 'valid'
-      ? await Event.findOneAndUpdate(
+    if (validation === 'valid') {
+      return await Event.findOneAndUpdate(
         { _id: params.eventId },
         params.updatedEvent,
         { new: true }
       )
-      : { err: validation }
+    } else {
+      //specific validation error will be nested inside error object
+      throw new errors.InvalidEventError({ data: { err: validation } })
+    }
   },
 
   DeleteEvent: async params => {
     const res = await Event.deleteOne({ _id: params.eventId })
-    return res.deletedCount === 1
-      ? 'Successfully deleted event.'
-      : { err: 'No event with that id found.' }
+    if (res.deletedCount === 1) {
+      return 'Successfully deleted event.'
+    } else {
+      throw new errors.InvalidEventIdError()
+    }
   },
 
   CreateComment: async params => {
@@ -207,20 +228,26 @@ const root = {
       )
       return newComment
     } else {
-      return { err: validation }
+      //specific validation error will be nested inside error object
+      throw new errors.InvalidCommentError({ data: { err: validation } })
     }
   },
 
   DeleteComment: async params => {
-    const res = await Event.updateOne(
-      { _id: params.eventId },
-      { $pull: { comments: { _id: params.commentId } } }
-    )
-    return res.nModified === 1
-      ? 'Successfully deleted comment.'
-      : {
-        err: 'Did not delete any comments. Double-check the ids are correct.'
+    const event = await Event.findById(params.eventId)
+    if (event) {
+      const res = await Event.updateOne(
+        { _id: params.eventId },
+        { $pull: { comments: { _id: params.commentId } } }
+      )
+      if (res.nModified === 1) {
+        return 'Successfully deleted comment.'
+      } else {
+        throw new errors.InvalidCommentIdError()
       }
+    } else {
+      throw new errors.InvalidEventIdError()
+    }
   },
 
   CreateUser: async params => {
@@ -244,32 +271,40 @@ const root = {
         return await User.create(userObj)
       })
     } else {
-      return { err: validation }
+      //specific validation error will be nested inside error object
+      throw new errors.InvalidCredentialsError({ data: { err: validation } })
     }
   },
 
   UpdateUser: async params => {
     const validation = validateUpdatedUser(params.updatedUser)
-    return validation === 'valid'
-      ? await User.findOneAndUpdate(
+    if (validation === 'valid') {
+      return await User.findOneAndUpdate(
         { email: params.userEmail },
         params.updatedUser,
         { new: true }
       )
-      : { err: validation }
+    } else {
+      //specific validation error will be nested inside error object
+      throw new errors.InvalidCredentialsError({ data: { err: validation } })
+    }
   },
 
   ResetPassword: async params => {
     const user = await User.findOne({ email: params.userEmail })
-    if (!user) return { err: 'Incorrect email.' }
+    if (!user) {
+      throw new errors.InvalidEmailError()
+    }
     if (user.pin === params.userPin) {
       bcrypt.hash(params.newPassword, 10, async (err, hash) => {
-        if (err) return { err }
+        if (err) throw new Error(err)
         return await User.findOneAndUpdate(
           { email: params.userEmail },
           { password_hash: hash }
         )
       })
+    } else {
+      throw new errors.InvalidPinError()
     }
   },
 
@@ -280,13 +315,15 @@ const root = {
       params.userPassword,
       user.password_hash,
       async (err, valid) => {
-        if (err) return { err }
+        if (err) throw new Error(err)
         if (!valid) return { err: 'Invalid Password' }
         if (valid) {
           const res = await User.deleteOne({ email: params.email })
-          return res.deletedCount === 1
-            ? 'Successfully deleted user account.'
-            : { err: 'No user with that id found.' }
+          if (res.deletedCount === 1) {
+            return 'Successfully deleted user account.'
+          } else {
+            throw new errors.InvalidEmailError()
+          }
         }
       }
     )
@@ -295,9 +332,12 @@ const root = {
   CreateMessage: async params => {
     const validation = validateMessage(params.newMessage)
     const data = Object.assign({ timestamp: new Date() }, params.newMessage)
-    return validation === 'valid'
-      ? await Message.create(data)
-      : { err: validation }
+    if (validation === 'valid') {
+      return await Message.create(data)
+    } else {
+      //specific validation error will be nested inside error object
+      throw new errors.InvalidMessageError({ data: { err: validation } })
+    }
   },
 
   AttendEvent: async params => {
@@ -334,7 +374,7 @@ const root = {
     return updatedStats
   },
 
-  AddExp: async params => { }
+  AddExp: async params => {}
 }
 
 export = root

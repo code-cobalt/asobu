@@ -37,6 +37,8 @@ const path = require('path')
 const User = require('./server/models/user')
 //Bcrypt for hashing
 const bcrypt = require('bcrypt')
+//formatError for custom graphql resolver errors
+import { formatError } from 'apollo-errors'
 
 // setting useFindAndModify to false resolves MongoDB Node.js deprecation warnings from using certain Mongoose methods
 // setting useCreateIndex true to allow unique constraint in user email
@@ -70,7 +72,8 @@ app.use(
   graphqlHTTP({
     schema,
     rootValue: root,
-    graphiql: true
+    graphiql: true,
+    formatError
   })
 )
 
