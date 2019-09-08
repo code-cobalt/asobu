@@ -25,12 +25,13 @@ class Main extends Component<Props> {
                 phone_number
                 profile_photo
                 interests
-                lvl
                 exp
+                lvl
                 }
             }
         `
         })
+        console.log(res.data.data.Users)
         this.props.setAllUsers(res.data.data.Users)
     }
     //Users = res.data.data.Users

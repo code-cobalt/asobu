@@ -20,6 +20,7 @@ const mapStateToProps = state => {
 
 const styles = StyleSheet.create({
     events: {
+        top: 40,
         flex: 1,
         backgroundColor: "purple",
     }

@@ -6,11 +6,17 @@ import EventList from "../components/EventList"
 
 const Hangouts = props => {
     return (
-        <>
+        <View style={styles.userList}>
             <UserList />
-        </>
+        </View>
     )
 }
+
+const styles = StyleSheet.create({
+    userList: {
+        top: 40,
+    }
+})
 
 export default Hangouts
 
