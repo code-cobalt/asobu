@@ -1,13 +1,34 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, ScrollView } from 'react-native'
 import { connect } from "react-redux"
+import Chat from "./Chat"
 
-const ChatList = props => {
-  //loop through props.chat and generate <Chat> for each item in the array
+interface Props {
+  chats: Array<Chat>
+}
+
+interface Chat {
+  chat_id: number,
+  participants: Array<Participant>
+}
+
+interface Participant {
+  email: string,
+  first_name: string,
+  profile_photo: string
+}
+
+const ChatList: React.FunctionComponent<Props> = props => {
+  let chats;
+  if (props.chats.length > 0) {
+    chats = props.chats.map(chat => {
+      return <Chat key={chat.chat_id} chat={chat} />
+    })
+  }
   return (
-    <View>
-      <Text> This is the ChatList Component </Text>
-    </View>
+    <ScrollView>
+      {chats}
+    </ScrollView>
   )
 }
 
