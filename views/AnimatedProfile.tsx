@@ -38,6 +38,10 @@ export class AnimatedProfile extends Component<Props> {
 
   yTranslate = new Animated.Value(0)
 
+  componentWillUnmount() {
+    this.props.closeProfile()
+  }
+
   render() {
     let negativeHeight = -height + 20
     let modalMoveY = this.yTranslate.interpolate({
