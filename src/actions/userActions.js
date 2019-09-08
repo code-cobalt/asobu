@@ -6,14 +6,6 @@ const setUserName = data => {
   return actionObj
 }
 
-const toggleView = data => {
-  const actionObj = {
-    type: 'SET_VIEW',
-    currentView: data
-  }
-  return actionObj
-}
-
 const setActiveView = data => {
   const actionObj = {
     type: 'SET_ACTIVE_VIEW',
@@ -76,6 +68,14 @@ const getChats = chats => {
   return actionObj
 }
 
+const getEvents = events => {
+  const actionObj = {
+    type: "GET_EVENTS",
+    events
+  }
+  return actionObj
+}
+
 export {
   setUserName,
   setActiveView,
@@ -85,5 +85,6 @@ export {
   toggleResultsView,
   showProfile,
   closeProfile,
-  getChats
+  getChats,
+  getEvents
 };

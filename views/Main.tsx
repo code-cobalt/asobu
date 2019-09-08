@@ -31,7 +31,6 @@ class Main extends Component<Props> {
             }
         `
         })
-        console.log(res.data.data.Users)
         this.props.setAllUsers(res.data.data.Users)
     }
     //Users = res.data.data.Users
