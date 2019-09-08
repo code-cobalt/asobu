@@ -15,9 +15,6 @@ interface Props {
 
 class Main extends Component<Props> {
     async componentDidMount() {
-        console.log(getApiUrl())
-        console.log(this.props.allUsers)
-
         const res = await axios.post(`${getApiUrl()}/graphql`, {
             query: `
             query { Users {
@@ -34,9 +31,7 @@ class Main extends Component<Props> {
             }
         `
         })
-        console.log("inside the axios query")
         this.props.setAllUsers(res.data.data.Users)
-        console.log(this.props.allUsers, "all users using the app")
     }
     //Users = res.data.data.Users
 
