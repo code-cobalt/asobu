@@ -378,12 +378,38 @@ const root = {
 
   AddExp: async params => {},
 
-  RequestHangout: async params => {
-    //will add hangout to userfrom sent_hangout_requests and to userto received_hangout_requests
+  SendHangoutRequest: async params => {
+    //will add hangout to current user sent_hangout_requests and to target user received_hangout_requests
+    const currentUser = await User.findOne({ email: params.currentUserEmail })
+    const toUser = await User.findOne({ email: params.toUserEmail })
+    if (!currentUser || !toUser) {
+      throw new errors.InvalidEmailError()
+    } else {
+      const hangoutRequest = {
+        from: {
+          email: params.currentUserEmail,
+          first_name: currentUser.first_name,
+          profile_photo: currentUser.profile_photo
+        },
+        to: {
+          email: params.toUserEmail,
+          first_name: toUser.first_name,
+          profile_photo: toUser.profile_photo
+        }
+      }
+      await User.updateOne(
+        { email: params.currentUserEmail },
+        { $push: { sent_hangout_requests: hangoutRequest } }
+      )
+      await User.updateOne(
+        { email: params.toUserEmail },
+        { $push: { received_hangout_requests: hangoutRequest } }
+      )
+    }
   },
 
-  ApproveHangout: async params => {
-    //will delete hangout from userfrom sent_hangout_requests and from userto received_hangout_requests
+  ApproveHangoutRequest: async params => {
+    //will delete hangout from fromUser sent_hangout_requests and from current user received_hangout_requests
     //will also create new chat between users (if one doesn't already exist)
   }
 }

@@ -191,8 +191,8 @@ const schema = buildSchema(`
         AttendEvent(eventId: String!, user: UserLimitedInput!): String
         UnattendEvent(eventId: String!, userEmail: String!): String
         AddStats(userEmail: String!, newStats: StatsInput!): Stats
-        RequestHangout(currentUserEmail: String!, toUserEmail: String!): String
-        ApproveHangout(currentUserEmail: String!, fromUserEmail: String!): String
+        SendHangoutRequest(currentUserEmail: String!, toUserEmail: String!): String
+        ApproveHangoutRequest(currentUserEmail: String!, fromUserEmail: String!): String
     }
 `)
 
