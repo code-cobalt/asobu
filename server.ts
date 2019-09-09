@@ -3,10 +3,10 @@ const express = require('express')
 const app = express()
 //GraphQL
 const graphqlHTTP = require('express-graphql')
-import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { execute, subscribe } from 'graphql'
 import { createServer } from 'http'
 import { SubscriptionServer } from 'subscriptions-transport-ws'
+const subscribtionsEndpoint = `ws://localhost:${port}/subscriptions`
 //Body Parser
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -77,17 +77,10 @@ app.use(
     schema,
     rootValue: root,
     graphiql: true,
+    subscribtionsEndpoint,
     formatError
   }),
-  graphqlExpress({ schema })
 )
-
-//Is this somehow different from the code above? Is this necessary? Maybe we just add the subscriptionsEndpoint line
-//to the code above?
-app.use('/graphiql', graphiqlExpress({
-  endpointURL: 'graphql',
-  subscribtionsEndpoint: `ws://localhost:${port}/subscriptions`
-}))
 
 app.get('/api/test', (req, res) => {
   // res.sendStatus(200)
