@@ -266,6 +266,8 @@ const root = {
       userObj.stats.interesting = 0
       userObj.chats = []
       userObj.events = []
+      userObj.sent_hangout_requests = []
+      userObj.received_hangout_requests = []
       await bcrypt.hash(userObj.password, 10, async (err, hash) => {
         if (err) return { err }
         return await User.create(userObj)
@@ -374,7 +376,16 @@ const root = {
     return updatedStats
   },
 
-  AddExp: async params => {}
+  AddExp: async params => {},
+
+  RequestHangout: async params => {
+    //will add hangout to userfrom sent_hangout_requests and to userto received_hangout_requests
+  },
+
+  ApproveHangout: async params => {
+    //will delete hangout from userfrom sent_hangout_requests and from userto received_hangout_requests
+    //will also create new chat between users (if one doesn't already exist)
+  }
 }
 
 export = root
