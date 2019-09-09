@@ -79,10 +79,6 @@ const schema = buildSchema(`
         messages: [Message]
     }
 
-    type Error {
-        err: String
-    }
-
     type Query {
         Users: [User]
         User(userEmail: String!): User

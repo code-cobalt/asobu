@@ -1,5 +1,5 @@
 //tags: soccer, football, sports, baseball, basketball, tennis, running, hiking, reading, dance, clubbing, food, politics, tech, science, religion, travel, foreign-language, gaming, cooking, drawing, music, magic
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 
 const users = [
   {
