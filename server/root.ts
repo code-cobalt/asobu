@@ -122,7 +122,6 @@ const root = {
   User: async params => {
     const user = await User.findOne({ email: params.userEmail })
     if (user) {
-      console.log(user)
       return user
     } else {
       throw new errors.InvalidEmailError()
@@ -272,10 +271,10 @@ const root = {
       userObj.events = []
       userObj.sent_hangout_requests = []
       userObj.received_hangout_requests = []
-      await bcrypt.hash(userObj.password, 10, async (err, hash) => {
-        if (err) return { err }
-        return await User.create(userObj)
-      })
+      const hash = bcrypt.hashSync(userObj.password, 10)
+      userObj.password_hash = hash
+      delete userObj.password
+      return await User.create(userObj)
     } else {
       //specific validation error will be nested inside error object
       throw new errors.InvalidCredentialsError({ data: { err: validation } })

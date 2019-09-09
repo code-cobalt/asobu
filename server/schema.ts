@@ -143,7 +143,7 @@ const schema = buildSchema(`
         last_name: String!
         email: String!
         phone_number: String!
-        password_hash: String!
+        password: String!
         pin: Int!
         interests: [String]
         exp: Int
