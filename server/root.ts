@@ -6,6 +6,8 @@ const [User, Event, Message] = [
 const { GraphQLDateTime } = require('graphql-iso-date')
 const bcrypt = require('bcrypt')
 import errors from './errors'
+import { PubSub } from 'graphql-subscriptions'
+const pubsub = new PubSub()
 
 interface NewUser {
   first_name: string
@@ -84,6 +86,9 @@ interface Message {
   content: string
 }
 
+//starting chatId at 5 to avoid duplication with seeds
+let chatId: number = 5
+
 // validation methods will return string with error message if not valid
 const validateNewUser = (newUser: NewUser) => {
   return 'valid'
@@ -107,6 +112,27 @@ const validateComment = (comment: Comment) => {
 
 const validateMessage = (message: Message) => {
   return 'valid'
+}
+
+interface UserChat {
+  chat_id: number
+  participants: [UserLimited]
+}
+
+const checkForExistingChat = (
+  currentUserChats: [UserChat],
+  matchedUserEmail: string
+) => {
+  //return false or pre-existing chat
+  for (const chat of currentUserChats) {
+    if (
+      chat.participants.length === 1 &&
+      chat.participants[0].email === matchedUserEmail
+    ) {
+      return chat
+    }
+  }
+  return false
 }
 
 const root = {
@@ -266,10 +292,12 @@ const root = {
       userObj.stats.interesting = 0
       userObj.chats = []
       userObj.events = []
-      await bcrypt.hash(userObj.password, 10, async (err, hash) => {
-        if (err) return { err }
-        return await User.create(userObj)
-      })
+      userObj.sent_hangout_requests = []
+      userObj.received_hangout_requests = []
+      const hash = bcrypt.hashSync(userObj.password, 10)
+      userObj.password_hash = hash
+      delete userObj.password
+      return await User.create(userObj)
     } else {
       //specific validation error will be nested inside error object
       throw new errors.InvalidCredentialsError({ data: { err: validation } })
@@ -333,11 +361,17 @@ const root = {
     const validation = validateMessage(params.newMessage)
     const data = Object.assign({ timestamp: new Date() }, params.newMessage)
     if (validation === 'valid') {
+      pubsub.publish('messageAdded', data) //verify this line is passing data correctly and should be called here
       return await Message.create(data)
     } else {
       //specific validation error will be nested inside error object
       throw new errors.InvalidMessageError({ data: { err: validation } })
     }
+  },
+
+  //Subscription property here
+  MessageAdded: {
+    subscribe: () => pubsub.asyncIterator('messageAdded')
   },
 
   AttendEvent: async params => {
@@ -374,7 +408,115 @@ const root = {
     return updatedStats
   },
 
-  AddExp: async params => {}
+  AddExp: async params => {
+    // implement level checking
+    const user = await User.findOneAndUpdate(
+      { email: params.userEmail },
+      { $inc: { exp: params.points } },
+      { new: true }
+    )
+    //return new exp total
+    return user.exp
+  },
+
+  SendHangoutRequest: async params => {
+    //will add hangout to current user sent_hangout_requests and to target user received_hangout_requests
+    const currentUser = await User.findOne({ email: params.currentUserEmail })
+    const toUser = await User.findOne({ email: params.toUserEmail })
+    if (!currentUser || !toUser) {
+      throw new errors.InvalidEmailError()
+    } else {
+      const fromUserLimited = {
+        email: params.currentUserEmail,
+        first_name: currentUser.first_name,
+        profile_photo: currentUser.profile_photo
+      }
+      const toUserLimited = {
+        email: params.toUserEmail,
+        first_name: toUser.first_name,
+        profile_photo: toUser.profile_photo
+      }
+      await User.updateOne(
+        { email: params.currentUserEmail },
+        { $push: { sent_hangout_requests: toUserLimited } }
+      )
+      await User.updateOne(
+        { email: params.toUserEmail },
+        { $push: { received_hangout_requests: fromUserLimited } }
+      )
+      return `${params.currentUserEmail} has successfully sent a hangout request to ${params.toUserEmail}!`
+    }
+  },
+
+  AcceptHangoutRequest: async params => {
+    //will delete hangout from fromUser sent_hangout_requests and from current user received_hangout_requests
+    //will also create new chat between users (if one doesn't already exist)
+    const currentUser = await User.findOne({ email: params.currentUserEmail })
+    const fromUser = await User.findOne({ email: params.fromUserEmail })
+    if (!currentUser || !fromUser) {
+      throw new errors.InvalidEmailError()
+    } else {
+      // check if these users already have a chat
+      const existingChat = checkForExistingChat(
+        currentUser.chats,
+        params.fromUserEmail
+      )
+      if (existingChat) {
+        return existingChat
+      } else {
+        const fromUserLimited = {
+          email: params.fromUserEmail,
+          first_name: fromUser.first_name,
+          profile_photo: fromUser.profile_photo
+        }
+        const toUserLimited = {
+          email: params.currentUserEmail,
+          first_name: currentUser.first_name,
+          profile_photo: currentUser.profile_photo
+        }
+
+        //create new unique chatId
+        const newChat = ++chatId
+        //delete hangout request and create new chat for each user
+        await User.updateOne(
+          { email: params.fromUserEmail },
+          {
+            $pull: { sent_hangout_requests: toUserLimited },
+            $push: {
+              chats: {
+                chat_id: newChat,
+                participants: {
+                  email: currentUser.email,
+                  first_name: currentUser.first_name,
+                  profile_photo: currentUser.profile_photo
+                }
+              }
+            }
+          }
+        )
+        const currentUserChat = {
+          chat_id: newChat,
+          participants: [
+            {
+              email: fromUser.email,
+              first_name: fromUser.first_name,
+              profile_photo: fromUser.profile_photo
+            }
+          ]
+        }
+        await User.updateOne(
+          { email: params.currentUserEmail },
+          {
+            $pull: { received_hangout_requests: fromUserLimited },
+            $push: {
+              chats: { currentUserChat }
+            }
+          }
+        )
+        return currentUserChat
+      }
+    }
+  }
 }
 
 export = root
