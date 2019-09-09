@@ -44,7 +44,6 @@ export class Chats extends Component<Props> {
 const styles = StyleSheet.create({
   events: {
     flex: 1,
-    backgroundColor: "purple",
   }
 })
 
