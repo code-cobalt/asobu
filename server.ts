@@ -1,8 +1,12 @@
 require('dotenv').config()
 const express = require('express')
+const app = express()
 //GraphQL
 const graphqlHTTP = require('express-graphql')
-const app = express()
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
+import { execute, subscribe } from 'graphql'
+import { createServer } from 'http'
+import { SubscriptionServer } from 'subscriptions-transport-ws'
 //Body Parser
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -74,8 +78,16 @@ app.use(
     rootValue: root,
     graphiql: true,
     formatError
-  })
+  }),
+  graphqlExpress({ schema })
 )
+
+//Is this somehow different from the code above? Is this necessary? Maybe we just add the subscriptionsEndpoint line
+//to the code above?
+app.use('/graphiql', graphiqlExpress({
+  endpointURL: 'graphql',
+  subscribtionsEndpoint: `ws://localhost:${port}/subscriptions`
+}))
 
 app.get('/api/test', (req, res) => {
   // res.sendStatus(200)
@@ -144,6 +156,22 @@ app.post('/upload', parser.single('image'), (req, res) => {
   res.send(image)
 })
 
-app.listen(port, () => console.log(`Listening on ${port}`))
+
+//This is the websocket that wraps the server. A websocket is basically a live connection between server and client that are actively
+//listening to each other.
+const ws = createServer(app)
+ws.listen(port, () => {
+  console.log(`Listening on ${port}`)
+  new SubscriptionServer({
+    execute,
+    subscribe,
+    schema
+  }, {
+    server: ws,
+    path: '/subscriptions'
+  })
+})
+
+// app.listen(port, () => console.log(`Listening on ${port}`))
 
 export = { db }
