@@ -114,6 +114,27 @@ const validateMessage = (message: Message) => {
   return 'valid'
 }
 
+interface UserChat {
+  chat_id: number
+  participants: [UserLimited]
+}
+
+const checkForExistingChat = (
+  currentUserChats: [UserChat],
+  matchedUserEmail: string
+) => {
+  //return false or pre-existing chat
+  for (const chat of currentUserChats) {
+    if (
+      chat.participants.length === 1 &&
+      chat.participants[0].email === matchedUserEmail
+    ) {
+      return chat
+    }
+  }
+  return false
+}
+
 const root = {
   DateTime: GraphQLDateTime,
 
@@ -418,7 +439,7 @@ const root = {
     }
   },
 
-  ApproveHangoutRequest: async params => {
+  AcceptHangoutRequest: async params => {
     //will delete hangout from fromUser sent_hangout_requests and from current user received_hangout_requests
     //will also create new chat between users (if one doesn't already exist)
     const currentUser = await User.findOne({ email: params.currentUserEmail })
@@ -426,56 +447,65 @@ const root = {
     if (!currentUser || !fromUser) {
       throw new errors.InvalidEmailError()
     } else {
-      const fromUserLimited = {
-        email: params.fromUserEmail,
-        first_name: fromUser.first_name,
-        profile_photo: fromUser.profile_photo
-      }
-      const toUserLimited = {
-        email: params.currentUserEmail,
-        first_name: currentUser.first_name,
-        profile_photo: currentUser.profile_photo
-      }
+      // check if these users already have a chat
+      const existingChat = checkForExistingChat(
+        currentUser.chats,
+        params.fromUserEmail
+      )
+      if (existingChat) {
+        return existingChat
+      } else {
+        const fromUserLimited = {
+          email: params.fromUserEmail,
+          first_name: fromUser.first_name,
+          profile_photo: fromUser.profile_photo
+        }
+        const toUserLimited = {
+          email: params.currentUserEmail,
+          first_name: currentUser.first_name,
+          profile_photo: currentUser.profile_photo
+        }
 
-      //create new unique chatId
-      const newChat = ++chatId
-      //delete hangout request and create new chat for each user
-      await User.updateOne(
-        { email: params.fromUserEmail },
-        {
-          $pull: { sent_hangout_requests: toUserLimited },
-          $push: {
-            chats: {
-              chat_id: newChat,
-              participants: {
-                email: currentUser.email,
-                first_name: currentUser.first_name,
-                profile_photo: currentUser.profile_photo
+        //create new unique chatId
+        const newChat = ++chatId
+        //delete hangout request and create new chat for each user
+        await User.updateOne(
+          { email: params.fromUserEmail },
+          {
+            $pull: { sent_hangout_requests: toUserLimited },
+            $push: {
+              chats: {
+                chat_id: newChat,
+                participants: {
+                  email: currentUser.email,
+                  first_name: currentUser.first_name,
+                  profile_photo: currentUser.profile_photo
+                }
               }
             }
           }
+        )
+        const currentUserChat = {
+          chat_id: newChat,
+          participants: [
+            {
+              email: fromUser.email,
+              first_name: fromUser.first_name,
+              profile_photo: fromUser.profile_photo
+            }
+          ]
         }
-      )
-      const currentUserChat = {
-        chat_id: newChat,
-        participants: [
+        await User.updateOne(
+          { email: params.currentUserEmail },
           {
-            email: fromUser.email,
-            first_name: fromUser.first_name,
-            profile_photo: fromUser.profile_photo
+            $pull: { received_hangout_requests: fromUserLimited },
+            $push: {
+              chats: { currentUserChat }
+            }
           }
-        ]
+        )
+        return currentUserChat
       }
-      await User.updateOne(
-        { email: params.currentUserEmail },
-        {
-          $pull: { received_hangout_requests: fromUserLimited },
-          $push: {
-            chats: { currentUserChat }
-          }
-        }
-      )
-      return currentUserChat
     }
   }
 }
