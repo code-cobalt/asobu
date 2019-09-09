@@ -1,33 +1,25 @@
-import React, { Component } from 'react'
-import { View, Text, Image, StyleSheet, TextInput } from "react-native"
+import React from 'react'
+import { View, Text, Image, StyleSheet, TextInput, ScrollView } from "react-native"
 import { connect } from "react-redux"
 import Event from "../components/Event"
 
-export class Meets extends Component {
-
-    render() {
+const EventList = props => {
+    const eventList = props.allEvents.map(event => {
         return (
-            <View style={styles.meets}>
-                <Text style={{ color: "white" }}>This is the meets component</Text>
-            </View>
+            <Event key={event.id} event={event} />
         )
-    }
+    })
+    return (
+        <ScrollView>
+            {eventList}
+        </ScrollView>
+    )
 }
-
-const styles = StyleSheet.create({
-    meets: {
-        flex: 1,
-        backgroundColor: "red",
-    }
-})
 
 const mapStateToProps = state => {
     return {
+        allEvents: state.allEvents
     }
 }
 
-// const mapDispatchToProps = dispatch => {
-
-// }
-
-export default connect(mapStateToProps)(Meets)
+export default connect(mapStateToProps)(EventList)

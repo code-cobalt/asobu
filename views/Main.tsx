@@ -25,8 +25,8 @@ class Main extends Component<Props> {
                 phone_number
                 profile_photo
                 interests
-                lvl
                 exp
+                lvl
                 }
             }
         `

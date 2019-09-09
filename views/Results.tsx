@@ -23,7 +23,7 @@ const Results = props => {
 
 const styles = StyleSheet.create({
     results__switch: {
-        top: 20
+        top: 40
     }
 })
 const mapStateToProps = state => {
