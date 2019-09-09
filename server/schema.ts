@@ -48,6 +48,8 @@ const schema = buildSchema(`
         stats: Stats
         chats: [UserChat]
         events: [UserEvent]
+        sent_hangout_requests: [UserLimited]
+        received_hangout_requests: [UserLimited]
         imei: String
     }
 
@@ -145,7 +147,7 @@ const schema = buildSchema(`
         last_name: String!
         email: String!
         phone_number: String!
-        password_hash: String!
+        password: String!
         pin: Int!
         interests: [String]
         exp: Int
@@ -188,6 +190,8 @@ const schema = buildSchema(`
         AttendEvent(eventId: String!, user: UserLimitedInput!): String
         UnattendEvent(eventId: String!, userEmail: String!): String
         AddStats(userEmail: String!, newStats: StatsInput!): Stats
+        SendHangoutRequest(currentUserEmail: String!, toUserEmail: String!): String
+        ApproveHangoutRequest(currentUserEmail: String!, fromUserEmail: String!): UserChat
     }
 `)
 
