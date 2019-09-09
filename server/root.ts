@@ -84,6 +84,9 @@ interface Message {
   content: string
 }
 
+//starting chatId at 5 to avoid duplication with seeds
+let chatId: number = 5
+
 // validation methods will return string with error message if not valid
 const validateNewUser = (newUser: NewUser) => {
   return 'valid'
@@ -119,6 +122,7 @@ const root = {
   User: async params => {
     const user = await User.findOne({ email: params.userEmail })
     if (user) {
+      console.log(user)
       return user
     } else {
       throw new errors.InvalidEmailError()
@@ -385,32 +389,87 @@ const root = {
     if (!currentUser || !toUser) {
       throw new errors.InvalidEmailError()
     } else {
-      const hangoutRequest = {
-        from: {
-          email: params.currentUserEmail,
-          first_name: currentUser.first_name,
-          profile_photo: currentUser.profile_photo
-        },
-        to: {
-          email: params.toUserEmail,
-          first_name: toUser.first_name,
-          profile_photo: toUser.profile_photo
-        }
+      const fromUserLimited = {
+        email: params.currentUserEmail,
+        first_name: currentUser.first_name,
+        profile_photo: currentUser.profile_photo
+      }
+      const toUserLimited = {
+        email: params.toUserEmail,
+        first_name: toUser.first_name,
+        profile_photo: toUser.profile_photo
       }
       await User.updateOne(
         { email: params.currentUserEmail },
-        { $push: { sent_hangout_requests: hangoutRequest } }
+        { $push: { sent_hangout_requests: toUserLimited } }
       )
       await User.updateOne(
         { email: params.toUserEmail },
-        { $push: { received_hangout_requests: hangoutRequest } }
+        { $push: { received_hangout_requests: fromUserLimited } }
       )
+      return `${params.currentUserEmail} has successfully sent a hangout request to ${params.toUserEmail}!`
     }
   },
 
   ApproveHangoutRequest: async params => {
     //will delete hangout from fromUser sent_hangout_requests and from current user received_hangout_requests
     //will also create new chat between users (if one doesn't already exist)
+    const currentUser = await User.findOne({ email: params.currentUserEmail })
+    const fromUser = await User.findOne({ email: params.fromUserEmail })
+    if (!currentUser || !fromUser) {
+      throw new errors.InvalidEmailError()
+    } else {
+      const fromUserLimited = {
+        email: params.fromUserEmail,
+        first_name: fromUser.first_name,
+        profile_photo: fromUser.profile_photo
+      }
+      const toUserLimited = {
+        email: params.currentUserEmail,
+        first_name: currentUser.first_name,
+        profile_photo: currentUser.profile_photo
+      }
+
+      //create new unique chatId
+      const newChat = ++chatId
+      //delete hangout request and create new chat for each user
+      await User.updateOne(
+        { email: params.fromUserEmail },
+        {
+          $pull: { sent_hangout_requests: toUserLimited },
+          $push: {
+            chats: {
+              chat_id: newChat,
+              participants: {
+                email: currentUser.email,
+                first_name: currentUser.first_name,
+                profile_photo: currentUser.profile_photo
+              }
+            }
+          }
+        }
+      )
+      const currentUserChat = {
+        chat_id: newChat,
+        participants: [
+          {
+            email: fromUser.email,
+            first_name: fromUser.first_name,
+            profile_photo: fromUser.profile_photo
+          }
+        ]
+      }
+      await User.updateOne(
+        { email: params.currentUserEmail },
+        {
+          $pull: { received_hangout_requests: fromUserLimited },
+          $push: {
+            chats: { currentUserChat }
+          }
+        }
+      )
+      return currentUserChat
+    }
   }
 }
 

@@ -27,7 +27,13 @@ const UserSchema = new mongoose.Schema({
       ]
     }
   ],
-  events: [{ event_id: String, is_creator: Boolean }]
+  events: [{ event_id: String, is_creator: Boolean }],
+  sent_hangout_requests: [
+    { first_name: String, email: String, profile_photo: String }
+  ],
+  received_hangout_requests: [
+    { first_name: String, email: String, profile_photo: String }
+  ]
 })
 
 const User = mongoose.model('User', UserSchema)
