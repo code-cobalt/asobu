@@ -1,8 +1,12 @@
 require('dotenv').config()
 const express = require('express')
+const app = express()
 //GraphQL
 const graphqlHTTP = require('express-graphql')
-const app = express()
+import { execute, subscribe } from 'graphql'
+import { createServer } from 'http'
+import { SubscriptionServer } from 'subscriptions-transport-ws'
+const subscribtionsEndpoint = `ws://localhost:${port}/subscriptions`
 //Body Parser
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -73,8 +77,9 @@ app.use(
     schema,
     rootValue: root,
     graphiql: true,
+    subscribtionsEndpoint,
     formatError
-  })
+  }),
 )
 
 app.post('/upload', parser.single('image'), (req, res) => {
@@ -89,6 +94,22 @@ app.post('/upload', parser.single('image'), (req, res) => {
   res.send(image)
 })
 
-app.listen(port, () => console.log(`Listening on ${port}`))
+
+//This is the websocket that wraps the server. A websocket is basically a live connection between server and client that are actively
+//listening to each other.
+const ws = createServer(app)
+ws.listen(port, () => {
+  console.log(`Listening on ${port}`)
+  new SubscriptionServer({
+    execute,
+    subscribe,
+    schema
+  }, {
+    server: ws,
+    path: '/subscriptions'
+  })
+})
+
+// app.listen(port, () => console.log(`Listening on ${port}`))
 
 export = { db }
