@@ -408,7 +408,16 @@ const root = {
     return updatedStats
   },
 
-  AddExp: async params => {},
+  AddExp: async params => {
+    // implement level checking
+    const user = await User.findOneAndUpdate(
+      { email: params.userEmail },
+      { $inc: { exp: params.points } },
+      { new: true }
+    )
+    //return new exp total
+    return user.exp
+  },
 
   SendHangoutRequest: async params => {
     //will add hangout to current user sent_hangout_requests and to target user received_hangout_requests
