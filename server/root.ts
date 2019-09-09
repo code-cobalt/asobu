@@ -6,6 +6,8 @@ const [User, Event, Message] = [
 const { GraphQLDateTime } = require('graphql-iso-date')
 const bcrypt = require('bcrypt')
 import errors from './errors'
+import { PubSub } from 'graphql-subscriptions'
+const pubsub = new PubSub()
 
 interface NewUser {
   first_name: string
@@ -333,11 +335,17 @@ const root = {
     const validation = validateMessage(params.newMessage)
     const data = Object.assign({ timestamp: new Date() }, params.newMessage)
     if (validation === 'valid') {
+      pubsub.publish('messageAdded', data) //verify this line is passing data correctly and should be called here
       return await Message.create(data)
     } else {
       //specific validation error will be nested inside error object
       throw new errors.InvalidMessageError({ data: { err: validation } })
     }
+  },
+
+  //Subscription property here
+  MessageAdded: {
+    subscribe: () => pubsub.asyncIterator('messageAdded')
   },
 
   AttendEvent: async params => {
