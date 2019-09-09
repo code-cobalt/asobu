@@ -76,6 +76,15 @@ const getEvents = events => {
   return actionObj
 }
 
+const showChat = (chat, id) => {
+  const actionObj = {
+    type: "SHOW_CHAT",
+    chat,
+    id
+  }
+  return actionObj
+}
+
 export {
   setUserName,
   setActiveView,
@@ -86,5 +95,6 @@ export {
   showProfile,
   closeProfile,
   getChats,
-  getEvents
+  getEvents,
+  showChat
 };

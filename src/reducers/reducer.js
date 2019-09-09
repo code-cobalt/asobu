@@ -1,4 +1,4 @@
-import { setUserName, setActiveView, setUser, toggleAuth, toggleResultsView, showProfile, closeProfile, getChats, getEvents } from '../actions/userActions'
+import { setUserName, setActiveView, setUser, toggleAuth, toggleResultsView, showProfile, closeProfile, getChats, getEvents, showChat } from '../actions/userActions'
 
 const initialState = {
   activeView: "results",
@@ -11,7 +11,10 @@ const initialState = {
   showProfile: false,
   currentProfile: {},
   isLoggedIn: true,
-  showLogin: true
+  showLogin: true,
+  showChat: false,
+  currentChat: [],
+  currentChatId: ""
 }
 
 const reducer = (state = initialState, action) => {
@@ -61,6 +64,13 @@ const reducer = (state = initialState, action) => {
     case "GET_CHATS": {
       const copiedState = Object.assign({}, state)
       copiedState.chats = [...action.chats]
+      return copiedState
+    }
+    case "SHOW_CHAT": {
+      const copiedState = Object.assign({}, state)
+      copiedState.currentChat = [...action.chat]
+      copiedState.currentChatId = action.id
+      copiedState.showChat = true
       return copiedState
     }
     case "GET_EVENTS": {
