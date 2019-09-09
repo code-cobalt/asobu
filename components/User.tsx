@@ -8,7 +8,7 @@ const User = props => {
 		<TouchableOpacity style={styles.user} onPress={() => props.showProfile(props.user)}>
 			{props.user.profile_photo !== null && <Image source={{ uri: props.user.profile_photo }} style={styles.user__image} />}
 			<View style={styles.user__textcontainer}>
-				<Text style={styles.user__text}>{props.user.first_name} {props.user.last_name}</Text>
+				<Text style={styles.user__text}>{props.user.first_name}</Text>
 				<Text style={styles.user__text}>Level: {props.user.lvl === null ? "1" : null}</Text>
 			</View>
 			<View style={styles.user__badges}>
@@ -23,10 +23,9 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
-		marginBottom: 10,
-		marginTop: 30,
-		backgroundColor: "black",
-		borderRadius: 400
+		marginTop: 15,
+		backgroundColor: "#e5e6e5",
+		borderRadius: 400,
 	},
 	user__image: {
 		borderRadius: 50,
@@ -41,7 +40,8 @@ const styles = StyleSheet.create({
 	},
 	user__text: {
 		fontSize: 18,
-		color: "white"
+		fontWeight: "500",
+		color: "black"
 	},
 	user__badges: {
 		flexDirection: "row",
