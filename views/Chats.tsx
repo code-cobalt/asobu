@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text, Image, StyleSheet, TextInput } from "react-native"
+import { View, Text, Image, StyleSheet, TextInput, Animated } from "react-native"
 import ChatList from "../components/ChatList"
+import AnimatedChat from "./AnimatedChat"
 import axios from "axios"
 import getApiUrl from '../environment.js'
 import { connect } from "react-redux"
@@ -34,8 +35,8 @@ export class Chats extends Component<Props> {
   render() {
     return (
       <View style={styles.events}>
-        <Text>This is the chats component</Text>
         <ChatList />
+        <AnimatedChat />
       </View>
     )
   }
@@ -44,7 +45,7 @@ export class Chats extends Component<Props> {
 const styles = StyleSheet.create({
   events: {
     flex: 1,
-    backgroundColor: "purple",
+    backgroundColor: "#fff",
   }
 })
 
