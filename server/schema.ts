@@ -74,6 +74,10 @@ const schema = buildSchema(`
         content: String
     }
 
+    type Subscription {
+        messageAdded(somethingHere: String!): Message
+    }
+
     type Chat {
         _id: Int,
         messages: [Message]
