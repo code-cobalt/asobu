@@ -77,61 +77,6 @@ app.use(
   })
 )
 
-app.get('/api/test', (req, res) => {
-  // res.sendStatus(200)
-})
-
-app.get('/auth', (req, res) => {
-  const userObj = req.query
-  User.findOne({ email: userObj.email }, (err, result) => {
-    if (err) res.send({ err })
-    if (!result) res.send({ err: 'Account Not Found' })
-    if (result) {
-      bcrypt.compare(userObj.password, result.password_hash, (err, valid) => {
-        if (err) res.send({ err })
-        if (!valid) res.send({ err: 'Invalid Password' })
-        if (valid) {
-          result.password_hash = null
-          console.log(result)
-          res.send(result)
-        }
-      })
-    }
-  })
-})
-
-app.post('/auth', (req, res) => {
-  const userObj = req.body
-  User.findOne({ email: userObj.email }, (err, result) => {
-    if (err) return { err }
-    if (result) return { err: 'Email Already Exists' }
-    if (!result) {
-      userObj.interests = []
-      userObj.exp = 0
-      userObj.lvl = 1
-      userObj.stats = {}
-      userObj.stats.funny = 0
-      userObj.stats.intellectual = 0
-      userObj.stats.fun = 0
-      userObj.stats.kind = 0
-      userObj.stats.therapeutic = 0
-      userObj.stats.interesting = 0
-      userObj.chats = []
-      userObj.events = []
-      bcrypt.hash(userObj.password, 10, (err, hash) => {
-        userObj.password_hash = hash
-        userObj.password = null
-        User.create(userObj).then(document => {
-          if (document) {
-            document.password_hash = null
-            res.send(document)
-          } else res.send({ err: 'Database Error' })
-        })
-      })
-    }
-  })
-})
-
 app.post('/upload', parser.single('image'), (req, res) => {
   interface UploadedImage {
     url: string
