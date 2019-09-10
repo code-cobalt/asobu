@@ -61,7 +61,7 @@ export class AnimatedProfile extends Component<Props> {
     let translateStyle = { transform: [{ translateY: modalMoveY }] }
     return (
       <Animated.View style={[styles.container, translateStyle]}>
-        <View style={styles.profile}>
+        <View style={styles.container}>
           <View>
             <Text>Level {this.props.currentProfile.lvl}</Text>
             <Image

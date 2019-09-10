@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-import { setUserName, setActiveView, setUser, toggleAuth, toggleResultsView, showProfile, closeProfile, getChats, getEvents, showEvent, closeEvent, showChat } from '../actions/userActions'
-
->>>>>>> 29fb341446b61b2674d4a8f4e9a3486f7d668b32
 const initialState = {
   activeView: 'results',
   resultsSwitch: 'hangouts',
@@ -14,12 +9,7 @@ const initialState = {
   showProfile: false,
   showEvent: false,
   currentProfile: {},
-<<<<<<< HEAD
   isLoggedIn: false,
-=======
-  currentEvent: {},
-  isLoggedIn: true,
->>>>>>> 29fb341446b61b2674d4a8f4e9a3486f7d668b32
   showLogin: true,
   showChat: false,
   currentChatMessages: [],
@@ -105,13 +95,16 @@ const reducer = (state = initialState, action) => {
       ]
       return copiedState
     }
-    case "SHOW_EVENT": {
+    case 'SHOW_EVENT': {
       const copiedState = Object.assign({}, state)
-      copiedState.currentEvent = Object.assign(copiedState.currentEvent, action.event)
+      copiedState.currentEvent = Object.assign(
+        copiedState.currentEvent,
+        action.event
+      )
       copiedState.showEvent = true
       return copiedState
     }
-    case "CLOSE_EVENT": {
+    case 'CLOSE_EVENT': {
       const copiedState = Object.assign({}, state)
       copiedState.currentEvent = {}
       copiedState.showEvent = false
