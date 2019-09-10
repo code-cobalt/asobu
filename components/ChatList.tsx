@@ -22,7 +22,7 @@ class ChatList extends React.Component<Props> {
   render() {
     return (
       <ScrollView>
-        {this.props.chats.length > 0 &&
+        {this.props.chats &&
           this.props.chats.map(chat => {
             return <Chat key={chat.chat_id} chat={chat} />
           })}

@@ -1,22 +1,22 @@
 import React from 'react'
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native'
-import { connect } from "react-redux"
+import { connect } from 'react-redux'
 import getApiUrl from '../environment.js'
-import axios from "axios";
-
+import axios from 'axios'
 
 interface Props {
   chat: Chat
+  showChat: Function
 }
 
 interface Chat {
-  chat_id: number,
+  chat_id: number
   participants: Array<Participant>
 }
 
 interface Participant {
-  email: string,
-  first_name: string,
+  email: string
+  first_name: string
   profile_photo: string
 }
 
@@ -38,16 +38,26 @@ const Chat: React.FunctionComponent<Props> = props => {
         }
       `
     })
-    props.showChat(chat.data.data.Chats, props.chat.chat_id)
+    props.showChat(chat.data.data.Chats.pop().messages, props.chat.chat_id)
   }
   return (
     <TouchableOpacity style={styles.chat} onPress={getChat}>
       {props.chat.participants.map(participant => {
-        return <Image key={participant.email} source={{ uri: participant.profile_photo }} style={styles.chat__image}></Image>
+        return (
+          <Image
+            key={participant.email}
+            source={{ uri: participant.profile_photo }}
+            style={styles.chat__image}
+          ></Image>
+        )
       })}
       <View style={styles.chat__textcontainer}>
         {props.chat.participants.map(participant => {
-          return <Text key={participant.email} style={styles.chat__text}>{participant.first_name}</Text>
+          return (
+            <Text key={participant.email} style={styles.chat__text}>
+              {participant.first_name}
+            </Text>
+          )
         })}
       </View>
     </TouchableOpacity>
@@ -56,12 +66,12 @@ const Chat: React.FunctionComponent<Props> = props => {
 
 const styles = StyleSheet.create({
   chat: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 10,
     marginTop: 30,
-    backgroundColor: "black",
+    backgroundColor: 'black',
     borderRadius: 400
   },
   chat__image: {
@@ -70,33 +80,36 @@ const styles = StyleSheet.create({
     width: 90
   },
   chat__textcontainer: {
-    flexDirection: "column",
-    alignItems: "center",
+    flexDirection: 'column',
+    alignItems: 'center',
     marginLeft: 50,
     right: 40
   },
   chat__text: {
     fontSize: 18,
-    color: "white"
+    color: 'white'
   },
   chat__badges: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     right: 15
   }
 })
 
 const mapDispatchToProps = dispatch => {
   return {
-    showChat: (chat, id) => {
+    showChat: (messages, chatId) => {
       dispatch({
-        type: "SHOW_CHAT",
-        chat,
-        id
+        type: 'SHOW_CHAT',
+        messages,
+        chatId
       })
     }
   }
 }
 
-export default connect(null, mapDispatchToProps)(Chat)
+export default connect(
+  null,
+  mapDispatchToProps
+)(Chat)
