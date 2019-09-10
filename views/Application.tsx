@@ -2,8 +2,7 @@ import React from 'react'
 import Main from "./Main"
 import Navbar from "../components/Navbar"
 import { connect } from 'react-redux'
-import localhost from '../environment.js'
-import * as WebSocket from 'ws'
+import getApiUrl from '../environment.js'
 
 interface Socket {
     ws: WebSocket,
@@ -17,7 +16,7 @@ class Application extends React.Component<{}, Socket> {
         this.state = {
             open: false,
             connected: false,
-            ws: new WebSocket(localhost)
+            ws: new WebSocket(getApiUrl())
         }
         this.state.ws.onopen = () => {
             this.setState({ connected: true })
@@ -36,7 +35,7 @@ class Application extends React.Component<{}, Socket> {
         if (this.state.connected) {
             this.state.ws.send('Message from client')
         }
-        
+
     }
     render() {
         return (
@@ -50,8 +49,9 @@ class Application extends React.Component<{}, Socket> {
 const mapDispatchToProps = dispatch => {
     return {
         setSocket: ws => {
-            dispatch({type: 'SET_SOCKET',
-            ws
+            dispatch({
+                type: 'SET_SOCKET',
+                ws
             })
         }
     }
