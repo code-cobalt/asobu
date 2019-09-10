@@ -43,6 +43,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         user: action.user,
         isLoggedIn: true,
+        chats: action.user.chats,
         sentHangoutRequests: action.user.sent_hangout_requests,
         receivedHangoutRequests: action.user.received_hangout_requests
       }
@@ -117,6 +118,30 @@ const reducer = (state = initialState, action) => {
       }
     }
     case 'ACCEPT_REQUEST': {
+      // remove hangout request from receivedHangoutRequests in store, add new Chat to chats in store if one doesn't already exist, change active view to chats
+      const receivedHangoutRequests = state.receivedHangoutRequests.filter(
+        request => {
+          request.email !== action.fromUserEmail
+        }
+      )
+      let included = false
+      for (const chat of state.chats) {
+        if (chat.chat_id === action.newChat.chat_id) {
+          included = true
+        }
+      }
+      let chats
+      if (included) {
+        chats = [...state.chats]
+      } else {
+        chats = [...state.chats, action.newChat]
+      }
+      return {
+        ...state,
+        activeView: 'chats',
+        receivedHangoutRequests,
+        chats
+      }
     }
     default: {
       return state
