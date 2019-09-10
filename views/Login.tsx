@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { getApiUrl } from '../environment.js'
+import { apiUrl } from '../environment.js'
 import gql from 'graphql-tag'
 import { print } from 'graphql'
 /* import AsyncStorage from '@react-native-community/async-storage'; */
@@ -18,30 +18,6 @@ import { print } from 'graphql'
 interface State {
   email: string
   password: string
-}
-
-interface Error {
-  err: string
-}
-
-interface ServerData {
-  email: string
-  first_name: string
-  last_name: string
-  phone: string
-  password_hash: null
-  interests: Array<string>
-  hobbies: Array<string>
-  exp: number
-  lvl: number
-  stats: Object
-  chats: Array<Object>
-  events: Array<Object>
-  err: Error
-}
-
-interface ServerResponse {
-  data: ServerData
 }
 
 interface Props {
@@ -68,22 +44,6 @@ class Login extends Component<Props, State> {
           interests
           exp
           lvl
-          stats {
-            funny
-            intellectual
-            fun
-            kind
-            therapeutic
-            interesting
-          }
-          chats {
-            chat_id
-            participants {
-              first_name
-              email
-              profile_photo
-            }
-          }
           events {
             event_id
             is_creator
@@ -103,7 +63,7 @@ class Login extends Component<Props, State> {
       }
     `
 
-    const res = await axios.post(`${getApiUrl()}/graphql`, {
+    const res = await axios.post(`${apiUrl}/graphql`, {
       query: print(loginQuery),
       variables: {
         userEmail: this.state.email,
