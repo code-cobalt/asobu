@@ -7,7 +7,8 @@ import {
   showProfile,
   closeProfile,
   getChats,
-  getEvents
+  getEvents,
+  showChat
 } from '../actions/userActions'
 
 const initialState = {
@@ -21,7 +22,10 @@ const initialState = {
   showProfile: false,
   currentProfile: {},
   isLoggedIn: false,
-  showLogin: true
+  showLogin: true,
+  showChat: false,
+  currentChat: [],
+  currentChatId: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -75,6 +79,13 @@ const reducer = (state = initialState, action) => {
     case 'GET_CHATS': {
       const copiedState = Object.assign({}, state)
       copiedState.chats = [...action.chats]
+      return copiedState
+    }
+    case 'SHOW_CHAT': {
+      const copiedState = Object.assign({}, state)
+      copiedState.currentChat = [...action.chat]
+      copiedState.currentChatId = action.id
+      copiedState.showChat = true
       return copiedState
     }
     case 'GET_EVENTS': {
