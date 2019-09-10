@@ -31,10 +31,17 @@ interface Event {
   id: number,
   description: string,
   location: string,
-  attendees: Array<Attendee>
+  attendees: Array<Attendee>,
+  creator: Object
   }
 
 interface Attendee {
+  first_name: string,
+  email: string,
+  profile_photo: string
+}
+
+interface Creator {
   first_name: string,
   email: string,
   profile_photo: string
@@ -153,19 +160,17 @@ export class AnimatedProfile extends Component<Props> {
     if (this.props.allEvents.length > 0) {
 
       rsvpButton = this.props.allEvents.map(event => {
-        console.log(event.attendees)
-        console.log(this.props.user)
         if (event.id === this.props.currentEvent.id) {
           if (JSON.stringify(event.attendees).includes(JSON.stringify(this.props.user.email))) {
             return (
-              <TouchableOpacity onPress={() => this.unattendEvent()} style={styles.RSVP__button}>
-                <Text>Unattend</Text>
+              <TouchableOpacity onPress={() => this.unattendEvent()} style={styles.event__button}>
+                <Text style={styles.button__text}>Unattend</Text>
               </TouchableOpacity>
             )
           } else {
             return (
-              <TouchableOpacity onPress={() => this.attendEvent()} style={styles.RSVP__button}>
-                <Text>RSVP</Text>
+              <TouchableOpacity onPress={() => this.attendEvent()} style={styles.event__button}>
+                <Text style={styles.button__text}>RSVP</Text>
               </TouchableOpacity>
             )
           }
@@ -179,16 +184,22 @@ export class AnimatedProfile extends Component<Props> {
             {this.props.currentEvent.name === "Quidditch After Party" && <Image source={require("../assets/quidditch.jpg")} style={styles.animated__photo} />}
             {this.props.currentEvent.name === "Language Exchange" && <Image source={require("../assets/language.jpg")} style={styles.animated__photo} />}
           </View>
-          <Text>{this.props.currentEvent.name}</Text>
-          <Text>{this.props.currentEvent.description}</Text>
-          <Text>{this.props.currentEvent.location}</Text>
-          <TouchableOpacity style={styles.attendees__button}>
-            <Text>Attendees</Text>
-          </TouchableOpacity>
-          {rsvpButton}
-          <TouchableOpacity onPress={this.props.closeEvent} style={styles.event__close}>
-            <Text>Close</Text>
-          </TouchableOpacity>
+          <View style={styles.text__block}>
+            <Text style={styles.event__title}>{this.props.currentEvent.name}</Text>
+            <Text style={styles.event__subtitle}>Summary</Text>
+            <Text style={styles.event__text}>{this.props.currentEvent.description}</Text>
+            <Text style={styles.event__subtitle}>Location</Text>
+            <Text style={styles.event__text}>{this.props.currentEvent.location}</Text>
+          </View>
+          <View style={styles.button__block}>
+            <TouchableOpacity style={styles.event__button}>
+              <Text style={styles.button__text}>Attendees</Text>
+            </TouchableOpacity>
+            {rsvpButton}
+            <TouchableOpacity onPress={this.props.closeEvent} style={styles.event__button}>
+              <Text style={styles.button__text}>Close</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </Animated.View>
     )
@@ -210,31 +221,49 @@ const styles = StyleSheet.create({
   animated__photo: {
     flex: 1,
     width: undefined,
-    height: undefined
+    height: undefined,
+    borderRadius: 5
   },
   scrollView: {
     marginTop: 20
   }, 
-  attendees__button: {
-    width: "50%",
-    backgroundColor: "#73d961",
-    padding: 15,
-    borderRadius: 50,
-    marginTop: 15
+  event__text: {
+    alignSelf: "center",
+    marginTop: 5,
+    fontSize: 16
   },
-  RSVP__button: {
-    width: "50%",
-    backgroundColor: "#73d961",
-    padding: 15,
-    borderRadius: 50,
-    marginTop: 15
+  event__title: {
+    fontSize: 24,
+    alignSelf: "center",
+    fontWeight: "800"
   },
-  event__close: {
+  event__subtitle: {
+    marginTop: 20,
+    fontSize: 18,
+    alignSelf: "center",
+    fontWeight: "700"
+  },
+  text__block: {
+    backgroundColor: "#e5e6e5",
+    padding: 30,
+    borderRadius: 5
+  },
+  button__block: {
+    paddingBottom: 15,
+    borderRadius: 5
+  },
+  event__button: {
+    alignItems: "center",
+    alignSelf: "center",
     width: "50%",
     backgroundColor: "#73d961",
     padding: 15,
     borderRadius: 50,
-    marginTop: 15
+    marginTop: 15,
+  },
+  button__text:{
+    fontWeight: "800",
+    color: "white"
   }
 })
 
