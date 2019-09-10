@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
-import { View, Text, Image, StyleSheet, TextInput } from "react-native"
+import { View, Text, Image, StyleSheet, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import axios from 'axios'
-import getApiUrl from '../environment.js'
-import EventList from "../components/EventList"
+import { apiUrl } from '../environment.js'
+import EventList from '../components/EventList'
 
 interface Props {
-    getEvents: Function,
+  getEvents: Function
 }
 
 export class Events extends Component<Props> {
-    async componentDidMount() {
-        const res = await axios.post(`${getApiUrl()}/graphql`, {
-            query: `
+  async componentDidMount() {
+    const res = await axios.post(`${apiUrl}/graphql`, {
+      query: `
             query { Events {
                 id
                 name
@@ -39,37 +39,38 @@ export class Events extends Component<Props> {
                 }
             }
         `
-        })
-        this.props.getEvents(res.data.data.Events)
-    }
+    })
+    this.props.getEvents(res.data.data.Events)
+  }
 
-    render() {
-        return (
-            <View style={styles.events}>
-                <EventList />
-            </View>
-        )
-    }
+  render() {
+    return (
+      <View style={styles.events}>
+        <EventList />
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
-    events: {
-        top: 40,
-        flex: 1,
-    }
+  events: {
+    top: 40,
+    flex: 1
+  }
 })
 
 const mapDispatchToProps = dispatch => {
-    return {
-        getEvents: (events) => {
-            dispatch({
-                type: "GET_EVENTS",
-                events
-            })
-        }
+  return {
+    getEvents: events => {
+      dispatch({
+        type: 'GET_EVENTS',
+        events
+      })
     }
+  }
 }
 
-
-
-export default connect(null, mapDispatchToProps)(Events)
+export default connect(
+  null,
+  mapDispatchToProps
+)(Events)

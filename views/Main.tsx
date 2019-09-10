@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { View, Button, Text, Image, StyleSheet, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import axios from 'axios'
-import { any } from 'prop-types'
-import getApiUrl from '../environment.js'
+import { apiUrl } from '../environment.js'
 import Profile from './Profile'
 import Results from './Results'
 import Inbox from './Inbox'
@@ -16,7 +15,7 @@ interface Props {
 
 class Main extends Component<Props> {
   async componentDidMount() {
-    const res = await axios.post(`${getApiUrl()}/graphql`, {
+    const res = await axios.post(`${apiUrl}/graphql`, {
       query: `
             query { Users {
                 id

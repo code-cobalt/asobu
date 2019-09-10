@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import getApiUrl from '../environment.js'
+import { apiUrl } from '../environment.js'
 import axios from 'axios'
 
 interface Props {
@@ -22,7 +22,7 @@ interface Participant {
 
 const Chat: React.FunctionComponent<Props> = props => {
   const getChat = async () => {
-    const chat = await axios.post(`${getApiUrl()}/graphql`, {
+    const chat = await axios.post(`${apiUrl}/graphql`, {
       query: `
         query { Chats(chatIds: [${props.chat.chat_id}]) {
             messages {

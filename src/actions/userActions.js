@@ -1,5 +1,5 @@
 import axios from 'axios'
-import getApiUrl from '../../environment.js'
+import { apiUrl } from '../../environment.js'
 import gql from 'graphql-tag'
 import { print } from 'graphql'
 
@@ -72,7 +72,7 @@ const getChats = async userEmail => {
       }
     }
   `
-  const userChats = await axios.post(`${getApiUrl()}/graphql`, {
+  const userChats = await axios.post(`${apiUrl}/graphql`, {
     query: print(userChatsQuery),
     variables: {
       userEmail
@@ -112,7 +112,7 @@ const postMessage = async message => {
       }
     }
   `
-  const res = await axios.post(`${getApiUrl()}/graphql`, {
+  const res = await axios.post(`${apiUrl}/graphql`, {
     query: print(createMessageMutation),
     variables: {
       message

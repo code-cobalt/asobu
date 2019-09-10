@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import getApiUrl from '../environment.js'
+import { apiUrl } from '../environment.js'
 import gql from 'graphql-tag'
 import { print } from 'graphql'
 /* import AsyncStorage from '@react-native-community/async-storage'; */
@@ -63,7 +63,7 @@ class Login extends Component<Props, State> {
       }
     `
 
-    const res = await axios.post(`${getApiUrl()}/graphql`, {
+    const res = await axios.post(`${apiUrl}/graphql`, {
       query: print(loginQuery),
       variables: {
         userEmail: this.state.email,
