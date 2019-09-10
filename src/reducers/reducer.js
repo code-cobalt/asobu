@@ -2,7 +2,33 @@ const initialState = {
   activeView: 'results',
   resultsSwitch: 'hangouts',
   username: '',
-  user: {},
+  sentHangoutRequests: [],
+  receivedHangoutRequests: [],
+  user: {
+    email: 'levans@email.com',
+    events: [
+      {
+        event_id: '1',
+        is_creator: false
+      },
+      {
+        event_id: '5d775747ee6d68798372a0c0',
+        is_creator: false
+      }
+    ],
+    exp: 23,
+    first_name: 'Lily',
+    id: '5d775748ee6d68798372a0cd',
+    imei: null,
+    interests: [],
+    last_name: 'Evans',
+    lvl: 2,
+    phone_number: '+447911654321',
+    profile_photo:
+      'https://i.pinimg.com/originals/a6/f4/f0/a6f4f037f9207e4eb4ec5a7cedfd2914.jpg',
+    received_hangout_requests: [],
+    sent_hangout_requests: []
+  },
   allUsers: [],
   allEvents: [],
   chats: [],
@@ -10,7 +36,7 @@ const initialState = {
   showEvent: false,
   currentProfile: {},
   currentEvent: {},
-  isLoggedIn: false,
+  isLoggedIn: true,
   showLogin: true,
   showChat: false,
   currentChatMessages: [],
@@ -37,10 +63,13 @@ const reducer = (state = initialState, action) => {
       return copiedState
     }
     case 'SET_USER': {
-      const copiedState = Object.assign({}, state)
-      copiedState.user = Object.assign({}, action.user)
-      copiedState.isLoggedIn = true
-      return copiedState
+      return {
+        ...state,
+        user: action.user,
+        isLoggedIn: true,
+        sentHangoutRequests: action.user.sent_hangout_requests,
+        receivedHangoutRequests: action.user.received_hangout_requests
+      }
     }
     case 'TOGGLE_AUTH': {
       const copiedState = Object.assign({}, state)
@@ -53,13 +82,7 @@ const reducer = (state = initialState, action) => {
       return copiedState
     }
     case 'SHOW_PROFILE': {
-      const copiedState = Object.assign({}, state)
-      copiedState.currentProfile = Object.assign(
-        copiedState.currentProfile,
-        action.profile
-      )
-      copiedState.showProfile = true
-      return copiedState
+      return { ...state, currentProfile: action.profile, showProfile: true }
     }
     case 'CLOSE_PROFILE': {
       const copiedState = Object.assign({}, state)
@@ -110,6 +133,14 @@ const reducer = (state = initialState, action) => {
       copiedState.currentEvent = {}
       copiedState.showEvent = false
       return copiedState
+    }
+    case 'SEND_REQUEST': {
+      return {
+        ...state,
+        sentHangoutRequests: [...state.sentHangoutRequests, action.toUser]
+      }
+    }
+    case 'ACCEPT_REQUEST': {
     }
     default: {
       return state
