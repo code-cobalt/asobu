@@ -4,7 +4,11 @@ const initialState = {
   activeView: 'results',
   resultsSwitch: 'hangouts',
   username: '',
-  user: {},
+  user: {
+    first_name: "Mark",
+    email: "mark@gmail.com",
+    profile_photo: "This is a photo"
+  },
   allUsers: [],
   allEvents: [],
   chats: [],

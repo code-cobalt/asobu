@@ -2,19 +2,33 @@ import React, { Component } from 'react'
 import { ScrollView, View, Text, Image, StyleSheet, TextInput, Dimensions, Animated, Easing, TouchableOpacity } from "react-native"
 import { connect } from "react-redux"
 import Badges from "../components/Badges"
+import axios from 'axios'
+import getApiUrl from '../environment.js'
+import gql from 'graphql-tag'
+import { print } from 'graphql'
 
 const { height, width } = Dimensions.get("window")
 
 interface Props {
+  user: User,
   username: string,
   showEvent: boolean,
   setUserName: Function,
   closeEvent: Function,
+  getEvents: Function,
+  allEvents: ObjectArray,
   currentEvent: Event
+}
+
+interface User {
+  first_name: string,
+  email: string,
+  profile_photo: string
 }
 
 interface Event {
   name: string,
+  id: number,
   description: string,
   location: string,
   attendees: Array<Attendee>
@@ -26,22 +40,77 @@ interface Attendee {
   profile_photo: string
 }
 
+
 export class AnimatedProfile extends Component<Props> {
-  componentDidUpdate() {
+
+  async attendEvent() {
+    
+    const attendEventMutation = gql`
+      mutation AttendEvent($eventId: String!, $user: UserLimitedInput!) {
+        AttendEvent(eventId: $eventId, user: $user) 
+      }
+    `
+    await axios.post(`${getApiUrl()}/graphql`, {
+      query: print(attendEventMutation),
+      variables: {
+        eventId: this.props.currentEvent.id,
+        user: {
+          first_name: this.props.user.first_name,
+          email: this.props.user.email,
+          profile_photo: this.props.user.profile_photo
+        }
+      }
+    })
+    const res = await axios.post(`${getApiUrl()}/graphql`, {
+      query: `
+      query { Events {
+          id
+          name
+          description
+          cover_photo
+          creator {
+              first_name
+              email
+              profile_photo
+          }
+          start
+          end
+          location
+          limit
+          tags
+          attendees {
+              first_name
+              email
+              profile_photo
+          }
+          comments {
+              id
+          }
+          }
+      }
+  `
+  })
+  this.props.getEvents(res.data.data.Events)
+  console.log(this.props.allEvents[0].attendees.length, "This is the currently selected Event")
+  }
+
+  async componentDidUpdate() {
     if (this.props.showEvent) {
-      this.yTranslate.setValue(0);
+      this.yTranslate.setValue(0)
       Animated.spring(this.yTranslate, {
         toValue: 1,
         friction: 6
-      }).start();
+      }).start()
     } else {
       Animated.timing(this.yTranslate, {
         toValue: 0,
         duration: 200,
         easing: Easing.linear
-      }).start();
+      }).start()
     }
-  }
+}
+
+  
 
   yTranslate = new Animated.Value(0)
 
@@ -56,31 +125,36 @@ export class AnimatedProfile extends Component<Props> {
       outputRange: [0, negativeHeight]
     })
     let translateStyle = { transform: [{ translateY: modalMoveY }] }
+
     let attendeeList = []
 
     if (Array.isArray(this.props.currentEvent.attendees)) {
-      console.log(this.props.currentEvent.attendees[0].first_name) 
+      console.log(this.props.currentEvent.attendees, "This is a list of the attendees") 
       attendeeList = this.props.currentEvent.attendees.map((attendee, index) => {
         return (
           <Text key={index}>{attendee.first_name}</Text>
         )
       })
     }
-
+    const rsvpButton = this.props.allEvents.map(event => {
+      if (event.id === this.props.currentEvent.id) {
+        if (event.attendees.)
+      }
+    })
     return (
       <Animated.View style={[styles.contentContainer, translateStyle]}>
         <ScrollView style={styles.scrollView}>
-          <View style={styles.image_container}>
+          <View style={styles.image__container}>
             {this.props.currentEvent.name === "Quidditch After Party" && <Image source={require("../assets/quidditch.jpg")} style={styles.animated__photo} />}
             {this.props.currentEvent.name === "Language Exchange" && <Image source={require("../assets/language.jpg")} style={styles.animated__photo} />}
           </View>
           <Text>{this.props.currentEvent.name}</Text>
           <Text>{this.props.currentEvent.description}</Text>
           <Text>{this.props.currentEvent.location}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity style={styles.attendees__button}>
             <Text>Attendees</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => this.attendEvent()} style={styles.RSVP__button}>
             <Text>RSVP</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.props.closeEvent} style={styles.event__close}>
@@ -100,16 +174,32 @@ const styles = StyleSheet.create({
     bottom: -height,
     backgroundColor: "#fff",
   },
-  image_container: {
-   
+  image__container: {
+    width: "100%",
+    height: 320
   },
-  animated_photo: {
-
+  animated__photo: {
+    flex: 1,
+    width: undefined,
+    height: undefined
   },
   scrollView: {
-    marginTop: 100
-  
+    marginTop: 20
   }, 
+  attendees__button: {
+    width: "50%",
+    backgroundColor: "#73d961",
+    padding: 15,
+    borderRadius: 50,
+    marginTop: 15
+  },
+  RSVP__button: {
+    width: "50%",
+    backgroundColor: "#73d961",
+    padding: 15,
+    borderRadius: 50,
+    marginTop: 15
+  },
   event__close: {
     width: "50%",
     backgroundColor: "#73d961",
@@ -122,7 +212,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     showEvent: state.showEvent,
-    currentEvent: state.currentEvent
+    currentEvent: state.currentEvent,
+    allEvents: state.allEvents,
+    user: state.user
   }
 }
 
@@ -132,7 +224,13 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "CLOSE_EVENT"
       })
-    }
+    },
+    getEvents: (events) => {
+      dispatch({
+          type: "GET_EVENTS",
+          events
+      })
+  }
   }
 }
 
