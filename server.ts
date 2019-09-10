@@ -98,6 +98,10 @@ app.post('/upload', parser.single('image'), (req, res) => {
 //This is the websocket that wraps the server. A websocket is basically a live connection between server and client that are actively
 //listening to each other.
 const ws = createServer(app)
+ws.on('message', (message: string) => {
+  console.log(message)
+})
+
 ws.listen(port, () => {
   console.log(`Listening on ${port}`)
   new SubscriptionServer(
