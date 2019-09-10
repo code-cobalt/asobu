@@ -10,11 +10,17 @@ const UserList = props => {
         )
     })
     return (
-        <ScrollView>
+        <ScrollView style={styles.users}>
             {userList}
         </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    users: {
+        marginBottom: 90
+    }
+})
 
 const mapStateToProps = state => {
     return {

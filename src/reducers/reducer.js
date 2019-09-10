@@ -1,15 +1,4 @@
-import {
-  setUserName,
-  setActiveView,
-  setUser,
-  toggleAuth,
-  toggleResultsView,
-  showProfile,
-  closeProfile,
-  getChats,
-  getEvents
-} from '../actions/userActions'
-
+import { setUserName, setActiveView, setUser, toggleAuth, toggleResultsView, showProfile, closeProfile, getChats, getEvents, showEvent, closeEvent, showChat } from '../actions/userActions'
 
 const initialState = {
   activeView: 'results',
@@ -20,7 +9,9 @@ const initialState = {
   allEvents: [],
   chats: [],
   showProfile: false,
+  showEvent: false,
   currentProfile: {},
+  currentEvent: {},
   isLoggedIn: true,
   showLogin: true,
   showChat: false,
@@ -73,7 +64,7 @@ const reducer = (state = initialState, action) => {
     }
     case 'CLOSE_PROFILE': {
       const copiedState = Object.assign({}, state)
-      copiedState.currentProfile = Object.assign(copiedState.currentProfile, {})
+      copiedState.currentProfile = {}
       copiedState.showProfile = false
       return copiedState
     }
@@ -92,6 +83,18 @@ const reducer = (state = initialState, action) => {
     case "GET_EVENTS": {
       const copiedState = Object.assign({}, state)
       copiedState.allEvents = action.events
+      return copiedState
+    }
+    case "SHOW_EVENT": {
+      const copiedState = Object.assign({}, state)
+      copiedState.currentEvent = Object.assign(copiedState.currentEvent, action.event)
+      copiedState.showEvent = true
+      return copiedState
+    }
+    case "CLOSE_EVENT": {
+      const copiedState = Object.assign({}, state)
+      copiedState.currentEvent = {}
+      copiedState.showEvent = false
       return copiedState
     }
     default: {
