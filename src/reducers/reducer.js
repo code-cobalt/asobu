@@ -1,9 +1,9 @@
 import { setUserName, setActiveView, setUser, toggleAuth, toggleResultsView, showProfile, closeProfile, getChats, getEvents, showEvent, closeEvent, showChat } from '../actions/userActions'
 
 const initialState = {
-  activeView: "results",
+  activeView: 'results',
   resultsSwitch: 'hangouts',
-  username: "",
+  username: '',
   user: {},
   allUsers: [],
   allEvents: [],
@@ -17,53 +17,58 @@ const initialState = {
   showChat: false,
   currentChat: [],
   currentChatId: ""
+
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SET_USERNAME": {
-      const copiedState = Object.assign({}, state);
+    case 'SET_USERNAME': {
+      const copiedState = Object.assign({}, state)
       copiedState.username = action.username
       return copiedState
     }
-    case "SET_ACTIVE_VIEW": {
-      const copiedState = Object.assign({}, state);
-      copiedState.activeView = action.activeView;
+    case 'SET_ACTIVE_VIEW': {
+      const copiedState = Object.assign({}, state)
+      copiedState.activeView = action.activeView
       return copiedState
     }
-    case "SET_ALL_USERS": {
-      const copiedState = Object.assign({}, state);
-      copiedState.allUsers = action.allUsers;
+    case 'SET_ALL_USERS': {
+      const copiedState = Object.assign({}, state)
+      copiedState.allUsers = action.allUsers
       return copiedState
     }
-    case "SET_USER": {
+    case 'SET_USER': {
       const copiedState = Object.assign({}, state)
       copiedState.user = Object.assign({}, action.user)
+      copiedState.isLoggedIn = true
       return copiedState
     }
-    case "TOGGLE_AUTH": {
+    case 'TOGGLE_AUTH': {
       const copiedState = Object.assign({}, state)
       copiedState.showLogin = !copiedState.showLogin
       return copiedState
     }
-    case "TOGGLE_RESULTS_VIEW": {
+    case 'TOGGLE_RESULTS_VIEW': {
       const copiedState = Object.assign({}, state)
       copiedState.resultsSwitch = action.activeView
       return copiedState
     }
-    case "SHOW_PROFILE": {
+    case 'SHOW_PROFILE': {
       const copiedState = Object.assign({}, state)
-      copiedState.currentProfile = Object.assign(copiedState.currentProfile, action.profile)
+      copiedState.currentProfile = Object.assign(
+        copiedState.currentProfile,
+        action.profile
+      )
       copiedState.showProfile = true
       return copiedState
     }
-    case "CLOSE_PROFILE": {
+    case 'CLOSE_PROFILE': {
       const copiedState = Object.assign({}, state)
       copiedState.currentProfile = {}
       copiedState.showProfile = false
       return copiedState
     }
-    case "GET_CHATS": {
+    case 'GET_CHATS': {
       const copiedState = Object.assign({}, state)
       copiedState.chats = [...action.chats]
       return copiedState

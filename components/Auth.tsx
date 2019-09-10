@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
-import { connect } from "react-redux"
-import Login from "../views/Login"
-import Signup from "../views/Signup"
+import { connect } from 'react-redux'
+import Login from '../views/Login'
+import Signup from '../views/Signup'
 
 interface Props {
   showLogin: boolean
@@ -10,11 +10,7 @@ interface Props {
 
 class Auth extends Component<Props> {
   render() {
-    return (
-      <>
-        {this.props.showLogin ? <Login /> : <Signup />}
-      </>
-    )
+    return <>{this.props.showLogin ? <Login /> : <Signup />}</>
   }
 }
 
@@ -24,4 +20,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, null)(Auth)
+export default connect(
+  mapStateToProps,
+  null
+)(Auth)
