@@ -100,14 +100,6 @@ describe('GraphQL Queries', () => {
                 email
                 phone_number
                 profile_photo
-                chats {
-                  chat_id
-                  participants {
-                    first_name
-                    email
-                    profile_photo
-                  }
-                }
               }
           }`
     }
