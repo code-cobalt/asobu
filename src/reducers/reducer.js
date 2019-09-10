@@ -16,8 +16,8 @@ const initialState = {
   showLogin: true,
   showChat: false,
   currentChat: [],
-  currentChatId: ""
-
+  currentChatId: "",
+  socket: {}
 }
 
 const reducer = (state = initialState, action) => {
