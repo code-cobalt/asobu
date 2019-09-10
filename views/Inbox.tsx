@@ -18,7 +18,7 @@ interface Props {
   setChats: Function
 }
 
-class Chats extends Component<Props> {
+class Inbox extends Component<Props> {
   async componentDidMount() {
     const chats = await getChats(this.props.userEmail)
     this.props.setChats(chats)
@@ -59,4 +59,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Chats)
+)(Inbox)
