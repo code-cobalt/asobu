@@ -12,4 +12,3 @@ web-build/
 web-report/
 .env
 **/.vscode/
-environment.js
