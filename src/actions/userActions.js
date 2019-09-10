@@ -3,66 +3,58 @@ import getApiUrl from '../../environment.js'
 import gql from 'graphql-tag'
 import { print } from 'graphql'
 
-const setUserName = data => {
-  const actionObj = {
+const setUserName = username => {
+  return {
     type: 'SET_USERNAME',
-    username: data
+    username
   }
-  return actionObj
 }
 
 const setActiveView = data => {
-  const actionObj = {
+  return {
     type: 'SET_ACTIVE_VIEW',
     activeView: data
   }
-  return actionObj
 }
 
 const setAllUsers = data => {
-  const actionObj = {
+  return {
     type: 'SET_ALL_USERS',
     allUsers: data
   }
-  return actionObj
 }
 
 const setUser = user => {
-  const actionObj = {
+  return {
     type: 'SET_USER',
     user
   }
-  return actionObj
 }
 
 const toggleAuth = () => {
-  const actionObj = {
+  return {
     type: 'TOGGLE_AUTH'
   }
-  return actionObj
 }
 
 const toggleResultsView = activeView => {
-  const actionObj = {
+  return {
     type: 'TOGGLE_RESULTS_VIEW',
     activeView
   }
-  return actionObj
 }
 
 const showProfile = profile => {
-  const actionObj = {
+  return {
     type: 'SHOW_PROFILE',
     profile
   }
-  return actionObj
 }
 
 const closeProfile = () => {
-  const actionObj = {
+  return {
     type: 'CLOSE_PROFILE'
   }
-  return actionObj
 }
 
 const getChats = async userEmail => {
@@ -90,20 +82,18 @@ const getChats = async userEmail => {
 }
 
 const getEvents = events => {
-  const actionObj = {
+  return {
     type: 'GET_EVENTS',
     events
   }
-  return actionObj
 }
 
-const showChat = (chat, id) => {
-  const actionObj = {
+const showChat = (messages, chatId) => {
+  return {
     type: 'SHOW_CHAT',
-    chat,
-    id
+    messages,
+    chatId
   }
-  return actionObj
 }
 
 export {
