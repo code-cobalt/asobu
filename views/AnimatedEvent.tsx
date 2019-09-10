@@ -91,7 +91,6 @@ export class AnimatedProfile extends Component<Props> {
   `
   })
   this.props.getEvents(res.data.data.Events)
-  console.log(this.props.allEvents[0].attendees.length, "This is the currently selected Event")
   }
 
   async componentDidUpdate() {
@@ -108,9 +107,7 @@ export class AnimatedProfile extends Component<Props> {
         easing: Easing.linear
       }).start()
     }
-}
-
-  
+  }
 
   yTranslate = new Animated.Value(0)
 
@@ -126,21 +123,28 @@ export class AnimatedProfile extends Component<Props> {
     })
     let translateStyle = { transform: [{ translateY: modalMoveY }] }
 
-    let attendeeList = []
+    let rsvpButton;
+    if (this.props.allEvents.length > 0) {
 
-    if (Array.isArray(this.props.currentEvent.attendees)) {
-      console.log(this.props.currentEvent.attendees, "This is a list of the attendees") 
-      attendeeList = this.props.currentEvent.attendees.map((attendee, index) => {
-        return (
-          <Text key={index}>{attendee.first_name}</Text>
-        )
+      rsvpButton = this.props.allEvents.map(event => {
+        console.log(event)
+        if (event.id === this.props.currentEvent.id) {
+          if (JSON.stringify(event.attendees).includes(JSON.stringify(this.props.user))) {
+            return (
+              <TouchableOpacity onPress={() => this.attendEvent()} style={styles.RSVP__button}>
+                <Text>Unattend</Text>
+              </TouchableOpacity>
+            )
+          } else {
+            return (
+              <TouchableOpacity onPress={() => this.attendEvent()} style={styles.RSVP__button}>
+                <Text>RSVP</Text>
+              </TouchableOpacity>
+            )
+          }
+          }
       })
     }
-    const rsvpButton = this.props.allEvents.map(event => {
-      if (event.id === this.props.currentEvent.id) {
-        if (event.attendees.)
-      }
-    })
     return (
       <Animated.View style={[styles.contentContainer, translateStyle]}>
         <ScrollView style={styles.scrollView}>
@@ -154,9 +158,7 @@ export class AnimatedProfile extends Component<Props> {
           <TouchableOpacity style={styles.attendees__button}>
             <Text>Attendees</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.attendEvent()} style={styles.RSVP__button}>
-            <Text>RSVP</Text>
-          </TouchableOpacity>
+          {rsvpButton}
           <TouchableOpacity onPress={this.props.closeEvent} style={styles.event__close}>
             <Text>Close</Text>
           </TouchableOpacity>
