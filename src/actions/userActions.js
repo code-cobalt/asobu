@@ -100,6 +100,14 @@ const closeEvent = () => {
   return actionObj
 }
 
+const setSocket = socket => {
+  const actionObj = {
+    type: "SET_SOCKET",
+    socket
+  }
+  return actionObj
+}
+
 export {
   setUserName,
   setActiveView,
@@ -113,5 +121,6 @@ export {
   getEvents,
   showChat,
   showEvent,
-  closeEvent
+  closeEvent,
+  setSocket
 };
