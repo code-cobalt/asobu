@@ -29,7 +29,9 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_ALL_USERS': {
       const copiedState = Object.assign({}, state)
-      copiedState.allUsers = action.allUsers
+      copiedState.allUsers = action.allUsers.filter(
+        user => user.email !== state.user.email
+      )
       return copiedState
     }
     case 'SET_USER': {

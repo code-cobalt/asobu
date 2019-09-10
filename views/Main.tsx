@@ -21,9 +21,7 @@ class Main extends Component<Props> {
             query { Users {
                 id
                 first_name
-                last_name
                 email
-                phone_number
                 profile_photo
                 interests
                 exp
