@@ -14,7 +14,7 @@ const initialState = {
   showEvent: false,
   currentProfile: {},
   currentEvent: {},
-  isLoggedIn: false,
+  isLoggedIn: true,
   showLogin: true,
   showChat: false,
   currentChatMessages: [],

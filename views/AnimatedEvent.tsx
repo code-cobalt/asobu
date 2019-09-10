@@ -3,7 +3,7 @@ import { ScrollView, View, Text, Image, StyleSheet, TextInput, Dimensions, Anima
 import { connect } from "react-redux"
 import Badges from "../components/Badges"
 import axios from 'axios'
-import getApiUrl from '../environment.js'
+import { apiUrl } from '../environment.js'
 import gql from 'graphql-tag'
 import { print } from 'graphql'
 
@@ -43,6 +43,52 @@ interface Attendee {
 
 export class AnimatedProfile extends Component<Props> {
 
+  async unattendEvent() {
+    const unattendEventMutation = gql`
+      mutation UnattendEvent($eventId: String!, $userEmail: String!) {
+        UnattendEvent(eventId: $eventId, userEmail: $userEmail) 
+      }
+    `
+    await axios.post(`${apiUrl}/graphql`, {
+      query: print(unattendEventMutation),
+      variables: {
+        eventId: this.props.currentEvent.id,
+        userEmail: this.props.user.email
+      }
+    })
+    const res = await axios.post(`${apiUrl}/graphql`, {
+      query: `
+      query { Events {
+          id
+          name
+          description
+          cover_photo
+          creator {
+              first_name
+              email
+              profile_photo
+          }
+          start
+          end
+          location
+          limit
+          tags
+          attendees {
+              first_name
+              email
+              profile_photo
+          }
+          comments {
+              id
+          }
+          }
+      }
+  `
+  })
+  this.props.getEvents(res.data.data.Events)
+  console.log(this.props.allEvents[1].attendees)
+  }
+
   async attendEvent() {
     
     const attendEventMutation = gql`
@@ -50,7 +96,7 @@ export class AnimatedProfile extends Component<Props> {
         AttendEvent(eventId: $eventId, user: $user) 
       }
     `
-    await axios.post(`${getApiUrl()}/graphql`, {
+    await axios.post(`${apiUrl}/graphql`, {
       query: print(attendEventMutation),
       variables: {
         eventId: this.props.currentEvent.id,
@@ -61,7 +107,7 @@ export class AnimatedProfile extends Component<Props> {
         }
       }
     })
-    const res = await axios.post(`${getApiUrl()}/graphql`, {
+    const res = await axios.post(`${apiUrl}/graphql`, {
       query: `
       query { Events {
           id
@@ -127,11 +173,10 @@ export class AnimatedProfile extends Component<Props> {
     if (this.props.allEvents.length > 0) {
 
       rsvpButton = this.props.allEvents.map(event => {
-        console.log(event)
         if (event.id === this.props.currentEvent.id) {
           if (JSON.stringify(event.attendees).includes(JSON.stringify(this.props.user))) {
             return (
-              <TouchableOpacity onPress={() => this.attendEvent()} style={styles.RSVP__button}>
+              <TouchableOpacity onPress={() => this.unattendEvent()} style={styles.RSVP__button}>
                 <Text>Unattend</Text>
               </TouchableOpacity>
             )

@@ -3,10 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native"
 import { connect } from 'react-redux'
 
 const Event = props => {
-    let imageSrc = ''
-    if (typeof props.event.cover_photo === "string") {
-        imageSrc = props.event.cover_photo
-    }
+    
     return (
         <TouchableOpacity style={styles.event} onPress={() => props.showEvent(props.event)}>
             <View style={styles.photo__container}>
