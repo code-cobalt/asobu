@@ -20,30 +20,6 @@ interface State {
   password: string
 }
 
-interface Error {
-  err: string
-}
-
-interface ServerData {
-  email: string
-  first_name: string
-  last_name: string
-  phone: string
-  password_hash: null
-  interests: Array<string>
-  hobbies: Array<string>
-  exp: number
-  lvl: number
-  stats: Object
-  chats: Array<Object>
-  events: Array<Object>
-  err: Error
-}
-
-interface ServerResponse {
-  data: ServerData
-}
-
 interface Props {
   setUser: Function
   toggleAuth: Function
@@ -68,22 +44,6 @@ class Login extends Component<Props, State> {
           interests
           exp
           lvl
-          stats {
-            funny
-            intellectual
-            fun
-            kind
-            therapeutic
-            interesting
-          }
-          chats {
-            chat_id
-            participants {
-              first_name
-              email
-              profile_photo
-            }
-          }
           events {
             event_id
             is_creator

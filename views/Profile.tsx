@@ -3,24 +3,10 @@ import { View, Text, Image, StyleSheet, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import Badges from './../components/Badges'
 
-interface Stats {
-  funny: number
-  intellectual: number
-  fun: number
-  kind: number
-  therapeutic: number
-  interesting: number
-}
-
 interface UserLimited {
   first_name: string
   email: string
   profile_photo: string
-}
-
-interface Chat {
-  chat_id: number
-  participants: [UserLimited]
 }
 
 interface Event {
@@ -37,8 +23,6 @@ interface User {
   interests: [string]
   exp: number
   lvl: number
-  stats: Stats
-  chats: [Chat]
   events: [Event]
   sent_hangout_requests: [UserLimited]
   received_hangout_requests: [UserLimited]
