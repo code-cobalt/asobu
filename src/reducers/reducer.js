@@ -81,6 +81,14 @@ const reducer = (state = initialState, action) => {
       copiedState.allEvents = action.events
       return copiedState
     }
+    case 'CREATE_MESSAGE': {
+      const copiedState = Object.assign({}, state)
+      copiedState.currentChatMessages = [
+        ...state.currentChatMessages,
+        action.message
+      ]
+      return copiedState
+    }
     default: {
       return state
     }

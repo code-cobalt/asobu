@@ -96,6 +96,31 @@ const showChat = (messages, chatId) => {
   }
 }
 
+const postMessage = async message => {
+  const createMessageMutation = gql`
+    mutation CreateMessage($message: NewMessage!) {
+      CreateMessage(newMessage: $message) {
+        id
+        chat_id
+        from {
+          first_name
+          email
+          profile_photo
+        }
+        timestamp
+        content
+      }
+    }
+  `
+  const res = await axios.post(`${getApiUrl()}/graphql`, {
+    query: print(createMessageMutation),
+    variables: {
+      message
+    }
+  })
+  return res.data.data.CreateMessage
+}
+
 export {
   setUserName,
   setActiveView,
@@ -107,5 +132,6 @@ export {
   closeProfile,
   getChats,
   getEvents,
-  showChat
+  showChat,
+  postMessage
 }
