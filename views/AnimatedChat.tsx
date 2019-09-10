@@ -3,7 +3,9 @@ import { View, Text, Image, StyleSheet, TextInput, Dimensions, Animated, Easing,
 import { connect } from "react-redux"
 import ChatMessage from "../components/ChatMessage"
 import ChatInput from "../components/ChatInput"
-import getApiUrl from '../environment.js'
+import { getApiUrl } from '../environment.js'
+import { print } from "graphql"
+import gql from "graphql-tag"
 import axios from "axios"
 
 const { height, width } = Dimensions.get("window")
@@ -29,7 +31,28 @@ export class AnimatedChat extends Component {
   yTranslate = new Animated.Value(0)
 
   submitComment = async (message) => {
-    // We need to figure out how to make post requests with GraphQL to make this work
+    const messageQuery = gql`
+      mutation CreateMessage($NewMessage: NewMessage!) {
+        CreateMessage(newMessage: $NewMessage) {
+          id
+          chat_id
+          timestamp
+          content
+        }
+      }
+    `
+
+    /* const messageQuery = gql`
+      mutation CreateMessage($chat_id: Int, $content: String, $first_name: String, $email: String, $profile_photo: String) {
+        CreateMessage(newMessage: {chat_id: $chat_id, content: $content, from: {first_name: $first_name, email: $email, profile_photo: $profile_photo}}) {
+          id
+          chat_id
+          from
+          timestamp
+          content
+        }
+      }
+    ` */
     const newMessage = {
       chat_id: this.props.currentChatId,
       content: message,
@@ -41,15 +64,14 @@ export class AnimatedChat extends Component {
     }
 
     const comment = await axios.post(`${getApiUrl()}/graphql`, {
-      query: `
-      mutation { CreateMessage(newMessage: "${newMessage}") {
-        id
-        chat_id
-        from
-        timestamp
-        content
+      query: print(messageQuery),
+      variables: {
+        chat_id: this.props.currentChatId,
+        content: message,
+        first_name: "Lily",
+        email: "levans@email.com",
+        profile_photo: "https://i.pinimg.com/originals/a6/f4/f0/a6f4f037f9207e4eb4ec5a7cedfd2914.jpg"
       }
-    }`
     })
     console.log(comment)
   }
