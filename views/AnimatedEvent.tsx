@@ -10,7 +10,7 @@ import { print } from 'graphql'
 const { height, width } = Dimensions.get("window")
 
 interface Props {
-  user: User,
+  user: UserLimited,
   username: string,
   showEvent: boolean,
   setUserName: Function,
@@ -20,7 +20,7 @@ interface Props {
   currentEvent: Event
 }
 
-interface User {
+interface UserLimited {
   first_name: string,
   email: string,
   profile_photo: string
@@ -43,19 +43,7 @@ interface Attendee {
 
 export class AnimatedProfile extends Component<Props> {
 
-  async unattendEvent() {
-    const unattendEventMutation = gql`
-      mutation UnattendEvent($eventId: String!, $userEmail: String!) {
-        UnattendEvent(eventId: $eventId, userEmail: $userEmail) 
-      }
-    `
-    await axios.post(`${apiUrl}/graphql`, {
-      query: print(unattendEventMutation),
-      variables: {
-        eventId: this.props.currentEvent.id,
-        userEmail: this.props.user.email
-      }
-    })
+  async getAllEvents() {
     const res = await axios.post(`${apiUrl}/graphql`, {
       query: `
       query { Events {
@@ -86,7 +74,25 @@ export class AnimatedProfile extends Component<Props> {
   `
   })
   this.props.getEvents(res.data.data.Events)
-  console.log(this.props.allEvents[1].attendees)
+  }
+
+  async unattendEvent() {
+    const unattendEventMutation = gql`
+      mutation UnattendEvent($eventId: String!, $userEmail: String!) {
+        UnattendEvent(eventId: $eventId, userEmail: $userEmail) 
+      }
+    `
+    await axios.post(`${apiUrl}/graphql`, {
+      query: print(unattendEventMutation),
+      variables: {
+        eventId: this.props.currentEvent.id,
+        userEmail: this.props.user.email
+      }
+    })
+    const getEvents = () => {
+      this.getAllEvents()
+    }
+    getEvents()
   }
 
   async attendEvent() {
@@ -107,36 +113,10 @@ export class AnimatedProfile extends Component<Props> {
         }
       }
     })
-    const res = await axios.post(`${apiUrl}/graphql`, {
-      query: `
-      query { Events {
-          id
-          name
-          description
-          cover_photo
-          creator {
-              first_name
-              email
-              profile_photo
-          }
-          start
-          end
-          location
-          limit
-          tags
-          attendees {
-              first_name
-              email
-              profile_photo
-          }
-          comments {
-              id
-          }
-          }
-      }
-  `
-  })
-  this.props.getEvents(res.data.data.Events)
+    const getEvents = () => {
+      this.getAllEvents()
+    }
+    getEvents()
   }
 
   async componentDidUpdate() {
@@ -173,8 +153,10 @@ export class AnimatedProfile extends Component<Props> {
     if (this.props.allEvents.length > 0) {
 
       rsvpButton = this.props.allEvents.map(event => {
+        console.log(event.attendees)
+        console.log(this.props.user)
         if (event.id === this.props.currentEvent.id) {
-          if (JSON.stringify(event.attendees).includes(JSON.stringify(this.props.user))) {
+          if (JSON.stringify(event.attendees).includes(JSON.stringify(this.props.user.email))) {
             return (
               <TouchableOpacity onPress={() => this.unattendEvent()} style={styles.RSVP__button}>
                 <Text>Unattend</Text>

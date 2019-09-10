@@ -2,11 +2,7 @@ const initialState = {
   activeView: 'results',
   resultsSwitch: 'hangouts',
   username: '',
-  user: {
-    first_name: "Mark",
-    email: "mark@gmail.com",
-    profile_photo: "This is a photo"
-  },
+  user: {},
   allUsers: [],
   allEvents: [],
   chats: [],
@@ -14,7 +10,7 @@ const initialState = {
   showEvent: false,
   currentProfile: {},
   currentEvent: {},
-  isLoggedIn: true,
+  isLoggedIn: false,
   showLogin: true,
   showChat: false,
   currentChatMessages: [],
