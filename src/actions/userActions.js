@@ -1,93 +1,129 @@
-const setUserName = data => {
-  const actionObj = {
+import axios from 'axios'
+import { apiUrl } from '../../environment.js'
+import gql from 'graphql-tag'
+import { print } from 'graphql'
+
+const setUserName = username => {
+  return {
     type: 'SET_USERNAME',
-    username: data
+    username
   }
-  return actionObj
 }
 
 const setActiveView = data => {
-  const actionObj = {
+  return {
     type: 'SET_ACTIVE_VIEW',
     activeView: data
   }
-  return actionObj
 }
 
 const setAllUsers = data => {
-  const actionObj = {
+  return {
     type: 'SET_ALL_USERS',
     allUsers: data
   }
-  return actionObj
 }
 
 const setUser = user => {
-  const actionObj = {
-    type: "SET_USER",
+  return {
+    type: 'SET_USER',
     user
   }
-  return actionObj
 }
 
 const toggleAuth = () => {
-  const actionObj = {
-    type: "TOGGLE_AUTH"
+  return {
+    type: 'TOGGLE_AUTH'
   }
-  return actionObj
 }
 
 const toggleResultsView = activeView => {
-  const actionObj = {
-    type: "TOGGLE_RESULTS_VIEW",
+  return {
+    type: 'TOGGLE_RESULTS_VIEW',
     activeView
   }
-  return actionObj
 }
 
 const showProfile = profile => {
-  const actionObj = {
-    type: "SHOW_PROFILE",
+  return {
+    type: 'SHOW_PROFILE',
     profile
   }
-  return actionObj
 }
 
 const closeProfile = () => {
-  const actionObj = {
-    type: "CLOSE_PROFILE"
+  return {
+    type: 'CLOSE_PROFILE'
   }
-  return actionObj
 }
 
-const getChats = chats => {
-  const actionObj = {
-    type: "GET_CHATS",
-    chats
-  }
-  return actionObj
+const getChats = async userEmail => {
+  const userChatsQuery = gql`
+    query User($userEmail: String!) {
+      User(userEmail: $userEmail) {
+        chats {
+          chat_id
+          participants {
+            first_name
+            email
+            profile_photo
+          }
+        }
+      }
+    }
+  `
+  const userChats = await axios.post(`${apiUrl}/graphql`, {
+    query: print(userChatsQuery),
+    variables: {
+      userEmail
+    }
+  })
+  return userChats.data.data.User.chats
 }
 
 const getEvents = events => {
-  const actionObj = {
-    type: "GET_EVENTS",
+  return {
+    type: 'GET_EVENTS',
     events
   }
-  return actionObj
 }
 
-const showChat = (chat, id) => {
-  const actionObj = {
-    type: "SHOW_CHAT",
-    chat,
-    id
+const showChat = (messages, chatId) => {
+  return {
+    type: 'SHOW_CHAT',
+    messages,
+    chatId
   }
-  return actionObj
+}
+
+const postMessage = async message => {
+  const createMessageMutation = gql`
+    mutation CreateMessage($message: NewMessage!) {
+      CreateMessage(newMessage: $message) {
+        id
+        chat_id
+        from {
+          first_name
+          email
+          profile_photo
+        }
+        timestamp
+        content
+      }
+    }
+  `
+  const res = await axios.post(`${apiUrl}/graphql`, {
+    query: print(createMessageMutation),
+    variables: {
+      message
+    }
+  })
+  return res.data.data.CreateMessage
 }
 
 const showEvent = event => {
   const actionObj = {
-    type: "SHOW_EVENT",
+    type: 'SHOW_EVENT',
     event
   }
   return actionObj
@@ -95,7 +131,7 @@ const showEvent = event => {
 
 const closeEvent = () => {
   const actionObj = {
-    type: "CLOSE_Event"
+    type: 'CLOSE_Event'
   }
   return actionObj
 }
@@ -112,6 +148,7 @@ export {
   getChats,
   getEvents,
   showChat,
+  postMessage,
   showEvent,
   closeEvent
-};
+}

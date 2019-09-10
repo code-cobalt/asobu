@@ -102,7 +102,7 @@ Remember to **always** pull from the super master before pushing and making a PR
   - profile_photo (file)
   - tags (array of strings)
   - exp (integer)
-  - level (integer)
+  - lvl (integer)
   - stats (object)
     - funny (int)
     - intellectual (int)

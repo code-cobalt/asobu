@@ -1,5 +1,3 @@
-import { setUserName, setActiveView, setUser, toggleAuth, toggleResultsView, showProfile, closeProfile, getChats, getEvents, showEvent, closeEvent, showChat } from '../actions/userActions'
-
 const initialState = {
   activeView: 'results',
   resultsSwitch: 'hangouts',
@@ -19,9 +17,8 @@ const initialState = {
   isLoggedIn: false,
   showLogin: true,
   showChat: false,
-  currentChat: [],
-  currentChatId: ""
-
+  currentChatMessages: [],
+  currentChatId: 0
 }
 
 const reducer = (state = initialState, action) => {
@@ -38,7 +35,9 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_ALL_USERS': {
       const copiedState = Object.assign({}, state)
-      copiedState.allUsers = action.allUsers
+      copiedState.allUsers = action.allUsers.filter(
+        user => user.email !== state.user.email
+      )
       return copiedState
     }
     case 'SET_USER': {
@@ -72,30 +71,45 @@ const reducer = (state = initialState, action) => {
       copiedState.showProfile = false
       return copiedState
     }
-    case 'GET_CHATS': {
+    case 'SET_CHATS': {
       const copiedState = Object.assign({}, state)
       copiedState.chats = [...action.chats]
       return copiedState
     }
-    case "SHOW_CHAT": {
-      const copiedState = Object.assign({}, state)
-      copiedState.currentChat = [...action.chat]
-      copiedState.currentChatId = action.id
-      copiedState.showChat = true
-      return copiedState
+    case 'SHOW_CHAT': {
+      return {
+        ...state,
+        currentChatMessages: [...action.messages],
+        currentChatId: action.chatId,
+        showChat: true
+      }
     }
-    case "GET_EVENTS": {
+    case 'CLOSE_CHAT': {
+      return { ...state, showChat: false }
+    }
+    case 'GET_EVENTS': {
       const copiedState = Object.assign({}, state)
       copiedState.allEvents = action.events
       return copiedState
     }
-    case "SHOW_EVENT": {
+    case 'CREATE_MESSAGE': {
       const copiedState = Object.assign({}, state)
-      copiedState.currentEvent = Object.assign(copiedState.currentEvent, action.event)
+      copiedState.currentChatMessages = [
+        ...state.currentChatMessages,
+        action.message
+      ]
+      return copiedState
+    }
+    case 'SHOW_EVENT': {
+      const copiedState = Object.assign({}, state)
+      copiedState.currentEvent = Object.assign(
+        copiedState.currentEvent,
+        action.event
+      )
       copiedState.showEvent = true
       return copiedState
     }
-    case "CLOSE_EVENT": {
+    case 'CLOSE_EVENT': {
       const copiedState = Object.assign({}, state)
       copiedState.currentEvent = {}
       copiedState.showEvent = false

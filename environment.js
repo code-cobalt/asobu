@@ -1,10 +1,7 @@
 //replace with your express server IP Address + :3000
-const localhost = 'http://192.168.10.59:3000'
+const ip = '192.168.10.86'
 
-export const getApiUrl = () => {
-  if (__DEV__) {
-    return localhost
-  }
-}
+const apiUrl = `http://${ip}:3000`
+const sockethost = `ws://${ip}:3001`
 
-export const sockethost = "ws://192.168.10.59:3001"
+module.exports = { apiUrl, sockethost }
