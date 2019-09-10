@@ -97,12 +97,74 @@ app.post('/upload', parser.single('image'), (req, res) => {
 
 //This is the websocket that wraps the server. A websocket is basically a live connection between server and client that are actively
 //listening to each other.
-const ws = createServer(app)
-ws.on('message', (message: string) => {
-  console.log(message)
+const clients = []
+const WebSocket = require('ws')
+const wss = new WebSocket.Server({ port: 3001 })
+const l0 = new RegExp(/l0/)
+
+wss.on('connection', (ws) => {
+  ws.on('message', (msg) => {
+    console.log(msg)
+    if (l0.test(msg)) {
+      const user = msg.split(' ')
+      let isLogged = false
+      for (const client of clients) {
+        if (client.email === user[1]) isLogged = true
+      }
+      if (!isLogged) clients.push({ email: user[1], socket: ws })
+      console.log(clients)
+    }
+  })
 })
 
+const ws = createServer(app)
+// const graphSocketPort = 3001
+// const graphSocket = require('websocket').server
+// const graphServer = createServer(app)
+// graphServer.listen(graphSocketPort, () => {
+//   console.log(`Listening on ${graphSocketPort}`)
+
+//   graphServer.on('request', (request) => {
+//     console.log('Incoming Request')
+//   })
+
+//   graphServer.on('connection', (connection) => {
+//     console.log('Connection Established')
+//     connection.on('message', (message) => console.log(message))
+//   })
+
+//   graphServer.on('open', (listener) => {
+//     console.log('Listener Active')
+//   })
+
+//   new SubscriptionServer(
+//     {
+//       execute,
+//       subscribe,
+//       schema
+//     },
+//     {
+//       server: graphServer,
+//       path: '/subscriptions'
+//     }
+//   )
+// })
+// const graphSocketServer = new graphSocket({ httpServer: graphServer })
+
 ws.listen(port, () => {
+  ws.on('request', (request) => {
+    console.log('Incoming Connection')
+    // const connection = request.accept(null, request.origin)
+  })
+  ws.on('connection', (connection) => {
+    console.log('Connected')
+  })
+  ws.on('listening', (listener) => {
+    console.log('Listening')
+  })
+  ws.on('message', (message: string) => {
+    console.log(message)
+  })
   console.log(`Listening on ${port}`)
   new SubscriptionServer(
     {
