@@ -4,7 +4,6 @@ import {
   Text,
   Image,
   StyleSheet,
-  TextInput,
   Dimensions,
   Animated,
   Easing,
@@ -13,10 +12,7 @@ import {
 import { connect } from 'react-redux'
 import ChatMessage from '../components/ChatMessage'
 import ChatInput from '../components/ChatInput'
-import getApiUrl from '../environment.js'
-import { print } from 'graphql'
 import gql from 'graphql-tag'
-import axios from 'axios'
 
 const { height, width } = Dimensions.get('window')
 
@@ -36,7 +32,7 @@ interface Props {
   showChat: boolean
   currentChatMessages: Array<Message>
   currentChatId: number
-  currentUser: UserLimited
+  currentUserLimited: UserLimited
 }
 
 class AnimatedChat extends Component<Props> {
@@ -69,41 +65,6 @@ class AnimatedChat extends Component<Props> {
         }
       }
     `
-
-    /* const messageQuery = gql`
-      mutation CreateMessage($chat_id: Int, $content: String, $first_name: String, $email: String, $profile_photo: String) {
-        CreateMessage(newMessage: {chat_id: $chat_id, content: $content, from: {first_name: $first_name, email: $email, profile_photo: $profile_photo}}) {
-          id
-          chat_id
-          from
-          timestamp
-          content
-        }
-      }
-    ` */
-    // const newMessage = {
-    //   chat_id: this.props.currentChatId,
-    //   content: message,
-    //   from: {
-    //     first_name: 'Lily',
-    //     email: 'levans@email.com',
-    //     profile_photo:
-    //       'https://i.pinimg.com/originals/a6/f4/f0/a6f4f037f9207e4eb4ec5a7cedfd2914.jpg'
-    //   }
-    // }
-
-    // const comment = await axios.post(`${getApiUrl()}/graphql`, {
-    //   query: print(messageQuery),
-    //   variables: {
-    //     chat_id: this.props.currentChatId,
-    //     content: message,
-    //     first_name: 'Lily',
-    //     email: 'levans@email.com',
-    //     profile_photo:
-    //       'https://i.pinimg.com/originals/a6/f4/f0/a6f4f037f9207e4eb4ec5a7cedfd2914.jpg'
-    //   }
-    // })
-    // console.log(comment)
   }
 
   render() {
@@ -119,13 +80,21 @@ class AnimatedChat extends Component<Props> {
         <ScrollView style={styles.chat__messages}>
           {this.props.currentChatMessages.length > 0 &&
             this.props.currentChatMessages.map(message => {
-              return <ChatMessage message={message} />
+              return (
+                <ChatMessage
+                  message={message}
+                  currentUserLimited={this.props.currentUserLimited}
+                />
+              )
             })}
         </ScrollView>
 
-        {/* <View>
-          <ChatInput submitComment={this.submitComment} />
-        </View> */}
+        <View>
+          <ChatInput
+            currentUserLimited={this.props.currentUserLimited}
+            chatId={this.props.currentChatId}
+          />
+        </View>
       </Animated.View>
     )
   }
@@ -148,7 +117,11 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     showChat: state.showChat,
-    currentUser: state.user,
+    currentUserLimited: {
+      email: state.user.email,
+      first_name: state.user.first_name,
+      profile_photo: state.user.profile_photo
+    },
     currentChatMessages: state.currentChatMessages,
     currentChatId: state.currentChatId
   }

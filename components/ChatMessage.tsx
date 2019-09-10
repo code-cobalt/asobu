@@ -5,7 +5,7 @@ const ChatMessage = props => {
   return (
     <View
       style={[
-        props.message.from.email === 'levans@email.com'
+        props.message.from.email === props.currentUserLimited.email
           ? styles.chat__user
           : styles.chat__friend
       ]}
