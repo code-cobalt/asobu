@@ -12,7 +12,7 @@ const initialState = {
   showEvent: false,
   currentProfile: {},
   currentEvent: {},
-  isLoggedIn: true,
+  isLoggedIn: false,
   showLogin: true,
   showChat: false,
   currentChat: [],
