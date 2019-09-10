@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+<<<<<<< HEAD
 import {
   View,
   Text,
@@ -13,6 +14,16 @@ import { connect } from 'react-redux'
 import ChatMessage from '../components/ChatMessage'
 import ChatInput from '../components/ChatInput'
 import gql from 'graphql-tag'
+=======
+import { View, Text, Image, StyleSheet, TextInput, Dimensions, Animated, Easing, ScrollView } from "react-native"
+import { connect } from "react-redux"
+import ChatMessage from "../components/ChatMessage"
+import ChatInput from "../components/ChatInput"
+import { getApiUrl } from '../environment.js'
+import { print } from "graphql"
+import gql from "graphql-tag"
+import axios from "axios"
+>>>>>>> 29fb341446b61b2674d4a8f4e9a3486f7d668b32
 
 const { height, width } = Dimensions.get('window')
 

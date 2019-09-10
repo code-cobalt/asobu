@@ -121,6 +121,21 @@ const postMessage = async message => {
   return res.data.data.CreateMessage
 }
 
+const showEvent = event => {
+  const actionObj = {
+    type: 'SHOW_EVENT',
+    event
+  }
+  return actionObj
+}
+
+const closeEvent = () => {
+  const actionObj = {
+    type: 'CLOSE_Event'
+  }
+  return actionObj
+}
+
 export {
   setUserName,
   setActiveView,
@@ -133,5 +148,7 @@ export {
   getChats,
   getEvents,
   showChat,
-  postMessage
+  postMessage,
+  showEvent,
+  closeEvent
 }

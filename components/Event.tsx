@@ -1,11 +1,14 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native"
+import { connect } from 'react-redux'
 
 const Event = props => {
     return (
-        <TouchableOpacity style={styles.event}>
-            <View style={styles.event__photo}>
-                <Text>PHOTO GOES HERE</Text>
+        <TouchableOpacity style={styles.event} onPress={() => props.showEvent(props.event)}>
+            <View style={styles.photo__container}>
+                {props.event.name === "Quidditch After Party" && <Image source={require("../assets/quidditch.jpg")} style={styles.event__photo} />}
+                {props.event.name === "Language Exchange" && <Image source={require("../assets/language.jpg")} style={styles.event__photo} />}
+
             </View>
             <View style={styles.event__text}>
                 <Text style={styles.event__title}>{props.event.name}</Text>
@@ -33,10 +36,15 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "600"
     },
-    event__photo: {
+    photo__container: {
         height: 250,
         width: 300,
-        backgroundColor: "black",
+        borderRadius: 10
+    },
+    event__photo: {
+        flex: 1,
+        height: undefined,
+        width: undefined,
         borderRadius: 10
     },
     event__text: {
@@ -44,4 +52,15 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Event
+const mapDispatchToProps = dispatch => {
+	return {
+		showEvent: event => {
+			dispatch({
+				type: "SHOW_EVENT",
+				event
+			})
+		}
+	}
+}
+
+export default connect(null, mapDispatchToProps)(Event)

@@ -1,24 +1,32 @@
-import React from "react"
-import { Switch, StyleSheet } from "react-native"
+import React, { Component } from "react"
+import { Switch, StyleSheet, Animated } from "react-native"
 import { connect } from "react-redux"
 import SwitchSelector from "react-native-switch-selector"
 import Hangouts from './Hangouts'
 import Events from './Events'
 import AnimatedProfile from "./AnimatedProfile"
+import AnimatedEvent from  "./AnimatedEvent"
 
 const options = [
-    { label: "Hangouts", value: "hangouts" },
+    { label: "Hangout", value: "hangouts" },
     { label: "Events", value: "events" },
 ];
 
-const Results = props => {
-    return (
-        <>
-            <SwitchSelector options={options} initial={0} style={styles.results__switch} onPress={value => props.toggleResultsView(value)} />
-            {props.resultsSwitch === "hangouts" ? <Hangouts /> : <Events />}
-            <AnimatedProfile />
-        </>
-    )
+export default class Results extends Component {
+    componentDidMount() {
+        this.props.toggleResultsView("hangouts")
+     }
+
+    render() {
+        return (
+            <>
+                <SwitchSelector options={options} initial={0} style={styles.results__switch} onPress={value => this.props.toggleResultsView(value)} />
+                {this.props.resultsSwitch === "hangouts" ? <Hangouts /> : <Events />}
+                <AnimatedProfile />
+                <AnimatedEvent />
+            </>
+        )
+    }
 }
 
 const styles = StyleSheet.create({

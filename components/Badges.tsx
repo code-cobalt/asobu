@@ -4,16 +4,17 @@ import { View, Text, Image, StyleSheet, TextInput } from "react-native"
 export default class Badges extends Component {
   render() {
     const images = ["../assets/Badge1.png", "../assets/Badge2.png", "../assets/Badge3.png"]
-    const badges = images.map((image, index) => {
-      return (
-        <Image key={index} source={require("../assets/Badge1.png")} style={{ height: 50, width: 50 }}></Image>
-      )
-    })
+    // const badges = images.map((image, index) => {
+    //   return (
+    //       <Image key={index} source={require("../assets/Badge3.png")} style={{ height: 40, width: 40 }}></Image>
+    //   )
+    // })
     return (
       <>
-        {badges}
+        <Image source={require("../assets/Badge1.png")} style={{ height: 40, width: 40 }}></Image>
+        <Image source={require("../assets/Badge3.png")} style={{ height: 40, width: 40 }}></Image>
+        <Image source={require("../assets/Badge2.png")} style={{ height: 40, width: 40 }}></Image>
       </>
-      // <Image source={require("./../assets/Badge2.png")} style={{height: 50, width: 50}}></Image>
     )
   }
 }
