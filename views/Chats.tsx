@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TextInput, Animated } from "react-native
 import ChatList from "../components/ChatList"
 import AnimatedChat from "./AnimatedChat"
 import axios from "axios"
-import getApiUrl from '../environment.js'
+import { getApiUrl } from '../environment.js'
 import { connect } from "react-redux"
 
 interface Props {

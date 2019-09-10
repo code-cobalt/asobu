@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { connect } from "react-redux"
-import getApiUrl from '../environment.js'
+import { getApiUrl } from '../environment.js'
 import axios from "axios";
 
 

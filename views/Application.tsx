@@ -3,7 +3,7 @@ import Main from "./Main"
 import Navbar from "../components/Navbar"
 import { Alert } from "react-native"
 import { connect } from 'react-redux'
-import getApiUrl from '../environment.js'
+import { sockethost } from '../environment.js'
 import { print } from "graphql"
 import gql from "graphql-tag"
 import axios from "axios"
@@ -13,13 +13,8 @@ interface Props {
 }
 
 class Application extends React.Component<Props> {
-    /* constructor(props) {
-        super(props)
-        
-    }
- */
     componentDidMount() {
-        const connection = new WebSocket("ws://192.168.10.127:3001")
+        const connection = new WebSocket(sockethost)
         connection.onopen = () => {
             console.log("Connection Open")
             connection.send(`l0 ${this.props.email}`)

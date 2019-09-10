@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import getApiUrl from '../environment.js'
+import { getApiUrl } from '../environment.js'
 import gql from 'graphql-tag'
 import { print } from 'graphql'
 /* import AsyncStorage from '@react-native-community/async-storage'; */
