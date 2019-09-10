@@ -1,38 +1,48 @@
 import React, { Component } from 'react'
-import { View, Text, Image, StyleSheet, TextInput, Dimensions, Animated, Easing, TouchableOpacity } from "react-native"
-import { connect } from "react-redux"
-import Badges from "../components/Badges"
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TextInput,
+  Dimensions,
+  Animated,
+  Easing,
+  TouchableOpacity
+} from 'react-native'
+import { connect } from 'react-redux'
+import Badges from '../components/Badges'
 
-const { height, width } = Dimensions.get("window")
+const { height, width } = Dimensions.get('window')
 
 interface Props {
-  username: string,
-  showProfile: boolean,
-  setUserName: Function,
+  username: string
+  showProfile: boolean
+  setUserName: Function
   closeProfile: Function
   currentProfile: User
 }
 
 interface User {
-  first_name: string,
-  profile_photo: string,
-  lvl: string
+  first_name: string
+  profile_photo: string
+  lvl: number
 }
 
 export class AnimatedProfile extends Component<Props> {
   componentDidUpdate() {
     if (this.props.showProfile) {
-      this.yTranslate.setValue(0);
+      this.yTranslate.setValue(0)
       Animated.spring(this.yTranslate, {
         toValue: 1,
         friction: 6
-      }).start();
+      }).start()
     } else {
       Animated.timing(this.yTranslate, {
         toValue: 0,
         duration: 200,
         easing: Easing.linear
-      }).start();
+      }).start()
     }
   }
 
@@ -54,7 +64,10 @@ export class AnimatedProfile extends Component<Props> {
         <View style={styles.profile}>
           <View>
             <Text>Level {this.props.currentProfile.lvl}</Text>
-            <Image source={{ uri: this.props.currentProfile.profile_photo }} style={styles.profile__photo} />
+            <Image
+              source={{ uri: this.props.currentProfile.profile_photo }}
+              style={styles.profile__photo}
+            />
           </View>
           <View>
             <Text>{this.props.currentProfile.first_name}</Text>
@@ -67,11 +80,11 @@ export class AnimatedProfile extends Component<Props> {
           </View>
           <View>
             <Text>Hobbies</Text>
-            <TextInput value={"My hobbies are bla bla bla bla"} />
+            <TextInput value={'My hobbies are bla bla bla bla'} />
           </View>
           <View>
             <Text>Interests</Text>
-            <TextInput value={"My interest are bla bla bla bla"} />
+            <TextInput value={'My interest are bla bla bla bla'} />
           </View>
           <View>
             <Text>All Badges</Text>
@@ -79,11 +92,13 @@ export class AnimatedProfile extends Component<Props> {
               <Badges />
             </View>
           </View>
-          <TouchableOpacity onPress={this.props.closeProfile} style={styles.profile__close}>
+          <TouchableOpacity
+            onPress={this.props.closeProfile}
+            style={styles.profile__close}
+          >
             <Text>Close</Text>
           </TouchableOpacity>
         </View>
-
       </Animated.View>
     )
   }
@@ -91,28 +106,28 @@ export class AnimatedProfile extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
+    position: 'absolute',
     height: height,
     width: width,
     bottom: -height,
-    backgroundColor: "#fff",
-    justifyContent: "center"
+    backgroundColor: '#fff',
+    justifyContent: 'center'
   },
   profile__photo: {
     height: 50,
     width: 50
   },
   profile__close: {
-    width: "50%",
-    backgroundColor: "#73d961",
+    width: '50%',
+    backgroundColor: '#73d961',
     padding: 15,
     borderRadius: 50,
     marginTop: 15
   },
   profile__badges: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
@@ -128,10 +143,13 @@ const mapDispatchToProps = dispatch => {
   return {
     closeProfile: () => {
       dispatch({
-        type: "CLOSE_PROFILE"
+        type: 'CLOSE_PROFILE'
       })
     }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AnimatedProfile)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnimatedProfile)
