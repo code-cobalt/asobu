@@ -1,5 +1,9 @@
 import React from 'react'
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { connect } from "react-redux"
+import getApiUrl from '../environment.js'
+import axios from "axios";
+
 
 interface Props {
   chat: Chat
@@ -17,8 +21,27 @@ interface Participant {
 }
 
 const Chat: React.FunctionComponent<Props> = props => {
+  const getChat = async () => {
+    const chat = await axios.post(`${getApiUrl()}/graphql`, {
+      query: `
+        query { Chats(chatIds: [${props.chat.chat_id}]) {
+            messages {
+              content
+              timestamp
+              from {
+                first_name
+                profile_photo
+                email
+              }
+            }
+          }
+        }
+      `
+    })
+    props.showChat(chat.data.data.Chats, props.chat.chat_id)
+  }
   return (
-    <TouchableOpacity style={styles.chat}>
+    <TouchableOpacity style={styles.chat} onPress={getChat}>
       {props.chat.participants.map(participant => {
         return <Image key={participant.email} source={{ uri: participant.profile_photo }} style={styles.chat__image}></Image>
       })}
@@ -64,4 +87,16 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Chat
+const mapDispatchToProps = dispatch => {
+  return {
+    showChat: (chat, id) => {
+      dispatch({
+        type: "SHOW_CHAT",
+        chat,
+        id
+      })
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Chat)

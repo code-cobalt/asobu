@@ -10,6 +10,7 @@ import {
   getEvents
 } from '../actions/userActions'
 
+
 const initialState = {
   activeView: 'results',
   resultsSwitch: 'hangouts',
@@ -20,8 +21,12 @@ const initialState = {
   chats: [],
   showProfile: false,
   currentProfile: {},
-  isLoggedIn: false,
-  showLogin: true
+  isLoggedIn: true,
+  showLogin: true,
+  showChat: false,
+  currentChat: [],
+  currentChatId: ""
+
 }
 
 const reducer = (state = initialState, action) => {
@@ -77,7 +82,14 @@ const reducer = (state = initialState, action) => {
       copiedState.chats = [...action.chats]
       return copiedState
     }
-    case 'GET_EVENTS': {
+    case "SHOW_CHAT": {
+      const copiedState = Object.assign({}, state)
+      copiedState.currentChat = [...action.chat]
+      copiedState.currentChatId = action.id
+      copiedState.showChat = true
+      return copiedState
+    }
+    case "GET_EVENTS": {
       const copiedState = Object.assign({}, state)
       copiedState.allEvents = action.events
       return copiedState
