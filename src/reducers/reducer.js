@@ -82,7 +82,7 @@ const reducer = (state = initialState, action) => {
     }
     case "SHOW_EVENT": {
       const copiedState = Object.assign({}, state)
-      copiedState.currentEvent = Object.assign(copiedState.currentEvent, action.profile)
+      copiedState.currentEvent = Object.assign(copiedState.currentEvent, action.event)
       copiedState.showEvent = true
       return copiedState
     }
