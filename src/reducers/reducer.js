@@ -4,31 +4,7 @@ const initialState = {
   username: '',
   sentHangoutRequests: [],
   receivedHangoutRequests: [],
-  user: {
-    email: 'levans@email.com',
-    events: [
-      {
-        event_id: '1',
-        is_creator: false
-      },
-      {
-        event_id: '5d775747ee6d68798372a0c0',
-        is_creator: false
-      }
-    ],
-    exp: 23,
-    first_name: 'Lily',
-    id: '5d775748ee6d68798372a0cd',
-    imei: null,
-    interests: [],
-    last_name: 'Evans',
-    lvl: 2,
-    phone_number: '+447911654321',
-    profile_photo:
-      'https://i.pinimg.com/originals/a6/f4/f0/a6f4f037f9207e4eb4ec5a7cedfd2914.jpg',
-    received_hangout_requests: [],
-    sent_hangout_requests: []
-  },
+  user: {},
   allUsers: [],
   allEvents: [],
   chats: [],
@@ -36,7 +12,7 @@ const initialState = {
   showEvent: false,
   currentProfile: {},
   currentEvent: {},
-  isLoggedIn: true,
+  isLoggedIn: false,
   showLogin: true,
   showChat: false,
   currentChatMessages: [],
