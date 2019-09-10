@@ -26,6 +26,7 @@ const Chat: React.FunctionComponent<Props> = props => {
       query: `
         query { Chats(chatIds: [${props.chat.chat_id}]) {
             messages {
+              id
               content
               timestamp
               from {

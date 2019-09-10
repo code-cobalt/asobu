@@ -76,6 +76,9 @@ const reducer = (state = initialState, action) => {
         showChat: true
       }
     }
+    case 'CLOSE_CHAT': {
+      return { ...state, showChat: false }
+    }
     case 'GET_EVENTS': {
       const copiedState = Object.assign({}, state)
       copiedState.allEvents = action.events

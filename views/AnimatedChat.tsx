@@ -33,6 +33,7 @@ interface Props {
   currentChatMessages: Array<Message>
   currentChatId: number
   currentUserLimited: UserLimited
+  goBack: Function
 }
 
 class AnimatedChat extends Component<Props> {
@@ -77,11 +78,15 @@ class AnimatedChat extends Component<Props> {
 
     return (
       <Animated.View style={[styles.container, translateStyle]}>
+        <Text style={styles.back} onPress={() => this.props.goBack()}>
+          {'<'}
+        </Text>
         <ScrollView style={styles.chat__messages}>
           {this.props.currentChatMessages.length > 0 &&
             this.props.currentChatMessages.map(message => {
               return (
                 <ChatMessage
+                  key={message.id}
                   message={message}
                   currentUserLimited={this.props.currentUserLimited}
                 />
@@ -101,6 +106,11 @@ class AnimatedChat extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  back: {
+    marginTop: 25,
+    marginLeft: 10,
+    fontSize: 20
+  },
   container: {
     position: 'absolute',
     height: (height / 100) * 91.7,
@@ -129,9 +139,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    closeProfile: () => {
+    goBack: () => {
       dispatch({
-        type: 'CLOSE_PROFILE'
+        type: 'CLOSE_CHAT'
       })
     }
   }
