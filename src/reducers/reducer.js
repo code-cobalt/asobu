@@ -63,7 +63,7 @@ const reducer = (state = initialState, action) => {
       copiedState.showProfile = false
       return copiedState
     }
-    case 'GET_CHATS': {
+    case 'SET_CHATS': {
       const copiedState = Object.assign({}, state)
       copiedState.chats = [...action.chats]
       return copiedState
