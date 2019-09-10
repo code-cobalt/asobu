@@ -9,6 +9,7 @@ const initialState = {
   showProfile: false,
   showEvent: false,
   currentProfile: {},
+  currentEvent: {},
   isLoggedIn: false,
   showLogin: true,
   showChat: false,
