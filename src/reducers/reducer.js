@@ -11,8 +11,8 @@ const initialState = {
   isLoggedIn: false,
   showLogin: true,
   showChat: false,
-  currentChat: [],
-  currentChatId: ''
+  currentChatMessages: [],
+  currentChatId: 0
 }
 
 const reducer = (state = initialState, action) => {
@@ -69,11 +69,12 @@ const reducer = (state = initialState, action) => {
       return copiedState
     }
     case 'SHOW_CHAT': {
-      const copiedState = Object.assign({}, state)
-      copiedState.currentChat = [...action.chat]
-      copiedState.currentChatId = action.id
-      copiedState.showChat = true
-      return copiedState
+      return {
+        ...state,
+        currentChatMessages: [...action.messages],
+        currentChatId: action.chatId,
+        showChat: true
+      }
     }
     case 'GET_EVENTS': {
       const copiedState = Object.assign({}, state)
