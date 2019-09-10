@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TextInput, Dimensions, Animated, Easing,
 import { connect } from "react-redux"
 import ChatMessage from "../components/ChatMessage"
 import ChatInput from "../components/ChatInput"
-import getApiUrl from '../environment.js'
+import { getApiUrl } from '../environment.js'
 import { print } from "graphql"
 import gql from "graphql-tag"
 import axios from "axios"

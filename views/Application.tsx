@@ -1,42 +1,34 @@
 import React from 'react'
 import Main from "./Main"
 import Navbar from "../components/Navbar"
+import { Alert } from "react-native"
 import { connect } from 'react-redux'
-import getApiUrl from '../environment.js'
+import { sockethost } from '../environment.js'
+import { print } from "graphql"
+import gql from "graphql-tag"
+import axios from "axios"
 
-interface Socket {
-    ws: WebSocket,
-    open: boolean,
-    connected: boolean
+interface Props {
+    email: string
 }
 
-class Application extends React.Component<{}, Socket> {
-    constructor(props) {
-        super(props)
-        this.state = {
-            open: false,
-            connected: false,
-            ws: new WebSocket(getApiUrl())
-        }
-        this.state.ws.onopen = () => {
-            this.setState({ connected: true })
-            console.log('Client Socket Connected')
-        }
-        this.emit = this.emit.bind(this)
-    }
+class Application extends React.Component<Props> {
     componentDidMount() {
-        this.state.ws.OPEN
-    }
+        const connection = new WebSocket(sockethost)
+        connection.onopen = () => {
+            console.log("Connection Open")
+            connection.send(`l0 ${this.props.email}`)
 
-    emit() {
-        this.setState(prevState => {
-            open: true
-        })
-        if (this.state.connected) {
-            this.state.ws.send('Message from client')
         }
-
+        connection.onerror = error => {
+            console.log(error)
+        }
+        connection.onmessage = e => {
+            console.log(e.data)
+            Alert.alert(e.data)
+        }
     }
+
     render() {
         return (
             <>
@@ -46,15 +38,10 @@ class Application extends React.Component<{}, Socket> {
     }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
     return {
-        setSocket: ws => {
-            dispatch({
-                type: 'SET_SOCKET',
-                ws
-            })
-        }
+        email: state.user.email
     }
 }
 
-export default connect(null, mapDispatchToProps)(Application)
+export default connect(mapStateToProps, null)(Application)
