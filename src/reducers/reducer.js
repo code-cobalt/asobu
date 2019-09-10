@@ -1,20 +1,3 @@
-import {
-  setUserName,
-  setActiveView,
-  setUser,
-  toggleAuth,
-  toggleResultsView,
-  showProfile,
-  closeProfile,
-  getChats,
-  getEvents,
-  showChat
-} from '../actions/userActions'
-<<<<<<< HEAD
-=======
-
->>>>>>> ab25a48d90e94d60afd98a91e0896ac8410d3c6f
-
 const initialState = {
   activeView: 'results',
   resultsSwitch: 'hangouts',
@@ -25,20 +8,11 @@ const initialState = {
   chats: [],
   showProfile: false,
   currentProfile: {},
-<<<<<<< HEAD
   isLoggedIn: false,
   showLogin: true,
   showChat: false,
   currentChat: [],
   currentChatId: ''
-=======
-  isLoggedIn: true,
-  showLogin: true,
-  showChat: false,
-  currentChat: [],
-  currentChatId: ""
-
->>>>>>> ab25a48d90e94d60afd98a91e0896ac8410d3c6f
 }
 
 const reducer = (state = initialState, action) => {
@@ -94,22 +68,14 @@ const reducer = (state = initialState, action) => {
       copiedState.chats = [...action.chats]
       return copiedState
     }
-<<<<<<< HEAD
     case 'SHOW_CHAT': {
-=======
-    case "SHOW_CHAT": {
->>>>>>> ab25a48d90e94d60afd98a91e0896ac8410d3c6f
       const copiedState = Object.assign({}, state)
       copiedState.currentChat = [...action.chat]
       copiedState.currentChatId = action.id
       copiedState.showChat = true
       return copiedState
     }
-<<<<<<< HEAD
     case 'GET_EVENTS': {
-=======
-    case "GET_EVENTS": {
->>>>>>> ab25a48d90e94d60afd98a91e0896ac8410d3c6f
       const copiedState = Object.assign({}, state)
       copiedState.allEvents = action.events
       return copiedState
