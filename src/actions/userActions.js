@@ -158,11 +158,5 @@ export {
   showChat,
   postMessage,
   showEvent,
-<<<<<<< HEAD
-  closeEvent,
-  setSocket
-};
-=======
   closeEvent
 }
->>>>>>> 6ee78d418a50449cf2531defbeb2c09ca724ecf1
