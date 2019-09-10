@@ -14,7 +14,6 @@ import { connect } from 'react-redux'
 
 interface Props {
   userEmail: string
-  chats: [number]
   setChats: Function
 }
 
@@ -43,8 +42,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    userEmail: state.user.email,
-    chats: state.chats
+    userEmail: state.user.email
   }
 }
 

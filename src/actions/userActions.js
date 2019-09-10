@@ -86,7 +86,7 @@ const getChats = async userEmail => {
       userEmail
     }
   })
-  return userChats.data.data.User
+  return userChats.data.data.User.chats
 }
 
 const getEvents = events => {
