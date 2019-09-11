@@ -23,6 +23,7 @@ interface UserLimited {
 }
 
 interface Message {
+  id: string
   content: string
   timestamp: Date
   from: UserLimited

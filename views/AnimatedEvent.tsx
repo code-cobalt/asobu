@@ -1,28 +1,39 @@
 import React, { Component } from 'react'
-import { ScrollView, View, Text, Image, StyleSheet, TextInput, Dimensions, Animated, Easing, TouchableOpacity } from "react-native"
-import { connect } from "react-redux"
-import Badges from "../components/Badges"
+import {
+  ScrollView,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TextInput,
+  Dimensions,
+  Animated,
+  Easing,
+  TouchableOpacity
+} from 'react-native'
+import { connect } from 'react-redux'
+import Badges from '../components/Badges'
 import axios from 'axios'
 import { apiUrl } from '../environment.js'
 import gql from 'graphql-tag'
 import { print } from 'graphql'
 
-const { height, width } = Dimensions.get("window")
+const { height, width } = Dimensions.get('window')
 
 interface Props {
-  user: UserLimited,
-  username: string,
-  showEvent: boolean,
-  setUserName: Function,
-  closeEvent: Function,
-  getEvents: Function,
-  allEvents: ObjectArray,
+  user: UserLimited
+  username: string
+  showEvent: boolean
+  setUserName: Function
+  closeEvent: Function
+  getEvents: Function
+  allEvents: ObjectArray
   currentEvent: Event
 }
 
 interface UserLimited {
-  first_name: string,
-  email: string,
+  first_name: string
+  email: string
   profile_photo: string
 }
 
@@ -36,8 +47,8 @@ interface Event {
   }
 
 interface Attendee {
-  first_name: string,
-  email: string,
+  first_name: string
+  email: string
   profile_photo: string
 }
 
@@ -49,7 +60,6 @@ interface Creator {
 
 
 export class AnimatedProfile extends Component<Props> {
-
   async getAllEvents() {
     const res = await axios.post(`${apiUrl}/graphql`, {
       query: `
@@ -79,14 +89,14 @@ export class AnimatedProfile extends Component<Props> {
           }
       }
   `
-  })
-  this.props.getEvents(res.data.data.Events)
+    })
+    this.props.getEvents(res.data.data.Events)
   }
 
   async unattendEvent() {
     const unattendEventMutation = gql`
       mutation UnattendEvent($eventId: String!, $userEmail: String!) {
-        UnattendEvent(eventId: $eventId, userEmail: $userEmail) 
+        UnattendEvent(eventId: $eventId, userEmail: $userEmail)
       }
     `
     await axios.post(`${apiUrl}/graphql`, {
@@ -103,10 +113,9 @@ export class AnimatedProfile extends Component<Props> {
   }
 
   async attendEvent() {
-    
     const attendEventMutation = gql`
       mutation AttendEvent($eventId: String!, $user: UserLimitedInput!) {
-        AttendEvent(eventId: $eventId, user: $user) 
+        AttendEvent(eventId: $eventId, user: $user)
       }
     `
     await axios.post(`${apiUrl}/graphql`, {
@@ -156,12 +165,15 @@ export class AnimatedProfile extends Component<Props> {
     })
     let translateStyle = { transform: [{ translateY: modalMoveY }] }
 
-    let rsvpButton;
+    let rsvpButton
     if (this.props.allEvents.length > 0) {
-
       rsvpButton = this.props.allEvents.map(event => {
         if (event.id === this.props.currentEvent.id) {
-          if (JSON.stringify(event.attendees).includes(JSON.stringify(this.props.user.email))) {
+          if (
+            JSON.stringify(event.attendees).includes(
+              JSON.stringify(this.props.user.email)
+            )
+          ) {
             return (
               <TouchableOpacity onPress={() => this.unattendEvent()} style={styles.event__button}>
                 <Text style={styles.button__text}>Unattend</Text>
@@ -174,15 +186,25 @@ export class AnimatedProfile extends Component<Props> {
               </TouchableOpacity>
             )
           }
-          }
+        }
       })
     }
     return (
       <Animated.View style={[styles.contentContainer, translateStyle]}>
         <ScrollView style={styles.scrollView}>
           <View style={styles.image__container}>
-            {this.props.currentEvent.name === "Quidditch After Party" && <Image source={require("../assets/quidditch.jpg")} style={styles.animated__photo} />}
-            {this.props.currentEvent.name === "Language Exchange" && <Image source={require("../assets/language.jpg")} style={styles.animated__photo} />}
+            {this.props.currentEvent.name === 'Quidditch After Party' && (
+              <Image
+                source={require('../assets/quidditch.jpg')}
+                style={styles.animated__photo}
+              />
+            )}
+            {this.props.currentEvent.name === 'Language Exchange' && (
+              <Image
+                source={require('../assets/language.jpg')}
+                style={styles.animated__photo}
+              />
+            )}
           </View>
           <View style={styles.text__block}>
             <Text style={styles.event__title}>{this.props.currentEvent.name}</Text>
@@ -208,14 +230,14 @@ export class AnimatedProfile extends Component<Props> {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    position: "absolute",
-    height: (height / 100) * 91.7,    
+    position: 'absolute',
+    height: (height / 100) * 91.7,
     width: width,
     bottom: -height,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff'
   },
   image__container: {
-    width: "100%",
+    width: '100%',
     height: 320
   },
   animated__photo: {
@@ -224,6 +246,8 @@ const styles = StyleSheet.create({
     height: undefined,
     borderRadius: 5
   },
+  image_container: {},
+  animated_photo: {},
   scrollView: {
     marginTop: 20
   }, 
@@ -280,16 +304,19 @@ const mapDispatchToProps = dispatch => {
   return {
     closeEvent: () => {
       dispatch({
-        type: "CLOSE_EVENT"
+        type: 'CLOSE_EVENT'
       })
     },
-    getEvents: (events) => {
+    getEvents: events => {
       dispatch({
-          type: "GET_EVENTS",
-          events
+        type: 'GET_EVENTS',
+        events
       })
-  }
+    }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AnimatedProfile)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnimatedProfile)
