@@ -104,6 +104,7 @@ const l0 = new RegExp(/l0/)
 const m0 = new RegExp(/m0/)
 
 wss.on('connection', ws => {
+  console.log('Incoming Connection')
   ws.on('message', msg => {
     console.log(msg)
     if (l0.test(msg)) {
@@ -124,9 +125,6 @@ wss.on('connection', ws => {
       for (const client of clients) {
         client.socket.send('m0')
       }
-    }
-    for (const client of clients) {
-      client.socket.send('m0')
     }
   })
 })

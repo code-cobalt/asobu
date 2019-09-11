@@ -27,7 +27,7 @@ class Inbox extends Component<Props> {
     return (
       <View style={styles.events}>
         <ChatList />
-        <AnimatedChat />
+        <AnimatedChat socket={this.props.socket} />
       </View>
     )
   }
