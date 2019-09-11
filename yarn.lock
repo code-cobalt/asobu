@@ -1977,6 +1977,11 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
+base-64@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
+  integrity sha1-eAqZyE59YAJgNhURxId2E78k9rs=
+
 base64-js@^1.0.2, base64-js@^1.1.2, base64-js@^1.2.3:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.3.1.tgz#58ece8cb75dd07e71ed08c736abc5fac4dbf8df1"
@@ -6930,6 +6935,24 @@ react-native-branch@~3.0.1:
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-3.0.1.tgz#5b07b61cbd290168cd3c3662e017ebe0f356d2ca"
   integrity sha512-vbcYxPZlpF5f39GAEUF8kuGQqCNeD3E6zEdvtOq8oCGZunHXlWlKgAS6dgBKCvsHvXgHuMtpvs39VgOp8DaKig==
 
+react-native-fs@^2.5.1:
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.14.1.tgz#61c70a865b5b5bcb020dd4e4befd60a2c20c836f"
+  integrity sha512-ZcfiwNP+FBgvv2eRk0B62/NI58mbjszjjYvQlP352HLkUqVsK4Ld6X8fdBO1lZAz6SgitUk8WEc9NEciRIt31g==
+  dependencies:
+    base-64 "^0.1.0"
+    utf8 "^2.1.1"
+
+react-native-image-picker@^0.26.7:
+  version "0.26.10"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.26.10.tgz#0bb9ab928984948c67aee0b9e64216bee007a9fc"
+  integrity sha512-z6gAbru2E6SyGWm4ZTbiM9hPHZ5Tsl9kXGfRxW6YQXf9us7zybKoS7dKE1fQPsssv/OSvpPDKannJNncE+ATRA==
+
+react-native-image-resizer@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-resizer/-/react-native-image-resizer-1.0.1.tgz#e9eeb7f81596ffc490f822897952b046c07ee95c"
+  integrity sha512-upBF/9TIs4twg19dSkSaDW/MzMpNbysEXtPuapu3GqvOuGIYHKQ30v6httDn7rIb6uCcNIWL1BwZJM2cDt/C9Q==
+
 react-native-modal@^11.3.1:
   version "11.3.1"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.3.1.tgz#9f67728b36fdc299f97d3da1d131190a0337b89b"
@@ -6937,6 +6960,16 @@ react-native-modal@^11.3.1:
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "^1.3.1"
+
+react-native-photo-upload@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-photo-upload/-/react-native-photo-upload-1.3.0.tgz#bf442bb5ee56abb15926e0281847116a413b98b7"
+  integrity sha512-6kd8luPwU2DfYovd3xvLayVN+OoW00cBQD4afYlHadQFA+WinTy+mXEgYG/QV4txDSLS1EArMBaCR6h2sq2JAA==
+  dependencies:
+    prop-types "^15.5.10"
+    react-native-fs "^2.5.1"
+    react-native-image-picker "^0.26.7"
+    react-native-image-resizer "^1.0.0"
 
 react-native-switch-selector@^1.1.14:
   version "1.1.14"
@@ -8547,6 +8580,11 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
+
+utf8@^2.1.1:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/utf8/-/utf8-2.1.2.tgz#1fa0d9270e9be850d9b05027f63519bf46457d96"
+  integrity sha1-H6DZJw6b6FDZsFAn9jUZv0ZFfZY=
 
 util-deprecate@~1.0.1:
   version "1.0.2"
