@@ -18,10 +18,10 @@ interface Props {
 }
 
 class Inbox extends Component<Props> {
-  async componentDidMount() {
-    const chats = await getChats(this.props.userEmail)
-    this.props.setChats(chats)
-  }
+  // async componentDidMount() {
+  //   const chats = await getChats(this.props.userEmail)
+  //   this.props.setChats(chats)
+  // }
 
   render() {
     return (
