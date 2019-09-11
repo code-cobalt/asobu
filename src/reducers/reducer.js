@@ -1,5 +1,3 @@
-import { sockethost } from "../../environment"
-
 const initialState = {
   activeView: 'results',
   resultsSwitch: 'hangouts',
@@ -19,66 +17,10 @@ const initialState = {
   showChat: false,
   currentChatMessages: [],
   currentChatId: 0,
-  connection: () => {
-    const connection = new WebSocket(sockethost)
-    const m0 = new RegExp(/m0/)
-    connection.onopen = () => {
-      console.log('Connection Open')
-      state.connection.send(`l0 ${state.user.email}`)
-    }
-    connection.onerror = error => {
-      console.log(error)
-    }
-    connection.onmessage = e => {
-      console.log("INSIDE ONMESSAGE")
-      console.log(e.data)
-    }
-  }
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "INITIALIZE_SOCKET": {
-      // console.log("Reached this point")
-      // // connection = new WebSocket(sockethost)
-      // const m0 = new RegExp(/m0/)
-      // state.connection.onopen = () => {
-      //   console.log('Connection Open')
-      //   state.connection.send(`l0 ${state.user.email}`)
-      // }
-      // state.connection.onerror = error => {
-      //   console.log(error)
-      // }
-      // state.connection.onmessage = e => {
-      //   console.log("INSIDE ONMESSAGE")
-      //   console.log(e.data)
-      /* Alert.alert(e.data)
-*/
-      /* if (m0.test(e.data)) {
-        const chat = await axios.post(`${apiUrl}/graphql`, {
-          query: `
-                    query { Chats(chatIds: [${this.props.chat_id}]) {
-                        messages {
-                          id
-                          content
-                          timestamp
-                          from {
-                            first_name
-                            profile_photo
-                            email
-                          }
-                        }
-                      }
-                    }
-                  `
-        })
-        this.props.showChat(chat.data.data.Chats.pop().messages, this.props.chat_id)
-      } */
-      // }
-
-      /* console.log(this.props.socket) */
-
-    }
     case 'SET_USERNAME': {
       const copiedState = Object.assign({}, state)
       copiedState.username = action.username
@@ -169,12 +111,6 @@ const reducer = (state = initialState, action) => {
       copiedState.showEvent = false
       return copiedState
     }
-<<<<<<< HEAD
-    case 'SET_SOCKET': {
-      const copiedState = Object.assign({}, state)
-      copiedState.socket = action.socket
-      return copiedState
-=======
     case 'SEND_REQUEST': {
       return {
         ...state,
@@ -206,7 +142,6 @@ const reducer = (state = initialState, action) => {
         receivedHangoutRequests,
         chats
       }
->>>>>>> 7fd2be038cac65200881cd4e226018fc02494217
     }
     default: {
       return state

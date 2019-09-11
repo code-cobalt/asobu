@@ -202,11 +202,6 @@ export {
   postMessage,
   showEvent,
   closeEvent,
-<<<<<<< HEAD
-  setSocket,
-  initializeSocket
-=======
   postHangoutRequest,
   postHangoutAccept
->>>>>>> 7fd2be038cac65200881cd4e226018fc02494217
 }
