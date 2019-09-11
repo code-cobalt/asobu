@@ -6,7 +6,7 @@ import Event from "../components/Event"
 const EventList = props => {
     const eventList = props.allEvents.map(event => {
         return (
-            <Event key={event.id} event={event} />
+            <Event key={event.id} event={event} style={styles.eventList} />
         )
     })
     return (
@@ -15,6 +15,12 @@ const EventList = props => {
         </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    eventList: {
+        bottom: 40
+    }
+})
 
 const mapStateToProps = state => {
     return {
