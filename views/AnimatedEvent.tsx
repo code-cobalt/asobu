@@ -43,7 +43,7 @@ interface Event {
   description: string,
   location: string,
   attendees: Array<Attendee>,
-  creator: Object
+  creator: Creator
   }
 
 interface Attendee {
