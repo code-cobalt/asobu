@@ -28,6 +28,9 @@ class ChatInput extends Component<Props> {
     this.setState({ inputText: '' })
     const newMessage = await postMessage(messageData)
     this.props.createMessage(newMessage)
+    console.log(typeof this.props.connection.send)
+    console.log(typeof this.props.connection)
+    /* this.props.connection.send('m0') */
   }
 
   render() {
@@ -57,6 +60,12 @@ const styles = StyleSheet.create({
   }
 })
 
+const mapStateToProps = state => {
+  return {
+    connection: state.connection
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     createMessage: message => {
@@ -65,6 +74,6 @@ const mapDispatchToProps = dispatch => {
   }
 }
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(ChatInput)

@@ -101,6 +101,7 @@ const clients = []
 const WebSocket = require('ws')
 const wss = new WebSocket.Server({ port: 3001 })
 const l0 = new RegExp(/l0/)
+const m0 = new RegExp(/m0/)
 
 wss.on('connection', (ws) => {
   ws.on('message', (msg) => {
@@ -109,10 +110,23 @@ wss.on('connection', (ws) => {
       const user = msg.split(' ')
       let isLogged = false
       for (const client of clients) {
+        if (client.email === user[1]) {
+          client.socket = ws
+        }
+      }
+      for (const client of clients) {
         if (client.email === user[1]) isLogged = true
       }
       if (!isLogged) clients.push({ email: user[1], socket: ws })
       console.log(clients)
+    }
+    if (m0.test(msg)) {
+      for (const client of clients) {
+        client.socket.send('m0')
+      }
+    }
+    for (const client of clients) {
+      client.socket.send('m0')
     }
   })
 })

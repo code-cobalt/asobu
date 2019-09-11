@@ -144,6 +144,14 @@ const setSocket = socket => {
   return actionObj
 }
 
+const initializeSocket = () => {
+  const actionObj = {
+    type: "INITIALIZE_SOCKET"
+  }
+  console.log("INSIDE ACTION")
+  return actionObj
+}
+
 export {
   setUserName,
   setActiveView,
@@ -158,5 +166,7 @@ export {
   showChat,
   postMessage,
   showEvent,
-  closeEvent
+  closeEvent,
+  setSocket,
+  initializeSocket
 }

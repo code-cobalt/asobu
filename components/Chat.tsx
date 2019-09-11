@@ -7,6 +7,11 @@ import axios from 'axios'
 interface Props {
   chat: Chat
   showChat: Function
+  socket: Socket
+}
+
+interface Socket {
+  send: Function
 }
 
 interface Chat {
@@ -40,6 +45,7 @@ const Chat: React.FunctionComponent<Props> = props => {
       `
     })
     props.showChat(chat.data.data.Chats.pop().messages, props.chat.chat_id)
+
   }
   return (
     <TouchableOpacity style={styles.chat} onPress={getChat}>
@@ -98,6 +104,12 @@ const styles = StyleSheet.create({
   }
 })
 
+const mapStateToProps = state => {
+  return {
+    socket: state.socket
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     showChat: (messages, chatId) => {
@@ -111,6 +123,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Chat)
