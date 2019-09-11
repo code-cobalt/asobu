@@ -44,8 +44,13 @@ const Chat: React.FunctionComponent<Props> = props => {
         }
       `
     })
-    props.showChat(chat.data.data.Chats.pop().messages, props.chat.chat_id)
 
+    let chatMessages = chat.data.data.Chats
+    // chatMessages will be empty for a new chat
+    chatMessages.length > 0
+      ? (chatMessages = chatMessages.pop().messages)
+      : (chatMessages = [])
+    props.showChat(chatMessages, props.chat.chat_id)
   }
   return (
     <TouchableOpacity style={styles.chat} onPress={getChat}>

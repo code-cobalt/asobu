@@ -1,48 +1,57 @@
 import React, { Component } from 'react'
-import { ScrollView, View, Text, Image, StyleSheet, TextInput, Dimensions, Animated, Easing, TouchableOpacity } from "react-native"
-import { connect } from "react-redux"
-import Badges from "../components/Badges"
+import {
+  ScrollView,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TextInput,
+  Dimensions,
+  Animated,
+  Easing,
+  TouchableOpacity
+} from 'react-native'
+import { connect } from 'react-redux'
+import Badges from '../components/Badges'
 import axios from 'axios'
 import { apiUrl } from '../environment.js'
 import gql from 'graphql-tag'
 import { print } from 'graphql'
 
-const { height, width } = Dimensions.get("window")
+const { height, width } = Dimensions.get('window')
 
 interface Props {
-  user: UserLimited,
-  username: string,
-  showEvent: boolean,
-  setUserName: Function,
-  closeEvent: Function,
-  getEvents: Function,
-  allEvents: ObjectArray,
+  user: UserLimited
+  username: string
+  showEvent: boolean
+  setUserName: Function
+  closeEvent: Function
+  getEvents: Function
+  allEvents: ObjectArray
   currentEvent: Event
 }
 
 interface UserLimited {
-  first_name: string,
-  email: string,
+  first_name: string
+  email: string
   profile_photo: string
 }
 
 interface Event {
-  name: string,
-  id: number,
-  description: string,
-  location: string,
+  name: string
+  id: number
+  description: string
+  location: string
   attendees: Array<Attendee>
-  }
+}
 
 interface Attendee {
-  first_name: string,
-  email: string,
+  first_name: string
+  email: string
   profile_photo: string
 }
 
-
 export class AnimatedProfile extends Component<Props> {
-
   async getAllEvents() {
     const res = await axios.post(`${apiUrl}/graphql`, {
       query: `
@@ -72,14 +81,14 @@ export class AnimatedProfile extends Component<Props> {
           }
       }
   `
-  })
-  this.props.getEvents(res.data.data.Events)
+    })
+    this.props.getEvents(res.data.data.Events)
   }
 
   async unattendEvent() {
     const unattendEventMutation = gql`
       mutation UnattendEvent($eventId: String!, $userEmail: String!) {
-        UnattendEvent(eventId: $eventId, userEmail: $userEmail) 
+        UnattendEvent(eventId: $eventId, userEmail: $userEmail)
       }
     `
     await axios.post(`${apiUrl}/graphql`, {
@@ -96,10 +105,9 @@ export class AnimatedProfile extends Component<Props> {
   }
 
   async attendEvent() {
-    
     const attendEventMutation = gql`
       mutation AttendEvent($eventId: String!, $user: UserLimitedInput!) {
-        AttendEvent(eventId: $eventId, user: $user) 
+        AttendEvent(eventId: $eventId, user: $user)
       }
     `
     await axios.post(`${apiUrl}/graphql`, {
@@ -149,35 +157,54 @@ export class AnimatedProfile extends Component<Props> {
     })
     let translateStyle = { transform: [{ translateY: modalMoveY }] }
 
-    let rsvpButton;
+    let rsvpButton
     if (this.props.allEvents.length > 0) {
-
       rsvpButton = this.props.allEvents.map(event => {
         console.log(event.attendees)
         console.log(this.props.user)
         if (event.id === this.props.currentEvent.id) {
-          if (JSON.stringify(event.attendees).includes(JSON.stringify(this.props.user.email))) {
+          if (
+            JSON.stringify(event.attendees).includes(
+              JSON.stringify(this.props.user.email)
+            )
+          ) {
             return (
-              <TouchableOpacity onPress={() => this.unattendEvent()} style={styles.RSVP__button}>
+              <TouchableOpacity
+                onPress={() => this.unattendEvent()}
+                style={styles.RSVP__button}
+              >
                 <Text>Unattend</Text>
               </TouchableOpacity>
             )
           } else {
             return (
-              <TouchableOpacity onPress={() => this.attendEvent()} style={styles.RSVP__button}>
+              <TouchableOpacity
+                onPress={() => this.attendEvent()}
+                style={styles.RSVP__button}
+              >
                 <Text>RSVP</Text>
               </TouchableOpacity>
             )
           }
-          }
+        }
       })
     }
     return (
       <Animated.View style={[styles.contentContainer, translateStyle]}>
         <ScrollView style={styles.scrollView}>
           <View style={styles.image__container}>
-            {this.props.currentEvent.name === "Quidditch After Party" && <Image source={require("../assets/quidditch.jpg")} style={styles.animated__photo} />}
-            {this.props.currentEvent.name === "Language Exchange" && <Image source={require("../assets/language.jpg")} style={styles.animated__photo} />}
+            {this.props.currentEvent.name === 'Quidditch After Party' && (
+              <Image
+                source={require('../assets/quidditch.jpg')}
+                style={styles.animated__photo}
+              />
+            )}
+            {this.props.currentEvent.name === 'Language Exchange' && (
+              <Image
+                source={require('../assets/language.jpg')}
+                style={styles.animated__photo}
+              />
+            )}
           </View>
           <Text>{this.props.currentEvent.name}</Text>
           <Text>{this.props.currentEvent.description}</Text>
@@ -186,7 +213,10 @@ export class AnimatedProfile extends Component<Props> {
             <Text>Attendees</Text>
           </TouchableOpacity>
           {rsvpButton}
-          <TouchableOpacity onPress={this.props.closeEvent} style={styles.event__close}>
+          <TouchableOpacity
+            onPress={this.props.closeEvent}
+            style={styles.event__close}
+          >
             <Text>Close</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -197,14 +227,14 @@ export class AnimatedProfile extends Component<Props> {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    position: "absolute",
-    height: (height / 100) * 91.7,    
+    position: 'absolute',
+    height: (height / 100) * 91.7,
     width: width,
     bottom: -height,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff'
   },
   image__container: {
-    width: "100%",
+    width: '100%',
     height: 320
   },
   animated__photo: {
@@ -212,26 +242,28 @@ const styles = StyleSheet.create({
     width: undefined,
     height: undefined
   },
+  image_container: {},
+  animated_photo: {},
   scrollView: {
     marginTop: 20
-  }, 
+  },
   attendees__button: {
-    width: "50%",
-    backgroundColor: "#73d961",
+    width: '50%',
+    backgroundColor: '#73d961',
     padding: 15,
     borderRadius: 50,
     marginTop: 15
   },
   RSVP__button: {
-    width: "50%",
-    backgroundColor: "#73d961",
+    width: '50%',
+    backgroundColor: '#73d961',
     padding: 15,
     borderRadius: 50,
     marginTop: 15
   },
   event__close: {
-    width: "50%",
-    backgroundColor: "#73d961",
+    width: '50%',
+    backgroundColor: '#73d961',
     padding: 15,
     borderRadius: 50,
     marginTop: 15
@@ -251,16 +283,19 @@ const mapDispatchToProps = dispatch => {
   return {
     closeEvent: () => {
       dispatch({
-        type: "CLOSE_EVENT"
+        type: 'CLOSE_EVENT'
       })
     },
-    getEvents: (events) => {
+    getEvents: events => {
       dispatch({
-          type: "GET_EVENTS",
-          events
+        type: 'GET_EVENTS',
+        events
       })
-  }
+    }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AnimatedProfile)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnimatedProfile)

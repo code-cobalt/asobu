@@ -48,6 +48,14 @@ class Login extends Component<Props, State> {
             event_id
             is_creator
           }
+          chats {
+            chat_id
+            participants {
+              first_name
+              profile_photo
+              email
+            }
+          }
           sent_hangout_requests {
             first_name
             email

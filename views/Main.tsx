@@ -31,7 +31,6 @@ class Main extends Component<Props> {
     })
     this.props.setAllUsers(res.data.data.Users)
   }
-  //Users = res.data.data.Users
 
   render() {
     let mainView

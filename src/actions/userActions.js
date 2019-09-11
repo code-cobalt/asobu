@@ -136,20 +136,55 @@ const closeEvent = () => {
   return actionObj
 }
 
-const setSocket = socket => {
-  const actionObj = {
-    type: "SET_SOCKET",
-    socket
-  }
-  return actionObj
+const postHangoutRequest = async (currentUserEmail, toUserEmail) => {
+  const sendHangoutRequestMutation = gql`
+    mutation SendHangoutRequest(
+      $currentUserEmail: String!
+      $toUserEmail: String!
+    ) {
+      SendHangoutRequest(
+        currentUserEmail: $currentUserEmail
+        toUserEmail: $toUserEmail
+      )
+    }
+  `
+  const res = await axios.post(`${apiUrl}/graphql`, {
+    query: print(sendHangoutRequestMutation),
+    variables: {
+      currentUserEmail,
+      toUserEmail
+    }
+  })
+  return res.status
 }
 
-const initializeSocket = () => {
-  const actionObj = {
-    type: "INITIALIZE_SOCKET"
-  }
-  console.log("INSIDE ACTION")
-  return actionObj
+const postHangoutAccept = async (currentUserEmail, fromUserEmail) => {
+  const acceptHangoutRequestMutation = gql`
+    mutation AcceptHangoutRequest(
+      $currentUserEmail: String!
+      $fromUserEmail: String!
+    ) {
+      AcceptHangoutRequest(
+        currentUserEmail: $currentUserEmail
+        fromUserEmail: $fromUserEmail
+      ) {
+        chat_id
+        participants {
+          first_name
+          email
+          profile_photo
+        }
+      }
+    }
+  `
+  const res = await axios.post(`${apiUrl}/graphql`, {
+    query: print(acceptHangoutRequestMutation),
+    variables: {
+      currentUserEmail,
+      fromUserEmail
+    }
+  })
+  return res
 }
 
 export {
@@ -167,6 +202,11 @@ export {
   postMessage,
   showEvent,
   closeEvent,
+<<<<<<< HEAD
   setSocket,
   initializeSocket
+=======
+  postHangoutRequest,
+  postHangoutAccept
+>>>>>>> 7fd2be038cac65200881cd4e226018fc02494217
 }

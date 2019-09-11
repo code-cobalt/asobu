@@ -103,8 +103,8 @@ const wss = new WebSocket.Server({ port: 3001 })
 const l0 = new RegExp(/l0/)
 const m0 = new RegExp(/m0/)
 
-wss.on('connection', (ws) => {
-  ws.on('message', (msg) => {
+wss.on('connection', ws => {
+  ws.on('message', msg => {
     console.log(msg)
     if (l0.test(msg)) {
       const user = msg.split(' ')
@@ -166,14 +166,14 @@ const ws = createServer(app)
 // const graphSocketServer = new graphSocket({ httpServer: graphServer })
 
 ws.listen(port, () => {
-  ws.on('request', (request) => {
+  ws.on('request', request => {
     console.log('Incoming Connection')
     // const connection = request.accept(null, request.origin)
   })
-  ws.on('connection', (connection) => {
+  ws.on('connection', connection => {
     console.log('Connected')
   })
-  ws.on('listening', (listener) => {
+  ws.on('listening', listener => {
     console.log('Listening')
   })
   ws.on('message', (message: string) => {
