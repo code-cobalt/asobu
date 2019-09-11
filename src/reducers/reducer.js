@@ -2,6 +2,8 @@ const initialState = {
   activeView: 'results',
   resultsSwitch: 'hangouts',
   username: '',
+  sentHangoutRequests: [],
+  receivedHangoutRequests: [],
   user: {},
   allUsers: [],
   allEvents: [],
@@ -37,10 +39,14 @@ const reducer = (state = initialState, action) => {
       return copiedState
     }
     case 'SET_USER': {
-      const copiedState = Object.assign({}, state)
-      copiedState.user = Object.assign({}, action.user)
-      copiedState.isLoggedIn = true
-      return copiedState
+      return {
+        ...state,
+        user: action.user,
+        isLoggedIn: true,
+        chats: action.user.chats,
+        sentHangoutRequests: action.user.sent_hangout_requests,
+        receivedHangoutRequests: action.user.received_hangout_requests
+      }
     }
     case 'TOGGLE_AUTH': {
       const copiedState = Object.assign({}, state)
@@ -53,13 +59,7 @@ const reducer = (state = initialState, action) => {
       return copiedState
     }
     case 'SHOW_PROFILE': {
-      const copiedState = Object.assign({}, state)
-      copiedState.currentProfile = Object.assign(
-        copiedState.currentProfile,
-        action.profile
-      )
-      copiedState.showProfile = true
-      return copiedState
+      return { ...state, currentProfile: action.profile, showProfile: true }
     }
     case 'CLOSE_PROFILE': {
       const copiedState = Object.assign({}, state)
@@ -110,6 +110,38 @@ const reducer = (state = initialState, action) => {
       copiedState.currentEvent = {}
       copiedState.showEvent = false
       return copiedState
+    }
+    case 'SEND_REQUEST': {
+      return {
+        ...state,
+        sentHangoutRequests: [...state.sentHangoutRequests, action.toUser]
+      }
+    }
+    case 'ACCEPT_REQUEST': {
+      // remove hangout request from receivedHangoutRequests in store, add new Chat to chats in store if one doesn't already exist, change active view to chats
+      const receivedHangoutRequests = state.receivedHangoutRequests.filter(
+        request => {
+          request.email !== action.fromUserEmail
+        }
+      )
+      let included = false
+      for (const chat of state.chats) {
+        if (chat.chat_id === action.newChat.chat_id) {
+          included = true
+        }
+      }
+      let chats
+      if (included) {
+        chats = [...state.chats]
+      } else {
+        chats = [...state.chats, action.newChat]
+      }
+      return {
+        ...state,
+        activeView: 'chats',
+        receivedHangoutRequests,
+        chats
+      }
     }
     default: {
       return state

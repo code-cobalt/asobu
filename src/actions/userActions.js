@@ -136,6 +136,57 @@ const closeEvent = () => {
   return actionObj
 }
 
+const postHangoutRequest = async (currentUserEmail, toUserEmail) => {
+  const sendHangoutRequestMutation = gql`
+    mutation SendHangoutRequest(
+      $currentUserEmail: String!
+      $toUserEmail: String!
+    ) {
+      SendHangoutRequest(
+        currentUserEmail: $currentUserEmail
+        toUserEmail: $toUserEmail
+      )
+    }
+  `
+  const res = await axios.post(`${apiUrl}/graphql`, {
+    query: print(sendHangoutRequestMutation),
+    variables: {
+      currentUserEmail,
+      toUserEmail
+    }
+  })
+  return res.status
+}
+
+const postHangoutAccept = async (currentUserEmail, fromUserEmail) => {
+  const acceptHangoutRequestMutation = gql`
+    mutation AcceptHangoutRequest(
+      $currentUserEmail: String!
+      $fromUserEmail: String!
+    ) {
+      AcceptHangoutRequest(
+        currentUserEmail: $currentUserEmail
+        fromUserEmail: $fromUserEmail
+      ) {
+        chat_id
+        participants {
+          first_name
+          email
+          profile_photo
+        }
+      }
+    }
+  `
+  const res = await axios.post(`${apiUrl}/graphql`, {
+    query: print(acceptHangoutRequestMutation),
+    variables: {
+      currentUserEmail,
+      fromUserEmail
+    }
+  })
+  return res
+}
+
 export {
   setUserName,
   setActiveView,
@@ -150,5 +201,7 @@ export {
   showChat,
   postMessage,
   showEvent,
-  closeEvent
+  closeEvent,
+  postHangoutRequest,
+  postHangoutAccept
 }

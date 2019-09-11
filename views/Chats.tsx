@@ -1,10 +1,17 @@
 import React, { Component } from 'react'
-import { View, Text, Image, StyleSheet, TextInput, Animated } from "react-native"
-import ChatList from "../components/ChatList"
-import AnimatedChat from "./AnimatedChat"
-import axios from "axios"
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TextInput,
+  Animated
+} from 'react-native'
+import ChatList from '../components/ChatList'
+import AnimatedChat from './AnimatedChat'
+import axios from 'axios'
 import { getApiUrl } from '../environment.js'
-import { connect } from "react-redux"
+import { connect } from 'react-redux'
 
 interface Props {
   getChats: Function
@@ -28,7 +35,6 @@ export class Chats extends Component<Props> {
       }
       `
     })
-    /*  console.log(res.data.data.User.chats) */
     this.props.getChats(res.data.data.User.chats)
   }
 
@@ -45,7 +51,7 @@ export class Chats extends Component<Props> {
 const styles = StyleSheet.create({
   events: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff'
   }
 })
 
@@ -53,11 +59,14 @@ const mapDispatchToProps = dispatch => {
   return {
     getChats: chats => {
       dispatch({
-        type: "GET_CHATS",
+        type: 'GET_CHATS',
         chats
       })
     }
   }
 }
 
-export default connect(null, mapDispatchToProps)(Chats)
+export default connect(
+  null,
+  mapDispatchToProps
+)(Chats)

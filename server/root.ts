@@ -461,20 +461,32 @@ const root = {
         currentUser.chats,
         params.fromUserEmail
       )
+      const fromUserLimited = {
+        email: params.fromUserEmail,
+        first_name: fromUser.first_name,
+        profile_photo: fromUser.profile_photo
+      }
+      const toUserLimited = {
+        email: params.currentUserEmail,
+        first_name: currentUser.first_name,
+        profile_photo: currentUser.profile_photo
+      }
       if (existingChat) {
+        //still remove hangout request if the users already know each other. just don't create a chat
+        await User.updateOne(
+          { email: params.fromUserEmail },
+          {
+            $pull: { sent_hangout_requests: toUserLimited }
+          }
+        )
+        await User.updateOne(
+          { email: params.currentUserEmail },
+          {
+            $pull: { received_hangout_requests: fromUserLimited }
+          }
+        )
         return existingChat
       } else {
-        const fromUserLimited = {
-          email: params.fromUserEmail,
-          first_name: fromUser.first_name,
-          profile_photo: fromUser.profile_photo
-        }
-        const toUserLimited = {
-          email: params.currentUserEmail,
-          first_name: currentUser.first_name,
-          profile_photo: currentUser.profile_photo
-        }
-
         //create new unique chatId
         const newChat = ++chatId
         //delete hangout request and create new chat for each user
