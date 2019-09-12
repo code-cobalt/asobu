@@ -66,14 +66,10 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_USERNAME': {
-      const copiedState = Object.assign({}, state)
-      copiedState.username = action.username
-      return copiedState
+      return { ...state, username: action.username }
     }
     case 'SET_ACTIVE_VIEW': {
-      const copiedState = Object.assign({}, state)
-      copiedState.activeView = action.activeView
-      return copiedState
+      return { ...state, activeView: action.activeView }
     }
     case 'SET_ALL_USERS': {
       const copiedState = Object.assign({}, state)
@@ -93,28 +89,19 @@ const reducer = (state = initialState, action) => {
       }
     }
     case 'TOGGLE_AUTH': {
-      const copiedState = Object.assign({}, state)
-      copiedState.showLogin = !copiedState.showLogin
-      return copiedState
+      return { ...state, showLogin: !state.showLogin }
     }
     case 'TOGGLE_RESULTS_VIEW': {
-      const copiedState = Object.assign({}, state)
-      copiedState.resultsSwitch = action.activeView
-      return copiedState
+      return { ...state, resultsSwitch: action.activeView }
     }
     case 'SHOW_PROFILE': {
       return { ...state, currentProfile: action.profile, showProfile: true }
     }
     case 'CLOSE_PROFILE': {
-      const copiedState = Object.assign({}, state)
-      copiedState.currentProfile = {}
-      copiedState.showProfile = false
-      return copiedState
+      return { state, currentProfile: {}, showProfile: false }
     }
     case 'SET_CHATS': {
-      const copiedState = Object.assign({}, state)
-      copiedState.chats = [...action.chats]
-      return copiedState
+      return { ...state, chats: action.chats }
     }
     case 'SHOW_CHAT': {
       return {
@@ -128,20 +115,16 @@ const reducer = (state = initialState, action) => {
       return { ...state, showChat: false }
     }
     case 'GET_EVENTS': {
-      const copiedState = Object.assign({}, state)
-      copiedState.allEvents = action.events
-      return copiedState
+      return { ...state, allEvents: action.events }
     }
     case 'CREATE_EVENT': {
       return { ...state, allEvents: [...state.allEvents, action.newEvent] }
     }
     case 'CREATE_MESSAGE': {
-      const copiedState = Object.assign({}, state)
-      copiedState.currentChatMessages = [
-        ...state.currentChatMessages,
-        action.message
-      ]
-      return copiedState
+      return {
+        ...state,
+        currentChatMessages: [...state.currentChatMessages, action.message]
+      }
     }
     case 'SHOW_EVENT': {
       const copiedState = Object.assign({}, state)
@@ -153,10 +136,7 @@ const reducer = (state = initialState, action) => {
       return copiedState
     }
     case 'CLOSE_EVENT': {
-      const copiedState = Object.assign({}, state)
-      copiedState.currentEvent = {}
-      copiedState.showEvent = false
-      return copiedState
+      return { ...state, currentEvent: {}, showEvent: false }
     }
     case 'SEND_REQUEST': {
       return {
