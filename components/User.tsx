@@ -11,7 +11,7 @@ interface UserLimited {
   profile_photo: string
   exp: number
   lvl: number
-  interests: [string]
+  interests: string[]
 }
 interface Props {
   user: UserLimited

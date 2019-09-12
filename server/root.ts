@@ -17,7 +17,7 @@ interface NewUser {
   pin: number
   password_hash: string
   profile_photo: string
-  interests: Array<string>
+  interests: string[]
   exp: number
   lvl: number
   stats: Stats
@@ -30,7 +30,7 @@ interface UpdatedUser {
   email: string
   phone_number: string
   profile_photo: string
-  interests: Array<string>
+  interests: string[]
 }
 
 interface Stats {
@@ -58,7 +58,7 @@ interface NewEvent {
   end: Date
   location: string
   limit: number
-  tags: Array<string>
+  tags: string[]
 }
 
 interface UpdatedEvent {
@@ -70,7 +70,7 @@ interface UpdatedEvent {
   end: Date
   location: string
   limit: number
-  tags: Array<string>
+  tags: string[]
 }
 
 interface Comment {
@@ -116,11 +116,11 @@ const validateMessage = (message: Message) => {
 
 interface UserChat {
   chat_id: number
-  participants: [UserLimited]
+  participants: Array<UserLimited>
 }
 
 const checkForExistingChat = (
-  currentUserChats: [UserChat],
+  currentUserChats: Array<UserChat>,
   matchedUserEmail: string
 ) => {
   //return false or pre-existing chat

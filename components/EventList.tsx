@@ -27,21 +27,19 @@ interface Attendee {
 
 interface Props {
   allEvents: Array<Event>
+  showForm: Function
 }
 
 class EventList extends React.Component<Props> {
-  state = {}
-  showForm() {}
-
   render() {
     const eventList = this.props.allEvents.map(event => {
       return <Event key={event.id} event={event} />
     })
     return (
       <View>
-        <TouchableOpacity onPress={() => this.showForm()}>
+        <TouchableOpacity onPress={() => this.props.showForm()}>
           <Text>Create Event</Text>
-          {/* <NewEvent visible={true}/> */}
+          <NewEvent />
         </TouchableOpacity>
 
         <ScrollView>{eventList}</ScrollView>
@@ -62,4 +60,15 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(EventList)
+const mapDispatchToProps = dispatch => {
+  return {
+    showForm: () => {
+      dispatch({ type: 'SHOW_NEW_EVENT_FORM' })
+    }
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EventList)
