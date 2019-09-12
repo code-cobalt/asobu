@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, TextInput, StyleSheet } from 'react-native'
-import { postMessage } from '../src/actions/userActions'
+import { postMessage } from '../src/actions/users'
 import { connect } from 'react-redux'
 
 interface UserLimited {

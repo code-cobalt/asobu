@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, Button } from 'react-native'
 import UserList from '../components/UserList'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
-import { postHangoutAccept } from '../src/actions/userActions'
+import { postHangoutAccept } from '../src/actions/users'
 
 interface UserLimited {
   first_name: string

@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import ChatList from '../components/ChatList'
 import AnimatedChat from './AnimatedChat'
-import { getChats } from '../src/actions/userActions.js'
+import { getChats } from '../src/actions/users.js/index.js'
 import { connect } from 'react-redux'
 
 interface Props {

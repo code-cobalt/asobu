@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import Badges from './Badges'
 import { connect } from 'react-redux'
-import { postHangoutRequest } from '../src/actions/userActions'
+import { postHangoutRequest } from '../src/actions/users'
 
 interface UserLimited {
   id: string
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     borderRadius: 400
   },
   user__image: {
-    borderRadius: 50,
+    borderRadius: 42,
     height: 90,
     width: 90
   },
@@ -89,11 +89,13 @@ const styles = StyleSheet.create({
     right: 40
   },
   user__name: {
-    fontSize: 25,
+    fontSize: 22,
+    fontWeight: '700',
     color: 'white'
   },
   user__text: {
-    fontSize: 18,
+    fontSize: 16,
+    fontWeight: '600',
     color: 'white'
   },
   user__badges: {
