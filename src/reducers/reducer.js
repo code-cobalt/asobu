@@ -53,6 +53,8 @@ const initialState = {
   chats: [],
   showProfile: false,
   showEvent: false,
+  showNewEventForm: false,
+  showEditEventForm: false,
   currentProfile: {},
   currentEvent: {},
   isLoggedIn: true,
@@ -110,17 +112,53 @@ const reducer = (state = initialState, action) => {
     case 'CLOSE_CHAT': {
       return { ...state, showChat: false }
     }
+    case 'CREATE_MESSAGE': {
+      return {
+        ...state,
+        currentChatMessages: [...state.currentChatMessages, action.message]
+      }
+    }
     case 'GET_EVENTS': {
       return { ...state, allEvents: action.events }
     }
     case 'CREATE_EVENT': {
       return { ...state, allEvents: [...state.allEvents, action.newEvent] }
     }
-    case 'CREATE_MESSAGE': {
+    case 'SHOW_NEW_EVENT_FORM': {
+      return { ...state, showNewEventForm: true }
+    }
+    case 'CLOSE_NEW_EVENT_FORM': {
+      return { ...state, showNewEventForm: false }
+    }
+    case 'SHOW_EDIT_EVENT_FORM': {
+      return { ...state, showEditEventForm: true }
+    }
+    case 'CLOSE_EDIT_EVENT_FORM': {
+      return { ...state, showEditEventForm: false }
+    }
+    case 'UPDATE_EVENT': {
+      const allEventsCopy = [...state.allEvents]
+      for (let i = 0; i < allEventsCopy.length; i++) {
+        if (allEventsCopy[i].id === action.eventId) {
+          allEventsCopy[i] === action.updatedEvent
+          break
+        }
+      }
       return {
         ...state,
-        currentChatMessages: [...state.currentChatMessages, action.message]
+        allEvents: allEventsCopy,
+        currentEvent: action.updatedEvent
       }
+    }
+    case 'DELETE_EVENT': {
+      const filteredEvents = state.allEvents.filter(
+        event => event.id !== action.eventId
+      )
+      const filteredUserEvents = state.user.events.filter(
+        event => event.event_id !== action.id
+      )
+      const updatedUser = { ...state.user, events: filteredUserEvents }
+      return { ...state, allEvents: filteredEvents, user: updatedUser }
     }
     case 'SHOW_EVENT': {
       const copiedState = Object.assign({}, state)
