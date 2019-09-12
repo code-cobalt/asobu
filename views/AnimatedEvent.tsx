@@ -5,7 +5,6 @@ import {
   Text,
   Image,
   StyleSheet,
-  TextInput,
   Dimensions,
   Animated,
   Easing,
@@ -54,7 +53,7 @@ interface Event {
 }
 
 export class AnimatedEvent extends Component<Props> {
-  async componentDidUpdate() {
+  componentDidUpdate() {
     if (this.props.showEvent) {
       this.yTranslate.setValue(0)
       Animated.spring(this.yTranslate, {
@@ -143,12 +142,6 @@ export class AnimatedEvent extends Component<Props> {
               <Text style={styles.button__text}>Attendees</Text>
             </TouchableOpacity>
             {rsvpButton}
-            <TouchableOpacity
-              onPress={() => this.props.closeEvent()}
-              style={styles.event__button}
-            >
-              <Text style={styles.button__text}>Close</Text>
-            </TouchableOpacity>
           </View>
           <Comments comments={this.props.currentEvent.comments} />
         </ScrollView>
