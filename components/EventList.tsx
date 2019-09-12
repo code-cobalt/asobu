@@ -1,25 +1,64 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet, TextInput, ScrollView } from "react-native"
-import { connect } from "react-redux"
-import Event from "../components/Event"
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  TouchableOpacity
+} from 'react-native'
+import { connect } from 'react-redux'
+import Event from '../components/Event'
+import NewEvent from '../components/NewEvent'
 
-const EventList = props => {
-    const eventList = props.allEvents.map(event => {
-        return (
-            <Event key={event.id} event={event} />
-        )
-    })
+interface Event {
+    name: string
+    id: number
+    description: string
+    location: string
+    cover_photo: string
+    attendees: Array<Attendee>
+  }
+  
+  interface Attendee {
+    first_name: string
+    email: string
+    profile_photo: string
+  }
+
+interface Props {
+    allEvents: Array<Event>
+}
+
+class EventList extends React.Component<Props> {
+state = {}
+showForm {
+
+}
+
+  render() {
+    const eventList = this.props.allEvents.map(event => {
+        return <Event key={event.id} event={event} />
+      })
     return (
-        <ScrollView>
-            {eventList}
-        </ScrollView>
-    )
+        <View>
+          <TouchableOpacity onPress={() => this.showForm()}>
+            <Text>Create Event</Text>
+            <NewEvent visible={this.}/>
+          </TouchableOpacity>
+         
+          <ScrollView>{eventList}</ScrollView>
+        </View>
+      )
+  }
+
 }
 
 const mapStateToProps = state => {
-    return {
-        allEvents: state.allEvents
-    }
+  return {
+    allEvents: state.allEvents
+  }
 }
 
 export default connect(mapStateToProps)(EventList)

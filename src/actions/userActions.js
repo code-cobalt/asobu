@@ -187,6 +187,49 @@ const postHangoutAccept = async (currentUserEmail, fromUserEmail) => {
   return res
 }
 
+const postEvent = async newEvent => {
+  const postEventQuery = gql`
+    mutation CreateEvent($newEvent: NewEvent!) {
+      CreateEvent(newEvent: $newEvent) {
+        id
+        name
+        description
+        cover_photo
+        creator {
+          first_name
+          email
+          profile_photo
+        }
+        start
+        end
+        location
+        limit
+        tags
+        attendees {
+          first_name
+          email
+          profile_photo
+        }
+        comments {
+          id
+          content
+          timestamp
+          from {
+            first_name
+            email
+            profile_photo
+          }
+        }
+      }
+    }
+  `
+  const res = await axios.post(`${apiUrl}/graphql`, {
+    query: print(postEventQuery),
+    variables: newEvent
+  })
+  return res
+}
+
 export {
   setUserName,
   setActiveView,
@@ -202,6 +245,7 @@ export {
   postMessage,
   showEvent,
   closeEvent,
+  postEvent,
   postHangoutRequest,
   postHangoutAccept
 }

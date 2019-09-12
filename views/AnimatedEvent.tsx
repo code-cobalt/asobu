@@ -42,6 +42,7 @@ interface Event {
   id: number
   description: string
   location: string
+  cover_photo: string
   attendees: Array<Attendee>
 }
 
@@ -51,7 +52,7 @@ interface Attendee {
   profile_photo: string
 }
 
-export class AnimatedProfile extends Component<Props> {
+class AnimatedEvent extends Component<Props> {
   async getAllEvents() {
     const res = await axios.post(`${apiUrl}/graphql`, {
       query: `
@@ -145,9 +146,9 @@ export class AnimatedProfile extends Component<Props> {
 
   yTranslate = new Animated.Value(0)
 
-  componentWillUnmount() {
-    this.props.closeEvent()
-  }
+  // componentWillUnmount() {
+  //   this.props.closeEvent()
+  // }
 
   render() {
     let negativeHeight = -height
@@ -160,8 +161,6 @@ export class AnimatedProfile extends Component<Props> {
     let rsvpButton
     if (this.props.allEvents.length > 0) {
       rsvpButton = this.props.allEvents.map(event => {
-        console.log(event.attendees)
-        console.log(this.props.user)
         if (event.id === this.props.currentEvent.id) {
           if (
             JSON.stringify(event.attendees).includes(
@@ -192,19 +191,14 @@ export class AnimatedProfile extends Component<Props> {
     return (
       <Animated.View style={[styles.contentContainer, translateStyle]}>
         <ScrollView style={styles.scrollView}>
+          <Text style={styles.back} onPress={() => this.props.closeEvent()}>
+            {'<'}
+          </Text>
           <View style={styles.image__container}>
-            {this.props.currentEvent.name === 'Quidditch After Party' && (
-              <Image
-                source={require('../assets/quidditch.jpg')}
-                style={styles.animated__photo}
-              />
-            )}
-            {this.props.currentEvent.name === 'Language Exchange' && (
-              <Image
-                source={require('../assets/language.jpg')}
-                style={styles.animated__photo}
-              />
-            )}
+            <Image
+              source={{ uri: this.props.currentEvent.cover_photo }}
+              style={styles.animated__photo}
+            />
           </View>
           <Text>{this.props.currentEvent.name}</Text>
           <Text>{this.props.currentEvent.description}</Text>
@@ -213,12 +207,6 @@ export class AnimatedProfile extends Component<Props> {
             <Text>Attendees</Text>
           </TouchableOpacity>
           {rsvpButton}
-          <TouchableOpacity
-            onPress={this.props.closeEvent}
-            style={styles.event__close}
-          >
-            <Text>Close</Text>
-          </TouchableOpacity>
         </ScrollView>
       </Animated.View>
     )
@@ -226,6 +214,7 @@ export class AnimatedProfile extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  back: { marginTop: 25, marginBottom: 25, marginLeft: 10, fontSize: 20 },
   contentContainer: {
     position: 'absolute',
     height: (height / 100) * 91.7,
@@ -298,4 +287,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AnimatedProfile)
+)(AnimatedEvent)
