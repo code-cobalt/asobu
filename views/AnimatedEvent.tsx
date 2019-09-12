@@ -44,7 +44,7 @@ interface Event {
   location: string,
   attendees: Array<Attendee>,
   creator: Creator
-  }
+}
 
 interface Attendee {
   first_name: string
@@ -59,7 +59,7 @@ interface Creator {
 }
 
 
-export class AnimatedProfile extends Component<Props> {
+export class AnimatedEvent extends Component<Props> {
   async getAllEvents() {
     const res = await axios.post(`${apiUrl}/graphql`, {
       query: `
@@ -175,13 +175,13 @@ export class AnimatedProfile extends Component<Props> {
             )
           ) {
             return (
-              <TouchableOpacity onPress={() => this.unattendEvent()} style={styles.event__button}>
+              <TouchableOpacity onPress={() => this.unattendEvent()} style={styles.event__button} key={event.id}>
                 <Text style={styles.button__text}>Unattend</Text>
               </TouchableOpacity>
             )
           } else {
             return (
-              <TouchableOpacity onPress={() => this.attendEvent()} style={styles.event__button}>
+              <TouchableOpacity onPress={() => this.attendEvent()} style={styles.event__button} key={event.id}>
                 <Text style={styles.button__text}>RSVP</Text>
               </TouchableOpacity>
             )
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   animated_photo: {},
   scrollView: {
     marginTop: 20
-  }, 
+  },
   event__text: {
     alignSelf: "center",
     marginTop: 5,
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 15,
   },
-  button__text:{
+  button__text: {
     fontWeight: "800",
     color: "white"
   }
@@ -319,4 +319,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AnimatedProfile)
+)(AnimatedEvent)
