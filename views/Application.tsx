@@ -3,8 +3,10 @@ import Main from './Main'
 import Navbar from '../components/Navbar'
 import { Alert } from 'react-native'
 import { connect } from 'react-redux'
+import { SocketContext } from "../components/SocketProvider"
 import axios from "axios"
 import sockethost from "../environment"
+
 
 interface Props {
     email: string,
@@ -25,7 +27,10 @@ class Application extends React.Component<Props> {
     render() {
         return (
             <>
-                <Main socket={this.props.socket} />
+                <SocketContext.Consumer>
+                    {context => <Main context={context} />}
+                    {/* <Main context={context} /> */}
+                </SocketContext.Consumer>
                 <Navbar />
             </>
         )

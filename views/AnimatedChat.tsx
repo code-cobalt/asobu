@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import ChatMessage from '../components/ChatMessage'
 import ChatInput from '../components/ChatInput'
 import gql from 'graphql-tag'
+import { SocketContext } from "../components/SocketProvider"
 
 const { height, width } = Dimensions.get('window')
 
@@ -96,11 +97,15 @@ class AnimatedChat extends Component<Props> {
         </ScrollView>
 
         <View>
-          <ChatInput
-            currentUserLimited={this.props.currentUserLimited}
-            chatId={this.props.currentChatId}
-            socket={this.props.socket}
-          />
+          <SocketContext.Consumer>
+            {socket => (
+              <ChatInput
+                currentUserLimited={this.props.currentUserLimited}
+                chatId={this.props.currentChatId}
+                socket={socket}
+              />
+            )}
+          </SocketContext.Consumer>
         </View>
       </Animated.View>
     )
