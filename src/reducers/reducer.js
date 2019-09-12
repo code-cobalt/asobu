@@ -1,7 +1,6 @@
 const initialState = {
   activeView: 'results',
   resultsSwitch: 'hangouts',
-  username: '',
   sentHangoutRequests: [],
   receivedHangoutRequests: [],
   user: {
@@ -65,9 +64,6 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_USERNAME': {
-      return { ...state, username: action.username }
-    }
     case 'SET_ACTIVE_VIEW': {
       return { ...state, activeView: action.activeView }
     }
@@ -137,6 +133,48 @@ const reducer = (state = initialState, action) => {
     }
     case 'CLOSE_EVENT': {
       return { ...state, currentEvent: {}, showEvent: false }
+    }
+    case 'ATTEND_EVENT': {
+      //add currentUser to currentevent attendees list
+      //add current event to user events list
+      const updatedCurrentEvent = {
+        ...state.currentEvent,
+        attendees: [
+          ...state.currentEvent.attendees,
+          {
+            first_name: state.user.first_name,
+            email: state.user.email,
+            profile_photo: state.user.profile_photo
+          }
+        ]
+      }
+      const updatedUser = {
+        ...state.user,
+        events: [
+          ...state.user.events,
+          { event_id: state.currentEvent.id, is_creator: false }
+        ]
+      }
+      return { ...state, currentEvent: updatedCurrentEvent, user: updatedUser }
+    }
+    case 'UNATTEND_EVENT': {
+      //remove currentUser from currentevent attendees list
+      //remove current event from user events list
+      const updatedAttendees = state.currentEvent.attendees.filter(
+        attendee => attendee.email !== state.user.email
+      )
+      const updatedUserEvents = state.user.events.filter(
+        event => event.event_id !== state.currentEvent.id
+      )
+      const updatedUser = { ...state.user, events: updatedUserEvents }
+      return {
+        ...state,
+        currentEvent: {
+          ...state.currentEvent,
+          attendees: updatedAttendees
+        },
+        user: updatedUser
+      }
     }
     case 'SEND_REQUEST': {
       return {

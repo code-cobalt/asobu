@@ -12,9 +12,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { connect } from 'react-redux'
-import Badges from '../components/Badges'
-import axios from 'axios'
-import { apiUrl } from '../environment.js'
+import { attendEvent, unattendEvent } from '../src/actions/events'
 
 const { height, width } = Dimensions.get('window')
 
@@ -25,8 +23,9 @@ interface Props {
   setUserName: Function
   closeEvent: Function
   getEvents: Function
-  allEvents: ObjectArray
   currentEvent: Event
+  attendEvent: Function
+  unattendEvent: Function
 }
 
 interface UserLimited {
@@ -38,6 +37,7 @@ interface UserLimited {
 interface Event {
   name: string
   id: number
+  cover_photo: string
   description: string
   location: string
   attendees: Array<UserLimited>
@@ -51,29 +51,6 @@ interface UserLimited {
 }
 
 export class AnimatedEvent extends Component<Props> {
-  async getAllEvents() {
-    // const res = await axios.post(`${apiUrl}/graphql`, {
-    //   query:
-    // })
-    // this.props.getEvents(res.data.data.Events)
-  }
-
-  // async unattendEvent() {
-
-  //   const getEvents = () => {
-  //     this.getAllEvents()
-  //   }
-  //   getEvents()
-  // }
-
-  // async attendEvent() {
-
-  //   const getEvents = () => {
-  //     this.getAllEvents()
-  //   }
-  //   getEvents()
-  // }
-
   async componentDidUpdate() {
     if (this.props.showEvent) {
       this.yTranslate.setValue(0)
@@ -101,35 +78,38 @@ export class AnimatedEvent extends Component<Props> {
     let translateStyle = { transform: [{ translateY: modalMoveY }] }
 
     let rsvpButton
-    if (this.props.allEvents.length > 0) {
-      rsvpButton = this.props.allEvents.map(event => {
-        if (event.id === this.props.currentEvent.id) {
-          if (
-            JSON.stringify(event.attendees).includes(
-              JSON.stringify(this.props.user.email)
-            )
-          ) {
-            return (
-              <TouchableOpacity
-                onPress={() => unattendEvent()}
-                style={styles.event__button}
-              >
-                <Text style={styles.button__text}>Unattend</Text>
-              </TouchableOpacity>
-            )
-          } else {
-            return (
-              <TouchableOpacity
-                onPress={() => attendEvent()}
-                style={styles.event__button}
-              >
-                <Text style={styles.button__text}>RSVP</Text>
-              </TouchableOpacity>
+    if (
+      this.props.currentEvent.attendees &&
+      this.props.currentEvent.attendees
+        .map(attendees => attendees.email)
+        .includes(this.props.user.email)
+    ) {
+      rsvpButton = (
+        <TouchableOpacity
+          onPress={() =>
+            this.props.unattendEvent(
+              this.props.currentEvent.id,
+              this.props.user.email
             )
           }
-        }
-      })
+          style={styles.event__button}
+        >
+          <Text style={styles.button__text}>Unattend</Text>
+        </TouchableOpacity>
+      )
+    } else {
+      rsvpButton = (
+        <TouchableOpacity
+          onPress={() =>
+            this.props.attendEvent(this.props.currentEvent.id, this.props.user)
+          }
+          style={styles.event__button}
+        >
+          <Text style={styles.button__text}>RSVP</Text>
+        </TouchableOpacity>
+      )
     }
+
     return (
       <Animated.View style={[styles.contentContainer, translateStyle]}>
         <ScrollView style={styles.scrollView}>
@@ -161,7 +141,7 @@ export class AnimatedEvent extends Component<Props> {
             </TouchableOpacity>
             {rsvpButton}
             <TouchableOpacity
-              onPress={this.props.closeEvent}
+              onPress={() => this.props.closeEvent()}
               style={styles.event__button}
             >
               <Text style={styles.button__text}>Close</Text>
@@ -241,7 +221,6 @@ const mapStateToProps = state => {
   return {
     showEvent: state.showEvent,
     currentEvent: state.currentEvent,
-    allEvents: state.allEvents,
     user: state.user
   }
 }
@@ -253,12 +232,9 @@ const mapDispatchToProps = dispatch => {
         type: 'CLOSE_EVENT'
       })
     },
-    getEvents: events => {
-      dispatch({
-        type: 'GET_EVENTS',
-        events
-      })
-    }
+    attendEvent: (eventId, user) => dispatch(attendEvent(eventId, user)),
+    unattendEvent: (eventId, userEmail) =>
+      dispatch(unattendEvent(eventId, userEmail))
   }
 }
 
