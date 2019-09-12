@@ -3,7 +3,6 @@ import { apiUrl } from '../../environment.js'
 import { print } from 'graphql'
 import {
   getEventsQuery,
-  getEventQuery,
   createEventQuery,
   updateEventQuery,
   deleteEventQuery,
@@ -38,9 +37,30 @@ export const createEvent = async newEvent => {
   }
 }
 
-export const updateEvent = () => {}
+export const updateEvent = (eventId, updatedEvent) => {
+  return async dispatch => {
+    const res = await axios.post(`${apiUrl}/graphql`, {
+      query: print(updateEventQuery),
+      variables: {
+        eventId,
+        updatedEvent
+      }
+    })
+    dispatch({ type: 'UPDATE_EVENT', updatedEvent: res.data.data.UpdateEvent })
+  }
+}
 
-export const deleteEvent = () => {}
+export const deleteEvent = eventId => {
+  return async dispatch => {
+    await axios.post(`${apiUrl}/graphql`, {
+      query: print(deleteEventQuery),
+      variables: {
+        eventId
+      }
+    })
+    dispatch({ type: 'DELETE_EVENT', eventId })
+  }
+}
 
 export const attendEvent = (eventId, user) => {
   return async dispatch => {
