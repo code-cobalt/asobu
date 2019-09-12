@@ -211,7 +211,12 @@ const root = {
       comments: []
     })
     if (validation === 'valid') {
-      return await Event.create(newEvent)
+      const event = await Event.create(newEvent)
+      await User.updateOne(
+        { email: event.creator.email },
+        { $push: { events: { event_id: event.id, is_creator: true } } }
+      )
+      return event
     } else {
       //specific validation error will be nested inside error object
       throw new errors.InvalidEventError({ data: { err: validation } })
@@ -234,6 +239,10 @@ const root = {
 
   DeleteEvent: async params => {
     const res = await Event.deleteOne({ _id: params.eventId })
+    await User.updateMany(
+      {},
+      { $pull: { events: { event_id: params.eventId } } }
+    )
     if (res.deletedCount === 1) {
       return 'Successfully deleted event.'
     } else {
