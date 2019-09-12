@@ -148,7 +148,7 @@ const unattendEventQuery = gql`
   }
 `
 
-const createEventCommentQuery = gql`
+const createCommentQuery = gql`
   mutation CreateComment($eventId: String!, $newComment: NewComment!) {
     CreateComment(eventId: $eventId, newComment: $newComment) {
       id
@@ -163,7 +163,7 @@ const createEventCommentQuery = gql`
   }
 `
 
-const deleteEventCommentQuery = gql`
+const deleteCommentQuery = gql`
   mutation DeleteComment($eventId: String!, $commentId: String!) {
     DeleteComment(eventId: $eventId, commentId: $commentId)
   }
@@ -177,6 +177,6 @@ module.exports = {
   deleteEventQuery,
   attendEventQuery,
   unattendEventQuery,
-  createEventCommentQuery,
-  deleteEventCommentQuery
+  createCommentQuery,
+  deleteCommentQuery
 }

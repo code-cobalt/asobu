@@ -176,6 +176,23 @@ const reducer = (state = initialState, action) => {
         user: updatedUser
       }
     }
+    case 'CREATE_COMMENT': {
+      const updatedCurrentEvent = {
+        ...state.currentEvent,
+        comments: [...state.currentEvent.comments, action.newComment]
+      }
+      return { ...state, currentEvent: updatedCurrentEvent }
+    }
+    case 'DELETE_COMMENT': {
+      const updatedComments = state.currentEvent.comments.filter(
+        comment => comment.id !== action.commentId
+      )
+      const updatedCurrentEvent = {
+        ...state.currentEvent,
+        comments: updatedComments
+      }
+      return { ...state, currentEvent: updatedCurrentEvent }
+    }
     case 'SEND_REQUEST': {
       return {
         ...state,

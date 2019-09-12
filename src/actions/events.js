@@ -9,8 +9,8 @@ import {
   deleteEventQuery,
   attendEventQuery,
   unattendEventQuery,
-  createEventCommentQuery,
-  deleteEventCommentQuery
+  createCommentQuery,
+  deleteCommentQuery
 } from '../queries/events'
 
 const getEvents = () => {
@@ -72,9 +72,31 @@ const unattendEvent = (eventId, userEmail) => {
   }
 }
 
-const createEventComment = async () => {}
+const createComment = (eventId, newComment) => {
+  return async dispatch => {
+    await axios.post(`${apiUrl}/graphql`, {
+      query: print(createCommentQuery),
+      variables: {
+        eventId,
+        newComment
+      }
+    })
+    dispatch({ type: 'CREATE_COMMENT', newComment })
+  }
+}
 
-const deleteEventComment = async () => {}
+const deleteComment = (eventId, commentId) => {
+  return async dispatch => {
+    await axios.post(`${apiUrl}/graphql`, {
+      query: print(deleteCommentQuery),
+      variables: {
+        eventId,
+        commentId
+      }
+    })
+    dispatch({ type: 'DELETE_COMMENT', commentId })
+  }
+}
 
 export {
   getEvents,
@@ -83,6 +105,6 @@ export {
   deleteEvent,
   attendEvent,
   unattendEvent,
-  createEventComment,
-  deleteEventComment
+  createComment,
+  deleteComment
 }
