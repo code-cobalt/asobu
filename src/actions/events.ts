@@ -13,7 +13,7 @@ import {
   deleteCommentQuery
 } from '../queries/events'
 
-const getEvents = () => {
+export const getEvents = () => {
   return async dispatch => {
     const res = await axios.post(`${apiUrl}/graphql`, {
       query: print(getEventsQuery)
@@ -25,7 +25,7 @@ const getEvents = () => {
   }
 }
 
-const createEvent = async newEvent => {
+export const createEvent = async newEvent => {
   const res = await axios.post(`${apiUrl}/graphql`, {
     query: print(createEventQuery),
     variables: newEvent
@@ -38,11 +38,11 @@ const createEvent = async newEvent => {
   }
 }
 
-const updateEvent = async () => {}
+export const updateEvent = () => {}
 
-const deleteEvent = async () => {}
+export const deleteEvent = () => {}
 
-const attendEvent = (eventId, user) => {
+export const attendEvent = (eventId, user) => {
   return async dispatch => {
     await axios.post(`${apiUrl}/graphql`, {
       query: print(attendEventQuery),
@@ -59,7 +59,7 @@ const attendEvent = (eventId, user) => {
   }
 }
 
-const unattendEvent = (eventId, userEmail) => {
+export const unattendEvent = (eventId, userEmail) => {
   return async dispatch => {
     await axios.post(`${apiUrl}/graphql`, {
       query: print(unattendEventQuery),
@@ -72,7 +72,7 @@ const unattendEvent = (eventId, userEmail) => {
   }
 }
 
-const createComment = (eventId, newComment) => {
+export const createComment = (eventId, newComment) => {
   return async dispatch => {
     const res = await axios.post(`${apiUrl}/graphql`, {
       query: print(createCommentQuery),
@@ -88,7 +88,7 @@ const createComment = (eventId, newComment) => {
   }
 }
 
-const deleteComment = (eventId, commentId) => {
+export const deleteComment = (eventId, commentId) => {
   return async dispatch => {
     await axios.post(`${apiUrl}/graphql`, {
       query: print(deleteCommentQuery),
@@ -99,15 +99,4 @@ const deleteComment = (eventId, commentId) => {
     })
     dispatch({ type: 'DELETE_COMMENT', commentId })
   }
-}
-
-export {
-  getEvents,
-  createEvent,
-  updateEvent,
-  deleteEvent,
-  attendEvent,
-  unattendEvent,
-  createComment,
-  deleteComment
 }

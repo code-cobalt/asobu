@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-const getEventsQuery = gql`
+export const getEventsQuery = gql`
   query {
     Events {
       id
@@ -36,7 +36,7 @@ const getEventsQuery = gql`
   }
 `
 
-const getEventQuery = gql`
+export const getEventQuery = gql`
   query Event($eventId: String!) {
     Event(eventId: $eventId) {
       id
@@ -65,7 +65,7 @@ const getEventQuery = gql`
   }
 `
 
-const createEventQuery = gql`
+export const createEventQuery = gql`
   mutation CreateEvent($newEvent: NewEvent!) {
     CreateEvent(newEvent: $newEvent) {
       id
@@ -86,7 +86,7 @@ const createEventQuery = gql`
   }
 `
 
-const updateEventQuery = gql`
+export const updateEventQuery = gql`
   mutation UpdateEvent($eventId: String!, $updatedEvent: UpdatedEvent!) {
     UpdateEvent(eventId: $eventId, updatedEvent: $updatedEvent) {
       id
@@ -122,25 +122,25 @@ const updateEventQuery = gql`
   }
 `
 
-const deleteEventQuery = gql`
+export const deleteEventQuery = gql`
   mutation DeleteEvent($eventId: String!) {
     DeleteEvent(eventId: $eventId)
   }
 `
 
-const attendEventQuery = gql`
+export const attendEventQuery = gql`
   mutation AttendEvent($eventId: String!, $user: UserLimitedInput!) {
     AttendEvent(eventId: $eventId, user: $user)
   }
 `
 
-const unattendEventQuery = gql`
+export const unattendEventQuery = gql`
   mutation UnattendEvent($eventId: String!, $userEmail: String!) {
     UnattendEvent(eventId: $eventId, userEmail: $userEmail)
   }
 `
 
-const createCommentQuery = gql`
+export const createCommentQuery = gql`
   mutation CreateComment($eventId: String!, $newComment: NewComment!) {
     CreateComment(eventId: $eventId, newComment: $newComment) {
       id
@@ -155,20 +155,8 @@ const createCommentQuery = gql`
   }
 `
 
-const deleteCommentQuery = gql`
+export const deleteCommentQuery = gql`
   mutation DeleteComment($eventId: String!, $commentId: String!) {
     DeleteComment(eventId: $eventId, commentId: $commentId)
   }
 `
-
-module.exports = {
-  getEventsQuery,
-  getEventQuery,
-  createEventQuery,
-  updateEventQuery,
-  deleteEventQuery,
-  attendEventQuery,
-  unattendEventQuery,
-  createCommentQuery,
-  deleteCommentQuery
-}
