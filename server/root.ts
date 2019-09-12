@@ -248,11 +248,15 @@ const root = {
         { timestamp: new Date() },
         params.newComment
       )
-      await Event.updateOne(
+      const updatedEvent = await Event.findOneAndUpdate(
         { _id: params.eventId },
-        { $push: { comments: newComment } }
+        { $push: { comments: newComment } },
+        { new: true }
       )
-      return newComment
+      return {
+        ...newComment,
+        id: updatedEvent.comments[updatedEvent.comments.length - 1]._id
+      }
     } else {
       //specific validation error will be nested inside error object
       throw new errors.InvalidCommentError({ data: { err: validation } })

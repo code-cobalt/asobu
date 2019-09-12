@@ -74,14 +74,17 @@ const unattendEvent = (eventId, userEmail) => {
 
 const createComment = (eventId, newComment) => {
   return async dispatch => {
-    await axios.post(`${apiUrl}/graphql`, {
+    const res = await axios.post(`${apiUrl}/graphql`, {
       query: print(createCommentQuery),
       variables: {
         eventId,
         newComment
       }
     })
-    dispatch({ type: 'CREATE_COMMENT', newComment })
+    dispatch({
+      type: 'CREATE_COMMENT',
+      newComment: res.data.data.CreateComment
+    })
   }
 }
 

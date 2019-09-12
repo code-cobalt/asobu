@@ -24,6 +24,13 @@ const getEventsQuery = gql`
       }
       comments {
         id
+        content
+        timestamp
+        from {
+          first_name
+          email
+          profile_photo
+        }
       }
     }
   }
@@ -75,21 +82,6 @@ const createEventQuery = gql`
       location
       limit
       tags
-      attendees {
-        first_name
-        email
-        profile_photo
-      }
-      comments {
-        id
-        content
-        timestamp
-        from {
-          first_name
-          email
-          profile_photo
-        }
-      }
     }
   }
 `
