@@ -50,7 +50,7 @@ class ChatInput extends Component<Props> {
     const recipientEmail = currentChat[0].participants[0].email
     /* NOTE TO TJ: I don't know how you prefer to send the chatId with the code 'm0 ${recipientEmail}, but you
       can get the chatId with this.props.currentChatId */
-    this.props.socket.send(`m0 ${recipientEmail}`)
+    this.props.socket.send(`m0 ${recipientEmail} ${this.props.currentChatId}`)
   }
 
   render() {
