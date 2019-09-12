@@ -3,45 +3,60 @@ import Main from './Main'
 import Navbar from '../components/Navbar'
 import { Alert } from 'react-native'
 import { connect } from 'react-redux'
-import { sockethost } from '../environment.js'
+import { SocketContext } from "../components/SocketProvider"
+import axios from "axios"
+import sockethost from "../environment"
+
 
 interface Props {
-  email: string
+    email: string,
+    setSocket: Function
+    chat_id: number
+    showChat: Function
+    initializeSocket: Function
 }
 
 class Application extends React.Component<Props> {
-  componentDidMount() {
-    const connection = new WebSocket(sockethost)
-    connection.onopen = () => {
-      console.log('Connection Open')
-      connection.send(`l0 ${this.props.email}`)
+    constructor(props) {
+        super(props);
+        this.state = {
+            count: 90
+        };
     }
-    connection.onerror = error => {
-      console.log(error)
-    }
-    connection.onmessage = e => {
-      console.log(e.data)
-      Alert.alert(e.data)
-    }
-  }
 
-  render() {
-    return (
-      <>
-        <Main />
-        <Navbar />
-      </>
-    )
-  }
+    render() {
+        return (
+            <>
+                <SocketContext.Consumer>
+                    {context => <Main context={context} />}
+                    {/* <Main context={context} /> */}
+                </SocketContext.Consumer>
+                <Navbar />
+            </>
+        )
+    }
 }
 
 const mapStateToProps = state => {
-  return {
-    email: state.user.email
-  }
+    return {
+        email: state.user.email,
+        connection: state.connection,
+        chat_id: state.currentChatId
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        initializeSocket: () => {
+            dispatch({
+                type: "INITIALIZE_SOCKET"
+            })
+        },
+
+    }
 }
 
 export default connect(
-  mapStateToProps,
-  null
+    mapStateToProps,
+    mapDispatchToProps
 )(Application)

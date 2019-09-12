@@ -8,7 +8,7 @@ export default class Inbox extends Component {
     return (
       <View style={styles.events}>
         <ChatList />
-        <AnimatedChat />
+        <AnimatedChat socket={this.props.socket} />
       </View>
     )
   }

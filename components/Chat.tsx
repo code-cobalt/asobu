@@ -7,6 +7,11 @@ import axios from 'axios'
 interface Props {
   chat: Chat
   showChat: Function
+  socket: Socket
+}
+
+interface Socket {
+  send: Function
 }
 
 interface Chat {
@@ -104,6 +109,12 @@ const styles = StyleSheet.create({
   }
 })
 
+const mapStateToProps = state => {
+  return {
+    socket: state.socket
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     showChat: (messages, chatId) => {
@@ -117,6 +128,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Chat)

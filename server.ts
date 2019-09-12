@@ -9,6 +9,8 @@ import { execute, subscribe } from 'graphql'
 import { createServer } from 'http'
 import { SubscriptionServer } from 'subscriptions-transport-ws'
 const subscribtionsEndpoint = `ws://localhost:${port}/subscriptions`
+//Axios
+const axios = require('axios')
 //Body Parser
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -44,6 +46,8 @@ const User = require('./server/models/user')
 const bcrypt = require('bcrypt')
 //formatError for custom graphql resolver errors
 import { formatError } from 'apollo-errors'
+//WebSocket
+import * as WebSocket from 'ws'
 
 // setting useFindAndModify to false resolves MongoDB Node.js deprecation warnings from using certain Mongoose methods
 // setting useCreateIndex true to allow unique constraint in user email
@@ -97,87 +101,69 @@ app.post('/upload', parser.single('image'), (req, res) => {
 
 //This is the websocket that wraps the server. A websocket is basically a live connection between server and client that are actively
 //listening to each other.
-const clients = []
-const WebSocket = require('ws')
-const wss = new WebSocket.Server({ port: 3001 })
+// const WebSocket = require('ws')
+// const wss = new WebSocket.Server({ port: 3001 })
 const l0 = new RegExp(/l0/)
+const m0 = new RegExp(/m0/)
+// import User from './server/models/user'
 
-wss.on('connection', ws => {
-  ws.on('message', msg => {
-    console.log(msg)
-    if (l0.test(msg)) {
-      const user = msg.split(' ')
-      let isLogged = false
-      for (const client of clients) {
-        if (client.email === user[1]) isLogged = true
-      }
-      if (!isLogged) clients.push({ email: user[1], socket: ws })
-      console.log(clients)
-    }
-  })
-})
+interface clientList {
+  email: WebSocket,
+}
 
-const ws = createServer(app)
-// const graphSocketPort = 3001
-// const graphSocket = require('websocket').server
-// const graphServer = createServer(app)
-// graphServer.listen(graphSocketPort, () => {
-//   console.log(`Listening on ${graphSocketPort}`)
+interface Clients {
+  clientList: Object
+}
 
-//   graphServer.on('request', (request) => {
-//     console.log('Incoming Request')
-//   })
+interface Client {
 
-//   graphServer.on('connection', (connection) => {
-//     console.log('Connection Established')
-//     connection.on('message', (message) => console.log(message))
-//   })
+}
 
-//   graphServer.on('open', (listener) => {
-//     console.log('Listener Active')
-//   })
+class Clients {
+  constructor() {
+    this.clientList = {}
+    this.saveClient = this.saveClient.bind(this)
+  }
+  saveClient(email: string, client: WebSocket) {
+    this.clientList[email] = client
+  }
+}
 
-//   new SubscriptionServer(
-//     {
-//       execute,
-//       subscribe,
-//       schema
-//     },
-//     {
-//       server: graphServer,
-//       path: '/subscriptions'
+const clients = new Clients()
+
+// wss.on('connection', client => {
+//   console.log('Incoming Connection')
+//   client.on('message', msg => {
+//     console.log(msg)
+//     if (l0.test(msg)) {
+//       let user = msg.split(' ')
+//       clients.saveClient(user[1], client)nc (event) => {
+
+//       for (let client in clients.clientList) {
+//         clients.clientList[client].send('USER LOGGED IN')
+//       }
 //     }
-//   )
+//     if (m0.test(msg)) {
+//       let chat = msg.split(' ')
+//       for (const client in clients.clientList) {
+//         console.log(client)
+//         if (client === chat[1]) clients.clientList[client].send(`m0 ${chat[2]}`)
+//       }
+//     }
+//   })
 // })
-// const graphSocketServer = new graphSocket({ httpServer: graphServer })
 
-ws.listen(port, () => {
-  ws.on('request', request => {
-    console.log('Incoming Connection')
-    // const connection = request.accept(null, request.origin)
+const server = createServer(app)
+const wss = new WebSocket.Server({ server })
+
+wss.on('connection', (ws: WebSocket) => {
+  console.log("CONNECTED")
+  ws.on('message', (msg) => {
+    console.log(msg)
   })
-  ws.on('connection', connection => {
-    console.log('Connected')
-  })
-  ws.on('listening', listener => {
-    console.log('Listening')
-  })
-  ws.on('message', (message: string) => {
-    console.log(message)
-  })
-  console.log(`Listening on ${port}`)
-  new SubscriptionServer(
-    {
-      execute,
-      subscribe,
-      schema
-    },
-    {
-      server: ws,
-      path: '/subscriptions'
-    }
-  )
 })
+
+server.listen(port, () => console.log(`Listening on ${port}`))
 
 // app.listen(port, () => console.log(`Listening on ${port}`))
 
