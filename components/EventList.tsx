@@ -2,9 +2,7 @@ import React from 'react'
 import {
   View,
   Text,
-  Image,
   StyleSheet,
-  TextInput,
   ScrollView,
   TouchableOpacity
 } from 'react-native'
@@ -13,52 +11,49 @@ import Event from '../components/Event'
 import NewEvent from '../components/NewEvent'
 
 interface Event {
-    name: string
-    id: number
-    description: string
-    location: string
-    cover_photo: string
-    attendees: Array<Attendee>
-  }
-  
-  interface Attendee {
-    first_name: string
-    email: string
-    profile_photo: string
-  }
+  name: string
+  id: number
+  description: string
+  location: string
+  cover_photo: string
+  attendees: Array<Attendee>
+}
+
+interface Attendee {
+  first_name: string
+  email: string
+  profile_photo: string
+}
 
 interface Props {
-    allEvents: Array<Event>
+  allEvents: Array<Event>
 }
 
 class EventList extends React.Component<Props> {
-state = {}
-showForm {
-
-}
+  state = {}
+  showForm() {}
 
   render() {
     const eventList = this.props.allEvents.map(event => {
-        return <Event key={event.id} event={event} />
-      })
+      return <Event key={event.id} event={event} />
+    })
     return (
-        <View>
-          <TouchableOpacity onPress={() => this.showForm()}>
-            <Text>Create Event</Text>
-            <NewEvent visible={this.}/>
-          </TouchableOpacity>
-         
-          <ScrollView>{eventList}</ScrollView>
-        </View>
-      )
-  }
+      <View>
+        <TouchableOpacity onPress={() => this.showForm()}>
+          <Text>Create Event</Text>
+          {/* <NewEvent visible={true}/> */}
+        </TouchableOpacity>
 
+        <ScrollView>{eventList}</ScrollView>
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
-    eventList: {
-        bottom: 40
-    }
+  eventList: {
+    bottom: 40
+  }
 })
 
 const mapStateToProps = state => {
