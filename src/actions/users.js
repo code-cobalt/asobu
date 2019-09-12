@@ -3,59 +3,59 @@ import { apiUrl } from '../../environment.js'
 import gql from 'graphql-tag'
 import { print } from 'graphql'
 
-const setUserName = username => {
-  return {
-    type: 'SET_USERNAME',
-    username
-  }
-}
+// const setUserName = username => {
+//   return {
+//     type: 'SET_USERNAME',
+//     username
+//   }
+// }
 
-const setActiveView = data => {
-  return {
-    type: 'SET_ACTIVE_VIEW',
-    activeView: data
-  }
-}
+// const setActiveView = data => {
+//   return {
+//     type: 'SET_ACTIVE_VIEW',
+//     activeView: data
+//   }
+// }
 
-const setAllUsers = data => {
-  return {
-    type: 'SET_ALL_USERS',
-    allUsers: data
-  }
-}
+// const setAllUsers = data => {
+//   return {
+//     type: 'SET_ALL_USERS',
+//     allUsers: data
+//   }
+// }
 
-const setUser = user => {
-  return {
-    type: 'SET_USER',
-    user
-  }
-}
+// const setUser = user => {
+//   return {
+//     type: 'SET_USER',
+//     user
+//   }
+// }
 
-const toggleAuth = () => {
-  return {
-    type: 'TOGGLE_AUTH'
-  }
-}
+// const toggleAuth = () => {
+//   return {
+//     type: 'TOGGLE_AUTH'
+//   }
+// }
 
-const toggleResultsView = activeView => {
-  return {
-    type: 'TOGGLE_RESULTS_VIEW',
-    activeView
-  }
-}
+// const toggleResultsView = activeView => {
+//   return {
+//     type: 'TOGGLE_RESULTS_VIEW',
+//     activeView
+//   }
+// }
 
-const showProfile = profile => {
-  return {
-    type: 'SHOW_PROFILE',
-    profile
-  }
-}
+// const showProfile = profile => {
+//   return {
+//     type: 'SHOW_PROFILE',
+//     profile
+//   }
+// }
 
-const closeProfile = () => {
-  return {
-    type: 'CLOSE_PROFILE'
-  }
-}
+// const closeProfile = () => {
+//   return {
+//     type: 'CLOSE_PROFILE'
+//   }
+// }
 
 const getChats = async userEmail => {
   const userChatsQuery = gql`
@@ -81,20 +81,20 @@ const getChats = async userEmail => {
   return userChats.data.data.User.chats
 }
 
-const getEvents = events => {
-  return {
-    type: 'GET_EVENTS',
-    events
-  }
-}
-
-const showChat = (messages, chatId) => {
-  return {
-    type: 'SHOW_CHAT',
-    messages,
-    chatId
-  }
-}
+// const getEvents = events => {
+//   return {
+//     type: 'GET_EVENTS',
+//     events
+//   }
+// }
+//
+// const showChat = (messages, chatId) => {
+//   return {
+//     type: 'SHOW_CHAT',
+//     messages,
+//     chatId
+//   }
+// }
 
 const postMessage = async message => {
   const createMessageMutation = gql`
@@ -121,20 +121,20 @@ const postMessage = async message => {
   return res.data.data.CreateMessage
 }
 
-const showEvent = event => {
-  const actionObj = {
-    type: 'SHOW_EVENT',
-    event
-  }
-  return actionObj
-}
+// const showEvent = event => {
+//   const actionObj = {
+//     type: 'SHOW_EVENT',
+//     event
+//   }
+//   return actionObj
+// }
 
-const closeEvent = () => {
-  const actionObj = {
-    type: 'CLOSE_Event'
-  }
-  return actionObj
-}
+// const closeEvent = () => {
+//   const actionObj = {
+//     type: 'CLOSE_Event'
+//   }
+//   return actionObj
+// }
 
 const postHangoutRequest = async (currentUserEmail, toUserEmail) => {
   const sendHangoutRequestMutation = gql`
@@ -183,49 +183,6 @@ const postHangoutAccept = async (currentUserEmail, fromUserEmail) => {
       currentUserEmail,
       fromUserEmail
     }
-  })
-  return res
-}
-
-const postEvent = async newEvent => {
-  const postEventQuery = gql`
-    mutation CreateEvent($newEvent: NewEvent!) {
-      CreateEvent(newEvent: $newEvent) {
-        id
-        name
-        description
-        cover_photo
-        creator {
-          first_name
-          email
-          profile_photo
-        }
-        start
-        end
-        location
-        limit
-        tags
-        attendees {
-          first_name
-          email
-          profile_photo
-        }
-        comments {
-          id
-          content
-          timestamp
-          from {
-            first_name
-            email
-            profile_photo
-          }
-        }
-      }
-    }
-  `
-  const res = await axios.post(`${apiUrl}/graphql`, {
-    query: print(postEventQuery),
-    variables: newEvent
   })
   return res
 }
