@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { attendEvent, unattendEvent } from '../src/actions/events'
+import Comments from '../components/Comments'
 
 const { height, width } = Dimensions.get('window')
 
@@ -34,6 +35,13 @@ interface UserLimited {
   profile_photo: string
 }
 
+interface Comment {
+  id: string
+  content: string
+  timestamp: Date
+  from: UserLimited
+}
+
 interface Event {
   name: string
   id: number
@@ -42,12 +50,7 @@ interface Event {
   location: string
   attendees: Array<UserLimited>
   creator: UserLimited
-}
-
-interface UserLimited {
-  first_name: string
-  email: string
-  profile_photo: string
+  comments: Array<Comment>
 }
 
 export class AnimatedEvent extends Component<Props> {
@@ -147,6 +150,7 @@ export class AnimatedEvent extends Component<Props> {
               <Text style={styles.button__text}>Close</Text>
             </TouchableOpacity>
           </View>
+          <Comments comments={this.props.currentEvent.comments} />
         </ScrollView>
       </Animated.View>
     )
