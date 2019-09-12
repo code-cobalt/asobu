@@ -114,7 +114,14 @@ const reducer = (state = initialState, action) => {
         event => event.event_id !== action.id
       )
       const updatedUser = { ...state.user, events: filteredUserEvents }
-      return { ...state, allEvents: filteredEvents, user: updatedUser }
+      return {
+        ...state,
+        allEvents: filteredEvents,
+        user: updatedUser,
+        resultsSwitch: 'events',
+        currentEvent: {},
+        showEvent: false
+      }
     }
     case 'SHOW_EVENT': {
       const copiedState = Object.assign({}, state)

@@ -11,7 +11,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { connect } from 'react-redux'
-import { attendEvent, unattendEvent } from '../src/actions/events'
+import { attendEvent, unattendEvent, deleteEvent } from '../src/actions/events'
 import Comments from '../components/Comments'
 
 const { height, width } = Dimensions.get('window')
@@ -26,6 +26,7 @@ interface Props {
   currentEvent: Event
   attendEvent: Function
   unattendEvent: Function
+  deleteEvent: Function
 }
 
 interface UserLimited {
@@ -111,6 +112,20 @@ export class AnimatedEvent extends Component<Props> {
         </TouchableOpacity>
       )
     }
+    let deleteButton
+    if (
+      this.props.currentEvent.creator &&
+      this.props.user.email === this.props.currentEvent.creator.email
+    ) {
+      deleteButton = (
+        <TouchableOpacity
+          style={styles.event__button}
+          onPress={() => this.props.deleteEvent(this.props.currentEvent.id)}
+        >
+          <Text style={styles.button__text}>Delete Event</Text>
+        </TouchableOpacity>
+      )
+    }
 
     return (
       <Animated.View style={[styles.contentContainer, translateStyle]}>
@@ -142,6 +157,7 @@ export class AnimatedEvent extends Component<Props> {
               <Text style={styles.button__text}>Attendees</Text>
             </TouchableOpacity>
             {rsvpButton}
+            {deleteButton}
           </View>
           <Comments comments={this.props.currentEvent.comments} />
         </ScrollView>
@@ -231,7 +247,8 @@ const mapDispatchToProps = dispatch => {
     },
     attendEvent: (eventId, user) => dispatch(attendEvent(eventId, user)),
     unattendEvent: (eventId, userEmail) =>
-      dispatch(unattendEvent(eventId, userEmail))
+      dispatch(unattendEvent(eventId, userEmail)),
+    deleteEvent: eventId => dispatch(deleteEvent(eventId))
   }
 }
 
