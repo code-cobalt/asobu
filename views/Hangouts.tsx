@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet, Button } from 'react-native'
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native'
 import UserList from '../components/UserList'
+import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
 import { postHangoutAccept } from '../src/actions/userActions'
@@ -42,24 +43,28 @@ class Hangouts extends React.Component<Props> {
             <Text style={styles.title}>
               Other users would like to hangout with you!
             </Text>
-            {this.props.receivedHangoutRequests.map(request => {
-              return (
-                <View style={styles.request}>
-                  <Image
-                    source={{ uri: request.profile_photo }}
-                    style={styles.user__image}
-                  />
-                  <View style={{ flexDirection: 'column' }}>
-                    <Text style={styles.user__name}>{request.first_name}</Text>
-                    <Button
-                      onPress={() => this.handlePress(request.email)}
-                      title="Approve Request"
+            <ScrollView>
+              {this.props.receivedHangoutRequests.map((request, index) => {
+                return (
+                  <View style={styles.request} key={index}>
+                    <Image
+                      source={{ uri: request.profile_photo }}
+                      style={styles.user__image}
                     />
+                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", flex: 1 }}>
+                      <Text style={styles.user__name}>{request.first_name}</Text>
+                      <TouchableOpacity onPress={() => this.handlePress(request.email)} style={styles.accept__button}>
+                        <Ionicons name="md-checkmark" size={32} color="white" />
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => console.log("Decline")} style={styles.decline__button}>
+                        <Ionicons name="md-close" size={32} color="white" />
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
-              )
-            })}
-            <View style={styles.close}>
+                )
+              })}
+            </ScrollView>
+            <View>
               <Button
                 title="Close"
                 onPress={() => this.setState({ modalVisible: false })}
@@ -99,6 +104,22 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 40,
     marginLeft: 10
+  },
+  accept__button: {
+    width: 50,
+    height: 50,
+    backgroundColor: "green",
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  decline__button: {
+    width: 50,
+    height: 50,
+    backgroundColor: "red",
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center"
   },
   close: {
     textAlign: 'right',
