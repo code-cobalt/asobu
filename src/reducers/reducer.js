@@ -16,7 +16,7 @@ const initialState = {
   showLogin: true,
   showChat: false,
   currentChatMessages: [],
-  currentChatId: 0
+  currentChatId: 0,
 }
 
 const reducer = (state = initialState, action) => {

@@ -99,6 +99,7 @@ class AnimatedChat extends Component<Props> {
           <ChatInput
             currentUserLimited={this.props.currentUserLimited}
             chatId={this.props.currentChatId}
+            socket={this.props.socket}
           />
         </View>
       </Animated.View>
