@@ -14,13 +14,12 @@ const Event = props => {
           style={styles.event__photo}
         />
       </View>
-      <View style={styles.event__text}>
+      <View style={styles.text__box}>
         <Text style={styles.event__title}>{props.event.name}</Text>
-        <Text>{props.event.description}</Text>
-        <Text>Created by {props.event.creator.first_name}</Text>
-        <Text>
-          Located at "{props.event.location}" on {props.event.start}
+        <Text style={styles.event__text}>
+          Created by {props.event.creator.first_name}
         </Text>
+        <Text style={styles.event__text}>{props.event.description}</Text>
       </View>
     </TouchableOpacity>
   )
@@ -31,7 +30,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 28,
+    marginBottom: 40,
     marginTop: 5,
     marginRight: 10,
     marginLeft: 10,
@@ -39,11 +38,12 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   event__title: {
-    fontSize: 18,
-    fontWeight: '600'
+    alignSelf: 'center',
+    fontSize: 20,
+    fontWeight: '800',
+    paddingBottom: 15
   },
   photo__container: {
-    margin: 50,
     height: 250,
     width: 300,
     borderRadius: 10
@@ -55,7 +55,12 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   event__text: {
-    padding: 15
+    padding: 5,
+    alignSelf: 'center'
+  },
+  text__box: {
+    paddingTop: 15,
+    paddingBottom: 15
   }
 })
 

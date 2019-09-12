@@ -55,6 +55,12 @@ showForm {
 
 }
 
+const styles = StyleSheet.create({
+    eventList: {
+        bottom: 40
+    }
+})
+
 const mapStateToProps = state => {
   return {
     allEvents: state.allEvents
