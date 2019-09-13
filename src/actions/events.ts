@@ -32,7 +32,7 @@ export const createEvent = async newEvent => {
   return dispatch => {
     dispatch({
       type: 'CREATE_EVENT',
-      newEvent
+      newEvent: res.data.data.CreateEvent
     })
   }
 }
