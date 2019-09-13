@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView 
 import { Divider } from 'react-native-elements'
 import { connect } from 'react-redux'
 import Badges from './../components/Badges'
+import EditProfileModal from "../components/EditProfileModal"
 
 interface UserLimited {
   first_name: string
@@ -32,10 +33,12 @@ interface User {
 
 interface Props {
   user: User
+  editProfile: Function
 }
 
 class Profile extends Component<Props> {
   render() {
+    console.log(this.props.user.id)
     return (
       <View style={styles.profile}>
         <ScrollView>
@@ -54,7 +57,7 @@ class Profile extends Component<Props> {
                 />
               )}
             </TouchableOpacity>
-            <TouchableOpacity style={styles.edit__button}>
+            <TouchableOpacity style={styles.edit__button} onPress={this.props.editProfile}>
               <Text style={styles.button__text}>Edit Profile</Text>
             </TouchableOpacity>
             <View style={styles.basic_info_container}>
@@ -68,7 +71,7 @@ class Profile extends Component<Props> {
               </View>
             </View>
           </View>
-          <Divider style={styles.divider}/>
+          <Divider style={styles.divider} />
           <View style={styles.profile__body}>
             <Text style={styles.info__title}>Your Interests</Text>
             <View style={styles.interests__container}>
@@ -83,7 +86,7 @@ class Profile extends Component<Props> {
               <Text style={styles.info__title}>Phone #</Text>
               <Text style={styles.inner__text}>{this.props.user.phone_number}</Text>
             </View>
-            <Divider style={styles.divider}/>
+            <Divider style={styles.divider} />
             <View style={styles.all__badges}>
               <Text style={styles.info__title}>All Badges</Text>
               <View style={styles.badge__container}>
@@ -100,6 +103,7 @@ class Profile extends Component<Props> {
             </TouchableOpacity>
           </View> */}
         </ScrollView>
+        <EditProfileModal />
       </View>
     )
   }
@@ -190,7 +194,7 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   divider: {
-    backgroundColor: '#acbdac', 
+    backgroundColor: '#acbdac',
     height: 1.5
   },
   top__badges: {
@@ -219,4 +223,10 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(Profile)
+const mapDispatchToProps = dispatch => {
+  return {
+    editProfile: () => dispatch({ type: "EDIT_PROFILE" })
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)
