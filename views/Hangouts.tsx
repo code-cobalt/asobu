@@ -1,11 +1,22 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView, TextInput } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+  ScrollView,
+  TextInput
+} from 'react-native'
 import UserList from '../components/UserList'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
-import UserModal from "../components/UserModal"
-import { postHangoutAccept, postHangoutDecline } from '../src/actions/users'
+import {
+  acceptHangoutRequest,
+  declineHangoutRequest
+} from '../src/actions/hangouts'
 
 interface UserLimited {
   first_name: string
@@ -13,29 +24,27 @@ interface UserLimited {
   profile_photo: string
 }
 
+interface Profile {
+  first_name: string
+  profile_photo: string
+  email: string
+  lvl: number
+}
+
 interface Props {
   receivedHangoutRequests: Array<UserLimited>
-  acceptRequest: Function
-  currentUserEmail: string,
-  currentProfile: Object
+  acceptHangoutRequest: Function
+  declineHangoutRequest: Function
+  currentUserEmail: string
+  currentProfile: Profile
+  showProfile: boolean
+  closeProfile: Function
 }
 
 class Hangouts extends React.Component<Props> {
   state = {
     modalVisible: this.props.receivedHangoutRequests.length > 0,
     profileVisible: Object.keys(this.props.currentProfile).length > 0
-  }
-  handlePress = async fromEmail => {
-    const res = await postHangoutAccept(this.props.currentUserEmail, fromEmail)
-    if (res.status === 200) {
-      this.props.acceptRequest(fromEmail, res.data.data.AcceptHangoutRequest)
-    }
-  }
-  handleDecline = async fromEmail => {
-    const res = await postHangoutDecline(this.props.currentUserEmail, fromEmail)
-    if (res.status === 200) {
-      this.props.declineRequest(fromEmail)
-    }
   }
   render() {
     return (
@@ -60,12 +69,37 @@ class Hangouts extends React.Component<Props> {
                       source={{ uri: request.profile_photo }}
                       style={styles.user__image}
                     />
-                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", flex: 1 }}>
-                      <Text style={styles.user__name}>{request.first_name}</Text>
-                      <TouchableOpacity onPress={() => this.handlePress(request.email)} style={styles.accept__button}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flex: 1
+                      }}
+                    >
+                      <Text style={styles.user__name}>
+                        {request.first_name}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.props.acceptHangoutRequest(
+                            this.props.currentUserEmail,
+                            request.email
+                          )
+                        }
+                        style={styles.accept__button}
+                      >
                         <Ionicons name="md-checkmark" size={32} color="white" />
                       </TouchableOpacity>
-                      <TouchableOpacity onPress={() => console.log("Decline")} style={styles.decline__button}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.props.declineHangoutRequest(
+                            this.props.currentUserEmail,
+                            request.email
+                          )
+                        }
+                        style={styles.decline__button}
+                      >
                         <Ionicons name="md-close" size={32} color="white" />
                       </TouchableOpacity>
                     </View>
@@ -103,7 +137,7 @@ const styles = StyleSheet.create({
   },
   request: {
     flexDirection: 'row',
-    margin: 10,
+    margin: 10
   },
   user__image: {
     borderRadius: 50,
@@ -118,18 +152,18 @@ const styles = StyleSheet.create({
   accept__button: {
     width: 50,
     height: 50,
-    backgroundColor: "green",
+    backgroundColor: 'green',
     borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   decline__button: {
     width: 50,
     height: 50,
-    backgroundColor: "red",
+    backgroundColor: 'red',
     borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   close: {
     textAlign: 'right',
@@ -149,13 +183,12 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    acceptRequest: (fromUserEmail, newChat) => {
-      dispatch({ type: 'ACCEPT_REQUEST', fromUserEmail, newChat })
-    },
+    acceptHangoutRequest: (currentUserEmail, fromUserEmail) =>
+      dispatch(acceptHangoutRequest(currentUserEmail, fromUserEmail)),
+    declineHangoutRequest: (currentUserEmail, fromUserEmail) =>
+      dispatch(declineHangoutRequest(currentUserEmail, fromUserEmail)),
     closeProfile: () => {
-      dispatch({
-        type: 'CLOSE_PROFILE'
-      })
+      dispatch({ type: 'CLOSE_PROFILE' })
     }
   }
 }

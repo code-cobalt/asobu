@@ -38,3 +38,28 @@ export const loginQuery = gql`
     }
   }
 `
+
+export const getUsersQuery = gql`
+  query {
+    Users {
+      id
+      first_name
+      last_name
+      email
+      phone_number
+      profile_photo
+      interests
+      exp
+      lvl
+      stats {
+        funny
+        intellectual
+        fun
+        kind
+        therapeutic
+        interesting
+      }
+      imei
+    }
+  }
+`

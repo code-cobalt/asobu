@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import Badges from './Badges'
 import { connect } from 'react-redux'
-import { postHangoutRequest } from '../src/actions/users'
+import { sendHangoutRequest } from '../src/actions/hangouts'
 
 interface UserLimited {
   id: string
@@ -16,55 +16,49 @@ interface UserLimited {
 interface Props {
   user: UserLimited
   currentUserEmail: string
-  sendRequest: Function
+  sendHangoutRequest: Function
+  showProfile: Function
 }
 
-class User extends React.Component<Props> {
-  handlePress = async () => {
-    const resStatus = await postHangoutRequest(
-      this.props.currentUserEmail,
-      this.props.user.email
-    )
-    if (resStatus === 200) {
-      const toUser = {
-        first_name: this.props.user.first_name,
-        email: this.props.user.email,
-        profile_photo: this.props.user.profile_photo
-      }
-      this.props.sendRequest(toUser)
-    }
-  }
-  render() {
-    return (
-      <TouchableOpacity
-        style={styles.user}
-        onPress={() => this.props.showProfile(this.props.user)}
-      >
-        <View style={styles.user}>
-          {this.props.user.profile_photo !== null && (
-            <Image
-              source={{ uri: this.props.user.profile_photo }}
-              style={styles.user__image}
-            />
-          )}
-          <View style={styles.user__textcontainer}>
-            <Text style={styles.user__name}>{this.props.user.first_name}</Text>
-            <Text style={styles.user__text}>Level {this.props.user.lvl}</Text>
-            <Text style={styles.user__text}>XP: {this.props.user.exp}</Text>
-          </View>
-          <View style={styles.column}>
-            <View style={styles.user__badges}>
-              <Badges />
-            </View>
-
-            <Text style={styles.hangout} onPress={() => this.handlePress()}>
-              Send Hangout Request
-          </Text>
-          </View>
+const User: React.FunctionComponent<Props> = props => {
+  return (
+    <TouchableOpacity
+      style={styles.user}
+      onPress={() => props.showProfile(props.user)}
+    >
+      <View style={styles.user}>
+        {props.user.profile_photo !== null && (
+          <Image
+            source={{ uri: props.user.profile_photo }}
+            style={styles.user__image}
+          />
+        )}
+        <View style={styles.user__textcontainer}>
+          <Text style={styles.user__name}>{props.user.first_name}</Text>
+          <Text style={styles.user__text}>Level {props.user.lvl}</Text>
+          <Text style={styles.user__text}>XP: {props.user.exp}</Text>
         </View>
-      </TouchableOpacity>
-    )
-  }
+        <View style={styles.column}>
+          <View style={styles.user__badges}>
+            <Badges />
+          </View>
+
+          <Text
+            style={styles.hangout}
+            onPress={() =>
+              props.sendHangoutRequest(props.currentUserEmail, {
+                first_name: props.user.first_name,
+                email: props.user.email,
+                profile_photo: props.user.profile_photo
+              })
+            }
+          >
+            Send Hangout Request
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -129,9 +123,8 @@ const mapDispatchToProps = dispatch => {
         profile
       })
     },
-    sendRequest: toUser => {
-      dispatch({ type: 'SEND_REQUEST', toUser })
-    }
+    sendHangoutRequest: (currentUserEmail, toUser) =>
+      dispatch(sendHangoutRequest(currentUserEmail, toUser))
   }
 }
 
