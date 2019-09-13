@@ -27,12 +27,14 @@ interface UserLimited {
 interface Profile {
   first_name: string
   profile_photo: string
+  email: string
   lvl: number
 }
 
 interface Props {
   receivedHangoutRequests: Array<UserLimited>
   acceptHangoutRequest: Function
+  declineHangoutRequest: Function
   currentUserEmail: string
   currentProfile: Profile
   showProfile: boolean
@@ -91,7 +93,12 @@ class Hangouts extends React.Component<Props> {
                         <Ionicons name="md-checkmark" size={32} color="white" />
                       </TouchableOpacity>
                       <TouchableOpacity
-                        onPress={() => console.log('Decline')}
+                        onPress={() =>
+                          this.props.declineHangoutRequest(
+                            this.props.currentUserEmail,
+                            request.email
+                          )
+                        }
                         style={styles.decline__button}
                       >
                         <Ionicons name="md-close" size={32} color="white" />

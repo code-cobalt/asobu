@@ -38,13 +38,13 @@ export const acceptHangoutRequest = (currentUserEmail, fromUserEmail) => {
 
 export const declineHangoutRequest = (currentUserEmail, fromUserEmail) => {
   return async dispatch => {
-    const res = await axios.post(`${apiUrl}/graphql`, {
+    await axios.post(`${apiUrl}/graphql`, {
       query: print(declineHangoutRequestQuery),
       variables: {
         currentUserEmail,
         fromUserEmail
       }
     })
-    dispatch({ type: 'DECLINE_REQUEST' })
+    dispatch({ type: 'DECLINE_REQUEST', fromUserEmail })
   }
 }

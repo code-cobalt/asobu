@@ -222,6 +222,12 @@ const reducer = (state = initialState, action) => {
         chats
       }
     }
+    case 'DECLINE_REQUEST': {
+      const receivedHangoutRequests = state.receivedHangoutRequests.filter(
+        request => request.email !== action.fromUserEmail
+      )
+      return { ...state, receivedHangoutRequests }
+    }
     default: {
       return state
     }
