@@ -30,3 +30,15 @@ export const acceptHangoutRequestQuery = gql`
     }
   }
 `
+
+export const declineHangoutRequestQuery = gql`
+  mutation DeclineHangoutRequest(
+    $currentUserEmail: String!
+    $fromUserEmail: String!
+  ) {
+    DeclineHangoutRequest(
+      currentUserEmail: $currentUserEmail
+      fromUserEmail: $fromUserEmail
+    )
+  }
+`

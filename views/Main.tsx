@@ -1,31 +1,34 @@
 import React, { Component } from 'react'
-import { View, Button, Text, Image, StyleSheet, TextInput } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { getChat } from '../src/actions/chats'
-import { apiUrl } from '../environment.js'
+import { getUsers } from '../src/actions/users'
 import Profile from './Profile'
 import Results from './Results'
 import Inbox from './Inbox'
 
 interface Props {
+  activeView: string
+  email: string
   toggleView: Function
   setAllUsers: Function
-  activeView: String
   context: Function
-  email: String
+  getUsers: Function
+  getChat: Function
+  socket: WebSocket
 }
 
 class Main extends Component<Props> {
-  async componentDidMount() {
+  componentDidMount() {
     this.props.socket.send(`l0 ${this.props.email}`)
-    this.props.socket.onmessage = (event) => {
+    this.props.socket.onmessage = event => {
       console.log(`SERVER MESSAGE: ${event.data}`)
       const message = event.data.split(' ')
       if (message[0] === 'm0') {
         this.props.getChat(parseInt(message[1]))
       }
     }
-    // this.props.setAllUsers(res.data.data.Users)
+    this.props.getUsers(this.props.email)
   }
 
   render() {
@@ -65,19 +68,14 @@ const mapDispatchToProps = dispatch => {
         activeView: activeView
       })
     },
-    setAllUsers: allUsers => {
-      dispatch({
-        type: 'SET_ALL_USERS',
-        allUsers: allUsers
-      })
-    },
     updateChat: chat => {
       dispatch({
         type: 'SHOW_CHAT',
         messages: chat
       })
     },
-    getChat: chatId => dispatch(getChat(chatId))
+    getChat: chatId => dispatch(getChat(chatId)),
+    getUsers: currentUserEmail => dispatch(getUsers(currentUserEmail))
   }
 }
 

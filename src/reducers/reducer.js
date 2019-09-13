@@ -4,36 +4,36 @@ const initialState = {
   sentHangoutRequests: [],
   receivedHangoutRequests: [],
   user: {
-    chats: [
-     {
-        chat_id: 3,
-        participants: [
-         {
-            email: "jamesp@email.com",
-            first_name: "James",
-            profile_photo: "https://pm1.narvii.com/6434/94605250171379229064c93049e39ce310551346_hq.jpg",
-          },
-        ],
-      },
-    ],
-    email: "levans@email.com",
-    events: [
-     {
-        event_id: "1",
-        is_creator: false,
-      },
-    ],
-    exp: 23,
-    first_name: "Lily",
-    id: "5d787e870e58890e0adce07b",
-    imei: null,
-    interests: [],
-    last_name: "Evans",
-    lvl: 2,
-    phone_number: "+447911654321",
-    profile_photo: "https://i.pinimg.com/originals/a6/f4/f0/a6f4f037f9207e4eb4ec5a7cedfd2914.jpg",
-    received_hangout_requests: [],
-    sent_hangout_requests: [],
+  //   chats: [
+  //    {
+  //       chat_id: 3,
+  //       participants: [
+  //        {
+  //           email: "jamesp@email.com",
+  //           first_name: "James",
+  //           profile_photo: "https://pm1.narvii.com/6434/94605250171379229064c93049e39ce310551346_hq.jpg",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  //   email: "levans@email.com",
+  //   events: [
+  //    {
+  //       event_id: "1",
+  //       is_creator: false,
+  //     },
+  //   ],
+  //   exp: 23,
+  //   first_name: "Lily",
+  //   id: "5d787e870e58890e0adce07b",
+  //   imei: null,
+  //   interests: [],
+  //   last_name: "Evans",
+  //   lvl: 2,
+  //   phone_number: "+447911654321",
+  //   profile_photo: "https://i.pinimg.com/originals/a6/f4/f0/a6f4f037f9207e4eb4ec5a7cedfd2914.jpg",
+  //   received_hangout_requests: [],
+  //   sent_hangout_requests: [],
   },
   allUsers: [],
   allEvents: [],
@@ -44,7 +44,7 @@ const initialState = {
   showEditEventForm: false,
   currentProfile: {},
   currentEvent: {},
-  isLoggedIn: true,
+  isLoggedIn: false,
   showLogin: true,
   showChat: false,
   currentChatMessages: [],
@@ -58,11 +58,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, activeView: action.activeView }
     }
     case 'SET_ALL_USERS': {
-      const copiedState = Object.assign({}, state)
-      copiedState.allUsers = action.allUsers.filter(
-        user => user.email !== state.user.email
-      )
-      return copiedState
+      return { ...state, allUsers: action.allUsers }
     }
     case 'SET_USER': {
       console.log(action.user)
@@ -258,6 +254,12 @@ const reducer = (state = initialState, action) => {
         receivedHangoutRequests,
         chats
       }
+    }
+    case 'DECLINE_REQUEST': {
+      const receivedHangoutRequests = state.receivedHangoutRequests.filter(
+        request => request.email !== action.fromUserEmail
+      )
+      return { ...state, receivedHangoutRequests }
     }
     default: {
       return state

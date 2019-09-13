@@ -9,10 +9,14 @@ export const getChat = chatId => {
       query: print(getChatQuery),
       variables: { chatId }
     })
-    let chatMessages = res.data.data.Chat.messages
+    // necessary in case a new chat is Null and has no messages
+    let messages
+    res.data.data.Chat
+      ? (messages = res.data.data.Chat.messages)
+      : (messages = [])
     dispatch({
       type: 'SHOW_CHAT',
-      messages: chatMessages,
+      messages,
       chatId
     })
   }
