@@ -9,10 +9,9 @@ export const getChat = chatId => {
       query: print(getChatQuery),
       variables: { chatId }
     })
-    let chatMessages = res.data.data.Chat.messages
     dispatch({
       type: 'SHOW_CHAT',
-      messages: chatMessages,
+      messages: res.data.data.Chat.messages,
       chatId
     })
   }

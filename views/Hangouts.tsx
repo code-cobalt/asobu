@@ -1,10 +1,19 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView, TextInput } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+  ScrollView,
+  TextInput
+} from 'react-native'
 import UserList from '../components/UserList'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
-import { postHangoutAccept } from '../src/actions/users'
+import { acceptHangoutRequest } from '../src/actions/hangouts'
 
 interface UserLimited {
   first_name: string
@@ -14,9 +23,10 @@ interface UserLimited {
 
 interface Props {
   receivedHangoutRequests: Array<UserLimited>
-  acceptRequest: Function
-  currentUserEmail: string,
+  acceptHangoutRequest: Function
+  currentUserEmail: string
   currentProfile: Object
+  showProfile: Function
 }
 
 class Hangouts extends React.Component<Props> {
@@ -24,12 +34,12 @@ class Hangouts extends React.Component<Props> {
     modalVisible: this.props.receivedHangoutRequests.length > 0,
     profileVisible: Object.keys(this.props.currentProfile).length > 0
   }
-  handlePress = async fromEmail => {
-    const res = await postHangoutAccept(this.props.currentUserEmail, fromEmail)
-    if (res.status === 200) {
-      this.props.acceptRequest(fromEmail, res.data.data.AcceptHangoutRequest)
-    }
-  }
+  // handlePress = async fromEmail => {
+  //   const res = await postHangoutAccept(this.props.currentUserEmail, fromEmail)
+  //   if (res.status === 200) {
+  //     this.props.acceptRequest(fromEmail, res.data.data.AcceptHangoutRequest)
+  //   }
+  // }
   render() {
     return (
       <View style={styles.userList}>
@@ -53,12 +63,27 @@ class Hangouts extends React.Component<Props> {
                       source={{ uri: request.profile_photo }}
                       style={styles.user__image}
                     />
-                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", flex: 1 }}>
-                      <Text style={styles.user__name}>{request.first_name}</Text>
-                      <TouchableOpacity onPress={() => this.handlePress(request.email)} style={styles.accept__button}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flex: 1
+                      }}
+                    >
+                      <Text style={styles.user__name}>
+                        {request.first_name}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => this.handlePress(request.email)}
+                        style={styles.accept__button}
+                      >
                         <Ionicons name="md-checkmark" size={32} color="white" />
                       </TouchableOpacity>
-                      <TouchableOpacity onPress={() => console.log("Decline")} style={styles.decline__button}>
+                      <TouchableOpacity
+                        onPress={() => console.log('Decline')}
+                        style={styles.decline__button}
+                      >
                         <Ionicons name="md-close" size={32} color="white" />
                       </TouchableOpacity>
                     </View>
@@ -79,7 +104,8 @@ class Hangouts extends React.Component<Props> {
           animationIn="slideInUp"
           animationOut="slideOutDown"
           backdropOpacity={0.85}
-          style={styles.modal}>
+          style={styles.modal}
+        >
           <View style={{ flex: 1 }}>
             <View>
               <Text>Level {this.props.currentProfile.lvl}</Text>
@@ -93,9 +119,7 @@ class Hangouts extends React.Component<Props> {
             </View>
             <View>
               <Text>Equipped Badges</Text>
-              <View style={styles.profile__badges}>
-                {/* <Badges /> */}
-              </View>
+              <View style={styles.profile__badges}>{/* <Badges /> */}</View>
             </View>
             <View>
               <Text>Hobbies</Text>
@@ -107,9 +131,7 @@ class Hangouts extends React.Component<Props> {
             </View>
             <View>
               <Text>All Badges</Text>
-              <View style={styles.profile__badges}>
-                {/* <Badges /> */}
-              </View>
+              <View style={styles.profile__badges}>{/* <Badges /> */}</View>
             </View>
             <TouchableOpacity
               onPress={this.props.closeProfile}
@@ -140,7 +162,7 @@ const styles = StyleSheet.create({
   },
   request: {
     flexDirection: 'row',
-    margin: 10,
+    margin: 10
   },
   user__image: {
     borderRadius: 50,
@@ -155,18 +177,18 @@ const styles = StyleSheet.create({
   accept__button: {
     width: 50,
     height: 50,
-    backgroundColor: "green",
+    backgroundColor: 'green',
     borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   decline__button: {
     width: 50,
     height: 50,
-    backgroundColor: "red",
+    backgroundColor: 'red',
     borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   close: {
     textAlign: 'right',
@@ -202,13 +224,10 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    acceptRequest: (fromUserEmail, newChat) => {
-      dispatch({ type: 'ACCEPT_REQUEST', fromUserEmail, newChat })
-    },
+    acceptHangoutRequest: (fromUserEmail, newChat) =>
+      dispatch(acceptHangoutRequest(fromUserEmail, newChat)),
     closeProfile: () => {
-      dispatch({
-        type: 'CLOSE_PROFILE'
-      })
+      dispatch({ type: 'CLOSE_PROFILE' })
     }
   }
 }
