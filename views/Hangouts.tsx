@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
 import UserModal from "../components/UserModal"
-import { postHangoutAccept } from '../src/actions/users'
+import { postHangoutAccept, postHangoutDecline } from '../src/actions/users'
 
 interface UserLimited {
   first_name: string
@@ -29,6 +29,12 @@ class Hangouts extends React.Component<Props> {
     const res = await postHangoutAccept(this.props.currentUserEmail, fromEmail)
     if (res.status === 200) {
       this.props.acceptRequest(fromEmail, res.data.data.AcceptHangoutRequest)
+    }
+  }
+  handleDecline = async fromEmail => {
+    const res = await postHangoutDecline(this.props.currentUserEmail, fromEmail)
+    if (res.status === 200) {
+      this.props.declineRequest(fromEmail)
     }
   }
   render() {
