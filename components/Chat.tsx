@@ -1,12 +1,11 @@
 import React from 'react'
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { apiUrl } from '../environment.js'
-import axios from 'axios'
+import { getChat } from '../src/actions/chats'
 
 interface Props {
   chat: Chat
-  showChat: Function
+  getChat: Function
   socket: Socket
 }
 
@@ -26,34 +25,11 @@ interface Participant {
 }
 
 const Chat: React.FunctionComponent<Props> = props => {
-  const getChat = async () => {
-    const chat = await axios.post(`${apiUrl}/graphql`, {
-      query: `
-        query { Chats(chatIds: [${props.chat.chat_id}]) {
-            messages {
-              id
-              content
-              timestamp
-              from {
-                first_name
-                profile_photo
-                email
-              }
-            }
-          }
-        }
-      `
-    })
-
-    let chatMessages = chat.data.data.Chats
-    // chatMessages will be empty for a new chat
-    chatMessages.length > 0
-      ? (chatMessages = chatMessages.pop().messages)
-      : (chatMessages = [])
-    props.showChat(chatMessages, props.chat.chat_id)
-  }
   return (
-    <TouchableOpacity style={styles.chat} onPress={getChat}>
+    <TouchableOpacity
+      style={styles.chat}
+      onPress={() => props.getChat(props.chat.chat_id)}
+    >
       {props.chat.participants.map(participant => {
         return (
           <Image
@@ -117,13 +93,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    showChat: (messages, chatId) => {
-      dispatch({
-        type: 'SHOW_CHAT',
-        messages,
-        chatId
-      })
-    }
+    getChat: chatId => dispatch(getChat(chatId))
   }
 }
 

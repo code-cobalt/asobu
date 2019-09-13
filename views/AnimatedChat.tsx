@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   Dimensions,
   Animated,
@@ -12,8 +11,7 @@ import {
 import { connect } from 'react-redux'
 import ChatMessage from '../components/ChatMessage'
 import ChatInput from '../components/ChatInput'
-import gql from 'graphql-tag'
-import { SocketContext } from "../components/SocketProvider"
+import { SocketContext } from '../components/SocketProvider'
 
 const { height, width } = Dimensions.get('window')
 
@@ -56,19 +54,6 @@ class AnimatedChat extends Component<Props> {
   }
 
   yTranslate = new Animated.Value(0)
-
-  submitComment = async message => {
-    const messageQuery = gql`
-      mutation CreateMessage($NewMessage: NewMessage!) {
-        CreateMessage(newMessage: $NewMessage) {
-          id
-          chat_id
-          timestamp
-          content
-        }
-      }
-    `
-  }
 
   render() {
     let negativeHeight = -height

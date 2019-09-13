@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, TextInput, StyleSheet } from 'react-native'
-import { postMessage } from '../src/actions/users'
+import { createMessage } from '../src/actions/chats'
 import { connect } from 'react-redux'
 
 interface UserLimited {
@@ -12,9 +12,9 @@ interface UserLimited {
 interface Props {
   currentUserLimited: UserLimited
   chatId: number
-  createMessage: Function,
-  chats: Array<ChatObj>,
-  currentChatId: number,
+  createMessage: Function
+  chats: Array<ChatObj>
+  currentChatId: number
   socket: Socket
 }
 
@@ -23,13 +23,13 @@ interface Socket {
 }
 
 interface ChatObj {
-  chat_id: number,
+  chat_id: number
   participants: Array<Participant>
 }
 
 interface Participant {
-  email: string,
-  first_name: string,
+  email: string
+  first_name: string
   profile_photo: string
 }
 
@@ -44,9 +44,10 @@ class ChatInput extends Component<Props> {
       from: this.props.currentUserLimited
     }
     this.setState({ inputText: '' })
-    const newMessage = await postMessage(messageData)
-    this.props.createMessage(newMessage)
-    const currentChat = this.props.chats.filter(chat => chat.chat_id === this.props.currentChatId)
+    this.props.createMessage(messageData)
+    const currentChat = this.props.chats.filter(
+      chat => chat.chat_id === this.props.currentChatId
+    )
     const recipientEmail = currentChat[0].participants[0].email
     /* NOTE TO TJ: I don't know how you prefer to send the chatId with the code 'm0 ${recipientEmail}, but you
       can get the chatId with this.props.currentChatId */
@@ -90,9 +91,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createMessage: message => {
-      dispatch({ type: 'CREATE_MESSAGE', message })
-    }
+    createMessage: message => dispatch(createMessage(message))
   }
 }
 export default connect(
