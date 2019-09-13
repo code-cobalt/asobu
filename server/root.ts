@@ -535,7 +535,7 @@ const root = {
           {
             $pull: { received_hangout_requests: fromUserLimited },
             $push: {
-              chats: { currentUserChat }
+              chats: currentUserChat
             }
           }
         )
