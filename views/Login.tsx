@@ -5,15 +5,10 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
-  ImageBackground,
-  AsyncStorage
+  ImageBackground
 } from 'react-native'
-import axios from 'axios'
+import { loginUser } from '../src/actions/users'
 import { connect } from 'react-redux'
-import { apiUrl } from '../environment.js'
-import gql from 'graphql-tag'
-import { print } from 'graphql'
-/* import AsyncStorage from '@react-native-community/async-storage'; */
 
 interface State {
   email: string
@@ -21,76 +16,14 @@ interface State {
 }
 
 interface Props {
-  setUser: Function
   toggleAuth: Function
+  loginUser: Function
 }
 
 class Login extends Component<Props, State> {
   state = {
     email: '',
     password: ''
-  }
-
-  async handleLogin() {
-    const loginQuery = gql`
-      query Login($userEmail: String!, $userPassword: String!) {
-        Login(userEmail: $userEmail, userPassword: $userPassword) {
-          id
-          first_name
-          last_name
-          email
-          phone_number
-          profile_photo
-          interests
-          exp
-          lvl
-          events {
-            event_id
-            is_creator
-          }
-          chats {
-            chat_id
-            participants {
-              first_name
-              profile_photo
-              email
-            }
-          }
-          sent_hangout_requests {
-            first_name
-            email
-            profile_photo
-          }
-          received_hangout_requests {
-            first_name
-            email
-            profile_photo
-          }
-          imei
-        }
-      }
-    `
-
-    const res = await axios.post(`${apiUrl}/graphql`, {
-      query: print(loginQuery),
-      variables: {
-        userEmail: this.state.email,
-        userPassword: this.state.password
-      }
-    })
-
-    const user = res.data.data.Login
-
-    await AsyncStorage.setItem(
-      'user',
-      JSON.stringify({
-        firstName: user.first_name,
-        lastName: user.last_name,
-        email: user.last_name,
-        profilePhoto: user.profile_photo
-      })
-    )
-    await this.props.setUser(user)
   }
 
   render() {
@@ -117,12 +50,17 @@ class Login extends Component<Props, State> {
           />
         </View>
         <TouchableOpacity
-          onPress={() => this.handleLogin()}
+          onPress={() =>
+            this.props.loginUser(this.state.email, this.state.password)
+          }
           style={styles.login__button}
         >
           <Text style={styles.login__button__text}>Login</Text>
         </TouchableOpacity>
-        <Text style={styles.login__signup} onPress={this.props.toggleAuth}>
+        <Text
+          style={styles.login__signup}
+          onPress={() => this.props.toggleAuth()}
+        >
           Sign Up
         </Text>
       </ImageBackground>
@@ -178,12 +116,8 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return {
-    setUser: user => {
-      dispatch({
-        type: 'SET_USER',
-        user
-      })
-    },
+    loginUser: (userEmail, userPassword) =>
+      dispatch(loginUser(userEmail, userPassword)),
     toggleAuth: () => {
       dispatch({
         type: 'TOGGLE_AUTH'
