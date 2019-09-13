@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView, TextInput } from 'react-native'
 import UserList from '../components/UserList'
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux'
@@ -15,12 +15,14 @@ interface UserLimited {
 interface Props {
   receivedHangoutRequests: Array<UserLimited>
   acceptRequest: Function
-  currentUserEmail: string
+  currentUserEmail: string,
+  currentProfile: Object
 }
 
 class Hangouts extends React.Component<Props> {
   state = {
-    modalVisible: this.props.receivedHangoutRequests.length > 0
+    modalVisible: this.props.receivedHangoutRequests.length > 0,
+    profileVisible: Object.keys(this.props.currentProfile).length > 0
   }
   handlePress = async fromEmail => {
     const res = await postHangoutAccept(this.props.currentUserEmail, fromEmail)
@@ -72,6 +74,51 @@ class Hangouts extends React.Component<Props> {
             </View>
           </View>
         </Modal>
+        <Modal
+          isVisible={this.props.showProfile}
+          animationIn="slideInUp"
+          animationOut="slideOutDown"
+          backdropOpacity={0.85}
+          style={styles.modal}>
+          <View style={{ flex: 1 }}>
+            <View>
+              <Text>Level {this.props.currentProfile.lvl}</Text>
+              <Image
+                source={{ uri: this.props.currentProfile.profile_photo }}
+                style={styles.profile__photo}
+              />
+            </View>
+            <View>
+              <Text>{this.props.currentProfile.first_name}</Text>
+            </View>
+            <View>
+              <Text>Equipped Badges</Text>
+              <View style={styles.profile__badges}>
+                {/* <Badges /> */}
+              </View>
+            </View>
+            <View>
+              <Text>Hobbies</Text>
+              <TextInput value={'My hobbies are bla bla bla bla'} />
+            </View>
+            <View>
+              <Text>Interests</Text>
+              <TextInput value={'My interest are bla bla bla bla'} />
+            </View>
+            <View>
+              <Text>All Badges</Text>
+              <View style={styles.profile__badges}>
+                {/* <Badges /> */}
+              </View>
+            </View>
+            <TouchableOpacity
+              onPress={this.props.closeProfile}
+              style={styles.profile__close}
+            >
+              <Text>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </View>
     )
   }
@@ -93,7 +140,7 @@ const styles = StyleSheet.create({
   },
   request: {
     flexDirection: 'row',
-    margin: 10
+    margin: 10,
   },
   user__image: {
     borderRadius: 50,
@@ -126,19 +173,42 @@ const styles = StyleSheet.create({
     right: 0,
     position: 'absolute',
     bottom: 0
+  },
+  profile__photo: {
+    height: 50,
+    width: 50
+  },
+  profile__close: {
+    width: '50%',
+    backgroundColor: '#73d961',
+    padding: 15,
+    borderRadius: 50,
+    marginTop: 15
+  },
+  profile__badges: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
 const mapStateToProps = state => {
   return {
     receivedHangoutRequests: state.receivedHangoutRequests,
-    currentUserEmail: state.user.email
+    currentUserEmail: state.user.email,
+    currentProfile: state.currentProfile,
+    showProfile: state.showProfile
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
     acceptRequest: (fromUserEmail, newChat) => {
       dispatch({ type: 'ACCEPT_REQUEST', fromUserEmail, newChat })
+    },
+    closeProfile: () => {
+      dispatch({
+        type: 'CLOSE_PROFILE'
+      })
     }
   }
 }
