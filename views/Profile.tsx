@@ -91,14 +91,14 @@ class Profile extends Component<Props> {
               </View>
             </View>
           </View>
-          <View style={styles.button__container}>
+          {/* <View style={styles.button__container}>
             <TouchableOpacity style={styles.edit__button}>
               <Text style={styles.button__text}>Sent Hangout Requests</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.edit__button}>
               <Text style={styles.button__text}>Received Hangout Requests</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </ScrollView>
       </View>
     )
@@ -106,10 +106,10 @@ class Profile extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  profile: {
-    flex: 1,
-    marginTop: 20
-  },
+  // profile: {
+  //   flex: 1,
+  //   marginTop: 20
+  // },
   edit__button: {
     alignItems: 'center',
     alignSelf: 'center',
