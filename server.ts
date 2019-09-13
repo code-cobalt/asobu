@@ -130,16 +130,26 @@ wss.on('connection', (ws) => {
   ws.on('message', (msg) => {
     console.log(msg)
     const message = msg.split(' ')
+    //[0] - Login Code, [1] - User Email
     if (message[0] === 'l0') {
       clients.saveClient(message[1], ws)
       for (let client in clients.clientList) {
         clients.clientList[client].send('User Logged In')
       }
     }
+    //[0] - Message Code, [1] - Target Email, [2] - Chat ID
     if (message[0] === 'm0') {
       for (let client in clients.clientList) {
         if (client === message[1]) {
           clients.clientList[client].send(`m0 ${message[2]}`)
+        }
+      }
+    }
+    //[0] - Hangout Code, [1] - Sender Email, [2] - Target Email
+    if (message[0] === 'h0') {
+      for (let client in clients.clientList) {
+        if (client === message[2]) {
+          clients.clientList[client].send(`h0 ${message[1]}`)
         }
       }
     }
