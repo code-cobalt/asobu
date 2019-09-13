@@ -17,6 +17,7 @@ interface Props {
   user: UserLimited
   currentUserEmail: string
   sendRequest: Function
+  showProfile: Function
 }
 
 class User extends React.Component<Props> {
@@ -36,31 +37,27 @@ class User extends React.Component<Props> {
   }
   render() {
     return (
-      // <TouchableOpacity
-      //   style={styles.user}
-      //   // onPress={() => props.showProfile(props.user)}
-      // >
-      <View style={styles.user}>
-        {this.props.user.profile_photo !== null && (
-          <Image
-            source={{ uri: this.props.user.profile_photo }}
-            style={styles.user__image}
-          />
-        )}
-        <View style={styles.user__textcontainer}>
-          <Text style={styles.user__name}>{this.props.user.first_name}</Text>
-          <Text style={styles.user__text}>Level {this.props.user.lvl}</Text>
-          <Text style={styles.user__text}>XP: {this.props.user.exp}</Text>
-        </View>
-        <View style={styles.column}>
-          <View style={styles.user__badges}>
-            <Badges />
+      <TouchableOpacity
+        style={styles.user}
+        onPress={() => this.props.showProfile(this.props.user)}
+      >
+        <View style={styles.user}>
+          {this.props.user.profile_photo !== null && (
+            <Image
+              source={{ uri: this.props.user.profile_photo }}
+              style={styles.user__image}
+            />
+          )}
+          <View style={styles.user__textcontainer}>
+            <Text style={styles.user__name}>{this.props.user.first_name}</Text>
+            <Text style={styles.user__text}>Level {this.props.user.lvl}</Text>
+            <Text style={styles.user__text}>XP: {this.props.user.exp}</Text>
           </View>
           <TouchableOpacity style={styles.hangout__request} onPress={() => this.handlePress()}>
             <Text style={styles.hangout}>Hangout Now!</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 }

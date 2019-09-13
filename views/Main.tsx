@@ -12,6 +12,7 @@ interface Props {
   setAllUsers: Function
   activeView: String
   context: Function
+  email: String
 }
 
 class Main extends Component<Props> {
