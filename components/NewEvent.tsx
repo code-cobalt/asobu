@@ -63,6 +63,7 @@ class NewEvent extends React.Component<Props, State> {
       creator: this.props.currentUserLimited
     }
   }
+  
 
   getPermission = async () => {
     if (Constants.platform.ios) {

@@ -99,15 +99,15 @@ const m0 = new RegExp(/m0/)
 // import User from './server/models/user'
 
 interface clientList {
-  email: WebSocket,
+  email: WebSocket
 }
 
 interface Clients {
   clientList: Object
 }
 
-interface Client {
-
+interface ActiveClients {
+  clientList: Object
 }
 
 class Clients {
@@ -118,12 +118,30 @@ class Clients {
   saveClient(email: string, client: WebSocket) {
     this.clientList[email] = client
   }
+  removeClient(email: string) {
+    delete this.clientList[email]
+  }
+}
+
+class ActiveClients {
+  constructor() {
+    this.clientList = {}
+    this.saveClient = this.saveClient.bind(this)
+  }
+  saveClient(email: string, client: WebSocket) {
+    this.clientList[email] = client
+  }
+  removeClient(email: string) {
+    delete this.clientList[email]
+  }
 }
 
 const clients = new Clients()
+const activeClients = new ActiveClients()
 
 // const server = createServer(app)
 const wss = new server({ port: 3001 })
+const hangoutSocketServer = new server({ port: 3002 })
 
 wss.on('connection', (ws) => {
   console.log("CONNECTED")
@@ -133,9 +151,9 @@ wss.on('connection', (ws) => {
     //[0] - Login Code, [1] - User Email
     if (message[0] === 'l0') {
       clients.saveClient(message[1], ws)
-      for (let client in clients.clientList) {
-        clients.clientList[client].send('User Logged In')
-      }
+    }
+    if (message[0] === 'l1') {
+      clients.removeClient(message[1])
     }
     //[0] - Message Code, [1] - Target Email, [2] - Chat ID
     if (message[0] === 'm0') {
@@ -154,9 +172,27 @@ wss.on('connection', (ws) => {
       }
     }
   })
+  ws.on('close', (event) => {
+    
+  })
 })
 
-// server.listen(port, () => console.log(`Listening on ${port}`))
+hangoutSocketServer.on('connection', (ws) => {
+  console.log('USER ACTIVE')
+  ws.on('message', (msg) => {
+    console.log(msg)
+    const message = msg.split(' ')
+    if (message[0] === 'l0') {
+      activeClients.saveClient(message[1], ws)
+    }
+    if (message[0] === 'l1') {
+      activeClients.removeClient(message[1])
+    }
+  })
+  ws.on('close', (event) => {
+
+  })
+})
 
 app.listen(port, () => console.log(`Listening on ${port}`))
 
