@@ -21,23 +21,22 @@ interface Props {
   comments: Array<CommentData>
   currentUserEmail: string
 }
-class Comments extends React.Component<Props> {
-  render() {
-    return (
-      <View>
-        {this.props.comments &&
-          this.props.comments.length > 0 &&
-          this.props.comments.map(comment => (
-            <Comment
-              key={comment.id}
-              comment={comment}
-              currentUserEmail={this.props.currentUserEmail}
-            />
-          ))}
-        <NewComment />
-      </View>
-    )
-  }
+
+const Comments: React.FunctionComponent<Props> = props => {
+  return (
+    <View>
+      {props.comments &&
+        props.comments.length > 0 &&
+        props.comments.map(comment => (
+          <Comment
+            key={comment.id}
+            comment={comment}
+            currentUserEmail={props.currentUserEmail}
+          />
+        ))}
+      <NewComment />
+    </View>
+  )
 }
 
 const mapStateToProps = state => {

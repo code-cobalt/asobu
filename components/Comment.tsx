@@ -23,28 +23,21 @@ interface Props {
   eventId: string
 }
 
-class Comment extends React.Component<Props> {
-  render() {
-    return (
-      <View>
-        {this.props.currentUserEmail === this.props.comment.from.email && (
-          <Text
-            onPress={() =>
-              this.props.deleteComment(
-                this.props.eventId,
-                this.props.comment.id
-              )
-            }
-          >
-            Delete
-          </Text>
-        )}
-        <Text>{this.props.comment.from.first_name} posted:</Text>
-        <Text>{this.props.comment.content}</Text>
-        <Text>{this.props.comment.timestamp}</Text>
-      </View>
-    )
-  }
+const Comment: React.FunctionComponent<Props> = props => {
+  return (
+    <View>
+      {props.currentUserEmail === props.comment.from.email && (
+        <Text
+          onPress={() => props.deleteComment(props.eventId, props.comment.id)}
+        >
+          Delete
+        </Text>
+      )}
+      <Text>{props.comment.from.first_name} posted:</Text>
+      <Text>{props.comment.content}</Text>
+      <Text>{props.comment.timestamp}</Text>
+    </View>
+  )
 }
 
 const mapStateToProps = state => {

@@ -30,22 +30,20 @@ interface Props {
   showForm: Function
 }
 
-class EventList extends React.Component<Props> {
-  render() {
-    const eventList = this.props.allEvents.map(event => {
-      return <Event key={event.id} event={event} />
-    })
-    return (
-      <View>
-        <TouchableOpacity onPress={() => this.props.showForm()}>
-          <Text>Create Event</Text>
-          <NewEvent />
-        </TouchableOpacity>
+const EventList: React.FunctionComponent<Props> = props => {
+  const eventList = props.allEvents.map(event => {
+    return <Event key={event.id} event={event} />
+  })
+  return (
+    <View>
+      <TouchableOpacity onPress={() => props.showForm()}>
+        <Text>Create Event</Text>
+        <NewEvent />
+      </TouchableOpacity>
 
-        <ScrollView>{eventList}</ScrollView>
-      </View>
-    )
-  }
+      <ScrollView>{eventList}</ScrollView>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
