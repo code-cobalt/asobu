@@ -172,6 +172,9 @@ wss.on('connection', (ws) => {
       }
     }
   })
+  ws.on('close', (event) => {
+    
+  })
 })
 
 hangoutSocketServer.on('connection', (ws) => {
@@ -185,6 +188,9 @@ hangoutSocketServer.on('connection', (ws) => {
     if (message[0] === 'l1') {
       activeClients.removeClient(message[1])
     }
+  })
+  ws.on('close', (event) => {
+
   })
 })
 
