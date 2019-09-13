@@ -21,7 +21,6 @@ class Main extends Component<Props> {
       const message = event.data.split(' ')
       if (message[0] === 'm0') {
         //GET CHAT AGAIN
-
       }
     }
     // this.props.setAllUsers(res.data.data.Users)
@@ -35,7 +34,7 @@ class Main extends Component<Props> {
     } else if (this.props.activeView === 'results') {
       mainView = <Results />
     } else if (this.props.activeView === 'chats') {
-      mainView = <Inbox socket={this.props.socket} />
+      mainView = <Inbox />
     }
     return <View style={styles.main}>{mainView}</View>
   }
@@ -72,7 +71,7 @@ const mapDispatchToProps = dispatch => {
     },
     updateChat: chat => {
       dispatch({
-        type: "SHOW_CHAT",
+        type: 'SHOW_CHAT',
         messages: chat
       })
     }
