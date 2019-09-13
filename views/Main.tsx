@@ -16,49 +16,15 @@ interface Props {
 
 class Main extends Component<Props> {
   async componentDidMount() {
-    this.props.context.send(`l0 ${this.props.email}`)
-    this.props.context.onmessage = async (event) => {
-      console.log("INSIDE ON MESSAGE")
-      console.log(event.data)
-      const m0 = new RegExp(/m0/)
-      if (m0.test(event.data)) {
-        //query and get chats
-        const chat_id = event.data.split(' ')[1]
-        console.log("THIS IS CHAT_ID", chat_id)
-        const messages = await axios.post(`${apiUrl}/graphql`, {
-          query: `{ Chats(chatIds: [${chat_id}]) {
-          messages {
-            id
-            content
-            timestamp
-            from {
-              first_name
-              profile_photo
-              email
-            }
-          }
-        }
-      }`})
-        /* console.log("This is messages", messages) */
-        this.props.updateChat(messages.data.data.Chats[0].messages)
+    this.props.socket.send(`l0 ${this.props.email}`)
+    this.props.socket.onmessage = (event) => {
+      const message = event.data.split(' ')
+      if (message[0] === 'm0') {
+        //GET CHAT AGAIN
 
       }
     }
-    const res = await axios.post(`${apiUrl}/graphql`, {
-      query: `
-            query { Users {
-                id
-                first_name
-                email
-                profile_photo
-                interests
-                exp
-                lvl
-                }
-            }
-        `
-    })
-    this.props.setAllUsers(res.data.data.Users)
+    // this.props.setAllUsers(res.data.data.Users)
   }
 
   render() {
