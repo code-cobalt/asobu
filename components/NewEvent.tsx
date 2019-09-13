@@ -71,7 +71,6 @@ class NewEvent extends React.Component<Props, State> {
       if (status !== 'granted') alert('Sorry, we need camera roll permissions to make this work!');
       else this.pickImage()
     }
-    console.log("This is an Android device #FuckYeah")
     this.pickImage()
   }
 

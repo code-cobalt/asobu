@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView 
 import { Divider } from 'react-native-elements'
 import { connect } from 'react-redux'
 import Badges from './../components/Badges'
-import EditProfileModal from "../components/EditProfileModal"
+import EditProfile from "../components/EditProfile"
 
 interface UserLimited {
   first_name: string
@@ -103,7 +103,7 @@ class Profile extends Component<Props> {
             </TouchableOpacity>
           </View> */}
         </ScrollView>
-        <EditProfileModal />
+        <EditProfile />
       </View>
     )
   }
@@ -225,7 +225,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    editProfile: () => dispatch({ type: "EDIT_PROFILE" })
+    editProfile: () => dispatch({ type: "SHOW_EDIT_PROFILE_FORM" })
   }
 }
 

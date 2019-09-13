@@ -9,7 +9,7 @@ const initialState = {
   allEvents: [],
   chats: [],
   showProfile: false,
-  editProfile: false,
+  showEditProfileForm: false,
   showEvent: false,
   showNewEventForm: false,
   showEditEventForm: false,
@@ -50,11 +50,11 @@ const reducer = (state = initialState, action) => {
     case 'SHOW_PROFILE': {
       return { ...state, currentProfile: action.profile, showProfile: true }
     }
-    case 'EDIT_PROFILE': {
-      return { ...state, editProfile: true }
+    case 'SHOW_EDIT_PROFILE_FORM': {
+      return { ...state, showEditProfileForm: true }
     }
     case 'UPDATE_PROFILE': {
-      return { ...state, user: action.updatedUser, editProfile: false }
+      return { ...state, user: action.updatedUser, showEditProfileForm: false }
     }
     case 'CLOSE_PROFILE': {
       return { ...state, currentProfile: {}, showProfile: false }
