@@ -103,4 +103,27 @@ const postHangoutAccept = async (currentUserEmail, fromUserEmail) => {
   return res
 }
 
-export { getChats, postMessage, postHangoutRequest, postHangoutAccept }
+const postHangoutDecline = async (currentUserEmail, fromUserEmail) => {
+  const declineHangoutRequestMutation = gql`
+    mutation DeclineHangoutRequest(
+      $currentUserEmail: String!
+      $fromUserEmail: String!
+    ) {
+      DeclineHangoutRequest(
+        currentUserEmail: $currentUserEmail
+        fromUserEmail: $fromUserEmail
+      ) 
+      }
+    }
+  `
+  const res = await axios.post(`${apiUrl}/graphql`, {
+    query: print(declineHangoutRequestMutation),
+    variables: {
+      currentUserEmail,
+      fromUserEmail
+    }
+  })
+  return res
+}
+
+export { getChats, postMessage, postHangoutRequest, postHangoutAccept, postHangoutDecline }
