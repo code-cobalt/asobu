@@ -85,7 +85,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, currentProfile: action.profile, showProfile: true }
     }
     case 'CLOSE_PROFILE': {
-      return { state, currentProfile: {}, showProfile: false }
+      return { ...state, currentProfile: {}, showProfile: false }
     }
     case 'SET_CHATS': {
       return { ...state, chats: action.chats }

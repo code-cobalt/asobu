@@ -18,14 +18,14 @@ interface Props {
 class Main extends Component<Props> {
   async componentDidMount() {
     this.props.context.send(`l0 ${this.props.email}`)
-    this.props.context.onmessage = async (event) => {
-      console.log("INSIDE ON MESSAGE")
+    this.props.context.onmessage = async event => {
+      console.log('INSIDE ON MESSAGE')
       console.log(event.data)
       const m0 = new RegExp(/m0/)
       if (m0.test(event.data)) {
         //query and get chats
         const chat_id = event.data.split(' ')[1]
-        console.log("THIS IS CHAT_ID", chat_id)
+        console.log('THIS IS CHAT_ID', chat_id)
         const messages = await axios.post(`${apiUrl}/graphql`, {
           query: `{ Chats(chatIds: [${chat_id}]) {
           messages {
@@ -39,10 +39,10 @@ class Main extends Component<Props> {
             }
           }
         }
-      }`})
+      }`
+        })
         /* console.log("This is messages", messages) */
         this.props.updateChat(messages.data.data.Chats[0].messages)
-
       }
     }
     const res = await axios.post(`${apiUrl}/graphql`, {
@@ -70,7 +70,7 @@ class Main extends Component<Props> {
     } else if (this.props.activeView === 'results') {
       mainView = <Results />
     } else if (this.props.activeView === 'chats') {
-      mainView = <Inbox socket={this.props.socket} />
+      mainView = <Inbox />
     }
     return <View style={styles.main}>{mainView}</View>
   }
@@ -107,7 +107,7 @@ const mapDispatchToProps = dispatch => {
     },
     updateChat: chat => {
       dispatch({
-        type: "SHOW_CHAT",
+        type: 'SHOW_CHAT',
         messages: chat
       })
     }
