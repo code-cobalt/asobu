@@ -17,7 +17,7 @@ interface NewUser {
   pin: number
   password_hash: string
   profile_photo: string
-  interests: Array<string>
+  interests: string[]
   exp: number
   lvl: number
   stats: Stats
@@ -30,7 +30,7 @@ interface UpdatedUser {
   email: string
   phone_number: string
   profile_photo: string
-  interests: Array<string>
+  interests: string[]
 }
 
 interface Stats {
@@ -58,7 +58,7 @@ interface NewEvent {
   end: Date
   location: string
   limit: number
-  tags: Array<string>
+  tags: string[]
 }
 
 interface UpdatedEvent {
@@ -70,7 +70,7 @@ interface UpdatedEvent {
   end: Date
   location: string
   limit: number
-  tags: Array<string>
+  tags: string[]
 }
 
 interface Comment {
@@ -116,11 +116,11 @@ const validateMessage = (message: Message) => {
 
 interface UserChat {
   chat_id: number
-  participants: [UserLimited]
+  participants: Array<UserLimited>
 }
 
 const checkForExistingChat = (
-  currentUserChats: [UserChat],
+  currentUserChats: Array<UserChat>,
   matchedUserEmail: string
 ) => {
   //return false or pre-existing chat
@@ -211,7 +211,12 @@ const root = {
       comments: []
     })
     if (validation === 'valid') {
-      return await Event.create(newEvent)
+      const event = await Event.create(newEvent)
+      await User.updateOne(
+        { email: event.creator.email },
+        { $push: { events: { event_id: event.id, is_creator: true } } }
+      )
+      return event
     } else {
       //specific validation error will be nested inside error object
       throw new errors.InvalidEventError({ data: { err: validation } })
@@ -234,6 +239,10 @@ const root = {
 
   DeleteEvent: async params => {
     const res = await Event.deleteOne({ _id: params.eventId })
+    await User.updateMany(
+      {},
+      { $pull: { events: { event_id: params.eventId } } }
+    )
     if (res.deletedCount === 1) {
       return 'Successfully deleted event.'
     } else {
@@ -248,11 +257,15 @@ const root = {
         { timestamp: new Date() },
         params.newComment
       )
-      await Event.updateOne(
+      const updatedEvent = await Event.findOneAndUpdate(
         { _id: params.eventId },
-        { $push: { comments: newComment } }
+        { $push: { comments: newComment } },
+        { new: true }
       )
-      return newComment
+      return {
+        ...newComment,
+        id: updatedEvent.comments[updatedEvent.comments.length - 1]._id
+      }
     } else {
       //specific validation error will be nested inside error object
       throw new errors.InvalidCommentError({ data: { err: validation } })
@@ -528,6 +541,34 @@ const root = {
         return currentUserChat
       }
     }
+  },
+
+  DeclineHangoutRequest: async params => {
+    const currentUser = await User.findOne({ email: params.currentUserEmail })
+    const fromUser = await User.findOne({ email: params.fromUserEmail })
+    const fromUserLimited = {
+      email: params.fromUserEmail,
+      first_name: fromUser.first_name,
+      profile_photo: fromUser.profile_photo
+    }
+    const toUserLimited = {
+      email: params.currentUserEmail,
+      first_name: currentUser.first_name,
+      profile_photo: currentUser.profile_photo
+    }
+    await User.updateOne(
+      { email: params.fromUserEmail },
+      {
+        $pull: { sent_hangout_requests: toUserLimited }
+      }
+    )
+    await User.updateOne(
+      { email: params.currentUserEmail },
+      {
+        $pull: { received_hangout_requests: fromUserLimited }
+      }
+    )
+    return `${currentUser.first_name} has declined ${fromUser.first_name}'s hangout request.`
   }
 }
 
