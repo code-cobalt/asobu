@@ -7,10 +7,6 @@ const port = process.env.PORT || 3000
 const graphqlHTTP = require('express-graphql')
 import { execute, subscribe } from 'graphql'
 import { createServer } from 'http'
-import { SubscriptionServer } from 'subscriptions-transport-ws'
-const subscribtionsEndpoint = `ws://localhost:${port}/subscriptions`
-//Axios
-const axios = require('axios')
 //Body Parser
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -33,7 +29,6 @@ const storage = cloudinaryStorage({
 const parser = multer({ storage })
 //Moment for Timestamps
 const moment = require('moment')
-
 //Mongoose for MongoDB queries
 const mongoose = require('mongoose')
 const schema = require('./server/schema.ts')
@@ -41,13 +36,10 @@ const root = require('./server/root.ts')
 const { Seeder } = require('mongo-seeding')
 //Path for static files
 const path = require('path')
-const User = require('./server/models/user')
-//Bcrypt for hashing
-const bcrypt = require('bcrypt')
 //formatError for custom graphql resolver errors
 import { formatError } from 'apollo-errors'
 //WebSocket
-import * as WebSocket from 'ws'
+const server = require('ws').Server
 
 // setting useFindAndModify to false resolves MongoDB Node.js deprecation warnings from using certain Mongoose methods
 // setting useCreateIndex true to allow unique constraint in user email
@@ -82,7 +74,6 @@ app.use(
     schema,
     rootValue: root,
     graphiql: true,
-    subscribtionsEndpoint,
     formatError
   })
 )
@@ -131,40 +122,32 @@ class Clients {
 
 const clients = new Clients()
 
-// wss.on('connection', client => {
-//   console.log('Incoming Connection')
-//   client.on('message', msg => {
-//     console.log(msg)
-//     if (l0.test(msg)) {
-//       let user = msg.split(' ')
-//       clients.saveClient(user[1], client)nc (event) => {
+// const server = createServer(app)
+const wss = new server({ port: 3001 })
 
-//       for (let client in clients.clientList) {
-//         clients.clientList[client].send('USER LOGGED IN')
-//       }
-//     }
-//     if (m0.test(msg)) {
-//       let chat = msg.split(' ')
-//       for (const client in clients.clientList) {
-//         console.log(client)
-//         if (client === chat[1]) clients.clientList[client].send(`m0 ${chat[2]}`)
-//       }
-//     }
-//   })
-// })
-
-const server = createServer(app)
-const wss = new WebSocket.Server({ server })
-
-wss.on('connection', (ws: WebSocket) => {
+wss.on('connection', (ws) => {
   console.log("CONNECTED")
   ws.on('message', (msg) => {
     console.log(msg)
+    const message = msg.split(' ')
+    if (message[0] === 'l0') {
+      clients.saveClient(message[1], ws)
+      for (let client in clients.clientList) {
+        clients.clientList[client].send('User Logged In')
+      }
+    }
+    if (message[0] === 'm0') {
+      for (let client in clients.clientList) {
+        if (client === message[1]) {
+          clients.clientList[client].send(`m0 ${message[2]}`)
+        }
+      }
+    }
   })
 })
 
-server.listen(port, () => console.log(`Listening on ${port}`))
+// server.listen(port, () => console.log(`Listening on ${port}`))
 
-// app.listen(port, () => console.log(`Listening on ${port}`))
+app.listen(port, () => console.log(`Listening on ${port}`))
 
 export = { db }
