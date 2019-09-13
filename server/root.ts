@@ -511,11 +511,13 @@ const root = {
             $push: {
               chats: {
                 chat_id: newChat,
-                participants: {
-                  email: currentUser.email,
-                  first_name: currentUser.first_name,
-                  profile_photo: currentUser.profile_photo
-                }
+                participants: [
+                  {
+                    email: currentUser.email,
+                    first_name: currentUser.first_name,
+                    profile_photo: currentUser.profile_photo
+                  }
+                ]
               }
             }
           }
