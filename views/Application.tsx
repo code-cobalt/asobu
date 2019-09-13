@@ -28,8 +28,7 @@ class Application extends React.Component<Props> {
         return (
             <>
                 <SocketContext.Consumer>
-                    {context => <Main context={context} />}
-                    {/* <Main context={context} /> */}
+                    {context => <Main socket={context} />}
                 </SocketContext.Consumer>
                 <Navbar />
             </>
