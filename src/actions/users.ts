@@ -1,106 +1,28 @@
 import axios from 'axios'
 import { apiUrl } from '../../environment.js'
-import gql from 'graphql-tag'
 import { print } from 'graphql'
+import { loginQuery } from '../queries/users'
+import { AsyncStorage } from 'react-native'
 
-const getChats = async userEmail => {
-  const userChatsQuery = gql`
-    query User($userEmail: String!) {
-      User(userEmail: $userEmail) {
-        chats {
-          chat_id
-          participants {
-            first_name
-            email
-            profile_photo
-          }
-        }
+export const loginUser = (userEmail, userPassword) => {
+  return async dispatch => {
+    const res = await axios.post(`${apiUrl}/graphql`, {
+      query: print(loginQuery),
+      variables: {
+        userEmail,
+        userPassword
       }
-    }
-  `
-  const userChats = await axios.post(`${apiUrl}/graphql`, {
-    query: print(userChatsQuery),
-    variables: {
-      userEmail
-    }
-  })
-  return userChats.data.data.User.chats
+    })
+    const user = res.data.data.Login
+    await AsyncStorage.setItem(
+      'user',
+      JSON.stringify({
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.last_name,
+        profilePhoto: user.profile_photo
+      })
+    )
+    dispatch({ type: 'SET_USER', user })
+  }
 }
-
-const postMessage = async message => {
-  const createMessageMutation = gql`
-    mutation CreateMessage($message: NewMessage!) {
-      CreateMessage(newMessage: $message) {
-        id
-        chat_id
-        from {
-          first_name
-          email
-          profile_photo
-        }
-        timestamp
-        content
-      }
-    }
-  `
-  const res = await axios.post(`${apiUrl}/graphql`, {
-    query: print(createMessageMutation),
-    variables: {
-      message
-    }
-  })
-  return res.data.data.CreateMessage
-}
-
-const postHangoutRequest = async (currentUserEmail, toUserEmail) => {
-  const sendHangoutRequestMutation = gql`
-    mutation SendHangoutRequest(
-      $currentUserEmail: String!
-      $toUserEmail: String!
-    ) {
-      SendHangoutRequest(
-        currentUserEmail: $currentUserEmail
-        toUserEmail: $toUserEmail
-      )
-    }
-  `
-  const res = await axios.post(`${apiUrl}/graphql`, {
-    query: print(sendHangoutRequestMutation),
-    variables: {
-      currentUserEmail,
-      toUserEmail
-    }
-  })
-  return res.status
-}
-
-const postHangoutAccept = async (currentUserEmail, fromUserEmail) => {
-  const acceptHangoutRequestMutation = gql`
-    mutation AcceptHangoutRequest(
-      $currentUserEmail: String!
-      $fromUserEmail: String!
-    ) {
-      AcceptHangoutRequest(
-        currentUserEmail: $currentUserEmail
-        fromUserEmail: $fromUserEmail
-      ) {
-        chat_id
-        participants {
-          first_name
-          email
-          profile_photo
-        }
-      }
-    }
-  `
-  const res = await axios.post(`${apiUrl}/graphql`, {
-    query: print(acceptHangoutRequestMutation),
-    variables: {
-      currentUserEmail,
-      fromUserEmail
-    }
-  })
-  return res
-}
-
-export { getChats, postMessage, postHangoutRequest, postHangoutAccept }
