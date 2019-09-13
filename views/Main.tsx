@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Button, Text, Image, StyleSheet, TextInput } from 'react-native'
 import { connect } from 'react-redux'
-import axios from 'axios'
+import { getChat } from '../src/actions/chats'
 import { apiUrl } from '../environment.js'
 import Profile from './Profile'
 import Results from './Results'
@@ -18,9 +18,10 @@ class Main extends Component<Props> {
   async componentDidMount() {
     this.props.socket.send(`l0 ${this.props.email}`)
     this.props.socket.onmessage = (event) => {
+      console.log(`SERVER MESSAGE: ${event.data}`)
       const message = event.data.split(' ')
       if (message[0] === 'm0') {
-        //GET CHAT AGAIN
+        this.props.getChat(parseInt(message[1]))
       }
     }
     // this.props.setAllUsers(res.data.data.Users)
@@ -74,7 +75,8 @@ const mapDispatchToProps = dispatch => {
         type: 'SHOW_CHAT',
         messages: chat
       })
-    }
+    },
+    getChat: chatId => dispatch(getChat(chatId))
   }
 }
 
