@@ -13,7 +13,10 @@ import UserList from '../components/UserList'
 import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
-import { acceptHangoutRequest } from '../src/actions/hangouts'
+import {
+  acceptHangoutRequest,
+  declineHangoutRequest
+} from '../src/actions/hangouts'
 
 interface UserLimited {
   first_name: string
@@ -21,12 +24,19 @@ interface UserLimited {
   profile_photo: string
 }
 
+interface Profile {
+  first_name: string
+  profile_photo: string
+  lvl: number
+}
+
 interface Props {
   receivedHangoutRequests: Array<UserLimited>
   acceptHangoutRequest: Function
   currentUserEmail: string
-  currentProfile: Object
-  showProfile: Function
+  currentProfile: Profile
+  showProfile: boolean
+  closeProfile: Function
 }
 
 class Hangouts extends React.Component<Props> {
@@ -34,12 +44,7 @@ class Hangouts extends React.Component<Props> {
     modalVisible: this.props.receivedHangoutRequests.length > 0,
     profileVisible: Object.keys(this.props.currentProfile).length > 0
   }
-  // handlePress = async fromEmail => {
-  //   const res = await postHangoutAccept(this.props.currentUserEmail, fromEmail)
-  //   if (res.status === 200) {
-  //     this.props.acceptRequest(fromEmail, res.data.data.AcceptHangoutRequest)
-  //   }
-  // }
+
   render() {
     return (
       <View style={styles.userList}>
@@ -75,7 +80,12 @@ class Hangouts extends React.Component<Props> {
                         {request.first_name}
                       </Text>
                       <TouchableOpacity
-                        onPress={() => this.handlePress(request.email)}
+                        onPress={() =>
+                          this.props.acceptHangoutRequest(
+                            this.props.currentUserEmail,
+                            request.email
+                          )
+                        }
                         style={styles.accept__button}
                       >
                         <Ionicons name="md-checkmark" size={32} color="white" />
@@ -134,7 +144,7 @@ class Hangouts extends React.Component<Props> {
               <View style={styles.profile__badges}>{/* <Badges /> */}</View>
             </View>
             <TouchableOpacity
-              onPress={this.props.closeProfile}
+              onPress={() => this.props.closeProfile()}
               style={styles.profile__close}
             >
               <Text>Close</Text>
@@ -224,8 +234,10 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    acceptHangoutRequest: (fromUserEmail, newChat) =>
-      dispatch(acceptHangoutRequest(fromUserEmail, newChat)),
+    acceptHangoutRequest: (currentUserEmail, fromUserEmail) =>
+      dispatch(acceptHangoutRequest(currentUserEmail, fromUserEmail)),
+    declineHangoutRequest: (currentUserEmail, fromUserEmail) =>
+      dispatch(declineHangoutRequest(currentUserEmail, fromUserEmail)),
     closeProfile: () => {
       dispatch({ type: 'CLOSE_PROFILE' })
     }
