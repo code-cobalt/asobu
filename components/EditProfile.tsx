@@ -5,7 +5,7 @@ import Modal from 'react-native-modal'
 import { updateProfile } from '../src/actions/users'
 
 interface Props {
-  editProfile: boolean,
+  showEditProfileForm: boolean,
   updateProfile: Function
   user: User
 }
@@ -28,7 +28,7 @@ interface State {
   interests: Array<string>
 }
 
-class EditProfileModal extends Component<Props, State> {
+class EditProfile extends Component<Props, State> {
   state = {
     first_name: this.props.user.first_name,
     last_name: this.props.user.last_name,
@@ -41,7 +41,7 @@ class EditProfileModal extends Component<Props, State> {
     return (
       <>
         <Modal
-          isVisible={this.props.editProfile}
+          isVisible={this.props.showEditProfileForm}
           animationIn="slideInUp"
           animationOut="slideOutDown"
           backdropOpacity={1}
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    editProfile: state.editProfile,
+    showEditProfileForm: state.showEditProfileForm,
     user: state.user
   }
 }
@@ -128,4 +128,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfileModal)
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile)
