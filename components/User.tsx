@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import Badges from './Badges'
 import { connect } from 'react-redux'
-import { postHangoutRequest } from '../src/actions/userActions'
+import { postHangoutRequest } from '../src/actions/users'
 
 interface UserLimited {
   id: string
@@ -11,7 +11,7 @@ interface UserLimited {
   profile_photo: string
   exp: number
   lvl: number
-  interests: [string]
+  interests: string[]
 }
 interface Props {
   user: UserLimited
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
   user__name: {
     fontSize: 22,
-    fontWeight: "700",
+    fontWeight: '700',
     color: 'white'
   },
   user__text: {

@@ -193,6 +193,7 @@ const schema = buildSchema(`
         AddExp(userEmail: String!, points: Int): Int
         SendHangoutRequest(currentUserEmail: String!, toUserEmail: String!): String
         AcceptHangoutRequest(currentUserEmail: String!, fromUserEmail: String!): UserChat
+        DeclineHangoutRequest(currentUserEmail: String!, fromUserEmail: String!): String
     }
 `)
 
