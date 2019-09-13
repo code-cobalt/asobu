@@ -20,12 +20,12 @@ interface User {
   email: string
   phone_number: string
   profile_photo: string
-  interests: [string]
+  interests: string[]
   exp: number
   lvl: number
-  events: [Event]
-  sent_hangout_requests: [UserLimited]
-  received_hangout_requests: [UserLimited]
+  events: Array<Event>
+  sent_hangout_requests: Array<UserLimited>
+  received_hangout_requests: Array<UserLimited>
   imei: string
 }
 

@@ -4,7 +4,7 @@ import UserList from '../components/UserList'
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
-import { postHangoutAccept } from '../src/actions/userActions'
+import { postHangoutAccept } from '../src/actions/users'
 
 interface UserLimited {
   first_name: string
