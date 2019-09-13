@@ -184,9 +184,9 @@ const root = {
     }
   },
 
-  Chats: async params => {
-    return await Message.aggregate([
-      { $match: { chat_id: { $in: params.chatIds } } },
+  Chat: async params => {
+    const chat = await Message.aggregate([
+      { $match: { chat_id: params.chatId } },
       {
         $group: {
           _id: '$chat_id',
@@ -202,6 +202,7 @@ const root = {
         }
       }
     ])
+    return chat.pop()
   },
 
   CreateEvent: async params => {

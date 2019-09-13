@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import Chat from './Chat'
 
@@ -9,26 +9,24 @@ interface Props {
 
 interface Chat {
   chat_id: number
-  participants: Array<Participant>
+  participants: Array<UserLimited>
 }
 
-interface Participant {
+interface UserLimited {
   email: string
   first_name: string
   profile_photo: string
 }
 
-class ChatList extends React.Component<Props> {
-  render() {
-    return (
-      <ScrollView>
-        {this.props.chats &&
-          this.props.chats.map(chat => {
-            return <Chat key={chat.chat_id} chat={chat} />
-          })}
-      </ScrollView>
-    )
-  }
+const ChatList: React.FunctionComponent<Props> = props => {
+  return (
+    <ScrollView>
+      {props.chats &&
+        props.chats.map(chat => {
+          return <Chat key={chat.chat_id} chat={chat} />
+        })}
+    </ScrollView>
+  )
 }
 
 const mapStateToProps = state => {
