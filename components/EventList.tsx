@@ -37,7 +37,6 @@ const EventList: React.FunctionComponent<Props> = props => {
   return (
     <View>
       <TouchableOpacity onPress={() => props.showForm()}>
-        <Text>Create Event</Text>
         <NewEvent />
       </TouchableOpacity>
 
