@@ -1,6 +1,8 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
+    "frontend": "yarn start",
+    "backend": "yarn serve",
     "start": "expo start",
     "serve": "ts-node-dev server.ts",
     "test": "mocha ./server/test",
