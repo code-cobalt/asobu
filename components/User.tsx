@@ -42,19 +42,16 @@ const User: React.FunctionComponent<Props> = props => {
           <View style={styles.user__badges}>
             <Badges />
           </View>
-
-          <Text
-            style={styles.hangout}
-            onPress={() =>
+          <TouchableOpacity style={styles.hangout__request} 
+              onPress={() =>
               props.sendHangoutRequest(props.currentUserEmail, {
                 first_name: props.user.first_name,
                 email: props.user.email,
                 profile_photo: props.user.profile_photo
               })
-            }
-          >
-            Send Hangout Request
-          </Text>
+            }>
+            <Text style={styles.hangout}>Hangout Now!</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>
@@ -68,11 +65,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 10,
     marginTop: 30,
-    backgroundColor: 'black',
-    borderRadius: 400
+    backgroundColor: '#e5e6e5',
+    borderRadius: 400,
   },
   user__image: {
-    borderRadius: 42,
+    borderRadius: 25,
     height: 90,
     width: 90
   },
@@ -88,23 +85,30 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   user__text: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 12,
+    fontWeight: "600",
     color: 'white'
   },
   user__badges: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    right: 15
+    right: 30
   },
   hangout: {
-    textDecorationLine: 'underline',
     color: 'white',
-    marginRight: 25
+    marginRight: 25,
+    marginLeft: 20
+  },
+  hangout__request: {
+    marginTop: 10,
+    backgroundColor: '#73d961',
+    borderRadius: 8,
+    right: 35
   },
   column: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    marginRight: 20
   }
 })
 

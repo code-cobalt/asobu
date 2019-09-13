@@ -58,6 +58,7 @@ class NewEvent extends React.Component<Props, State> {
       creator: this.props.currentUserLimited
     }
   }
+  
 
   render() {
     return (

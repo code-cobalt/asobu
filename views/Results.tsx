@@ -6,6 +6,7 @@ import Hangouts from './Hangouts'
 import Events from './Events'
 import AnimatedProfile from './AnimatedProfile'
 import AnimatedEvent from './AnimatedEvent'
+import NewEvent from '../components/NewEvent'
 
 const options = [
   { label: 'Hangout', value: 'hangouts' },
@@ -26,6 +27,8 @@ class Results extends Component<Props> {
       <>
         <SwitchSelector
           options={options}
+          backgroundColor="#e5e6e5"
+          buttonColor="#73d961"
           initial={0}
           style={styles.results__switch}
           onPress={value => this.props.toggleResultsView(value)}
@@ -33,6 +36,7 @@ class Results extends Component<Props> {
         {this.props.resultsSwitch === 'hangouts' ? <Hangouts /> : <Events />}
         {/* <AnimatedProfile /> */}
         <AnimatedEvent />
+        {/* <NewEvent /> */}
       </>
     )
   }

@@ -10,7 +10,7 @@ const UserList = props => {
   const userList = props.allUsers.map(user => {
     if (sentHangoutRequestEmails.includes(user.email)) {
       return (
-        <View>
+        <View style={styles.text__box}>
           <Text style={styles.text}>
             Your hangout request with {user.first_name} is pending...
           </Text>
@@ -27,11 +27,16 @@ const styles = StyleSheet.create({
   users: {
     marginBottom: 90
   },
-
+  text__box: {
+    backgroundColor: '#bcd634',
+    marginBottom: 5,
+    marginTop: 5,
+    padding: 10,
+    alignItems: 'center'
+  },
   text: {
-    color: 'black',
-    textAlign: 'center',
-    margin: 5
+    color: 'white',
+    fontWeight: '800',
   }
 })
 
