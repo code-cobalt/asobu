@@ -16,6 +16,7 @@ import Modal from 'react-native-modal'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import { apiUrl } from "../environment"
 
 interface UserLimited {
   first_name: string
@@ -83,9 +84,14 @@ class NewEvent extends React.Component<Props, State> {
     if (!result.cancelled) {
       const newEvent = { ...this.state.newEvent }
       newEvent.cover_photo = result.uri
-      this.setState({ newEvent }, () => {
+      this.setState({ newEvent }, async () => {
         console.log("This is image", this.state.newEvent.cover_photo)
-        const imageURL = axios.post()
+        const imageURL = await axios.post(`${apiUrl}/upload`, result, {
+          headers: {
+            'Content-Type': "image"
+          }
+        })
+        console.log(imageURL)
       });
     }
   };

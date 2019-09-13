@@ -13,6 +13,7 @@ import UserList from '../components/UserList'
 import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
+import UserModal from "../components/UserModal"
 import {
   acceptHangoutRequest,
   declineHangoutRequest
