@@ -26,11 +26,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, activeView: action.activeView }
     }
     case 'SET_ALL_USERS': {
-      const copiedState = Object.assign({}, state)
-      copiedState.allUsers = action.allUsers.filter(
-        user => user.email !== state.user.email
-      )
-      return copiedState
+      return { ...state, allUsers: action.allUsers }
     }
     case 'SET_USER': {
       return {
@@ -225,6 +221,12 @@ const reducer = (state = initialState, action) => {
         receivedHangoutRequests,
         chats
       }
+    }
+    case 'DECLINE_REQUEST': {
+      const receivedHangoutRequests = state.receivedHangoutRequests.filter(
+        request => request.email !== action.fromUserEmail
+      )
+      return { ...state, receivedHangoutRequests }
     }
     default: {
       return state
