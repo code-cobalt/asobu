@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { apiUrl } from '../../environment.js'
 import { print } from 'graphql'
-import { loginQuery } from '../queries/users'
+import { loginQuery, getUsersQuery } from '../queries/users'
 import { AsyncStorage } from 'react-native'
 
 export const loginUser = (userEmail, userPassword) => {
@@ -24,5 +24,20 @@ export const loginUser = (userEmail, userPassword) => {
       })
     )
     dispatch({ type: 'SET_USER', user })
+  }
+}
+
+export const getUsers = currentUserEmail => {
+  return async dispatch => {
+    const res = await axios.post(`${apiUrl}/graphql`, {
+      query: print(getUsersQuery)
+    })
+    const allUsers = res.data.data.Users.filter(
+      user => user.email !== currentUserEmail
+    )
+    dispatch({
+      type: 'SET_ALL_USERS',
+      allUsers
+    })
   }
 }
