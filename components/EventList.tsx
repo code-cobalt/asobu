@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux'
 import Event from '../components/Event'
 import NewEvent from '../components/NewEvent'
+import EditEvent from '../components/EditEvent'
 
 interface Event {
   name: string
@@ -38,6 +39,7 @@ const EventList: React.FunctionComponent<Props> = props => {
     <View>
       <TouchableOpacity onPress={() => props.showForm()}>
         <NewEvent />
+        <EditEvent />
       </TouchableOpacity>
 
       <ScrollView>{eventList}</ScrollView>
