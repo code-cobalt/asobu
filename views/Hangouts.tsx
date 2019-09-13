@@ -15,8 +15,9 @@ interface UserLimited {
 interface Props {
   receivedHangoutRequests: Array<UserLimited>
   acceptRequest: Function
-  currentUserEmail: string,
+  currentUserEmail: String
   currentProfile: Object
+  showProfile: Function
 }
 
 class Hangouts extends React.Component<Props> {
