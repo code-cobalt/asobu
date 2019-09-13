@@ -15,15 +15,15 @@ interface Props {
 
 class Main extends Component<Props> {
   async componentDidMount() {
-    this.props.socket.send(`l0 ${this.props.email}`)
-    this.props.socket.onmessage = (event) => {
-      console.log(event.data)
-      const m0 = new RegExp(/m0/)
+    // this.props.socket.send(`l0 ${this.props.email}`)
+    // this.props.socket.onmessage = (event) => {
+    //   console.log(event.data)
+    //   const m0 = new RegExp(/m0/)
       /* if (m0.test(event.data)) {
         // TJ, what were we doing here?
         this.props....
       } */
-    }
+    // }
     const res = await axios.post(`${apiUrl}/graphql`, {
       query: `
             query { Users {

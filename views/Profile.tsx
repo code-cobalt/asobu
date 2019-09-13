@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Image, StyleSheet, TextInput } from 'react-native'
+import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import Badges from './../components/Badges'
 
@@ -37,39 +37,46 @@ class Profile extends Component<Props> {
   render() {
     return (
       <View style={styles.profile}>
-        <View style={styles.header}>
-          <View style={styles.photo_container}>
-            {this.props.user.profile_photo !== null && (
-              <Image
-                source={{ uri: this.props.user.profile_photo }}
-                style={styles.user__image}
-              />
-            )}
+        <ScrollView>
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.photo_container}>
+              {this.props.user.profile_photo !== null && (
+                <Image
+                  source={{ uri: this.props.user.profile_photo }}
+                  style={styles.user__image}
+                />
+              )}
+              {this.props.user.profile_photo === null && (
+                <Image
+                  source={require("../assets/default_profile.png")}
+                  style={styles.user__image}
+                />
+              )}
+            </TouchableOpacity>
+            <View style={styles.basic_info_container}>
+              <Text style={styles.user_name}>
+                {this.props.user.first_name} {this.props.user.last_name}
+              </Text>
+              <Text style={styles.user_level}>Level {this.props.user.lvl}</Text>
+              <Text style={styles.user_xp}>XP {this.props.user.exp}</Text>
+              <View style={styles.user_badges}>
+                <Badges />
+              </View>
+            </View>
           </View>
-          <View style={styles.basic_info_container}>
-            <Text>
-              {this.props.user.first_name} {this.props.user.last_name}
-            </Text>
-            <Text>Level {this.props.user.lvl}</Text>
-            <Text>XP {this.props.user.exp}</Text>
+          <View>
+            <Text style={styles.interests}>Interests</Text>
+            {this.props.user.interests.length > 0 &&
+              this.props.user.interests.map(interest => {
+                return <Text style={styles.interest}>{interest}</Text>
+              })}
           </View>
-        </View>
-        <View>
-          <Text>Equipped Badges</Text>
-          <Badges />
-        </View>
-        <View>
-          <Text style={styles.interests}>Interests</Text>
-          {this.props.user.interests.length > 0 &&
-            this.props.user.interests.map(interest => {
-              return <Text style={styles.interest}>{interest}</Text>
-            })}
-        </View>
 
-        <View>
-          <Text>All Badges</Text>
-          <Badges />
-        </View>
+          <View>
+            <Text>All Badges</Text>
+            <Badges />
+          </View>
+        </ScrollView>
       </View>
     )
   }
@@ -77,22 +84,49 @@ class Profile extends Component<Props> {
 
 const styles = StyleSheet.create({
   profile: {
-    marginTop: 30,
-    marginLeft: 20
+    marginTop: 20
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: "#e5e6e5"
   },
-  photo_container: {},
+  photo_container: {
+    marginTop: 20,
+    height: 255,
+    width: 255,
+    borderRadius: 130,
+    backgroundColor: "#73d961",
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   basic_info_container: {
-    marginLeft: 10
+    marginLeft: 10,
+    alignItems: 'center',
+    padding: 25
   },
   user__image: {
-    borderRadius: 50,
-    height: 110,
-    width: 110,
-    marginBottom: 10
+    borderRadius: 125,
+    height: 250,
+    width: 250,
+  },
+  user_name: {
+    fontSize: 28,
+    fontWeight: "800"
+  },
+  user_level: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginTop: 10
+  },
+  user_xp: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginTop: 5
+  },
+  user_badges: {
+    flexDirection: 'row',
+    padding: 5
   },
   interests: {},
   interest: {}

@@ -27,6 +27,7 @@ interface ServerData {
     attendees: Array<Object>
     comments: Array<Comment>
   }
+  
 
 class NewEvent extends Component<State> {
     state = {
