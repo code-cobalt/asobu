@@ -31,7 +31,7 @@ class Results extends Component<Props> {
           onPress={value => this.props.toggleResultsView(value)}
         />
         {this.props.resultsSwitch === 'hangouts' ? <Hangouts /> : <Events />}
-        <AnimatedProfile />
+        {/* <AnimatedProfile /> */}
         <AnimatedEvent />
       </>
     )
