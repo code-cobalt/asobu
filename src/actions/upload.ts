@@ -9,7 +9,7 @@ export const uploadPhoto = async () => {
   if (Constants.platform.ios) {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status !== 'granted') alert('Sorry, we need camera roll permissions to make this work!');
-    else this.pickImage()
+    else return pickImage()
   }
   return pickImage()
 }
