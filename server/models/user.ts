@@ -33,7 +33,14 @@ const UserSchema = new mongoose.Schema({
   ],
   received_hangout_requests: [
     { first_name: String, email: String, profile_photo: String }
-  ]
+  ],
+  ongoing_hangouts: [
+    { first_name: String, email: String, profile_photo: String }
+  ],
+  pending_reviews: [
+    { first_name: String, email: String, profile_photo: String }
+  ],
+  blocked_users: [String]
 })
 
 const User = mongoose.model('User', UserSchema)
