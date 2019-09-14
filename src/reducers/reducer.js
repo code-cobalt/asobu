@@ -3,8 +3,7 @@ const initialState = {
   resultsSwitch: 'hangouts',
   sentHangoutRequests: [],
   receivedHangoutRequests: [],
-  user: {
-  },
+  user: {},
   allUsers: [],
   allEvents: [],
   chats: [],
@@ -14,13 +13,13 @@ const initialState = {
   showNewEventForm: false,
   showEditEventForm: false,
   currentProfile: {},
-  currentEvent: {},
+  //I have to initialize an empty tags array so that Event form modals can render properly before any event has been selected
+  currentEvent: { tags: [] },
   isLoggedIn: false,
   showLogin: true,
   showChat: false,
   currentChatMessages: [],
   currentChatId: 0
-
 }
 
 const reducer = (state = initialState, action) => {
@@ -83,7 +82,11 @@ const reducer = (state = initialState, action) => {
       return { ...state, allEvents: action.events }
     }
     case 'CREATE_EVENT': {
-      return { ...state, allEvents: [...state.allEvents, action.newEvent] }
+      return {
+        ...state,
+        allEvents: [...state.allEvents, action.newEvent],
+        showNewEventForm: false
+      }
     }
     case 'SHOW_NEW_EVENT_FORM': {
       return { ...state, showNewEventForm: true }
@@ -108,7 +111,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         allEvents: allEventsCopy,
-        currentEvent: action.updatedEvent
+        currentEvent: action.updatedEvent,
+        showEditEventForm: false
       }
     }
     case 'DELETE_EVENT': {

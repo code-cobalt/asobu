@@ -11,8 +11,9 @@ import ModalDropdown from 'react-native-modal-dropdown'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import { connect } from 'react-redux'
 import { createEvent } from '../src/actions/events'
-import { uploadPhoto } from "../src/actions/upload"
 import Modal from 'react-native-modal'
+import moment from 'moment'
+import { uploadPhoto } from '../src/actions/upload'
 
 interface UserLimited {
   first_name: string
@@ -24,6 +25,7 @@ interface Props {
   visible: boolean
   createEvent: Function
   currentUserLimited: UserLimited
+  closeNewEventForm: Function
 }
 interface Event {
   name: string
@@ -37,16 +39,30 @@ interface Event {
 }
 interface State {
   newEvent: Event
-  tagsString: string
   showStartDate: boolean
   showEndDate: boolean
+  tagOptions: string[]
 }
 
 class NewEvent extends React.Component<Props, State> {
   state = {
     showStartDate: false,
     showEndDate: false,
-    tagsString: '',
+    tagOptions: [
+      'music',
+      'sports',
+      'art',
+      'food',
+      'social',
+      'pet-friendly',
+      'kid-friendly',
+      'alcohol',
+      'language',
+      'education',
+      'tech',
+      'dance',
+      'books'
+    ],
     newEvent: {
       name: '',
       location: '',
@@ -60,11 +76,29 @@ class NewEvent extends React.Component<Props, State> {
     }
   }
 
+  addTag = tag => {
+    this.setState({
+      newEvent: {
+        ...this.state.newEvent,
+        tags: [...this.state.newEvent.tags, tag]
+      },
+      tagOptions: this.state.tagOptions.filter(option => option !== tag)
+    })
+  }
+
+  removeTag = tag => {
+    const tags = this.state.newEvent.tags.filter(eventTag => eventTag !== tag)
+    this.setState({
+      newEvent: { ...this.state.newEvent, tags },
+      tagOptions: [...this.state.tagOptions, tag]
+    })
+  }
+
   handleUpload = async () => {
     const image = await uploadPhoto()
     const copiedState = { ...this.state }
     copiedState.newEvent.cover_photo = image
-    this.setState({ ...copiedState }, () => console.log(this.state))
+    this.setState({ ...copiedState })
   }
 
   render() {
@@ -118,13 +152,17 @@ class NewEvent extends React.Component<Props, State> {
               title="Select Start"
               onPress={() => this.setState({ showStartDate: true })}
             />
+            {this.state.newEvent.start && (
+              <Text>{moment(this.state.newEvent.start).format('LLL')}</Text>
+            )}
             <DateTimePicker
               isVisible={this.state.showStartDate}
               mode="datetime"
               minimumDate={new Date()}
               onConfirm={date =>
                 this.setState({
-                  newEvent: { ...this.state.newEvent, start: date }
+                  newEvent: { ...this.state.newEvent, start: date },
+                  showStartDate: false
                 })
               }
               onCancel={() => this.setState({ showStartDate: false })}
@@ -133,55 +171,40 @@ class NewEvent extends React.Component<Props, State> {
               title="Select End"
               onPress={() => this.setState({ showEndDate: true })}
             />
+            {this.state.newEvent.end && (
+              <Text>{moment(this.state.newEvent.end).format('LLL')}</Text>
+            )}
             <DateTimePicker
               isVisible={this.state.showEndDate}
               mode="datetime"
-              minimumDate={new Date()}
+              minimumDate={new Date(this.state.newEvent.start)}
               onConfirm={date =>
                 this.setState({
-                  newEvent: { ...this.state.newEvent, end: date }
+                  newEvent: { ...this.state.newEvent, end: date },
+                  showEndDate: false
                 })
               }
               onCancel={() => this.setState({ showEndDate: false })}
             />
             <Text>Cover Photo</Text>
             <Button title="Upload Photo" onPress={this.handleUpload} />
-            <Text>Tags: {this.state.tagsString}</Text>
+            <Text>Tags</Text>
+            {this.state.newEvent.tags.map(tag => (
+              <Text>
+                {tag} <Text onPress={() => this.removeTag(tag)}>delete</Text>
+              </Text>
+            ))}
             <ModalDropdown
-              options={[
-                'music',
-                'sports',
-                'art',
-                'food',
-                'social',
-                'pet-friendly',
-                'kid-friendly',
-                'alcohol',
-                'language',
-                'education',
-                'tech',
-                'dance',
-                'books'
-              ]}
-              onSelect={(index, value) => {
-                this.state.newEvent.tags.length === 0
-                  ? this.setState({
-                    tagsString: this.state.tagsString.concat(value)
-                  })
-                  : this.setState({
-                    tagsString: this.state.tagsString.concat(', ' + value)
-                  })
-                this.setState({
-                  newEvent: {
-                    ...this.state.newEvent,
-                    tags: [...this.state.newEvent.tags, value]
-                  }
-                })
-              }}
+              options={this.state.tagOptions}
+              onSelect={(index, value) => this.addTag(value)}
             />
             <Button
               title="Submit"
-              onPress={() => this.props.createEvent(this.state)}
+              onPress={() => this.props.createEvent(this.state.newEvent)}
+            />
+            <Button
+              title="Cancel"
+              onPress={() => this.props.closeNewEventForm()}
             />
           </View>
         </ScrollView>
@@ -231,7 +254,10 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    createEvent: newEvent => dispatch(createEvent(newEvent))
+    createEvent: newEvent => dispatch(createEvent(newEvent)),
+    closeNewEventForm: () => {
+      dispatch({ type: 'CLOSE_NEW_EVENT_FORM' })
+    }
   }
 }
 
