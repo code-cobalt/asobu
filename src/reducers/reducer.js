@@ -10,6 +10,7 @@ const initialState = {
   showProfile: false,
   showEditProfileForm: false,
   showEvent: false,
+  showReview: false,
   showNewEventForm: false,
   showEditEventForm: false,
   currentProfile: {},
