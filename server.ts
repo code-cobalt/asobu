@@ -143,8 +143,8 @@ class ActiveClients {
     this.clientList = {}
     this.saveClient = this.saveClient.bind(this)
   }
-  saveClient(email: string, client: WebSocket) {
-    this.clientList[email] = client
+  saveClient(client: Client) {
+    this.clientList[client.email] = client
   }
   removeClient(email: string) {
     delete this.clientList[email]
@@ -213,11 +213,12 @@ hangoutSocketServer.on('connection', (ws) => {
   ws.on('message', (msg) => {
     console.log(msg)
     const message = msg.split(' ')
+    let newClient = new Client(message[1], ws)
     if (message[0] === 'l0') {
-      activeClients.saveClient(message[1], ws)
+      activeClients.saveClient(newClient)
     }
     if (message[0] === 'l1') {
-      activeClients.removeClient(message[1])
+      activeClients.removeClient(newClient.email)
     }
   })
   ws.on('close', (event) => {
