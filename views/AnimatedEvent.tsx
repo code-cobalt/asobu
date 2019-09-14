@@ -23,6 +23,7 @@ interface Props {
   setUserName: Function
   closeEvent: Function
   getEvents: Function
+  showEditEventForm: Function
   currentEvent: Event
   attendEvent: Function
   unattendEvent: Function
@@ -112,11 +113,21 @@ export class AnimatedEvent extends Component<Props> {
         </TouchableOpacity>
       )
     }
+
+    let editButton
     let deleteButton
     if (
       this.props.currentEvent.creator &&
       this.props.user.email === this.props.currentEvent.creator.email
     ) {
+      editButton = (
+        <TouchableOpacity
+          style={styles.event__button}
+          onPress={() => this.props.showEditEventForm()}
+        >
+          <Text style={styles.button__text}>Edit Event</Text>
+        </TouchableOpacity>
+      )
       deleteButton = (
         <TouchableOpacity
           style={styles.event__button}
@@ -157,6 +168,7 @@ export class AnimatedEvent extends Component<Props> {
               <Text style={styles.button__text}>Attendees</Text>
             </TouchableOpacity>
             {rsvpButton}
+            {editButton}
             {deleteButton}
           </View>
           <Comments comments={this.props.currentEvent.comments} />
@@ -243,6 +255,11 @@ const mapDispatchToProps = dispatch => {
     closeEvent: () => {
       dispatch({
         type: 'CLOSE_EVENT'
+      })
+    },
+    showEditEventForm: () => {
+      dispatch({
+        type: 'SHOW_EDIT_EVENT_FORM'
       })
     },
     attendEvent: (eventId, user) => dispatch(attendEvent(eventId, user)),
