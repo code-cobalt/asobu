@@ -3,8 +3,7 @@ const initialState = {
   resultsSwitch: 'hangouts',
   sentHangoutRequests: [],
   receivedHangoutRequests: [],
-  user: {
-  },
+  user: {},
   allUsers: [],
   allEvents: [],
   chats: [],
@@ -20,7 +19,6 @@ const initialState = {
   showChat: false,
   currentChatMessages: [],
   currentChatId: 0
-
 }
 
 const reducer = (state = initialState, action) => {
