@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Text, View, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, View, TextInput, StyleSheet, TouchableOpacity, Button } from 'react-native'
 import { connect } from "react-redux"
 import Modal from 'react-native-modal'
 import { updateProfile } from '../src/actions/users'
+import { uploadPhoto } from "../src/actions/upload"
 
 interface Props {
   showEditProfileForm: boolean,
@@ -37,6 +38,12 @@ class EditProfile extends Component<Props, State> {
     profile_photo: this.props.user.profile_photo,
     interests: this.props.user.interests
   }
+
+  handleUpload = async () => {
+    const image = await uploadPhoto()
+    this.setState({ profile_photo: image }, () => console.log(this.state))
+  }
+
   render() {
     return (
       <>
@@ -71,6 +78,10 @@ class EditProfile extends Component<Props, State> {
               value={this.state.email}
               onChangeText={text => this.setState({ email: text })}
             />
+          </View>
+          <View style={styles.profile__formgroup}>
+            <Text>Profile Photo</Text>
+            <Button title="Upload Photo" onPress={this.handleUpload} />
           </View>
           <TouchableOpacity
             onPress={() => this.props.updateProfile(this.state.email, this.state)}
