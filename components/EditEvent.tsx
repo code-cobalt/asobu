@@ -143,7 +143,8 @@ class EditEvent extends React.Component<Props, State> {
             minimumDate={new Date()}
             onConfirm={date =>
               this.setState({
-                updatedEvent: { ...this.state.updatedEvent, start: date }
+                updatedEvent: { ...this.state.updatedEvent, start: date },
+                showStartDate: false
               })
             }
             onCancel={() => this.setState({ showStartDate: false })}
@@ -160,19 +161,19 @@ class EditEvent extends React.Component<Props, State> {
             minimumDate={new Date()}
             onConfirm={date =>
               this.setState({
-                updatedEvent: { ...this.state.updatedEvent, end: date }
+                updatedEvent: { ...this.state.updatedEvent, end: date },
+                showEndDate: false
               })
             }
             onCancel={() => this.setState({ showEndDate: false })}
           />
           <Text>Cover Photo</Text>
-          <Text>Tags:</Text>
-          {this.state.updatedEvent.tags &&
-            this.state.updatedEvent.tags.map(tag => (
-              <Text>
-                {tag} <Text onPress={() => this.removeTag(tag)}>delete</Text>
-              </Text>
-            ))}
+          <Text>Tags</Text>
+          {this.state.updatedEvent.tags.map(tag => (
+            <Text>
+              {tag} <Text onPress={() => this.removeTag(tag)}>delete</Text>
+            </Text>
+          ))}
           <ModalDropdown
             options={this.state.tagOptions}
             onSelect={(index, value) => this.addTag(value)}

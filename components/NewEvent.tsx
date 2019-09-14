@@ -209,7 +209,7 @@ class NewEvent extends React.Component<Props, State> {
               onConfirm={date =>
                 this.setState({
                   newEvent: { ...this.state.newEvent, end: date },
-                  showStartDate: false
+                  showEndDate: false
                 })
               }
               onCancel={() => this.setState({ showEndDate: false })}
