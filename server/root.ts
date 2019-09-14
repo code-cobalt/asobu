@@ -292,22 +292,28 @@ const root = {
 
   CreateUser: async params => {
     const validation = validateNewUser(params.newUser)
+    //refactored and added new additional properties
     if (validation === 'valid') {
-      const userObj = Object.assign({}, params.newUser)
-      userObj.interests = []
-      userObj.exp = 0
-      userObj.lvl = 1
-      userObj.stats = {}
-      userObj.stats.funny = 0
-      userObj.stats.intellectual = 0
-      userObj.stats.fun = 0
-      userObj.stats.kind = 0
-      userObj.stats.therapeutic = 0
-      userObj.stats.interesting = 0
-      userObj.chats = []
-      userObj.events = []
-      userObj.sent_hangout_requests = []
-      userObj.received_hangout_requests = []
+      const userObj = Object.assign({}, params.newUser, {
+        interests: [],
+        exp: 0,
+        lvl: 1,
+        stats: {
+          funny: 0,
+          intellectual: 0,
+          fun: 0,
+          kind: 0,
+          therapeutic: 0,
+          interesting: 0
+        },
+        chats: [],
+        events: [],
+        sent_hangout_requests: [],
+        received_hangout_requests: [],
+        ongoing_hangouts: [],
+        pending_revies: [],
+        blocked_users: []
+      })
       const hash = bcrypt.hashSync(userObj.password, 10)
       userObj.password_hash = hash
       delete userObj.password
