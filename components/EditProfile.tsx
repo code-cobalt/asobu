@@ -41,7 +41,7 @@ class EditProfile extends Component<Props, State> {
 
   handleUpload = async () => {
     const image = await uploadPhoto()
-    this.setState({ profile_photo: image }, () => console.log(this.state))
+    this.setState({ profile_photo: image })
   }
 
   render() {
