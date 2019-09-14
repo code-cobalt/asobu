@@ -23,7 +23,7 @@ interface Props {
 const User: React.FunctionComponent<Props> = props => {
   return (
     <TouchableOpacity
-      style={styles.user}
+     
       onPress={() => props.showProfile(props.user)}
     >
       <View style={styles.user}>
@@ -66,10 +66,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 30,
     backgroundColor: '#e5e6e5',
-    borderRadius: 400,
+    borderRadius: 40,
   },
   user__image: {
-    borderRadius: 25,
+    borderRadius: 45,
     height: 90,
     width: 90
   },
