@@ -17,9 +17,13 @@ export const getEvents = () => {
     const res = await axios.post(`${apiUrl}/graphql`, {
       query: print(getEventsQuery)
     })
+    //only show events that haven't finished yet
+    const events = res.data.data.Events.filter(
+      event => new Date(event.end) > new Date()
+    )
     dispatch({
       type: 'GET_EVENTS',
-      events: res.data.data.Events
+      events
     })
   }
 }
