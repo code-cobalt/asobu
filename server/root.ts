@@ -547,31 +547,19 @@ const root = {
   },
 
   DeclineHangoutRequest: async params => {
-    const currentUser = await User.findOne({ email: params.currentUserEmail })
-    const fromUser = await User.findOne({ email: params.fromUserEmail })
-    const fromUserLimited = {
-      email: params.fromUserEmail,
-      first_name: fromUser.first_name,
-      profile_photo: fromUser.profile_photo
-    }
-    const toUserLimited = {
-      email: params.currentUserEmail,
-      first_name: currentUser.first_name,
-      profile_photo: currentUser.profile_photo
-    }
     await User.updateOne(
       { email: params.fromUserEmail },
       {
-        $pull: { sent_hangout_requests: toUserLimited }
+        $pull: { sent_hangout_requests: { email: params.currentUserEmail } }
       }
     )
     await User.updateOne(
       { email: params.currentUserEmail },
       {
-        $pull: { received_hangout_requests: fromUserLimited }
+        $pull: { received_hangout_requests: { email: params.fromUserEmail } }
       }
     )
-    return `${currentUser.first_name} has declined ${fromUser.first_name}'s hangout request.`
+    return `${params.currentUserEmail} has declined ${params.fromUserEmail}'s hangout request.`
   }
 }
 
