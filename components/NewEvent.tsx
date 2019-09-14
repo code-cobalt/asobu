@@ -98,7 +98,7 @@ class NewEvent extends React.Component<Props, State> {
     const image = await uploadPhoto()
     const copiedState = { ...this.state }
     copiedState.newEvent.cover_photo = image
-    this.setState({ ...copiedState }, () => console.log(this.state))
+    this.setState({ ...copiedState })
   }
 
   render() {
