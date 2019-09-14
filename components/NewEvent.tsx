@@ -29,6 +29,7 @@ interface Props {
   visible: boolean
   createEvent: Function
   currentUserLimited: UserLimited
+  closeNewEventForm: Function
 }
 interface Event {
   name: string
@@ -228,7 +229,11 @@ class NewEvent extends React.Component<Props, State> {
             />
             <Button
               title="Submit"
-              onPress={() => this.props.createEvent(this.state)}
+              onPress={() => this.props.createEvent(this.state.newEvent)}
+            />
+            <Button
+              title="Cancel"
+              onPress={() => this.props.closeNewEventForm()}
             />
           </View>
         </ScrollView>
@@ -278,7 +283,10 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    createEvent: newEvent => dispatch(createEvent(newEvent))
+    createEvent: newEvent => dispatch(createEvent(newEvent)),
+    closeNewEventForm: () => {
+      dispatch({ type: 'CLOSE_NEW_EVENT_FORM' })
+    }
   }
 }
 
