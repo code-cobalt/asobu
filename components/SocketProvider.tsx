@@ -6,9 +6,7 @@ const connection = new WebSocket(sockethost)
 connection.onopen = (event) => {
   alert('Socket Connected')
 }
-// connection.onmessage = (event) => {
-//   alert(event.data)
-// }
+
 export const SocketContext = React.createContext();
 
 export class SocketProvider extends Component {
