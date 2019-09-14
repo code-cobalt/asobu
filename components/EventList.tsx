@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#73d961',
     padding: 15,
     borderRadius: 50,
-    marginTop: 15,
-    marginBottom: 10
+    marginTop: 5,
+    marginBottom: 3
   },
   button__text: {
     fontWeight: '800',
