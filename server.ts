@@ -86,9 +86,9 @@ app.post('/upload', parser.single('image'), (req, res) => {
   }
   const image = <UploadedImage>{
     url: req.file.url,
-    id: req.fild.public_id
+    id: req.file.public_id
   }
-  res.send(image)
+  res.send(req.file.url)
 })
 
 //This is the websocket that wraps the server. A websocket is basically a live connection between server and client that are actively
@@ -204,7 +204,7 @@ wss.on('connection', (ws) => {
     }
   })
   ws.on('close', (event) => {
-    
+
   })
 })
 

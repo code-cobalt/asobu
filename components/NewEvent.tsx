@@ -18,6 +18,7 @@ import Constants from 'expo-constants'
 import * as Permissions from 'expo-permissions'
 import { apiUrl } from '../environment'
 import moment from 'moment'
+import { uploadPhoto } from '../src/actions/upload'
 
 interface UserLimited {
   first_name: string
@@ -98,36 +99,11 @@ class NewEvent extends React.Component<Props, State> {
     })
   }
 
-  getPermission = async () => {
-    if (Constants.platform.ios) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
-      if (status !== 'granted')
-        alert('Sorry, we need camera roll permissions to make this work!')
-      else this.pickImage()
-    }
-    this.pickImage()
-  }
-
-  pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All
-    })
-
-    console.log(result)
-
-    if (!result.cancelled) {
-      const newEvent = { ...this.state.newEvent }
-      newEvent.cover_photo = result.uri
-      this.setState({ newEvent }, async () => {
-        console.log('This is image', this.state.newEvent.cover_photo)
-        const imageURL = await axios.post(`${apiUrl}/upload`, result, {
-          headers: {
-            'Content-Type': 'image'
-          }
-        })
-        console.log(imageURL)
-      })
-    }
+  handleUpload = async () => {
+    const image = await uploadPhoto()
+    const copiedState = { ...this.state }
+    copiedState.newEvent.cover_photo = image
+    this.setState({ ...copiedState }, () => console.log(this.state))
   }
 
   render() {
@@ -216,7 +192,7 @@ class NewEvent extends React.Component<Props, State> {
               onCancel={() => this.setState({ showEndDate: false })}
             />
             <Text>Cover Photo</Text>
-            <Button title="Upload Photo" onPress={this.getPermission} />
+            <Button title="Upload Photo" onPress={this.handleUpload} />
             <Text>Tags</Text>
             {this.state.newEvent.tags.map(tag => (
               <Text>
