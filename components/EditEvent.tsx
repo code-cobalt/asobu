@@ -15,6 +15,7 @@ interface Props {
 }
 
 interface Event {
+  id: string
   name: string
   location: string
   description: string
@@ -26,19 +27,62 @@ interface Event {
 }
 
 interface State {
+  eventId: string
   updatedEvent: Event
-  tagsString: string
   showStartDate: boolean
   showEndDate: boolean
+  tagOptions: string[]
 }
 
 class EditEvent extends React.Component<Props, State> {
   state = {
-    updatedEvent: this.props.event,
-    tagsString: '',
+    eventId: this.props.event.id,
+    updatedEvent: { ...this.props.event },
     showStartDate: false,
-    showEndDate: false
+    showEndDate: false,
+    tagOptions: [
+      'music',
+      'sports',
+      'art',
+      'food',
+      'social',
+      'pet-friendly',
+      'kid-friendly',
+      'alcohol',
+      'language',
+      'education',
+      'tech',
+      'dance',
+      'books'
+    ].filter(tag => !this.props.event.tags.includes(tag))
   }
+
+  addTag = tag => {
+    this.setState({
+      updatedEvent: {
+        ...this.state.updatedEvent,
+        tags: [...this.state.updatedEvent.tags, tag]
+      },
+      tagOptions: this.state.tagOptions.filter(option => option !== tag)
+    })
+  }
+
+  removeTag = tag => {
+    const tags = this.state.updatedEvent.tags.filter(
+      eventTag => eventTag !== tag
+    )
+    this.setState({
+      updatedEvent: { ...this.state.updatedEvent, tags },
+      tagOptions: [...this.state.tagOptions, tag]
+    })
+  }
+
+  handleSubmit = () => {
+    const eventData = { ...this.state.updatedEvent }
+    delete eventData.id
+    this.props.updateEvent(this.state.eventId, eventData)
+  }
+
   render() {
     return (
       <Modal
@@ -122,43 +166,18 @@ class EditEvent extends React.Component<Props, State> {
             onCancel={() => this.setState({ showEndDate: false })}
           />
           <Text>Cover Photo</Text>
-          <Text>Tags: {this.state.tagsString}</Text>
+          <Text>Tags:</Text>
+          {this.state.updatedEvent.tags &&
+            this.state.updatedEvent.tags.map(tag => (
+              <Text>
+                {tag} <Text onPress={() => this.removeTag(tag)}>delete</Text>
+              </Text>
+            ))}
           <ModalDropdown
-            options={[
-              'music',
-              'sports',
-              'art',
-              'food',
-              'social',
-              'pet-friendly',
-              'kid-friendly',
-              'alcohol',
-              'language',
-              'education',
-              'tech',
-              'dance',
-              'books'
-            ]}
-            onSelect={(index, value) => {
-              this.state.updatedEvent.tags.length === 0
-                ? this.setState({
-                    tagsString: this.state.tagsString.concat(value)
-                  })
-                : this.setState({
-                    tagsString: this.state.tagsString.concat(', ' + value)
-                  })
-              this.setState({
-                updatedEvent: {
-                  ...this.state.updatedEvent,
-                  tags: [...this.state.updatedEvent.tags, value]
-                }
-              })
-            }}
+            options={this.state.tagOptions}
+            onSelect={(index, value) => this.addTag(value)}
           />
-          <Button
-            title="Submit"
-            onPress={() => this.props.updateEvent(this.state)}
-          />
+          <Button title="Submit" onPress={() => this.handleSubmit()} />
           <Button
             title="Cancel Changes"
             onPress={() => this.props.closeEditEventForm()}

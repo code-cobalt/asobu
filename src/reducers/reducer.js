@@ -13,7 +13,8 @@ const initialState = {
   showNewEventForm: false,
   showEditEventForm: false,
   currentProfile: {},
-  currentEvent: {},
+  //I have to initialize an empty tags array so that Event form modals can render properly before any event has been selected
+  currentEvent: { tags: [] },
   isLoggedIn: false,
   showLogin: true,
   showChat: false,
@@ -96,6 +97,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, showEditEventForm: false }
     }
     case 'UPDATE_EVENT': {
+      debugger
       const allEventsCopy = [...state.allEvents]
       for (let i = 0; i < allEventsCopy.length; i++) {
         if (allEventsCopy[i].id === action.eventId) {
