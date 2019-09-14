@@ -11,8 +11,8 @@ const events = [
       profile_photo:
         'https://pm1.narvii.com/6434/94605250171379229064c93049e39ce310551346_hq.jpg'
     },
-    start: new Date(),
-    end: new Date(),
+    start: new Date('11-30-2019 18:30'),
+    end: new Date('11-30-2019 20:30'),
     location: 'my place',
     limit: 20,
     tags: ['social', 'sports', 'alcohol'],
@@ -36,8 +36,8 @@ const events = [
       profile_photo:
         'https://cdn.thedailymash.co.uk/wp-content/uploads/20190324205229/40-something-man-2-1.jpg'
     },
-    start: new Date(),
-    end: new Date(),
+    start: new Date('09-12-2021 13:30'),
+    end: new Date('09-12-2021 14:30'),
     location: 'Hitomedia Lab',
     limit: 10,
     tags: ['social', 'language', 'education'],
