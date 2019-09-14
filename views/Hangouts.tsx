@@ -13,6 +13,7 @@ import UserList from '../components/UserList'
 import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
+import UserModal from "../components/UserModal"
 import {
   acceptHangoutRequest,
   declineHangoutRequest
@@ -46,7 +47,6 @@ class Hangouts extends React.Component<Props> {
     modalVisible: this.props.receivedHangoutRequests.length > 0,
     profileVisible: Object.keys(this.props.currentProfile).length > 0
   }
-
   render() {
     return (
       <View style={styles.userList}>
@@ -116,48 +116,7 @@ class Hangouts extends React.Component<Props> {
             </View>
           </View>
         </Modal>
-        <Modal
-          isVisible={this.props.showProfile}
-          animationIn="slideInUp"
-          animationOut="slideOutDown"
-          backdropOpacity={0.85}
-          style={styles.modal}
-        >
-          <View style={{ flex: 1 }}>
-            <View>
-              <Text>Level {this.props.currentProfile.lvl}</Text>
-              <Image
-                source={{ uri: this.props.currentProfile.profile_photo }}
-                style={styles.profile__photo}
-              />
-            </View>
-            <View>
-              <Text>{this.props.currentProfile.first_name}</Text>
-            </View>
-            <View>
-              <Text>Equipped Badges</Text>
-              <View style={styles.profile__badges}>{/* <Badges /> */}</View>
-            </View>
-            <View>
-              <Text>Hobbies</Text>
-              <TextInput value={'My hobbies are bla bla bla bla'} />
-            </View>
-            <View>
-              <Text>Interests</Text>
-              <TextInput value={'My interest are bla bla bla bla'} />
-            </View>
-            <View>
-              <Text>All Badges</Text>
-              <View style={styles.profile__badges}>{/* <Badges /> */}</View>
-            </View>
-            <TouchableOpacity
-              onPress={() => this.props.closeProfile()}
-              style={styles.profile__close}
-            >
-              <Text>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+        <UserModal />
       </View>
     )
   }
@@ -213,22 +172,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0
   },
-  profile__photo: {
-    height: 50,
-    width: 50
-  },
-  profile__close: {
-    width: '50%',
-    backgroundColor: '#73d961',
-    padding: 15,
-    borderRadius: 50,
-    marginTop: 15
-  },
-  profile__badges: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
 })
 
 const mapStateToProps = state => {

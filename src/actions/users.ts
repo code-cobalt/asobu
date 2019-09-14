@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { apiUrl } from '../../environment.js'
 import { print } from 'graphql'
-import { loginQuery, getUsersQuery } from '../queries/users'
+import { loginQuery, getUsersQuery, updateProfileQuery } from '../queries/users'
 import { AsyncStorage } from 'react-native'
 
 export const loginUser = (userEmail, userPassword) => {
@@ -39,5 +39,18 @@ export const getUsers = currentUserEmail => {
       type: 'SET_ALL_USERS',
       allUsers
     })
+  }
+}
+
+export const updateProfile = (userEmail, updatedUser) => {
+  return async dispatch => {
+    const res = await axios.post(`${apiUrl}/graphql`, {
+      query: print(updateProfileQuery),
+      variables: {
+        userEmail,
+        updatedUser
+      }
+    })
+    dispatch({ type: 'UPDATE_PROFILE', updatedUser: res.data.data.UpdateUser })
   }
 }

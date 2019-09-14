@@ -11,7 +11,12 @@ import ModalDropdown from 'react-native-modal-dropdown'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import { connect } from 'react-redux'
 import { createEvent } from '../src/actions/events'
+import axios from "axios"
 import Modal from 'react-native-modal'
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+import { apiUrl } from "../environment"
 
 interface UserLimited {
   first_name: string
@@ -59,6 +64,38 @@ class NewEvent extends React.Component<Props, State> {
     }
   }
   
+
+  getPermission = async () => {
+    if (Constants.platform.ios) {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== 'granted') alert('Sorry, we need camera roll permissions to make this work!');
+      else this.pickImage()
+    }
+    this.pickImage()
+  }
+
+  pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      const newEvent = { ...this.state.newEvent }
+      newEvent.cover_photo = result.uri
+      this.setState({ newEvent }, async () => {
+        console.log("This is image", this.state.newEvent.cover_photo)
+        const imageURL = await axios.post(`${apiUrl}/upload`, result, {
+          headers: {
+            'Content-Type': "image"
+          }
+        })
+        console.log(imageURL)
+      });
+    }
+  };
+
 
   render() {
     return (
@@ -138,6 +175,7 @@ class NewEvent extends React.Component<Props, State> {
               onCancel={() => this.setState({ showEndDate: false })}
             />
             <Text>Cover Photo</Text>
+            <Button title="Upload Photo" onPress={this.getPermission} />
             <Text>Tags: {this.state.tagsString}</Text>
             <ModalDropdown
               options={[
@@ -158,11 +196,11 @@ class NewEvent extends React.Component<Props, State> {
               onSelect={(index, value) => {
                 this.state.newEvent.tags.length === 0
                   ? this.setState({
-                      tagsString: this.state.tagsString.concat(value)
-                    })
+                    tagsString: this.state.tagsString.concat(value)
+                  })
                   : this.setState({
-                      tagsString: this.state.tagsString.concat(', ' + value)
-                    })
+                    tagsString: this.state.tagsString.concat(', ' + value)
+                  })
                 this.setState({
                   newEvent: {
                     ...this.state.newEvent,
