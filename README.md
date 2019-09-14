@@ -165,3 +165,59 @@ The database is <span style="color:lightblue">**MongoDB**</span> hosted by Atlas
 ## Cloud Storage
 
 Cloud storage is provided by <span style="color:lightblue">**Cloudinary**</span>. Credentials, including an API key, are included in your .env file. There is currently no way to access the database itself without proper login credentials, so please refer to the tech lead for access. Keep in mind that the free tier will limit retrievals and uploads, so please keep these to a minimum during production.
+
+## Game Mechanics
+
+### Experience Curve
+| Level | Experience |
+| :---: | ---------- |
+| 1     | 0          |
+| 2     | 100        |
+| 3     | 200        |
+| 4     | 400        |
+| 5     | 600        |
+| 6     | 900        |
+| 7     | 1200       |
+| 8     | 1600       |
+| 9     | 2000       |
+| 10    | 3000       |
+
+### Experience Gains
+| Action               | Experience |
+| :----:               | :--------: |
+| Create Account       | 0          |
+| Fill Out Profile     | 40         |
+| Send Hangout Request | 10         |
+| Confirm Hangout      | 50         |
+| Finish Hangout       | 30         |
+| Submit Review        | 40         |
+| Create Event         | 20         |
+| Confirm Event        | 50         |
+
+### Experience Multipliers
+| Condition            | Multiplier |
+| :-------:            | :--------: |
+| Partner is level 1   | 3x         |
+| Partner is level 10  | 3x         |
+
+### Reviews
+| Level | Review Points |
+| :---: | :-----------: |
+| 1     | 2             |
+| 2     | 3             |
+| 3     | 3             |
+| 4     | 4             |
+| 5     | 4             |
+| 6     | 4             |
+| 7     | 5             |
+| 8     | 5             |
+| 9     | 5             |
+| 10    | 6             |
+
+### Badge Thresholds
+| Tier | Points Required |
+| :--: | :-------------: |
+| 1    | 1               |
+| 2    | 5               |
+| 3    | 15              |
+| 4    | 30              |

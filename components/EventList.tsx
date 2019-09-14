@@ -37,7 +37,8 @@ const EventList: React.FunctionComponent<Props> = props => {
   })
   return (
     <View>
-      <TouchableOpacity onPress={() => props.showForm()}>
+      <TouchableOpacity style={styles.create__event} onPress={() => props.showForm()}>
+        <Text style={styles.button__text}>Create Event</Text>
         <NewEvent />
         <EditEvent />
       </TouchableOpacity>
@@ -50,6 +51,20 @@ const EventList: React.FunctionComponent<Props> = props => {
 const styles = StyleSheet.create({
   eventList: {
     bottom: 40
+  },
+  create__event: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: '50%',
+    backgroundColor: '#73d961',
+    padding: 15,
+    borderRadius: 50,
+    marginTop: 5,
+    marginBottom: 3
+  },
+  button__text: {
+    fontWeight: '800',
+    color: 'white'
   }
 })
 
