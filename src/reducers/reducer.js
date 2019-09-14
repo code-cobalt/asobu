@@ -82,7 +82,11 @@ const reducer = (state = initialState, action) => {
       return { ...state, allEvents: action.events }
     }
     case 'CREATE_EVENT': {
-      return { ...state, allEvents: [...state.allEvents, action.newEvent] }
+      return {
+        ...state,
+        allEvents: [...state.allEvents, action.newEvent],
+        showNewEventForm: false
+      }
     }
     case 'SHOW_NEW_EVENT_FORM': {
       return { ...state, showNewEventForm: true }
