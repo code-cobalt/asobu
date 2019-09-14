@@ -38,6 +38,7 @@ const { Seeder } = require('mongo-seeding')
 const path = require('path')
 //formatError for custom graphql resolver errors
 import { formatError } from 'apollo-errors'
+import { client } from 'websocket'
 //WebSocket
 const server = require('ws').Server
 
@@ -98,8 +99,14 @@ const l0 = new RegExp(/l0/)
 const m0 = new RegExp(/m0/)
 // import User from './server/models/user'
 
-interface clientList {
-  email: WebSocket
+// interface clientList {
+//   email: WebSocket
+// }
+
+interface Client {
+  email: string,
+  socket: WebSocket,
+  heartbeat: boolean
 }
 
 interface Clients {
@@ -110,13 +117,21 @@ interface ActiveClients {
   clientList: Object
 }
 
+class Client {
+  constructor(email, socket) {
+    this.email = email
+    this.socket = socket
+    this.heartbeat = true
+  }
+}
+
 class Clients {
   constructor() {
     this.clientList = {}
     this.saveClient = this.saveClient.bind(this)
   }
-  saveClient(email: string, client: WebSocket) {
-    this.clientList[email] = client
+  saveClient(client: Client) {
+    this.clientList[client.email] = client
   }
   removeClient(email: string) {
     delete this.clientList[email]
@@ -150,16 +165,32 @@ wss.on('connection', (ws) => {
     const message = msg.split(' ')
     //[0] - Login Code, [1] - User Email
     if (message[0] === 'l0') {
-      clients.saveClient(message[1], ws)
+      let newClient = new Client(message[1], ws)
+      clients.saveClient(newClient)
+      const pulseCheck = setInterval(() => {
+        if (!newClient.heartbeat) {
+          clients.removeClient(newClient.email)
+          clearInterval(pulseCheck)
+          console.log('DEAD CLIENT REMOVED')
+        } else {
+          newClient.heartbeat = false
+          newClient.socket.send('p0')
+          console.log('PINGED CLIENT')
+        }
+      }, 10000)
     }
     if (message[0] === 'l1') {
       clients.removeClient(message[1])
+    }
+    if (message[0] === 'p0') {
+      console.log('CLIENT PONGED')
+      clients.clientList[message[1]].heartbeat = true
     }
     //[0] - Message Code, [1] - Target Email, [2] - Chat ID
     if (message[0] === 'm0') {
       for (let client in clients.clientList) {
         if (client === message[1]) {
-          clients.clientList[client].send(`m0 ${message[2]}`)
+          clients.clientList[client].socket.send(`m0 ${message[2]}`)
         }
       }
     }
@@ -167,7 +198,7 @@ wss.on('connection', (ws) => {
     if (message[0] === 'h0') {
       for (let client in clients.clientList) {
         if (client === message[2]) {
-          clients.clientList[client].send(`h0 ${message[1]}`)
+          clients.clientList[client].socket.send(`h0 ${message[1]}`)
         }
       }
     }
