@@ -50,6 +50,9 @@ const schema = buildSchema(`
         events: [UserEvent]
         sent_hangout_requests: [UserLimited]
         received_hangout_requests: [UserLimited]
+        ongoing_hangouts: [UserLimited]
+        pending_reviews: [UserLimited]
+        blocked_users: [String]
         imei: String
     }
 
@@ -83,15 +86,6 @@ const schema = buildSchema(`
     type Chat {
         _id: Int,
         messages: [Message]
-    }
-
-    type Query {
-        Users: [User]
-        User(userEmail: String!): User
-        Login(userEmail: String!, userPassword: String!): User
-        Events: [Event]
-        Event(eventId: String!): Event
-        Chat(chatId: Int!): Chat
     }
 
     input UserLimitedInput {
@@ -152,7 +146,6 @@ const schema = buildSchema(`
         interests: [String]
         exp: Int
         lvl: Int
-        stats: StatsInput
         imei: String
     }
 
@@ -176,6 +169,15 @@ const schema = buildSchema(`
         content: String!
     }
 
+    type Query {
+        Users: [User]
+        User(userEmail: String!): User
+        Login(userEmail: String!, userPassword: String!): User
+        Events: [Event]
+        Event(eventId: String!): Event
+        Chat(chatId: Int!): Chat
+    }
+
     type Mutation {
         CreateEvent(newEvent: NewEvent!): Event
         UpdateEvent(eventId: String!, updatedEvent: UpdatedEvent!): Event
@@ -189,11 +191,14 @@ const schema = buildSchema(`
         CreateMessage(newMessage: NewMessage!): Message
         AttendEvent(eventId: String!, user: UserLimitedInput!): String
         UnattendEvent(eventId: String!, userEmail: String!): String
-        AddStats(userEmail: String!, newStats: StatsInput!): Stats
+        ReviewUser(currentUserEmail: String!, reviewedUserEmail: String!, newStats: StatsInput!): String
         AddExp(userEmail: String!, points: Int): Int
         SendHangoutRequest(currentUserEmail: String!, toUserEmail: String!): String
         AcceptHangoutRequest(currentUserEmail: String!, fromUserEmail: String!): UserChat
         DeclineHangoutRequest(currentUserEmail: String!, fromUserEmail: String!): String
+        StartHangout(participants: [UserLimitedInput]!): String
+        FinishHangout(hangoutId: String!): String
+        BlockUser(currentUserEmail: String!, blockedUserEmail: String): String
     }
 `)
 
