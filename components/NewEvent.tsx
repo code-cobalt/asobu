@@ -206,7 +206,7 @@ class NewEvent extends React.Component<Props, State> {
             <DateTimePicker
               isVisible={this.state.showEndDate}
               mode="datetime"
-              minimumDate={new Date()}
+              minimumDate={new Date(this.state.newEvent.start)}
               onConfirm={date =>
                 this.setState({
                   newEvent: { ...this.state.newEvent, end: date },

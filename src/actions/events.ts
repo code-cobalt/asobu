@@ -28,12 +28,12 @@ export const getEvents = () => {
   }
 }
 
-export const createEvent = async newEvent => {
-  const res = await axios.post(`${apiUrl}/graphql`, {
-    query: print(createEventQuery),
-    variables: newEvent
-  })
-  return dispatch => {
+export const createEvent = newEvent => {
+  return async dispatch => {
+    const res = await axios.post(`${apiUrl}/graphql`, {
+      query: print(createEventQuery),
+      variables: { newEvent: { ...newEvent, limit: ~~newEvent.limit } }
+    })
     dispatch({
       type: 'CREATE_EVENT',
       newEvent: res.data.data.CreateEvent

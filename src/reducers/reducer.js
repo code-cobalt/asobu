@@ -101,7 +101,6 @@ const reducer = (state = initialState, action) => {
       return { ...state, showEditEventForm: false }
     }
     case 'UPDATE_EVENT': {
-      debugger
       const allEventsCopy = [...state.allEvents]
       for (let i = 0; i < allEventsCopy.length; i++) {
         if (allEventsCopy[i].id === action.eventId) {
@@ -112,7 +111,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         allEvents: allEventsCopy,
-        currentEvent: action.updatedEvent
+        currentEvent: action.updatedEvent,
+        showEditEventForm: false
       }
     }
     case 'DELETE_EVENT': {

@@ -27,7 +27,6 @@ interface Event {
 }
 
 interface State {
-  eventId: string
   updatedEvent: Event
   showStartDate: boolean
   showEndDate: boolean
@@ -36,7 +35,6 @@ interface State {
 
 class EditEvent extends React.Component<Props, State> {
   state = {
-    eventId: this.props.event.id,
     updatedEvent: { ...this.props.event },
     showStartDate: false,
     showEndDate: false,
@@ -80,7 +78,7 @@ class EditEvent extends React.Component<Props, State> {
   handleSubmit = () => {
     const eventData = { ...this.state.updatedEvent }
     delete eventData.id
-    this.props.updateEvent(this.state.eventId, eventData)
+    this.props.updateEvent(this.props.event.id, eventData)
   }
 
   render() {
@@ -94,7 +92,7 @@ class EditEvent extends React.Component<Props, State> {
           <Text style={styles.input__text}>Event Name</Text>
           <TextInput
             style={styles.event__input}
-            value={this.state.updatedEvent.name}
+            placeholder={this.props.event.name}
             onChangeText={text =>
               this.setState({
                 updatedEvent: { ...this.state.updatedEvent, name: text }
@@ -104,7 +102,7 @@ class EditEvent extends React.Component<Props, State> {
           <Text style={styles.input__text}>Location</Text>
           <TextInput
             style={styles.event__input}
-            value={this.state.updatedEvent.location}
+            placeholder={this.props.event.location}
             onChangeText={text =>
               this.setState({
                 updatedEvent: { ...this.state.updatedEvent, location: text }
@@ -114,7 +112,7 @@ class EditEvent extends React.Component<Props, State> {
           <Text style={styles.input__text}>Description</Text>
           <TextInput
             style={styles.event__input}
-            value={this.state.updatedEvent.location}
+            placeholder={this.props.event.description}
             onChangeText={text =>
               this.setState({
                 updatedEvent: { ...this.state.updatedEvent, description: text }
@@ -123,7 +121,7 @@ class EditEvent extends React.Component<Props, State> {
           />
           <Text>Attendee Limit</Text>
           <ModalDropdown
-            value={this.state.updatedEvent.limit}
+            value={this.props.event.limit}
             options={Array.from(Array(101).keys()).slice(1)}
             onSelect={selection =>
               this.setState({
@@ -139,7 +137,7 @@ class EditEvent extends React.Component<Props, State> {
           <DateTimePicker
             isVisible={this.state.showStartDate}
             mode="datetime"
-            date={new Date(this.state.updatedEvent.start)}
+            date={new Date(this.props.event.start)}
             minimumDate={new Date()}
             onConfirm={date =>
               this.setState({
@@ -156,9 +154,9 @@ class EditEvent extends React.Component<Props, State> {
           />
           <DateTimePicker
             isVisible={this.state.showEndDate}
-            date={new Date(this.state.updatedEvent.end)}
             mode="datetime"
-            minimumDate={new Date()}
+            date={new Date(this.props.event.end)}
+            minimumDate={this.state.updatedEvent.start}
             onConfirm={date =>
               this.setState({
                 updatedEvent: { ...this.state.updatedEvent, end: date },
