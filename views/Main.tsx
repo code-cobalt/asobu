@@ -24,6 +24,12 @@ class Main extends Component<Props> {
     this.props.socket.onmessage = event => {
       console.log(`SERVER MESSAGE: ${event.data}`)
       const message = event.data.split(' ')
+      //Heartbeat
+      if (message[0] === 'p0') {
+        this.props.socket.send(`p0 ${this.props.email}`)
+        console.log('PONGED')
+      }
+      //Message Update
       if (message[0] === 'm0') {
         this.props.getChat(parseInt(message[1]))
       }
