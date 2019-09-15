@@ -16,6 +16,7 @@ interface Props {
   getUsers: Function
   getChat: Function
   socket: WebSocket
+  blockedUsers: string[]
 }
 
 class Main extends Component<Props> {
@@ -34,7 +35,7 @@ class Main extends Component<Props> {
         this.props.getChat(parseInt(message[1]))
       }
     }
-    this.props.getUsers(this.props.email)
+    this.props.getUsers(this.props.email, this.props.blockedUsers)
   }
 
   render() {
@@ -62,7 +63,8 @@ const mapStateToProps = state => {
   return {
     activeView: state.activeView,
     allUsers: state.allUsers,
-    email: state.user.email
+    email: state.user.email,
+    blockedUsers: [...state.blockedUsers, ...state.blockedByUsers]
   }
 }
 
@@ -81,7 +83,8 @@ const mapDispatchToProps = dispatch => {
       })
     },
     getChat: chatId => dispatch(getChat(chatId)),
-    getUsers: currentUserEmail => dispatch(getUsers(currentUserEmail))
+    getUsers: (currentUserEmail, blockedUsers) =>
+      dispatch(getUsers(currentUserEmail, blockedUsers))
   }
 }
 

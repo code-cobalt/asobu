@@ -11,9 +11,9 @@ export default class Badges extends Component {
     // })
     return (
       <>
-        <Image source={require("../assets/Badge1.png")} style={{ height: 40, width: 40 }}></Image>
-        <Image source={require("../assets/Badge3.png")} style={{ height: 40, width: 40 }}></Image>
-        <Image source={require("../assets/Badge2.png")} style={{ height: 40, width: 40 }}></Image>
+        <Image source={require("../assets/socket.png")} style={{ height: 40, width: 40 }}></Image>
+        <Image source={require("../assets/crown_badge.png")} style={{ height: 40, width: 40 }}></Image>
+        <Image source={require("../assets/socket.png")} style={{ height: 40, width: 40 }}></Image>
       </>
     )
   }

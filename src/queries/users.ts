@@ -106,10 +106,15 @@ export const updateProfileQuery = gql`
 `
 
 export const blockUserQuery = gql`
-  mutation BlockUser($currentUserEmail: String!, $blockedUserEmail: String!) {
+  mutation BlockUser(
+    $currentUserEmail: String!
+    $blockedUserEmail: String!
+    $chatId: Int!
+  ) {
     BlockUser(
       currentUserEmail: $currentUserEmail
       blockedUserEmail: $blockedUserEmail
+      chatId: $chatId
     )
   }
 `

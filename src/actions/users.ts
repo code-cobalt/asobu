@@ -35,13 +35,21 @@ export const loginUser = (userEmail, userPassword) => {
   }
 }
 
-export const getUsers = currentUserEmail => {
+export const getUsers = (currentUserEmail, [...blockedUsers]) => {
+  //blockedUsers is an array of all the user emails who the current user has blocked or been blocked by.
+  //don't return any users in this array
+  //create a hashmap to reduce time complexity
+  const blockedUsersObj = {}
+  for (let i = 0; i < blockedUsers.length; i++) {
+    //have to start at 1, not 0, because 0 is falsey and won't work when we filter allUsers below.
+    blockedUsersObj[blockedUsers[i]] = i + 1
+  }
   return async dispatch => {
     const res = await axios.post(`${apiUrl}/graphql`, {
       query: print(getUsersQuery)
     })
     const allUsers = res.data.data.Users.filter(
-      user => user.email !== currentUserEmail
+      user => !blockedUsersObj[user.email] && user.email !== currentUserEmail
     )
     dispatch({
       type: 'SET_ALL_USERS',
@@ -63,16 +71,17 @@ export const updateProfile = (userEmail, updatedUser) => {
   }
 }
 
-export const blockUser = (currentUserEmail, blockedUserEmail) => {
+export const blockUser = (currentUserEmail, blockedUserEmail, chatId) => {
   return async dispatch => {
     await axios.post(`${apiUrl}/graphql`, {
       query: print(blockUserQuery),
       variables: {
         currentUserEmail,
-        blockedUserEmail
+        blockedUserEmail,
+        chatId
       }
     })
-    dispatch({ type: 'BLOCK_USER', blockedUserEmail })
+    dispatch({ type: 'BLOCK_USER', blockedUserEmail, chatId })
   }
 }
 
