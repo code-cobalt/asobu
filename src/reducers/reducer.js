@@ -12,7 +12,7 @@ const initialState = {
   showProfile: false,
   showEditProfileForm: false,
   showEvent: false,
-  showReview: false,
+  showReview: true,
   showNewEventForm: false,
   showEditEventForm: false,
   currentProfile: {},
@@ -259,6 +259,10 @@ const reducer = (state = initialState, action) => {
           user => user !== action.blockedUserEmail
         )
       }
+    }
+    case 'ADD_EXP': {
+      const updatedUser = { ...state.user, exp: action.exp }
+      return { ...state, showReview: false, user: updatedUser }
     }
     default: {
       return state
