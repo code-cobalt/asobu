@@ -6,7 +6,9 @@ import {
   getUsersQuery,
   updateProfileQuery,
   blockUserQuery,
-  unblockUserQuery
+  unblockUserQuery,
+  reviewUserQuery,
+  addExpQuery
 } from '../queries/users'
 import { AsyncStorage } from 'react-native'
 
@@ -84,5 +86,26 @@ export const unblockUser = (currentUserEmail, blockedUserEmail) => {
       }
     })
     dispatch({ type: 'UNBLOCK_USER', blockedUserEmail })
+  }
+}
+
+export const reviewUser = (currentUserEmail, reviewedUserEmail, newStats) => {
+  return async dispatch => {
+    await axios.post(`${apiUrl}/graphql`, {
+      query: print(reviewUserQuery),
+      variables: {
+        currentUserEmail,
+        reviewedUserEmail,
+        newStats
+      }
+    })
+    const exptest = await axios.post(`${apiUrl}/graphql`, {
+      query: print(addExpQuery),
+      variables: {
+        userEmail: currentUserEmail,
+        points: 40
+      }
+    })
+    dispatch({ type: "ADD_EXP", exp: exptest.data.data.AddExp })
   }
 }
