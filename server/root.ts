@@ -595,11 +595,17 @@ const root = {
     // TO DO what to do with chat??
     await User.updateOne(
       { email: params.currentUserEmail },
-      { $push: { blocked_users: params.blockedUserEmail } }
+      {
+        $push: { blocked_users: params.blockedUserEmail },
+        $pull: { chats: { chat_id: params.chatId } }
+      }
     )
     await User.updateOne(
       { email: params.blockedUserEmail },
-      { $push: { blocked_by_users: params.currentUserEmail } }
+      {
+        $push: { blocked_by_users: params.currentUserEmail },
+        $pull: { chats: { chat_id: params.chatId } }
+      }
     )
     return `${params.currentUserEmail} has blocked ${params.blockedUserEmail}.`
   },

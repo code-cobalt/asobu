@@ -252,6 +252,7 @@ const reducer = (state = initialState, action) => {
         allUsers: state.allUsers.filter(
           user => user.email !== action.blockedUserEmail
         ),
+        chats: state.chats.filter(chat => chat.chat_id !== action.chatId),
         blockedUsers: [...state.blockedUsers, action.blockedUserEmail]
       }
     }

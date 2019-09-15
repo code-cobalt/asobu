@@ -69,16 +69,17 @@ export const updateProfile = (userEmail, updatedUser) => {
   }
 }
 
-export const blockUser = (currentUserEmail, blockedUserEmail) => {
+export const blockUser = (currentUserEmail, blockedUserEmail, chatId) => {
   return async dispatch => {
     await axios.post(`${apiUrl}/graphql`, {
       query: print(blockUserQuery),
       variables: {
         currentUserEmail,
-        blockedUserEmail
+        blockedUserEmail,
+        chatId
       }
     })
-    dispatch({ type: 'BLOCK_USER', blockedUserEmail })
+    dispatch({ type: 'BLOCK_USER', blockedUserEmail, chatId })
   }
 }
 
