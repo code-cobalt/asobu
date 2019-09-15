@@ -2,11 +2,14 @@ import React from 'react'
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { getChat } from '../src/actions/chats'
+import { blockUser } from '../src/actions/users'
 
 interface Props {
   chat: Chat
   getChat: Function
   socket: Socket
+  currentUserEmail: string
+  blockUser: Function
 }
 
 interface Socket {
@@ -42,9 +45,19 @@ const Chat: React.FunctionComponent<Props> = props => {
       <View style={styles.chat__textcontainer}>
         {props.chat.participants.map(participant => {
           return (
-            <Text key={participant.email} style={styles.chat__text}>
-              {participant.first_name}
-            </Text>
+            <View key={participant.email}>
+              <Text style={styles.chat__text}>{participant.first_name}</Text>
+              <Text
+                onPress={() =>
+                  this.props.blockUser(
+                    this.props.currentUserEmail,
+                    participant.email
+                  )
+                }
+              >
+                Block User
+              </Text>
+            </View>
           )
         })}
       </View>
@@ -87,13 +100,16 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    socket: state.socket
+    socket: state.socket,
+    currentUserEmail: state.user.email
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getChat: chatId => dispatch(getChat(chatId))
+    getChat: chatId => dispatch(getChat(chatId)),
+    blockUser: (currentUserEmail, blockedUserEmail) =>
+      dispatch(blockUser(currentUserEmail, blockedUserEmail))
   }
 }
 
