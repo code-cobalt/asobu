@@ -200,6 +200,7 @@ const schema = buildSchema(`
         StartHangout(participants: [UserLimitedInput]!): String
         FinishHangout(hangoutId: String!): String
         BlockUser(currentUserEmail: String!, blockedUserEmail: String): String
+        UnblockUser(currentUserEmail: String!, blockedUserEmail: String): String
     }
 `)
 

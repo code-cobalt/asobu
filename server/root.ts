@@ -591,7 +591,28 @@ const root = {
   },
 
   BlockUser: async params => {
-    // TO DO will add params.blockedUserEmail to current user's array of blocked_users
+    // TO DO what to do with chat??
+    await User.updateOne(
+      { email: params.currentUserEmail },
+      { $push: { blocked_users: params.blockedUserEmail } }
+    )
+    await User.updateOne(
+      { email: params.blockedUserEmail },
+      { $push: { blocked_by_users: params.currentUserEmail } }
+    )
+    return `${params.currentUserEmail} has blocked ${params.blockedUserEmail}.`
+  },
+
+  UnblockUser: async params => {
+    await User.updateOne(
+      { email: params.currentUserEmail },
+      { $pull: { blocked_users: params.blockedUserEmail } }
+    )
+    await User.updateOne(
+      { email: params.blockedUserEmail },
+      { $pull: { blocked_by_users: params.currentUserEmail } }
+    )
+    return `${params.currentUserEmail} has unblocked ${params.blockedUserEmail}.`
   }
 }
 
