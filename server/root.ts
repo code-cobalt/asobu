@@ -312,7 +312,8 @@ const root = {
         received_hangout_requests: [],
         ongoing_hangouts: [],
         pending_revies: [],
-        blocked_users: []
+        blocked_users: [],
+        blocked_by_users: []
       })
       const hash = bcrypt.hashSync(userObj.password, 10)
       userObj.password_hash = hash
