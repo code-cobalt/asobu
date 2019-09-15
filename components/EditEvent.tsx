@@ -6,6 +6,7 @@ import { ScrollView, StyleSheet, Button, Text, TextInput } from 'react-native'
 import ModalDropdown from 'react-native-modal-dropdown'
 import moment from 'moment'
 import DateTimePicker from 'react-native-modal-datetime-picker'
+import { uploadPhoto } from '../src/actions/upload'
 
 interface Props {
   visible: boolean
@@ -73,6 +74,13 @@ class EditEvent extends React.Component<Props, State> {
       updatedEvent: { ...this.state.updatedEvent, tags },
       tagOptions: [...this.state.tagOptions, tag]
     })
+  }
+
+  handleUpload = async () => {
+    const image = await uploadPhoto()
+    const copiedState = { ...this.state }
+    copiedState.updatedEvent.cover_photo = image
+    this.setState({ ...copiedState })
   }
 
   handleSubmit = () => {
@@ -166,6 +174,7 @@ class EditEvent extends React.Component<Props, State> {
             onCancel={() => this.setState({ showEndDate: false })}
           />
           <Text>Cover Photo</Text>
+          <Button title="Upload Photo" onPress={this.handleUpload} />
           <Text>Tags</Text>
           {this.state.updatedEvent.tags.map(tag => (
             <Text>

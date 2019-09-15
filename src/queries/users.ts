@@ -127,3 +127,22 @@ export const unblockUserQuery = gql`
     )
   }
 `
+
+export const reviewUserQuery = gql`
+  mutation reviewUser($currentUserEmail: String!, $reviewedUserEmail: String!, $newStats: StatsInput!) {
+    ReviewUser(
+      currentUserEmail: $currentUserEmail
+      reviewedUserEmail: $reviewedUserEmail
+      newStats: $newStats
+    )
+  }
+`
+
+export const addExpQuery = gql`
+  mutation addExp($userEmail: String!, $points: Int) {
+    AddExp(
+      userEmail: $userEmail
+      points: $points
+    )
+  }
+`
