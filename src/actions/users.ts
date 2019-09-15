@@ -89,23 +89,26 @@ export const unblockUser = (currentUserEmail, blockedUserEmail) => {
   }
 }
 
-export const reviewUser = (currentUserEmail, reviewedUserEmail, newStats) => {
+export const reviewUser = async (currentUserEmail, reviewedUserEmail, newStats) => {
+  await axios.post(`${apiUrl}/graphql`, {
+    query: print(reviewUserQuery),
+    variables: {
+      currentUserEmail,
+      reviewedUserEmail,
+      newStats
+    }
+  })
+}
+
+export const addExp = (userEmail, points) => {
   return async dispatch => {
-    await axios.post(`${apiUrl}/graphql`, {
-      query: print(reviewUserQuery),
-      variables: {
-        currentUserEmail,
-        reviewedUserEmail,
-        newStats
-      }
-    })
-    const exptest = await axios.post(`${apiUrl}/graphql`, {
+    const exp = await axios.post(`${apiUrl}/graphql`, {
       query: print(addExpQuery),
       variables: {
-        userEmail: currentUserEmail,
-        points: 40
+        userEmail: userEmail,
+        points: points
       }
     })
-    dispatch({ type: "ADD_EXP", exp: exptest.data.data.AddExp })
+    dispatch({ type: "ADD_EXP", exp: exp.data.data.AddExp })
   }
 }

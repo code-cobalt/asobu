@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, ScrollView, Button } from 'react-native'
 import Modal from 'react-native-modal'
 import ReviewCounter from "./ReviewCounter"
 import { connect } from "react-redux"
-import { reviewUser } from "../src/actions/users"
+import { reviewUser, addExp } from "../src/actions/users"
 
 interface State {
   totalPoints: number,
@@ -17,6 +17,7 @@ interface State {
 
 interface Props {
   showReview: boolean
+  addExp: Function
 }
 
 class Review extends Component<Props, State> {
@@ -47,7 +48,8 @@ class Review extends Component<Props, State> {
       therapeutic: this.state.therapeutic,
       interesting: this.state.interesting
     }
-    this.props.reviewUser("levans@email.com", "jamesp@email.com", stats)
+    reviewUser("levans@email.com", "jamesp@email.com", stats)
+    this.props.addExp("levans@email.com", 40)
   }
 
   render() {
@@ -94,7 +96,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    reviewUser: (currentUserEmail, reviewedUserEmail, newStats) => dispatch(reviewUser(currentUserEmail, reviewedUserEmail, newStats))
+    addExp: (userEmail, points) => dispatch(addExp(userEmail, points))
   }
 }
 
