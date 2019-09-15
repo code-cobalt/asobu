@@ -34,6 +34,8 @@ export const loginQuery = gql`
         email
         profile_photo
       }
+      blocked_users
+      blocked_by_users
       imei
     }
   }
@@ -100,5 +102,23 @@ export const updateProfileQuery = gql`
       }
       imei
     }
+  }
+`
+
+export const blockUserQuery = gql`
+  mutation BlockUser($currentUserEmail: String!, $blockedUserEmail: String!) {
+    BlockUser(
+      currentUserEmail: $currentUserEmail
+      blockedUserEmail: $blockedUserEmail
+    )
+  }
+`
+
+export const unblockUserQuery = gql`
+  mutation UnblockUser($currentUserEmail: String!, $blockedUserEmail: String!) {
+    UnblockUser(
+      currentUserEmail: $currentUserEmail
+      blockedUserEmail: $blockedUserEmail
+    )
   }
 `
