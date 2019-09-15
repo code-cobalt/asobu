@@ -312,7 +312,8 @@ const root = {
         received_hangout_requests: [],
         ongoing_hangouts: [],
         pending_revies: [],
-        blocked_users: []
+        blocked_users: [],
+        blocked_by_users: []
       })
       const hash = bcrypt.hashSync(userObj.password, 10)
       userObj.password_hash = hash
@@ -591,7 +592,28 @@ const root = {
   },
 
   BlockUser: async params => {
-    // TO DO will add params.blockedUserEmail to current user's array of blocked_users
+    // TO DO what to do with chat??
+    await User.updateOne(
+      { email: params.currentUserEmail },
+      { $push: { blocked_users: params.blockedUserEmail } }
+    )
+    await User.updateOne(
+      { email: params.blockedUserEmail },
+      { $push: { blocked_by_users: params.currentUserEmail } }
+    )
+    return `${params.currentUserEmail} has blocked ${params.blockedUserEmail}.`
+  },
+
+  UnblockUser: async params => {
+    await User.updateOne(
+      { email: params.currentUserEmail },
+      { $pull: { blocked_users: params.blockedUserEmail } }
+    )
+    await User.updateOne(
+      { email: params.blockedUserEmail },
+      { $pull: { blocked_by_users: params.currentUserEmail } }
+    )
+    return `${params.currentUserEmail} has unblocked ${params.blockedUserEmail}.`
   }
 }
 

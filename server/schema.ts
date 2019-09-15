@@ -53,6 +53,7 @@ const schema = buildSchema(`
         ongoing_hangouts: [UserLimited]
         pending_reviews: [UserLimited]
         blocked_users: [String]
+        blocked_by_users: [String]
         imei: String
     }
 
@@ -199,6 +200,7 @@ const schema = buildSchema(`
         StartHangout(participants: [UserLimitedInput]!): String
         FinishHangout(hangoutId: String!): String
         BlockUser(currentUserEmail: String!, blockedUserEmail: String): String
+        UnblockUser(currentUserEmail: String!, blockedUserEmail: String): String
     }
 `)
 

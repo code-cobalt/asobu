@@ -1,7 +1,13 @@
 import axios from 'axios'
 import { apiUrl } from '../../environment.js'
 import { print } from 'graphql'
-import { loginQuery, getUsersQuery, updateProfileQuery } from '../queries/users'
+import {
+  loginQuery,
+  getUsersQuery,
+  updateProfileQuery,
+  blockUserQuery,
+  unblockUserQuery
+} from '../queries/users'
 import { AsyncStorage } from 'react-native'
 
 export const loginUser = (userEmail, userPassword) => {
@@ -52,5 +58,31 @@ export const updateProfile = (userEmail, updatedUser) => {
       }
     })
     dispatch({ type: 'UPDATE_PROFILE', updatedUser: res.data.data.UpdateUser })
+  }
+}
+
+export const blockUser = (currentUserEmail, blockedUserEmail) => {
+  return async dispatch => {
+    await axios.post(`${apiUrl}/graphql`, {
+      query: print(blockUserQuery),
+      variables: {
+        currentUserEmail,
+        blockedUserEmail
+      }
+    })
+    dispatch({ type: 'BLOCK_USER', blockedUserEmail })
+  }
+}
+
+export const unblockUser = (currentUserEmail, blockedUserEmail) => {
+  return async dispatch => {
+    await axios.post(`${apiUrl}/graphql`, {
+      query: print(unblockUserQuery),
+      variables: {
+        currentUserEmail,
+        blockedUserEmail
+      }
+    })
+    dispatch({ type: 'UNBLOCK_USER', blockedUserEmail })
   }
 }
