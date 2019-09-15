@@ -48,11 +48,9 @@ const Chat: React.FunctionComponent<Props> = props => {
             <View key={participant.email}>
               <Text style={styles.chat__text}>{participant.first_name}</Text>
               <Text
+                style={styles.chat__text}
                 onPress={() =>
-                  this.props.blockUser(
-                    this.props.currentUserEmail,
-                    participant.email
-                  )
+                  props.blockUser(props.currentUserEmail, participant.email)
                 }
               >
                 Block User

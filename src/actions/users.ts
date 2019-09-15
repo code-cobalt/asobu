@@ -33,13 +33,14 @@ export const loginUser = (userEmail, userPassword) => {
   }
 }
 
-export const getUsers = (currentUserEmail, blockedUsers) => {
+export const getUsers = (currentUserEmail, [...blockedUsers]) => {
   //blockedUsers is an array of all the user emails who the current user has blocked or been blocked by.
   //don't return any users in this array
   //create a hashmap to reduce time complexity
   const blockedUsersObj = {}
   for (let i = 0; i < blockedUsers.length; i++) {
-    blockedUsersObj[blockedUsers[i]] = i
+    //have to start at 1, not 0, because 0 is falsey and won't work when we filter allUsers below.
+    blockedUsersObj[blockedUsers[i]] = i + 1
   }
   return async dispatch => {
     const res = await axios.post(`${apiUrl}/graphql`, {

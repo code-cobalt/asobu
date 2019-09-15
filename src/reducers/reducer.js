@@ -249,6 +249,9 @@ const reducer = (state = initialState, action) => {
     case 'BLOCK_USER': {
       return {
         ...state,
+        allUsers: state.allUsers.filter(
+          user => user.email !== action.blockedUserEmail
+        ),
         blockedUsers: [...state.blockedUsers, action.blockedUserEmail]
       }
     }
