@@ -53,6 +53,7 @@ const schema = buildSchema(`
         ongoing_hangouts: [UserLimited]
         pending_reviews: [UserLimited]
         blocked_users: [String]
+        blocked_by_users: [String]
         imei: String
     }
 

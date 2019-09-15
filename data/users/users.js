@@ -56,6 +56,7 @@ const users = [
     ongoing_hangouts: [],
     pending_reviews: [],
     blocked_users: [],
+    blocked_by_users: [],
     imei: '358363043724657'
   },
   {
@@ -101,6 +102,7 @@ const users = [
     ongoing_hangouts: [],
     pending_reviews: [],
     blocked_users: [],
+    blocked_by_users: [],
     imei: '356628020481477'
   },
   {
@@ -146,6 +148,7 @@ const users = [
     ongoing_hangouts: [],
     pending_reviews: [],
     blocked_users: [],
+    blocked_by_users: [],
     imei: '860588012837160'
   },
   {
@@ -191,6 +194,7 @@ const users = [
     ongoing_hangouts: [],
     pending_reviews: [],
     blocked_users: [],
+    blocked_by_users: [],
     imei: '350751383349937'
   },
   {
@@ -236,6 +240,7 @@ const users = [
     ongoing_hangouts: [],
     pending_reviews: [],
     blocked_users: [],
+    blocked_by_users: [],
     imei: '20309624801284'
   }
 ]
