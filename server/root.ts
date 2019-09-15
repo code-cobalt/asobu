@@ -592,7 +592,6 @@ const root = {
   },
 
   BlockUser: async params => {
-    // TO DO what to do with chat??
     await User.updateOne(
       { email: params.currentUserEmail },
       {
