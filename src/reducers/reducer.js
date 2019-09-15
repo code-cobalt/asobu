@@ -7,6 +7,8 @@ const initialState = {
   allUsers: [],
   allEvents: [],
   chats: [],
+  blockedUsers: [],
+  blockedByUsers: [],
   showProfile: false,
   showEditProfileForm: false,
   showEvent: false,
@@ -36,6 +38,8 @@ const reducer = (state = initialState, action) => {
         user: action.user,
         isLoggedIn: true,
         chats: action.user.chats,
+        blockedUsers: action.user.blocked_users,
+        blockedByUsers: action.user.blocked_by_users,
         sentHangoutRequests: action.user.sent_hangout_requests,
         receivedHangoutRequests: action.user.received_hangout_requests
       }
@@ -240,6 +244,20 @@ const reducer = (state = initialState, action) => {
         request => request.email !== action.fromUserEmail
       )
       return { ...state, receivedHangoutRequests }
+    }
+    case 'BLOCK_USER': {
+      return {
+        ...state,
+        blockedUsers: [...state.blockedUsers, action.blockedUserEmail]
+      }
+    }
+    case 'UNBLOCK_USER': {
+      return {
+        ...state,
+        blockedUsers: state.blockedUsers.filter(
+          user => user !== action.blockedUserEmail
+        )
+      }
     }
     default: {
       return state
