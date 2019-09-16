@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, TextInput, StyleSheet, TouchableOpacity, Button } from 'react-native'
+import { ImageBackground, ScrollView, Text, View, TextInput, StyleSheet, TouchableOpacity, Button } from 'react-native'
 import { connect } from "react-redux"
 import Modal from 'react-native-modal'
 import { updateProfile } from '../src/actions/users'
@@ -7,7 +7,7 @@ import { uploadPhoto } from "../src/actions/upload"
 
 interface Props {
   showEditProfileForm: boolean,
-  updateProfile: Function
+  updateProfile: Function,
   user: User
 }
 
@@ -53,10 +53,12 @@ class EditProfile extends Component<Props, State> {
           animationOut="slideOutDown"
           backdropOpacity={1}
           style={styles.modal}
-          backdropColor="#fff"
+          backdropColor="black"
         >
+          <ImageBackground style={styles.imageBackground} source={require("../assets/login.jpg")}>
+
           <View style={styles.profile__formgroup}>
-            <Text>First Name</Text>
+            <Text style={styles.profile__text}>First Name</Text>
             <TextInput
               style={styles.profile__input}
               value={this.state.first_name}
@@ -64,7 +66,7 @@ class EditProfile extends Component<Props, State> {
             />
           </View>
           <View style={styles.profile__formgroup}>
-            <Text>Last Name</Text>
+            <Text style={styles.profile__text}>Last Name</Text>
             <TextInput
               style={styles.profile__input}
               value={this.state.last_name}
@@ -72,23 +74,23 @@ class EditProfile extends Component<Props, State> {
             />
           </View>
           <View style={styles.profile__formgroup}>
-            <Text>Email</Text>
+            <Text style={styles.profile__text}>Email</Text>
             <TextInput
               style={styles.profile__input}
               value={this.state.email}
               onChangeText={text => this.setState({ email: text })}
             />
           </View>
-          <View style={styles.profile__formgroup}>
-            <Text>Profile Photo</Text>
-            <Button title="Upload Photo" onPress={this.handleUpload} />
-          </View>
+          <TouchableOpacity style={styles.upload__button} onPress={this.handleUpload}>
+            <Text style={styles.profile__text}>Upload a Photo!</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => this.props.updateProfile(this.state.email, this.state)}
             style={styles.profile__button}
           >
             <Text style={styles.profile__button__text}>Done</Text>
           </TouchableOpacity>
+          </ImageBackground>
         </Modal>
       </>
     )
@@ -96,20 +98,36 @@ class EditProfile extends Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
+  imageBackground: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   modal: {
     height: '50%',
     alignItems: "center"
   },
+  profile__text: {
+    alignSelf: 'center',
+    color: '#fff',
+    fontWeight: '800',
+  },
   profile__formgroup: {
-    width: '90%'
+    width: '90%',
+    alignContent: 'center'
   },
   profile__input: {
     height: 50,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 15,
+    marginBottom: 45,
     borderRadius: 50,
     backgroundColor: '#fff',
+    textAlign: 'center',
+    opacity: 0.8
   },
   profile__button: {
     width: '50%',
@@ -117,6 +135,13 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 50,
     marginTop: 15
+  },
+  upload__button: {
+    width: '50%',
+    backgroundColor: 'blue',
+    borderRadius: 10,
+    marginBottom: 100,
+    padding: 15
   },
   profile__button__text: {
     textAlign: 'center',
