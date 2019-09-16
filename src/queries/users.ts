@@ -156,3 +156,14 @@ export const addExpQuery = gql`
     )
   }
 `
+
+export const startHangoutQuery = gql`
+  mutation startHangout($participants: [UserLimitedInput]!) {
+    StartHangout(participants: $participants)
+  }
+`
+export const finishHangoutQuery = gql`
+  mutation finishHangout($hangoutId: String!) {
+    FinishHangout(hangoutId: $hangoutId)
+  }
+`
