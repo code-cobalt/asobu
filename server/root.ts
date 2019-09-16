@@ -8,7 +8,6 @@ const { GraphQLDateTime } = require('graphql-iso-date')
 const bcrypt = require('bcrypt')
 import errors from './errors'
 import { PubSub } from 'graphql-subscriptions'
-import Hangouts from '../views/Hangouts'
 const pubsub = new PubSub()
 
 interface NewUser {
