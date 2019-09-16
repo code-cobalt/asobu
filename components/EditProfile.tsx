@@ -58,7 +58,7 @@ class EditProfile extends Component<Props, State> {
           <ImageBackground style={styles.imageBackground} source={require("../assets/login.jpg")}>
 
           <View style={styles.profile__formgroup}>
-            <Text style={styles.profile__text}>First Name</Text>
+            <Text style={styles.field__text}>First Name</Text>
             <TextInput
               style={styles.profile__input}
               value={this.state.first_name}
@@ -66,7 +66,7 @@ class EditProfile extends Component<Props, State> {
             />
           </View>
           <View style={styles.profile__formgroup}>
-            <Text style={styles.profile__text}>Last Name</Text>
+            <Text style={styles.field__text}>Last Name</Text>
             <TextInput
               style={styles.profile__input}
               value={this.state.last_name}
@@ -74,7 +74,7 @@ class EditProfile extends Component<Props, State> {
             />
           </View>
           <View style={styles.profile__formgroup}>
-            <Text style={styles.profile__text}>Email</Text>
+            <Text style={styles.field__text}>Email</Text>
             <TextInput
               style={styles.profile__input}
               value={this.state.email}
@@ -82,7 +82,7 @@ class EditProfile extends Component<Props, State> {
             />
           </View>
           <TouchableOpacity style={styles.upload__button} onPress={this.handleUpload}>
-            <Text style={styles.profile__text}>Upload a Photo!</Text>
+            <Text style={styles.field__text}>Upload a Photo!</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => this.props.updateProfile(this.state.email, this.state)}
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     height: '50%',
     alignItems: "center"
   },
-  profile__text: {
+  field__text: {
     alignSelf: 'center',
     color: '#fff',
     fontWeight: '800',
