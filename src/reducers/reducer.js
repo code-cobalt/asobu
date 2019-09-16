@@ -3,6 +3,8 @@ const initialState = {
   resultsSwitch: 'hangouts',
   sentHangoutRequests: [],
   receivedHangoutRequests: [],
+  acceptedHangouts: [],
+  ongoingHangouts: [],
   user: {},
   allUsers: [],
   allEvents: [],
@@ -42,7 +44,9 @@ const reducer = (state = initialState, action) => {
         blockedUsers: action.user.blocked_users,
         blockedByUsers: action.user.blocked_by_users,
         sentHangoutRequests: action.user.sent_hangout_requests,
-        receivedHangoutRequests: action.user.received_hangout_requests
+        receivedHangoutRequests: action.user.received_hangout_requests,
+        acceptedHangouts: action.user.accepted_hangouts,
+        ongoingHangouts: action.user.ongoing_hangouts
       }
     }
     case 'TOGGLE_AUTH': {
@@ -215,7 +219,7 @@ const reducer = (state = initialState, action) => {
       }
     }
     case 'ACCEPT_REQUEST': {
-      // remove hangout request from receivedHangoutRequests in store, add new Chat to chats in store if one doesn't already exist, change active view to chats
+      // remove hangout request from receivedHangoutRequests in store, add new Chat to chats in store if one doesn't already exist, change active view to chats, add userlimited to accepted_hangouts
       const receivedHangoutRequests = state.receivedHangoutRequests.filter(
         request => {
           request.email !== action.fromUserEmail
@@ -237,7 +241,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         activeView: 'chats',
         receivedHangoutRequests,
-        chats
+        chats,
+        acceptedHangouts: action.newChat.participants[0]
       }
     }
     case 'DECLINE_REQUEST': {

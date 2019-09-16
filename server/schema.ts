@@ -50,6 +50,7 @@ const schema = buildSchema(`
         events: [UserEvent]
         sent_hangout_requests: [UserLimited]
         received_hangout_requests: [UserLimited]
+        accepted_hangouts: [UserLimited]
         ongoing_hangouts: [UserLimited]
         pending_reviews: [UserLimited]
         blocked_users: [String]
