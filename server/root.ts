@@ -430,6 +430,7 @@ const root = {
 
   ReviewUser: async params => {
     // TO DO: need to delete reviewedUser from currentUser's pending reviews
+    // check level
     const user = await User.findOne({ email: params.reviewedUserEmail })
     const updatedStats = Object.assign({}, user.stats)
     for (const stat in params.newStats) {
@@ -595,17 +596,28 @@ const root = {
       participants: params.participants,
       status: 'ongoing'
     })
+
     await User.updateOne(
       { email: params.participants[0].email },
       {
-        $push: { ongoing_hangouts: params.participants[1] },
+        $push: {
+          ongoing_hangouts: {
+            hangout_id: hangout._id,
+            participants: [params.participants[1]]
+          }
+        },
         $pull: { accepted_hangouts: { email: params.participants[1].email } }
       }
     )
     await User.updateOne(
       { email: params.participants[1].email },
       {
-        $push: { ongoing_hangouts: params.participants[0] },
+        $push: {
+          ongoing_hangouts: {
+            hangout_id: hangout._id,
+            participants: [params.participants[0]]
+          }
+        },
         $pull: { accepted_hangouts: { email: params.participants[0].email } }
       }
     )
