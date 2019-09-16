@@ -24,7 +24,8 @@ const initialState = {
   showLogin: true,
   showChat: false,
   currentChatMessages: [],
-  currentChatId: 0
+  currentChatId: 0,
+  hangoutId: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -281,6 +282,13 @@ const reducer = (state = initialState, action) => {
     case 'ADD_EXP': {
       const updatedUser = { ...state.user, exp: action.exp }
       return { ...state, showReview: false, user: updatedUser }
+    }
+    case 'START_HANGOUT': {
+      return {
+        ...state,
+        ongoingHangouts: action.participants[1],
+        hangoutId: action.hangoutId
+      }
     }
     default: {
       return state
