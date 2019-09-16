@@ -22,12 +22,15 @@ interface Props {
 class Main extends Component<Props> {
   componentDidMount() {
     this.props.socket.send(`l0 ${this.props.email}`)
+    // comment out socket.send to use dummy data
     this.props.socket.onmessage = event => {
       console.log(`SERVER MESSAGE: ${event.data}`)
       const message = event.data.split(' ')
       //Heartbeat
       if (message[0] === 'p0') {
         this.props.socket.send(`p0 ${this.props.email}`)
+        // comment out socket.send to use dummy data
+
         console.log('PONGED')
       }
       //Message Update
