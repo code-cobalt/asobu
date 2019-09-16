@@ -662,7 +662,7 @@ const root = {
   },
 
   Hangout: async params => {
-    return await Hangouts.findById(params.hangoutId)
+    return await Hangout.findById(params.hangoutId)
   },
 
   BlockUser: async params => {
