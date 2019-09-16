@@ -17,6 +17,21 @@ export const getChatQuery = gql`
   }
 `
 
+export const getUserChatsQuery = gql`
+  query User($userEmail: String!) {
+    User(userEmail: $userEmail) {
+      chats {
+        chat_id
+        participants {
+          first_name
+          email
+          profile_photo
+        }
+      }
+    }
+  }
+`
+
 export const createMessageQuery = gql`
   mutation CreateMessage($message: NewMessage!) {
     CreateMessage(newMessage: $message) {

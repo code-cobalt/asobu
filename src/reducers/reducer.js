@@ -36,6 +36,9 @@ const reducer = (state = initialState, action) => {
     case 'SET_ALL_USERS': {
       return { ...state, allUsers: action.allUsers }
     }
+    case 'REMOVE_USER': {
+      return { ...state, allUsers: state.allUsers.filter(user => user.email !== action.userEmail) }
+    }
     case 'SET_USER': {
       return {
         ...state,
@@ -70,6 +73,12 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_CHATS': {
       return { ...state, chats: action.chats }
+    }
+    case 'REMOVE_USER_CHAT': {
+      if (state.showChat && state.currentChatId === action.chatId) {
+        return { ...state, chats: state.chats.filter(chat => chat.chat_id !== action.chatId), showChat: false }
+      }
+      return { ...state, chats: state.chats.filter(chat => chat.chat_id !== action.chatId) }
     }
     case 'SHOW_CHAT': {
       return {
