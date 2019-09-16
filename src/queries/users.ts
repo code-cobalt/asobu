@@ -34,6 +34,16 @@ export const loginQuery = gql`
         email
         profile_photo
       }
+      accepted_hangouts {
+        first_name
+        email
+        profile_photo
+      }
+      ongoing_hangouts {
+        first_name
+        email
+        profile_photo
+      }
       blocked_users
       blocked_by_users
       imei

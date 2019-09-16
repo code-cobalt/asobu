@@ -1682,6 +1682,11 @@ array-flatten@1.1.1:
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
   integrity sha1-ml9pkFGx5wczKPKgCJaLZOopVdI=
 
+array-hash-conversion@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/array-hash-conversion/-/array-hash-conversion-1.0.2.tgz#603314139835d1208c3cae859ba703c67dd3809a"
+  integrity sha512-gXflFpE5knWxusUf1zu0xH0c1Y0cTRKp/qwPwhBzf6es9N7ThJuLxjp3eZbJRLO40oLJfBZmB0bJqesKnm5dBQ==
+
 array-initial@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/array-initial/-/array-initial-1.1.0.tgz#2fa74b26739371c3947bd7a7adc73be334b3d795"

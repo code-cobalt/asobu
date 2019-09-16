@@ -484,6 +484,7 @@ const root = {
   AcceptHangoutRequest: async params => {
     //will delete hangout from fromUser sent_hangout_requests and from current user received_hangout_requests
     //will also create new chat between users (if one doesn't already exist)
+    //add users to accepted_hangouts
     const currentUser = await User.findOne({ email: params.currentUserEmail })
     const fromUser = await User.findOne({ email: params.fromUserEmail })
     if (!currentUser || !fromUser) {
@@ -509,12 +510,14 @@ const root = {
         await User.updateOne(
           { email: params.fromUserEmail },
           {
+            $push: { accepted_hangouts: toUserLimited },
             $pull: { sent_hangout_requests: toUserLimited }
           }
         )
         await User.updateOne(
           { email: params.currentUserEmail },
           {
+            $push: { accepted_hangouts: fromUserLimited },
             $pull: { received_hangout_requests: fromUserLimited }
           }
         )
@@ -527,6 +530,7 @@ const root = {
           { email: params.fromUserEmail },
           {
             $pull: { sent_hangout_requests: toUserLimited },
+
             $push: {
               chats: {
                 chat_id: newChat,
@@ -537,7 +541,8 @@ const root = {
                     profile_photo: currentUser.profile_photo
                   }
                 ]
-              }
+              },
+              accepted_hangouts: toUserLimited
             }
           }
         )
@@ -556,7 +561,8 @@ const root = {
           {
             $pull: { received_hangout_requests: fromUserLimited },
             $push: {
-              chats: currentUserChat
+              chats: currentUserChat,
+              accepted_hangouts: fromUserLimited
             }
           }
         )

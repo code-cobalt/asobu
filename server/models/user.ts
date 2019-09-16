@@ -34,6 +34,9 @@ const UserSchema = new mongoose.Schema({
   received_hangout_requests: [
     { first_name: String, email: String, profile_photo: String }
   ],
+  accepted_hangouts: [
+    { first_name: String, email: String, profile_photo: String }
+  ],
   ongoing_hangouts: [
     { first_name: String, email: String, profile_photo: String }
   ],
