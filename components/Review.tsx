@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Button } from 'react-native'
 import Modal from 'react-native-modal'
 import ReviewCounter from "./ReviewCounter"
 import { connect } from "react-redux"
+import { reviewUser, addExp } from "../src/actions/users"
 
 interface State {
   totalPoints: number,
@@ -16,6 +17,7 @@ interface State {
 
 interface Props {
   showReview: boolean
+  addExp: Function
 }
 
 class Review extends Component<Props, State> {
@@ -37,6 +39,19 @@ class Review extends Component<Props, State> {
     }
   }
 
+  reviewUser = async () => {
+    const stats = {
+      funny: this.state.funny,
+      intellectual: this.state.intellectual,
+      fun: this.state.fun,
+      kind: this.state.kind,
+      therapeutic: this.state.therapeutic,
+      interesting: this.state.interesting
+    }
+    reviewUser("levans@email.com", "jamesp@email.com", stats)
+    this.props.addExp("levans@email.com", 40)
+  }
+
   render() {
     return (
       <Modal
@@ -53,6 +68,7 @@ class Review extends Component<Props, State> {
         <ReviewCounter value={this.state.kind} onChange={this.onChange} name={"kind"} label={"Kind"} />
         <ReviewCounter value={this.state.therapeutic} onChange={this.onChange} name={"therapeutic"} label={"Therapeutic"} />
         <ReviewCounter value={this.state.interesting} onChange={this.onChange} name={"interesting"} label={"Interesting"} />
+        <Button onPress={() => this.reviewUser()} title="Review"></Button>
       </Modal>
     )
   }
@@ -78,4 +94,10 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, null)(Review)
+const mapDispatchToProps = dispatch => {
+  return {
+    addExp: (userEmail, points) => dispatch(addExp(userEmail, points))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Review)

@@ -269,6 +269,10 @@ const reducer = (state = initialState, action) => {
         )
       }
     }
+    case 'ADD_EXP': {
+      const updatedUser = { ...state.user, exp: action.exp }
+      return { ...state, showReview: false, user: updatedUser }
+    }
     default: {
       return state
     }
