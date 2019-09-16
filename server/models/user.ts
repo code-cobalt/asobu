@@ -38,7 +38,12 @@ const UserSchema = new mongoose.Schema({
     { first_name: String, email: String, profile_photo: String }
   ],
   ongoing_hangouts: [
-    { first_name: String, email: String, profile_photo: String }
+    {
+      hangout_id: String,
+      participants: [
+        { first_name: String, email: String, profile_photo: String }
+      ]
+    }
   ],
   pending_reviews: [
     { first_name: String, email: String, profile_photo: String }

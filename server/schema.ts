@@ -35,6 +35,11 @@ const schema = buildSchema(`
         timestamp: DateTime
     }
 
+    type Hangout {
+        hangout_id: String
+        participants: [UserLimited]
+    }
+
     type User {
         id: String
         first_name: String
@@ -51,7 +56,7 @@ const schema = buildSchema(`
         sent_hangout_requests: [UserLimited]
         received_hangout_requests: [UserLimited]
         accepted_hangouts: [UserLimited]
-        ongoing_hangouts: [UserLimited]
+        ongoing_hangouts: [Hangout]
         pending_reviews: [UserLimited]
         blocked_users: [String]
         blocked_by_users: [String]
