@@ -22,6 +22,14 @@ export const getChat = chatId => {
   }
 }
 
+export const getUserChats = async userEmail => {
+  const chats = await axios.post(`${apiUrl}/graphql`, {
+    query: print(getUserChatsQuery),
+    variables: { userEmail }
+  })
+  return chats.data.data.User.chats
+}
+
 export const createMessage = message => {
   return async dispatch => {
     const res = await axios.post(`${apiUrl}/graphql`, {
