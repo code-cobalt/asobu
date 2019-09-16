@@ -42,12 +42,14 @@ class Chat extends React.Component<Props> {
       [
         {
           text: 'Block User',
-          onPress: () =>
+          onPress: () => {
             this.props.blockUser(
               this.props.currentUserEmail,
               participant.email,
               this.props.chat.chat_id
             )
+            this.props.socket.send(`b0 ${this.props.currentUserEmail} ${participant.email} ${this.props.chat.chat_id}`)
+          }
         },
         {
           text: 'Cancel',
@@ -128,7 +130,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    socket: state.socket,
     currentUserEmail: state.user.email
   }
 }

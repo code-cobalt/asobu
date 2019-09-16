@@ -12,6 +12,8 @@ interface Props {
   email: string
   toggleView: Function
   setAllUsers: Function
+  removeUser: Function
+  removeUserChat: Function
   context: Function
   getUsers: Function
   getChat: Function
@@ -33,6 +35,11 @@ class Main extends Component<Props> {
       //Message Update
       if (message[0] === 'm0') {
         this.props.getChat(parseInt(message[1]))
+      }
+      //Block User
+      if (message[0] === 'b0') {
+        this.props.removeUser(message[1])
+        this.props.removeUserChat(~~message[2])
       }
     }
     this.props.getUsers(this.props.email, this.props.blockedUsers)
@@ -84,7 +91,9 @@ const mapDispatchToProps = dispatch => {
     },
     getChat: chatId => dispatch(getChat(chatId)),
     getUsers: (currentUserEmail, blockedUsers) =>
-      dispatch(getUsers(currentUserEmail, blockedUsers))
+      dispatch(getUsers(currentUserEmail, blockedUsers)),
+    removeUser: userEmail => { dispatch({ type: 'REMOVE_USER', userEmail }) },
+    removeUserChat: (chatId) => { dispatch({ type: 'REMOVE_USER_CHAT', chatId }) }
   }
 }
 
