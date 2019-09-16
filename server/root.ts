@@ -430,8 +430,10 @@ const root = {
   },
 
   ReviewUser: async params => {
-    // TO DO delete reviewedUser from currentUser's pending reviews
-    // check level
+    // delete reviewedUser from currentUser's pending reviews
+    //QUESTIONS
+    // check for badges of reviewed user here??
+    // should we add xp/check level of reviewer here as well???
     const user = await User.findOne({ email: params.reviewedUserEmail })
     const updatedStats = Object.assign({}, user.stats)
     for (const stat in params.newStats) {
@@ -440,6 +442,10 @@ const root = {
     await User.updateOne(
       { email: params.reviewedUserEmail },
       { stats: updatedStats }
+    )
+    await User.updateOne(
+      { email: params.currentUserEmail },
+      { $pull: { pending_reviews: { email: params.reviewedUserEmail } } }
     )
     return updatedStats
   },
