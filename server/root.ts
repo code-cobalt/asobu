@@ -8,6 +8,7 @@ const { GraphQLDateTime } = require('graphql-iso-date')
 const bcrypt = require('bcrypt')
 import errors from './errors'
 import { PubSub } from 'graphql-subscriptions'
+import Hangouts from '../views/Hangouts'
 const pubsub = new PubSub()
 
 interface NewUser {
@@ -627,6 +628,41 @@ const root = {
   FinishHangout: async params => {
     // TO DO will change status of hangout to complete, delete each user from the other users' ongoing_hangouts,
     // and add each user to each other users' pending_reviews
+    const hangout = await Hangout.findOneAndUpdate(
+      { _id: params.hangoutId },
+      { status: 'complete' }
+    )
+    await User.updateOne(
+      { email: hangout.participants[0].email },
+      {
+        $pull: {
+          ongoing_hangouts: {
+            hangout_id: params.hangoutId
+          }
+        },
+        $push: { pending_reviews: hangout.participants[1] }
+      }
+    )
+    await User.updateOne(
+      { email: hangout.participants[1].email },
+      {
+        $pull: {
+          ongoing_hangouts: {
+            hangout_id: params.hangoutId
+          }
+        },
+        $push: { pending_reviews: hangout.participants[0] }
+      }
+    )
+    return `${hangout.participants[0].first_name} and ${hangout.participants[1].first_name} have finished hanging out.`
+  },
+
+  Hangouts: async () => {
+    return Hangout.find()
+  },
+
+  Hangout: async params => {
+    return await Hangouts.findById(params.hangoutId)
   },
 
   BlockUser: async params => {
