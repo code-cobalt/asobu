@@ -2,6 +2,7 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import Chat from './Chat'
+import { SocketContext } from './SocketProvider'
 
 interface Props {
   chats: Array<Chat>
@@ -23,7 +24,15 @@ const ChatList: React.FunctionComponent<Props> = props => {
     <ScrollView>
       {props.chats &&
         props.chats.map(chat => {
-          return <Chat key={chat.chat_id} chat={chat} />
+          return (
+            <SocketContext.Consumer>
+              {socket => (
+                <Chat
+                  key={chat.chat_id} chat={chat} socket={socket}
+                />
+              )}
+            </SocketContext.Consumer>
+          )
         })}
     </ScrollView>
   )

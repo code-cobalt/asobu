@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { apiUrl } from '../../environment.js'
 import { print } from 'graphql'
-import { getChatQuery, createMessageQuery } from '../queries/chats'
+import { getChatQuery, getUserChatsQuery, createMessageQuery } from '../queries/chats'
 
 export const getChat = chatId => {
   return async dispatch => {
@@ -20,6 +20,14 @@ export const getChat = chatId => {
       chatId
     })
   }
+}
+
+export const getUserChats = async userEmail => {
+  const chats = await axios.post(`${apiUrl}/graphql`, {
+    query: print(getUserChatsQuery),
+    variables: { userEmail }
+  })
+  return chats.data.data.User.chats
 }
 
 export const createMessage = message => {

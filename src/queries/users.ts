@@ -40,9 +40,12 @@ export const loginQuery = gql`
         profile_photo
       }
       ongoing_hangouts {
-        first_name
-        email
-        profile_photo
+        hangout_id
+        participants {
+          first_name
+          email
+          profile_photo
+        }
       }
       blocked_users
       blocked_by_users
@@ -139,7 +142,11 @@ export const unblockUserQuery = gql`
 `
 
 export const reviewUserQuery = gql`
-  mutation reviewUser($currentUserEmail: String!, $reviewedUserEmail: String!, $newStats: StatsInput!) {
+  mutation reviewUser(
+    $currentUserEmail: String!
+    $reviewedUserEmail: String!
+    $newStats: StatsInput!
+  ) {
     ReviewUser(
       currentUserEmail: $currentUserEmail
       reviewedUserEmail: $reviewedUserEmail
@@ -150,9 +157,17 @@ export const reviewUserQuery = gql`
 
 export const addExpQuery = gql`
   mutation addExp($userEmail: String!, $points: Int) {
-    AddExp(
-      userEmail: $userEmail
-      points: $points
-    )
+    AddExp(userEmail: $userEmail, points: $points)
+  }
+`
+
+export const startHangoutQuery = gql`
+  mutation startHangout($participants: [UserLimitedInput]!) {
+    StartHangout(participants: $participants)
+  }
+`
+export const finishHangoutQuery = gql`
+  mutation finishHangout($hangoutId: String!) {
+    FinishHangout(hangoutId: $hangoutId)
   }
 `

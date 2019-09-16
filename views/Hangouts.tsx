@@ -13,11 +13,15 @@ import UserList from '../components/UserList'
 import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
-import UserModal from "../components/UserModal"
+import UserModal from '../components/UserModal'
+import PendingHangouts from '../components/PendingHangouts'
+import AcceptedHangouts from '../components/AcceptedHangouts'
+import SwitchSelector from 'react-native-switch-selector'
 import {
   acceptHangoutRequest,
   declineHangoutRequest
 } from '../src/actions/hangouts'
+import { SocketContext } from '../components/SocketProvider'
 
 interface UserLimited {
   first_name: string
@@ -34,6 +38,8 @@ interface Profile {
 
 interface Props {
   receivedHangoutRequests: Array<UserLimited>
+  acceptedHangouts: Array<UserLimited>
+  ongoingHangouts: Array<UserLimited>
   acceptHangoutRequest: Function
   declineHangoutRequest: Function
   currentUserEmail: string
@@ -42,10 +48,20 @@ interface Props {
   closeProfile: Function
 }
 
+const options = [
+  { label: 'Pending', value: 'pending' },
+  { label: 'Accepted', value: 'accepted' }
+]
+
 class Hangouts extends React.Component<Props> {
   state = {
-    modalVisible: this.props.receivedHangoutRequests.length > 0,
-    profileVisible: Object.keys(this.props.currentProfile).length > 0
+    modalVisible:
+      this.props.receivedHangoutRequests.length > 0 ||
+      this.props.acceptedHangouts.length > 0 ||
+      this.props.ongoingHangouts.length > 0,
+    profileVisible: Object.keys(this.props.currentProfile).length > 0,
+    visibleHangout:
+      this.props.receivedHangoutRequests.length > 0 ? 'pending' : 'accepted'
   }
   render() {
     return (
@@ -58,62 +74,25 @@ class Hangouts extends React.Component<Props> {
           backdropOpacity={0.85}
           style={styles.modal}
         >
-          <View style={{ flex: 1 }}>
-            <Text style={styles.title}>
-              Other users would like to hangout with you!
-            </Text>
-            <ScrollView>
-              {this.props.receivedHangoutRequests.map((request, index) => {
-                return (
-                  <View style={styles.request} key={index}>
-                    <Image
-                      source={{ uri: request.profile_photo }}
-                      style={styles.user__image}
-                    />
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        flex: 1
-                      }}
-                    >
-                      <Text style={styles.user__name}>
-                        {request.first_name}
-                      </Text>
-                      <TouchableOpacity
-                        onPress={() =>
-                          this.props.acceptHangoutRequest(
-                            this.props.currentUserEmail,
-                            request.email
-                          )
-                        }
-                        style={styles.accept__button}
-                      >
-                        <Ionicons name="md-checkmark" size={32} color="white" />
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() =>
-                          this.props.declineHangoutRequest(
-                            this.props.currentUserEmail,
-                            request.email
-                          )
-                        }
-                        style={styles.decline__button}
-                      >
-                        <Ionicons name="md-close" size={32} color="white" />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )
-              })}
-            </ScrollView>
-            <View>
-              <Button
-                title="Close"
-                onPress={() => this.setState({ modalVisible: false })}
-              />
-            </View>
+          <View>
+            <SwitchSelector
+              options={options}
+              backgroundColor="#e5e6e5"
+              buttonColor="#73d961"
+              initial={this.state.visibleHangout === 'pending' ? 0 : 1}
+              onPress={value => this.setState({ visibleHangout: value })}
+            />
+          </View>
+          {this.state.visibleHangout === 'pending' ? (
+            <SocketContext.Consumer>{socket => (<PendingHangouts socket={socket} />)}</SocketContext.Consumer>
+          ) : (
+              <AcceptedHangouts />
+            )}
+          <View>
+            <Button
+              title="Close"
+              onPress={() => this.setState({ modalVisible: false })}
+            />
           </View>
         </Modal>
         <UserModal />
@@ -123,6 +102,9 @@ class Hangouts extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  results__switch: {
+    top: 40
+  },
   userList: {
     top: 40
   },
@@ -171,7 +153,7 @@ const styles = StyleSheet.create({
     right: 0,
     position: 'absolute',
     bottom: 0
-  },
+  }
 })
 
 const mapStateToProps = state => {
@@ -179,7 +161,9 @@ const mapStateToProps = state => {
     receivedHangoutRequests: state.receivedHangoutRequests,
     currentUserEmail: state.user.email,
     currentProfile: state.currentProfile,
-    showProfile: state.showProfile
+    showProfile: state.showProfile,
+    acceptedHangouts: state.acceptedHangouts,
+    ongoingHangouts: state.ongoingHangouts
   }
 }
 const mapDispatchToProps = dispatch => {

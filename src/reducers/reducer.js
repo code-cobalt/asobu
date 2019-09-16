@@ -60,7 +60,8 @@ const initialState = {
   showLogin: true,
   showChat: false,
   currentChatMessages: [],
-  currentChatId: 0
+  currentChatId: 0,
+  hangoutId: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -70,6 +71,9 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_ALL_USERS': {
       return { ...state, allUsers: action.allUsers }
+    }
+    case 'REMOVE_USER': {
+      return { ...state, allUsers: state.allUsers.filter(user => user.email !== action.userEmail) }
     }
     case 'SET_USER': {
       console.log(action.user)
@@ -106,6 +110,12 @@ const reducer = (state = initialState, action) => {
     }
     case 'SET_CHATS': {
       return { ...state, chats: action.chats }
+    }
+    case 'REMOVE_USER_CHAT': {
+      if (state.showChat && state.currentChatId === action.chatId) {
+        return { ...state, chats: state.chats.filter(chat => chat.chat_id !== action.chatId), showChat: false }
+      }
+      return { ...state, chats: state.chats.filter(chat => chat.chat_id !== action.chatId) }
     }
     case 'SHOW_CHAT': {
       return {
@@ -255,6 +265,9 @@ const reducer = (state = initialState, action) => {
         sentHangoutRequests: [...state.sentHangoutRequests, action.toUser]
       }
     }
+      console.log("INSIDE REDUCER")
+      console.log(state.user.first_name)
+      console.log(action.newChat)
     case 'ACCEPT_REQUEST': {
       // remove hangout request from receivedHangoutRequests in store, add new Chat to chats in store if one doesn't already exist, change active view to chats, add userlimited to accepted_hangouts
       const receivedHangoutRequests = state.receivedHangoutRequests.filter(
@@ -309,6 +322,13 @@ const reducer = (state = initialState, action) => {
     case 'ADD_EXP': {
       const updatedUser = { ...state.user, exp: action.exp }
       return { ...state, showReview: false, user: updatedUser }
+    }
+    case 'START_HANGOUT': {
+      return {
+        ...state,
+        ongoingHangouts: action.participants[1],
+        hangoutId: action.hangoutId
+      }
     }
     default: {
       return state
