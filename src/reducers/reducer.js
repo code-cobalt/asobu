@@ -228,6 +228,9 @@ const reducer = (state = initialState, action) => {
         sentHangoutRequests: [...state.sentHangoutRequests, action.toUser]
       }
     }
+      console.log("INSIDE REDUCER")
+      console.log(state.user.first_name)
+      console.log(action.newChat)
     case 'ACCEPT_REQUEST': {
       // remove hangout request from receivedHangoutRequests in store, add new Chat to chats in store if one doesn't already exist, change active view to chats, add userlimited to accepted_hangouts
       const receivedHangoutRequests = state.receivedHangoutRequests.filter(

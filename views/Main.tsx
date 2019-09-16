@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { getChat } from '../src/actions/chats'
+import { getChat, getUserChats } from '../src/actions/chats'
 import { getUsers } from '../src/actions/users'
 import Profile from './Profile'
 import Results from './Results'
@@ -14,6 +14,7 @@ interface Props {
   setAllUsers: Function
   removeUser: Function
   removeUserChat: Function
+  acceptHangoutRequest: Function
   context: Function
   getUsers: Function
   getChat: Function
@@ -24,7 +25,7 @@ interface Props {
 class Main extends Component<Props> {
   componentDidMount() {
     this.props.socket.send(`l0 ${this.props.email}`)
-    this.props.socket.onmessage = event => {
+    this.props.socket.onmessage = async event => {
       console.log(`SERVER MESSAGE: ${event.data}`)
       const message = event.data.split(' ')
       //Heartbeat
@@ -40,6 +41,13 @@ class Main extends Component<Props> {
       if (message[0] === 'b0') {
         this.props.removeUser(message[1])
         this.props.removeUserChat(~~message[2])
+      }
+      //Accept Hangout Request
+      if (message[0] === 'h1') {
+        const allChats = await getUserChats(this.props.email)
+        console.log(this.props.email)
+        console.log(allChats)
+        this.props.acceptHangoutRequest(allChats.pop())
       }
     }
     this.props.getUsers(this.props.email, this.props.blockedUsers)
@@ -93,7 +101,8 @@ const mapDispatchToProps = dispatch => {
     getUsers: (currentUserEmail, blockedUsers) =>
       dispatch(getUsers(currentUserEmail, blockedUsers)),
     removeUser: userEmail => { dispatch({ type: 'REMOVE_USER', userEmail }) },
-    removeUserChat: (chatId) => { dispatch({ type: 'REMOVE_USER_CHAT', chatId }) }
+    removeUserChat: (chatId) => { dispatch({ type: 'REMOVE_USER_CHAT', chatId }) },
+    acceptHangoutRequest: (newChat) => { dispatch({ type: 'ACCEPT_REQUEST', newChat }) },
   }
 }
 

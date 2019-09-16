@@ -242,33 +242,41 @@ wss.on('connection', (ws) => {
     }
     if (message[0] === 'p0') {
       console.log('CLIENT PONGED')
-      if (clients.clientList[message[1]]) {
-        clients.clientList[message[1]].heartbeat = true
-      }
+      // if (clients.clientList[message[1]]) {
+      //   clients.clientList[message[1]].heartbeat = true
+      // }
+      if (clients.clientList[message[1]]) { clients.clientList[message[1]].heartbeat = true }
     }
     //[0] - Message Code, [1] - Target Email, [2] - Chat ID
     if (message[0] === 'm0') {
-      for (let client in clients.clientList) {
-        if (client === message[1]) {
-          clients.clientList[client].socket.send(`m0 ${message[2]}`)
-        }
-      }
+      // for (let client in clients.clientList) {
+      //   if (client === message[1]) {
+      //     clients.clientList[client].socket.send(`m0 ${message[2]}`)
+      //   }
+      // }
+      if (clients.clientList[message[1]]) clients.clientList[message[1]].socket.send(`m0 ${message[2]}`)
     }
-    //[0] - Hangout Code, [1] - Sender Email, [2] - Target Email
+    //[0] - Hangout Request Code, [1] - Sender Email, [2] - Target Email
     if (message[0] === 'h0') {
-      for (let client in clients.clientList) {
-        if (client === message[2]) {
-          clients.clientList[client].socket.send(`h0 ${message[1]}`)
-        }
-      }
+      // for (let client in clients.clientList) {
+      //   if (client === message[2]) {
+      //     clients.clientList[client].socket.send(`h0 ${message[1]}`)
+      //   }
+      // }
+      if (clients.clientList[message[2]]) clients.clientList[message[2]].socket.send(`h0 ${message[1]}`)
+    }
+    //[0] - Hangout Accept Code, [1] - Accepting Email, [2] - Target Email
+    if (message[0] === 'h1') {
+      if (clients.clientList[message[2]]) clients.clientList[message[2]].socket.send(`h1 ${message[1]}`)
     }
     //[0] - Block Code, [1] - Requesting Email, [2] - Target Email, [3] - Chat ID
     if (message[0] === 'b0') {
-      for (let client in clients.clientList) {
-        if (client === message[2]) {
-          clients.clientList[client].socket.send(`b0 ${message[1]} ${message[3]}`)
-        }
-      }
+      // for (let client in clients.clientList) {
+      //   if (client === message[2]) {
+      //     clients.clientList[client].socket.send(`b0 ${message[1]} ${message[3]}`)
+      //   }
+      // }
+      if (clients.clientList[message[2]]) clients.clientList[message[2]].socket.send(`b0 ${message[1]} ${message[3]}`)
     }
   })
   ws.on('close', (event) => {
