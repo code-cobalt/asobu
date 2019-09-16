@@ -429,6 +429,7 @@ const root = {
 
   ReviewUser: async params => {
     // TO DO: need to delete reviewedUser from currentUser's pending reviews
+    // check level
     const user = await User.findOne({ email: params.reviewedUserEmail })
     const updatedStats = Object.assign({}, user.stats)
     for (const stat in params.newStats) {
