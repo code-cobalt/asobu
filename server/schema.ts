@@ -183,6 +183,8 @@ const schema = buildSchema(`
         Events: [Event]
         Event(eventId: String!): Event
         Chat(chatId: Int!): Chat
+        Hangouts: [Hangout]
+        Hangout(hangoutId: String!): Hangout
     }
 
     type Mutation {
