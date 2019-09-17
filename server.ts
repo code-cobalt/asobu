@@ -53,10 +53,10 @@ mongoose.connect(process.env.DB_URL, {
 const db = mongoose.connection
 db.once('open', () => console.log('Connected to DB'))
 
-// const config = {
-//   database: process.env.DB_URL,
-//   dropDatabase: true
-// }
+const config = {
+  database: process.env.DB_URL,
+  dropDatabase: true
+}
 
 // **DO NOT DELETE**
 // NOTE: To avoid overages on our MongoDB/Cloudinary, please refrain from
@@ -177,13 +177,15 @@ class ActiveClients {
 }
 
 interface QuizGame {
+  id: number
   playerList: object
   validPlayers: Array<string>
   answers: number
 }
 
 class QuizGame {
-  constructor(validPlayers) {
+  constructor(id, validPlayers) {
+    this.id = id
     this.playerList = {}
     this.validPlayers = validPlayers
     this.answers = 0
@@ -195,29 +197,14 @@ class QuizGame {
   }
 }
 
-interface QuizGames {
-  gameList: object
-}
-
-class QuizGames {
-  constructor() {
-    this.gameList = {}
-    this.addGame = this.addGame.bind(this)
-  }
-  addGame(game: QuizGame) {
-    this.gameList[game.validPlayers[0]] = game
-  }
-}
-
 const clients = new Clients()
 const activeClients = new ActiveClients()
-const quizGames = new QuizGames()
 
 const wss = new server({ port: 3001 })
-const hangoutSocketServer = new server({ port: 3002 })
+// const hangoutSocketServer = new server({ port: 3002 })
 
 wss.on('connection', ws => {
-  console.log('CONNECTED')
+  console.log('CLIENT CONNECTED')
   ws.on('message', msg => {
     console.log('FROM CLIENT: ', msg)
     const message = msg.split(' ')
@@ -242,34 +229,21 @@ wss.on('connection', ws => {
     }
     if (message[0] === 'p0') {
       console.log('CLIENT PONGED')
-      // if (clients.clientList[message[1]]) {
-      //   clients.clientList[message[1]].heartbeat = true
-      // }
       if (clients.clientList[message[1]]) {
         clients.clientList[message[1]].heartbeat = true
       }
     }
     //[0] - Message Code, [1] - Target Email, [2] - Chat ID
     if (message[0] === 'm0') {
-      // for (let client in clients.clientList) {
-      //   if (client === message[1]) {
-      //     clients.clientList[client].socket.send(`m0 ${message[2]}`)
-      //   }
-      // }
       if (clients.clientList[message[1]])
         clients.clientList[message[1]].socket.send(`m0 ${message[2]}`)
     }
     //[0] - Hangout Request Code, [1] - Sender Email, [2] - Target Email
     if (message[0] === 'h0') {
-      // for (let client in clients.clientList) {
-      //   if (client === message[2]) {
-      //     clients.clientList[client].socket.send(`h0 ${message[1]}`)
-      //   }
-      // }
       if (clients.clientList[message[2]])
         clients.clientList[message[2]].socket.send(`h0 ${message[1]}`)
     }
-    //[0] - Hangout Accept Code, [1] - Accepting Email, [2] - Target Email, [3] - Chat ID
+    //[0] - Hangout Accept Code, [1] - Accepting Email, [2] - Target Email, [3] - Accepting First Name
     if (message[0] === 'h1') {
       if (clients.clientList[message[2]])
         clients.clientList[message[2]].socket.send(
@@ -278,63 +252,8 @@ wss.on('connection', ws => {
     }
     //[0] - Block Code, [1] - Requesting Email, [2] - Target Email, [3] - Chat ID
     if (message[0] === 'b0') {
-      // for (let client in clients.clientList) {
-      //   if (client === message[2]) {
-      //     clients.clientList[client].socket.send(`b0 ${message[1]} ${message[3]}`)
-      //   }
-      // }
       if (clients.clientList[message[2]])
         clients.clientList[message[2]].socket.send(`b0 ${message[1]}`)
-    }
-  })
-  ws.on('close', event => {})
-})
-
-hangoutSocketServer.on('connection', ws => {
-  console.log('USER ACTIVE')
-  ws.on('message', msg => {
-    console.log(msg)
-    const message = msg.split(' ')
-    let newClient = new Client(message[1], ws)
-    if (message[0] === 'l0') {
-      activeClients.saveClient(newClient)
-    }
-    if (message[0] === 'l1') {
-      activeClients.removeClient(newClient.email)
-    }
-    if (message[0] === 'match0') {
-      //user matched
-    }
-    if (message[0] === 'match1') {
-      //match canceled
-    }
-    if (message[0] === 'hangout0') {
-      //hangout active
-    }
-    if (message[0] === 'hangout1') {
-      //hangout complete
-    }
-    if (message[0] === 'quizg0') {
-      //game quiz joined
-      let newPlayer = new Player(newClient.email, newClient.socket)
-      let placed = false
-      for (let game in quizGames.gameList) {
-        if (quizGames.gameList[game].validPlayers.includes(newPlayer.email)) {
-          quizGames.gameList[game].playerList.addPlayer(newPlayer)
-          placed = true
-        }
-      }
-      if (!placed) {
-        let quizGame = new QuizGame([newPlayer.email, message[1]])
-        quizGame.addPlayer(newPlayer)
-        quizGames.addGame(quizGame)
-      }
-    }
-    if (message[0] === 'quizgm0') {
-      //game quiz message received
-    }
-    if (message[0] === 'quizg1') {
-      //game quiz finished
     }
   })
   ws.on('close', event => {})
