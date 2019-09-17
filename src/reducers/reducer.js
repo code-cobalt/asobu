@@ -37,7 +37,10 @@ const reducer = (state = initialState, action) => {
       return { ...state, allUsers: action.allUsers }
     }
     case 'REMOVE_USER': {
-      return { ...state, allUsers: state.allUsers.filter(user => user.email !== action.userEmail) }
+      return {
+        ...state,
+        allUsers: state.allUsers.filter(user => user.email !== action.userEmail)
+      }
     }
     case 'SET_USER': {
       return {
@@ -76,9 +79,16 @@ const reducer = (state = initialState, action) => {
     }
     case 'REMOVE_USER_CHAT': {
       if (state.showChat && state.currentChatId === action.chatId) {
-        return { ...state, chats: state.chats.filter(chat => chat.chat_id !== action.chatId), showChat: false }
+        return {
+          ...state,
+          chats: state.chats.filter(chat => chat.chat_id !== action.chatId),
+          showChat: false
+        }
       }
-      return { ...state, chats: state.chats.filter(chat => chat.chat_id !== action.chatId) }
+      return {
+        ...state,
+        chats: state.chats.filter(chat => chat.chat_id !== action.chatId)
+      }
     }
     case 'SHOW_CHAT': {
       return {
@@ -228,10 +238,11 @@ const reducer = (state = initialState, action) => {
         sentHangoutRequests: [...state.sentHangoutRequests, action.toUser]
       }
     }
-      console.log("INSIDE REDUCER")
+
+    case 'ACCEPT_REQUEST': {
+      console.log('INSIDE REDUCER')
       console.log(state.user.first_name)
       console.log(action.newChat)
-    case 'ACCEPT_REQUEST': {
       // remove hangout request from receivedHangoutRequests in store, add new Chat to chats in store if one doesn't already exist, change active view to chats, add userlimited to accepted_hangouts
       const receivedHangoutRequests = state.receivedHangoutRequests.filter(
         request => {
