@@ -7,7 +7,8 @@ import {
   Button,
   TouchableOpacity,
   ScrollView,
-  TextInput
+  TextInput,
+  SafeAreaView
 } from 'react-native'
 import UserList from '../components/UserList'
 import { Ionicons } from '@expo/vector-icons'
@@ -65,7 +66,7 @@ class Hangouts extends React.Component<Props> {
   }
   render() {
     return (
-      <View style={styles.userList}>
+      <SafeAreaView style={styles.userList}>
         <UserList />
         <Modal
           isVisible={this.state.modalVisible}
@@ -96,7 +97,7 @@ class Hangouts extends React.Component<Props> {
           </View>
         </Modal>
         <UserModal />
-      </View>
+      </SafeAreaView>
     )
   }
 }
