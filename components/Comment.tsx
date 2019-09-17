@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import { connect } from 'react-redux'
 import { deleteComment } from '../src/actions/events'
 
@@ -25,7 +25,7 @@ interface Props {
 
 const Comment: React.FunctionComponent<Props> = props => {
   return (
-    <View>
+    <View style={styles.comment__container}>
       {props.currentUserEmail === props.comment.from.email && (
         <Text
           onPress={() => props.deleteComment(props.eventId, props.comment.id)}
@@ -33,12 +33,28 @@ const Comment: React.FunctionComponent<Props> = props => {
           Delete
         </Text>
       )}
-      <Text>{props.comment.from.first_name} posted:</Text>
-      <Text>{props.comment.content}</Text>
-      <Text>{props.comment.timestamp}</Text>
+      <View>
+        <Image style={styles.comment__photo} source={{uri: props.comment.from.profile_photo}}/>
+        <Text>{props.comment.from.first_name} posted:</Text>
+        <Text>{props.comment.content}</Text>
+        <Text>{props.comment.timestamp}</Text>
+      </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  comment__container: {
+    width: '90%',
+    backgroundColor: 'grey',
+    padding: 10,
+    margin: 15
+  },
+  comment__photo: {
+    height: 60,
+    width: 60
+  }
+})
 
 const mapStateToProps = state => {
   return { eventId: state.currentEvent.id }
