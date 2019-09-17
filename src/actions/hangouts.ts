@@ -20,20 +20,15 @@ export const sendHangoutRequest = (currentUserEmail, toUser) => {
   }
 }
 
-export const acceptHangoutRequest = (currentUserEmail, fromUserEmail) => {
-  return async dispatch => {
-    const res = await axios.post(`${apiUrl}/graphql`, {
-      query: print(acceptHangoutRequestQuery),
-      variables: {
-        currentUserEmail,
-        fromUserEmail
-      }
-    })
-    dispatch({
-      type: 'ACCEPT_REQUEST',
-      newChat: res.data.data.AcceptHangoutRequest
-    })
-  }
+export const acceptHangoutRequest = async (currentUserEmail, fromUserEmail) => {
+  const res = await axios.post(`${apiUrl}/graphql`, {
+    query: print(acceptHangoutRequestQuery),
+    variables: {
+      currentUserEmail,
+      fromUserEmail
+    }
+  })
+  return res.data.data.AcceptHangoutRequest
 }
 
 export const declineHangoutRequest = (currentUserEmail, fromUserEmail) => {
