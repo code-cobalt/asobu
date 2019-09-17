@@ -45,7 +45,9 @@ interface Props {
   currentUserEmail: string
   currentProfile: Profile
   showProfile: boolean
+  popupModal: boolean
   closeProfile: Function
+  closeMainModal: Function
 }
 
 const options = [
@@ -68,7 +70,7 @@ class Hangouts extends React.Component<Props> {
       <View style={styles.userList}>
         <UserList />
         <Modal
-          isVisible={this.state.modalVisible}
+          isVisible={this.state.modalVisible || this.props.popupModal}
           animationIn="slideInUp"
           animationOut="slideOutDown"
           backdropOpacity={0.85}
@@ -84,14 +86,19 @@ class Hangouts extends React.Component<Props> {
             />
           </View>
           {this.state.visibleHangout === 'pending' ? (
-            <SocketContext.Consumer>{socket => (<PendingHangouts socket={socket} />)}</SocketContext.Consumer>
+            <SocketContext.Consumer>
+              {socket => <PendingHangouts socket={socket} />}
+            </SocketContext.Consumer>
           ) : (
-              <AcceptedHangouts />
-            )}
+            <AcceptedHangouts />
+          )}
           <View>
             <Button
               title="Close"
-              onPress={() => this.setState({ modalVisible: false })}
+              onPress={() => {
+                this.setState({ modalVisible: false })
+                this.props.closeMainModal()
+              }}
             />
           </View>
         </Modal>
@@ -163,7 +170,8 @@ const mapStateToProps = state => {
     currentProfile: state.currentProfile,
     showProfile: state.showProfile,
     acceptedHangouts: state.acceptedHangouts,
-    ongoingHangouts: state.ongoingHangouts
+    ongoingHangouts: state.ongoingHangouts,
+    popupModal: state.popupModal
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -174,6 +182,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(declineHangoutRequest(currentUserEmail, fromUserEmail)),
     closeProfile: () => {
       dispatch({ type: 'CLOSE_PROFILE' })
+    },
+    closeMainModal: () => {
+      dispatch({ type: 'CLOSE_MAIN_MODAL' })
     }
   }
 }
