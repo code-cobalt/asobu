@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Button, TextInput } from 'react-native'
+import { TouchableOpacity, View, Button, TextInput, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { createComment } from '../src/actions/events'
 
@@ -27,23 +27,55 @@ class NewComment extends React.Component<Props, State> {
     return (
       <View>
         <TextInput
+          style={styles.comment__input}
           placeholder={'Post new comment...'}
           onChangeText={text => this.setState({ content: text })}
         />
 
-        <Button
-          title="Post"
+        <TouchableOpacity
+          style={styles.post__button}
           onPress={() =>
             this.props.createComment(this.props.eventId, {
               from: this.props.from,
               content: this.state.content
             })
           }
-        />
+        >
+          <Text style={styles.button__text}>Post</Text>
+        </TouchableOpacity>
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  post__button: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: '50%',
+    backgroundColor: '#73d961',
+    padding: 15,
+    borderRadius: 50,
+    marginTop: 15
+  },
+  button__text: {
+    fontWeight: '800',
+    color: 'white'
+  },
+  comment__input: {
+    alignSelf: 'center',
+    width: '90%',
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: .5,
+    marginTop: 20,
+    marginBottom: 5,
+    borderRadius: 2,
+    backgroundColor: '#fff',
+    textAlign: 'center',
+    opacity: 0.9
+  }
+})
 
 const mapStateToProps = state => {
   return {

@@ -7,7 +7,8 @@ import {
   Button,
   TouchableOpacity,
   ScrollView,
-  TextInput
+  TextInput,
+  SafeAreaView
 } from 'react-native'
 import UserList from '../components/UserList'
 import { Ionicons } from '@expo/vector-icons'
@@ -68,7 +69,7 @@ class Hangouts extends React.Component<Props> {
   }
   render() {
     return (
-      <View style={styles.userList}>
+      <SafeAreaView style={styles.userList}>
         <UserList />
         <Modal
           isVisible={this.state.modalVisible || this.props.popupModal}
@@ -77,7 +78,7 @@ class Hangouts extends React.Component<Props> {
           backdropOpacity={0.85}
           style={styles.modal}
         >
-          <View>
+          <SafeAreaView>
             <SwitchSelector
               options={options}
               backgroundColor="#e5e6e5"
@@ -85,7 +86,7 @@ class Hangouts extends React.Component<Props> {
               initial={this.state.visibleHangout === 'pending' ? 0 : 1}
               onPress={value => this.setState({ visibleHangout: value })}
             />
-          </View>
+          </SafeAreaView>
           {this.state.visibleHangout === 'pending' ? (
             <SocketContext.Consumer>
               {socket => <PendingHangouts socket={socket} />}
@@ -94,18 +95,19 @@ class Hangouts extends React.Component<Props> {
             <AcceptedHangouts />
           )}
           <View>
-            <Button
-              title="Close"
+            <TouchableOpacity
+              style={styles.start_button}
               onPress={() => {
                 this.setState({ modalVisible: false })
                 this.props.closeMainModal()
               }}
-            />
+            >
+              <Text style={styles.button_text}>Close</Text>
+            </TouchableOpacity>
           </View>
         </Modal>
         <UserModal />
-        <Review />
-      </View>
+      </SafeAreaView>
     )
   }
 }
@@ -157,11 +159,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  close: {
-    textAlign: 'right',
-    right: 0,
-    position: 'absolute',
-    bottom: 0
+  start_button: {
+    width: '50%',
+    backgroundColor: '#73d961',
+    padding: 15,
+    borderRadius: 50,
+    marginTop: 15,
+    alignSelf: 'center'
+  },
+  button_text: {
+    textAlign: 'center',
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 18
   }
 })
 

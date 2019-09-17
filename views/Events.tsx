@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
 import EventList from '../components/EventList'
 import { getEvents } from '../src/actions/events'
@@ -15,17 +15,18 @@ class Events extends Component<Props> {
 
   render() {
     return (
-      <View style={styles.events}>
+      <SafeAreaView style={styles.events}>
         <EventList />
-      </View>
+      </SafeAreaView>
     )
   }
 }
 
 const styles = StyleSheet.create({
   events: {
-    top: 40,
-    flex: 1
+    flex: 1,
+    marginTop: 40,
+    marginBottom: 25
   }
 })
 

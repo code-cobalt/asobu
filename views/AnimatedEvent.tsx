@@ -172,7 +172,14 @@ export class AnimatedEvent extends Component<Props> {
             {editButton}
             {deleteButton}
           </View>
-          <Comments comments={this.props.currentEvent.comments} />
+          <View>
+            <View style={styles.comments_header}>
+              <Text style={styles.event__subtitle}>Comments</Text>
+            </View>
+            <View>
+              <Comments comments={this.props.currentEvent.comments} />
+            </View>
+          </View>
         </ScrollView>
       </Animated.View>
     )
@@ -212,6 +219,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     alignSelf: 'center',
     fontWeight: '800'
+  },
+  comments_header: {
+    marginTop: 20,
+    alignSelf: 'center',
   },
   event__subtitle: {
     marginTop: 20,

@@ -30,25 +30,34 @@ const styles = StyleSheet.create({
     marginBottom: 15
   }, */
   chat__image: {
-    height: 50,
-    width: 50,
-    borderRadius: 50
+    height: 40,
+    width: 40,
+    borderRadius: 20,
   },
   chat__user: {
-    backgroundColor: 'pink',
+    backgroundColor: '#73d961',
     alignSelf: 'flex-end',
     width: '70%',
     flexDirection: 'row-reverse',
     marginBottom: 15,
-    borderRadius: 50
+    borderRadius: 50,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    textShadowRadius: 2,
+    shadowColor: "#000",
+    padding: 5
   },
   chat__friend: {
-    backgroundColor: 'green',
+    backgroundColor: '#dee0e9',
     alignSelf: 'flex-start',
     width: '70%',
     flexDirection: 'row',
     marginBottom: 15,
-    borderRadius: 50
+    borderRadius: 50,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    textShadowRadius: 2,
+    shadowColor: "#000"
   }
 })
 

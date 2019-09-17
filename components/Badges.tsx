@@ -31,7 +31,7 @@ const Badges: React.FunctionComponent<Props> = props => {
         <Image
           key={index}
           source={badges[badge]}
-          style={{ height: 40, width: 40 }}
+          style={{ margin: 2, height: 40, width: 40 }}
         />
       ))}
     </>

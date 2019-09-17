@@ -24,59 +24,61 @@ const PendingHangouts = props => {
         <Text style={styles.title}>
           Other users would like to hangout with you!
         </Text>
-        <ScrollView>
+        <ScrollView style={styles.request}>
           {props.receivedHangoutRequests.map((request, index) => {
             return (
-              <View style={styles.request} key={index}>
+              <View key={index}>
                 <Image
                   source={{ uri: request.profile_photo }}
                   style={styles.user__image}
                 />
                 <View
                   style={{
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     flex: 1
                   }}
                 >
                   <Text style={styles.user__name}>{request.first_name}</Text>
-                  <TouchableOpacity
-                    onPress={async () => {
-                      const newChat = await acceptHangoutRequest(
-                        props.currentUserEmail,
-                        request.email
-                      )
-                      Alert.alert(
-                        `You have accepted ${request.first_name}'s hangout request!`,
-                        'Visit chats to start talking!'
-                      )
-                      props.dispatchHangoutRequest(newChat)
-                      setTimeout(
-                        () =>
-                          props.socket.send(
-                            `h1 ${props.currentUserEmail} ${request.email} ${props.currentUserFirstName}`
-                          ),
-                        5000
-                      )
-                    }}
-                    style={styles.accept__button}
-                  >
-                    <Ionicons name="md-checkmark" size={32} color="white" />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() =>
-                      props.declineHangoutRequest(
-                        props.currentUserEmail,
-                        request.email
-                      )
-                    }
-                    style={styles.decline__button}
-                  >
-                    <Ionicons name="md-close" size={32} color="white" />
-                  </TouchableOpacity>
-                  <View>
+                  <View style={styles.badges}>
                     <Badges badges={request.equipped_badges} />
+                  </View>
+                  <View style={styles.ionicons}>
+                    <TouchableOpacity
+                      onPress={async () => {
+                        const newChat = await acceptHangoutRequest(
+                          props.currentUserEmail,
+                          request.email
+                        )
+                        Alert.alert(
+                          `You have accepted ${request.first_name}'s hangout request!`,
+                          'Visit chats to start talking!'
+                        )
+                        props.dispatchHangoutRequest(newChat)
+                        setTimeout(
+                          () =>
+                            props.socket.send(
+                              `h1 ${props.currentUserEmail} ${request.email} ${props.currentUserFirstName}`
+                            ),
+                          5000
+                        )
+                      }}
+                      style={styles.accept__button}
+                    >
+                      <Ionicons name="md-checkmark" size={32} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        props.declineHangoutRequest(
+                          props.currentUserEmail,
+                          request.email
+                        )
+                      }
+                      style={styles.decline__button}
+                    >
+                      <Ionicons name="md-close" size={32} color="white" />
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -103,18 +105,21 @@ const styles = StyleSheet.create({
     margin: 10
   },
   request: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     margin: 10
   },
   user__image: {
-    borderRadius: 50,
-    height: 90,
-    width: 90
+    alignSelf: 'center',
+    borderRadius: 55,
+    height: 110,
+    width: 110,
+    marginBottom: 5
   },
   user__name: {
+    alignSelf: 'center',
     color: 'white',
-    fontSize: 40,
-    marginLeft: 10
+    fontSize: 34,
+    marginBottom: 5
   },
   accept__button: {
     width: 50,
@@ -131,6 +136,13 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  badges: {
+    flexDirection: 'row'
+  },
+  ionicons: {
+    flexDirection: 'row',
+    marginTop: 15
   },
   close: {
     textAlign: 'right',

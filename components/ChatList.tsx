@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import Chat from './Chat'
 import { SocketContext } from './SocketProvider'
@@ -21,7 +21,7 @@ interface UserLimited {
 
 const ChatList: React.FunctionComponent<Props> = props => {
   return (
-    <ScrollView>
+    <ScrollView style={styles.chat_list}>
       {props.chats &&
         props.chats.map(chat => {
           return (
@@ -37,6 +37,12 @@ const ChatList: React.FunctionComponent<Props> = props => {
     </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  chat_list: {
+    marginTop: 20
+  }
+})
 
 const mapStateToProps = state => {
   return {
