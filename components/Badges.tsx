@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image } from 'react-native'
+import { Image } from 'react-native'
 const badges = {
   funny_bronze: require('../assets/funny_bronze.png'),
   funny_silver: require('../assets/funny_silver.png'),
@@ -38,5 +38,4 @@ const Badges: React.FunctionComponent<Props> = props => {
   )
 }
 
-//style={user.hasBadge ? styles.active : styles.inactive}
 export default Badges
