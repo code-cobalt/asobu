@@ -1,5 +1,8 @@
 {
   "main": "node_modules/expo/AppEntry.js",
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
     "frontend": "yarn start",
     "backend": "yarn serve",
@@ -9,7 +12,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "postinstall": "yarn backend",
+    "build": "tsc"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.1",
