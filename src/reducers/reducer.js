@@ -6,40 +6,40 @@ const initialState = {
   acceptedHangouts: [],
   ongoingHangouts: [],
   user: {
-  //   accepted_hangouts: [],
-  //   blocked_by_users: [],
-  //   blocked_users: [],
-  //   chats: [
-  //      {
-  //       chat_id: 3,
-  //       participants: [
-  //          {
-  //           email: "jamesp@email.com",
-  //           first_name: "James",
-  //           profile_photo: "https://pm1.narvii.com/6434/94605250171379229064c93049e39ce310551346_hq.jpg",
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   email: "levans@email.com",
-  //   events: [
-  //      {
-  //       event_id: "1",
-  //       is_creator: false,
-  //     },
-  //   ],
-  //   exp: 23,
-  //   first_name: "Lily",
-  //   id: "5d7f3dc2f3c62f4e58498d5c",
-  //   imei: null,
-  //   interests: [],
-  //   last_name: "Evans",
-  //   lvl: 2,
-  //   ongoing_hangouts: [],
-  //   phone_number: "+447911654321",
-  //   profile_photo: "https://i.pinimg.com/originals/a6/f4/f0/a6f4f037f9207e4eb4ec5a7cedfd2914.jpg",
-  //   received_hangout_requests: [],
-  //   sent_hangout_requests: [],
+    //   accepted_hangouts: [],
+    //   blocked_by_users: [],
+    //   blocked_users: [],
+    //   chats: [
+    //      {
+    //       chat_id: 3,
+    //       participants: [
+    //          {
+    //           email: "jamesp@email.com",
+    //           first_name: "James",
+    //           profile_photo: "https://pm1.narvii.com/6434/94605250171379229064c93049e39ce310551346_hq.jpg",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    //   email: "levans@email.com",
+    //   events: [
+    //      {
+    //       event_id: "1",
+    //       is_creator: false,
+    //     },
+    //   ],
+    //   exp: 23,
+    //   first_name: "Lily",
+    //   id: "5d7f3dc2f3c62f4e58498d5c",
+    //   imei: null,
+    //   interests: [],
+    //   last_name: "Evans",
+    //   lvl: 2,
+    //   ongoing_hangouts: [],
+    //   phone_number: "+447911654321",
+    //   profile_photo: "https://i.pinimg.com/originals/a6/f4/f0/a6f4f037f9207e4eb4ec5a7cedfd2914.jpg",
+    //   received_hangout_requests: [],
+    //   sent_hangout_requests: [],
   },
   // Go to Main.tsx and ChatInput.tsx to comment out socket.send if you want to use this dummy login data
   allUsers: [],
@@ -56,12 +56,13 @@ const initialState = {
   currentProfile: {},
   //I have to initialize an empty tags array so that Event form modals can render properly before any event has been selected
   currentEvent: { tags: [] },
-  isLoggedIn: true,
+  isLoggedIn: false,
   showLogin: true,
   showChat: false,
   currentChatMessages: [],
   currentChatId: 0,
-  hangoutId: ''
+  hangoutId: '',
+  userToReview: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -269,13 +270,14 @@ const reducer = (state = initialState, action) => {
       }
       return { ...state, currentEvent: updatedCurrentEvent }
     }
-    case 'SEND_REQUEST': {
-      return {
-        ...state,
-        sentHangoutRequests: [...state.sentHangoutRequests, action.toUser]
+    case 'SEND_REQUEST':
+      {
+        return {
+          ...state,
+          sentHangoutRequests: [...state.sentHangoutRequests, action.toUser]
+        }
       }
-    }
-      console.log("INSIDE REDUCER")
+      console.log('INSIDE REDUCER')
       console.log(state.user.first_name)
       console.log(action.newChat)
     case 'ACCEPT_REQUEST': {
@@ -285,6 +287,10 @@ const reducer = (state = initialState, action) => {
           request.email !== action.fromUserEmail
         }
       )
+      const updatedAcceptedHangouts = [
+        ...state.acceptedHangouts,
+        action.newChat.participants[0]
+      ]
       let included = false
       for (const chat of state.chats) {
         if (chat.chat_id === action.newChat.chat_id) {
@@ -302,7 +308,7 @@ const reducer = (state = initialState, action) => {
         activeView: 'chats',
         receivedHangoutRequests,
         chats,
-        acceptedHangouts: action.newChat.participants[0]
+        acceptedHangouts: updatedAcceptedHangouts
       }
     }
     case 'DECLINE_REQUEST': {
@@ -348,7 +354,15 @@ const reducer = (state = initialState, action) => {
       }
     }
     case 'FINISH_HANGOUT': {
-      console.log('Finish hangout')
+      const updatedOngoingHangouts = state.ongoingHangouts.filter(
+        hangout => hangout.hangout_id !== action.hangoutId
+      )
+      return {
+        ...state,
+        ongoingHangouts: updatedOngoingHangouts,
+        userToReview: action.userToReview,
+        showReview: true
+      }
     }
     default: {
       return state
