@@ -12,7 +12,6 @@ import { connect } from 'react-redux'
 import { startHangout, finishHangout } from '../src/actions/users'
 
 export const AcceptedHangouts = props => {
-  console.log('This is ongoing hangouts', props.user.ongoing_hangouts)
   return (
     <>
       <View style={{ flex: 1 }}>
@@ -153,7 +152,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     startHangout: participants => dispatch(startHangout(participants)),
-    finishHangout: hangoutId => dispatch(finishHangout(hangoutId))
+    finishHangout: (hangoutId, userToReview) =>
+      dispatch(finishHangout(hangoutId, userToReview))
   }
 }
 
