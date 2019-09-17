@@ -17,6 +17,7 @@ interface CurrentProfile {
   lvl: string,
   first_name: string
   interests: [string]
+  equipped_badges: string[]
 }
 
 const UserModal: React.FunctionComponent<Props> = (props) => {
@@ -52,7 +53,7 @@ const UserModal: React.FunctionComponent<Props> = (props) => {
               </Text>
               <Text style={styles.user__level}>Level {props.currentProfile.lvl}</Text>
               <View style={styles.top__badges}>
-                <Badges />
+                <Badges badges={props.currentProfile.equipped_badges}/>
               </View>
             </View>
           </View>
@@ -61,15 +62,9 @@ const UserModal: React.FunctionComponent<Props> = (props) => {
             <Text style={styles.info__title}>{props.currentProfile.first_name}'s Interests</Text>
            
             <Divider style={styles.divider} />
-            <View style={styles.all__badges}>
-              <Text style={styles.info__title}>All Badges</Text>
-              <View style={styles.badge__container}>
-                <Badges />
-              </View>
-            </View>
           </View>
           <TouchableOpacity
-            onPress={props.closeProfile}
+            onPress={() => props.closeProfile()}
             style={styles.profile__close}
           >
             <Text>Close</Text>
