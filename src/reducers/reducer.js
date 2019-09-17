@@ -37,7 +37,10 @@ const reducer = (state = initialState, action) => {
       return { ...state, allUsers: action.allUsers }
     }
     case 'REMOVE_USER': {
-      return { ...state, allUsers: state.allUsers.filter(user => user.email !== action.userEmail) }
+      return {
+        ...state,
+        allUsers: state.allUsers.filter(user => user.email !== action.userEmail)
+      }
     }
     case 'SET_USER': {
       return {
@@ -76,9 +79,16 @@ const reducer = (state = initialState, action) => {
     }
     case 'REMOVE_USER_CHAT': {
       if (state.showChat && state.currentChatId === action.chatId) {
-        return { ...state, chats: state.chats.filter(chat => chat.chat_id !== action.chatId), showChat: false }
+        return {
+          ...state,
+          chats: state.chats.filter(chat => chat.chat_id !== action.chatId),
+          showChat: false
+        }
       }
-      return { ...state, chats: state.chats.filter(chat => chat.chat_id !== action.chatId) }
+      return {
+        ...state,
+        chats: state.chats.filter(chat => chat.chat_id !== action.chatId)
+      }
     }
     case 'SHOW_CHAT': {
       return {
@@ -284,11 +294,21 @@ const reducer = (state = initialState, action) => {
       return { ...state, showReview: false, user: updatedUser }
     }
     case 'START_HANGOUT': {
+      const updatedOngoingHangouts = [
+        ...state.ongoingHangouts,
+        { hangout_id: action.hangoutId, participants: [action.participants[1]] }
+      ]
+      const updatedAcceptedHangouts = state.acceptedHangouts.filter(
+        hangout => hangout.email !== action.participants[1].email
+      )
       return {
         ...state,
-        ongoingHangouts: action.participants[1],
-        hangoutId: action.hangoutId
+        ongoingHangouts: updatedOngoingHangouts,
+        acceptedHangouts: updatedAcceptedHangouts
       }
+    }
+    case 'FINISH_HANGOUT': {
+      console.log('Finish hangout')
     }
     default: {
       return state

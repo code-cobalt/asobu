@@ -132,10 +132,20 @@ export const startHangout = participants => {
       query: print(startHangoutQuery),
       variables: { participants }
     })
-    dispatch({ type: 'START_HANGOUT', participants, hangoutId })
+    dispatch({
+      type: 'START_HANGOUT',
+      participants,
+      hangoutId: hangoutId.data.data.StartHangout
+    })
   }
 }
 
-/* export const finishHangout = hangoutId => {
-
-} */
+export const finishHangout = hangoutId => {
+  return async dispatch => {
+    await axios.post(`${apiUrl}/graphql`, {
+      query: print(finishHangoutQuery),
+      variables: { hangoutId }
+    })
+    dispatch({ type: 'FINISH_HANGOUT' })
+  }
+}
