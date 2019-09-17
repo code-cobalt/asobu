@@ -49,6 +49,7 @@ export const loginQuery = gql`
       }
       blocked_users
       blocked_by_users
+      equipped_badges
       imei
     }
   }
@@ -60,6 +61,7 @@ export const getUserLimitedQuery = gql`
       first_name
       email
       profile_photo
+      equipped_badges
     }
   }
 `
@@ -76,14 +78,7 @@ export const getUsersQuery = gql`
       interests
       exp
       lvl
-      stats {
-        funny
-        intellectual
-        fun
-        kind
-        therapeutic
-        interesting
-      }
+      equipped_badges
       imei
     }
   }
@@ -123,6 +118,7 @@ export const updateProfileQuery = gql`
         email
         profile_photo
       }
+      equipped_badges
       imei
     }
   }
