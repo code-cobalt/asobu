@@ -56,7 +56,7 @@ const initialState = {
   currentProfile: {},
   //I have to initialize an empty tags array so that Event form modals can render properly before any event has been selected
   currentEvent: { tags: [] },
-  isLoggedIn: true,
+  isLoggedIn: false,
   showLogin: true,
   showChat: false,
   currentChatMessages: [],
