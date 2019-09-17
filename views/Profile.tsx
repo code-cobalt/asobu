@@ -49,8 +49,10 @@ interface Props {
 
 class Profile extends Component<Props> {
 
-  render() {
-    console.log(this.props.user.id)
+
+
+  render() {  
+
     return (
       <SafeAreaView>
         <ScrollView>
@@ -102,30 +104,87 @@ class Profile extends Component<Props> {
             <View style={styles.all__badges}>
               <Text style={styles.info__title}>Your Badges</Text>
               <View style={styles.badge__container}>
+
                 <View style={styles.badge__category}>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/crown_badge.png')}/>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/crown_badge2.png')}/>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/crown_badge3.png')}/>
+                  <Image style={styles.noBadge} source={require('../assets/crown_badge.png')}/>
+                  <Image style={styles.noBadge} source={require('../assets/crown_badge2.png')}/>
+                  <Image style={styles.noBadge} source={require('../assets/crown_badge3.png')}/>
                 </View>
                 <View style={styles.badge__category}>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/kind_bronze.png')}/>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/kind_silver.png')}/>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/kind_gold.png')}/>
+
+                  {this.props.user.stats.kind >= 1 ?
+                  <Image style={styles.ownBadge} source={require('../assets/kind_bronze.png')}/>
+                  :
+                  <Image style={styles.noBadge} source={require('../assets/kind_bronze.png')}/>
+                  }
+                  {this.props.user.stats.kind >= 5 ?
+                  <Image style={styles.ownBadge} source={require('../assets/kind_silver.png')}/>
+                  :
+                  <Image style={styles.noBadge} source={require('../assets/kind_silver.png')}/>
+                  }
+                  {this.props.user.stats.kind >= 15 ?
+                  <Image style={styles.ownBadge} source={require('../assets/kind_gold.png')}/>
+                  :
+                  <Image style={styles.noBadge} source={require('../assets/kind_gold.png')}/>
+                  }
+
                 </View>
                 <View style={styles.badge__category}>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/funny_bronze.png')}/>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/funny_silver.png')}/>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/funny_gold.png')}/>
+
+                  {this.props.user.stats.funny >= 1 ?
+                  <Image style={styles.ownBadge} source={require('../assets/funny_bronze.png')}/>
+                  :
+                  <Image style={styles.noBadge} source={require('../assets/funny_bronze.png')}/>
+                  }
+                  {this.props.user.stats.funny >= 5 ?
+                  <Image style={styles.ownBadge} source={require('../assets/funny_silver.png')}/>
+                  :
+                  <Image style={styles.noBadge} source={require('../assets/funny_silver.png')}/>
+                  }
+                  {this.props.user.stats.funny >= 15 ?
+                  <Image style={styles.ownBadge} source={require('../assets/funny_gold.png')}/>
+                  :
+                  <Image style={styles.noBadge} source={require('../assets/funny_gold.png')}/>
+                  }
+           
                 </View>
                 <View style={styles.badge__category}>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/intellectual_bronze.png')}/>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/intellectual_silver.png')}/>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/intellectual_gold.png')}/>
+
+                  {this.props.user.stats.intellectual >= 1 ?
+                  <Image style={styles.ownBadge} source={require('../assets/intellectual_bronze.png')}/>
+                  :
+                  <Image style={styles.noBadge} source={require('../assets/intellectual_bronze.png')}/>
+                  }
+                  {this.props.user.stats.intellectual >= 5 ?
+                  <Image style={styles.ownBadge} source={require('../assets/intellectual_silver.png')}/>
+                  :
+                  <Image style={styles.noBadge} source={require('../assets/intellectual_silver.png')}/>
+                  }
+                  {this.props.user.stats.intellectual >= 15 ?
+                  <Image style={styles.ownBadge} source={require('../assets/intellectual_gold.png')}/>
+                  :
+                  <Image style={styles.noBadge} source={require('../assets/intellectual_gold.png')}/>
+                  }
+
                 </View>
                 <View style={styles.badge__category}>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/therapeutic_bronze.png')}/>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/therapeutic_silver.png')}/>
-                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/therapeutic_gold.png')}/>
+
+                  {this.props.user.stats.therapeutic >= 1 ?
+                  <Image style={styles.ownBadge} source={require('../assets/therapeutic_bronze.png')}/>
+                  :
+                  <Image style={styles.noBadge} source={require('../assets/therapeutic_bronze.png')}/>
+                  }
+                  {this.props.user.stats.therapeutic >= 5 ?
+                  <Image style={styles.ownBadge} source={require('../assets/therapeutic_silver.png')}/>
+                  :
+                  <Image style={styles.noBadge} source={require('../assets/therapeutic_silver.png')}/>
+                  }
+                  {this.props.user.stats.therapeutic >= 15 ?
+                  <Image style={styles.ownBadge} source={require('../assets/therapeutic_gold.png')}/>
+                  :
+                  <Image style={styles.noBadge} source={require('../assets/therapeutic_gold.png')}/>
+                  }
+              
                 </View>
               </View>
             </View>
@@ -138,6 +197,19 @@ class Profile extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  ownBadge: { 
+    marginRight: 25, 
+    marginLeft: 25, 
+    height: 40, 
+    width: 40 
+  },
+  noBadge: { 
+    opacity: 0.1, 
+    marginRight: 25, 
+    marginLeft: 25, 
+    height: 40, 
+    width: 40 
+  },
   edit__button: {
     alignItems: 'center',
     alignSelf: 'center',
