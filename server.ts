@@ -200,7 +200,6 @@ class QuizGame {
 const clients = new Clients()
 const activeClients = new ActiveClients()
 
-var HOST = location.origin.replace(/^http/, 'ws')
 const wss = new server('ws://asobu-staging.herokuapp.com')
 // const hangoutSocketServer = new server({ port: 3002 })
 
