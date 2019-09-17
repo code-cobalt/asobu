@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { startHangout, finishHangout } from '../src/actions/users'
+import Badges from './Badges'
 
 export const AcceptedHangouts = props => {
   return (
@@ -33,6 +34,9 @@ export const AcceptedHangouts = props => {
                   }}
                 >
                   <Text style={styles.user__name}>{hangout.first_name}</Text>
+                  <View>
+                    <Badges badges={hangout.equipped_badges} />
+                  </View>
                   <Button
                     title="Start Hangout"
                     onPress={() =>

@@ -1,17 +1,15 @@
 import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import ChatList from '../components/ChatList'
-import AnimatedChat from './AnimatedChat'
+import ChatModal from '../components/ChatModal'
 
-export default class Inbox extends Component {
-  render() {
-    return (
-      <View style={styles.events}>
-        <ChatList />
-        <AnimatedChat />
-      </View>
-    )
-  }
+const Inbox = props => {
+  return (
+    <View style={styles.events}>
+      <ChatList />
+      <ChatModal />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -20,3 +18,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   }
 })
+
+export default Inbox

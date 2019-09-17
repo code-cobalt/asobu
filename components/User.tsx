@@ -54,7 +54,8 @@ const User: React.FunctionComponent<Props> = props => {
               props.sendHangoutRequest(props.currentUserEmail, {
                 first_name: props.user.first_name,
                 email: props.user.email,
-                profile_photo: props.user.profile_photo
+                profile_photo: props.user.profile_photo,
+                equipped_badges: props.user.equipped_badges
               })
               props.socket.send(
                 `h0 ${props.currentUserEmail} ${props.user.email}`
