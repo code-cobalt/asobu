@@ -13,7 +13,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "postinstall": "yarn backend"
+    "postinstall": "yarn backend",
+    "build": "tsc"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.1",
