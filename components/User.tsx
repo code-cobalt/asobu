@@ -13,11 +13,17 @@ interface UserLimited {
   lvl: number
   interests: string[]
 }
+
+interface Socket {
+  send: Function
+}
+
 interface Props {
   user: UserLimited
   currentUserEmail: string
   sendHangoutRequest: Function
   showProfile: Function
+  socket: Socket
 }
 
 const User: React.FunctionComponent<Props> = props => {
@@ -45,13 +51,16 @@ const User: React.FunctionComponent<Props> = props => {
 
         </View>
         <TouchableOpacity style={styles.hangout__request} 
-            onPress={() =>
+            onPress={() => {
             props.sendHangoutRequest(props.currentUserEmail, {
               first_name: props.user.first_name,
               email: props.user.email,
               profile_photo: props.user.profile_photo
             })
-          }>
+            props.socket.send(
+              `h0 ${props.currentUserEmail} ${props.user.email}`
+            )
+            }}>
           <Text style={styles.hangout__text}>Hang!</Text>
         </TouchableOpacity>
     </TouchableOpacity>

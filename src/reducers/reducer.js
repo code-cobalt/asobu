@@ -5,48 +5,13 @@ const initialState = {
   receivedHangoutRequests: [],
   acceptedHangouts: [],
   ongoingHangouts: [],
-  user: {
-  //   accepted_hangouts: [],
-  //   blocked_by_users: [],
-  //   blocked_users: [],
-  //   chats: [
-  //      {
-  //       chat_id: 3,
-  //       participants: [
-  //          {
-  //           email: "jamesp@email.com",
-  //           first_name: "James",
-  //           profile_photo: "https://pm1.narvii.com/6434/94605250171379229064c93049e39ce310551346_hq.jpg",
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   email: "levans@email.com",
-  //   events: [
-  //      {
-  //       event_id: "1",
-  //       is_creator: false,
-  //     },
-  //   ],
-  //   exp: 23,
-  //   first_name: "Lily",
-  //   id: "5d7f3dc2f3c62f4e58498d5c",
-  //   imei: null,
-  //   interests: [],
-  //   last_name: "Evans",
-  //   lvl: 2,
-  //   ongoing_hangouts: [],
-  //   phone_number: "+447911654321",
-  //   profile_photo: "https://i.pinimg.com/originals/a6/f4/f0/a6f4f037f9207e4eb4ec5a7cedfd2914.jpg",
-  //   received_hangout_requests: [],
-  //   sent_hangout_requests: [],
-  },
-  // Go to Main.tsx and ChatInput.tsx to comment out socket.send if you want to use this dummy login data
+  user: {},
   allUsers: [],
   allEvents: [],
   chats: [],
   blockedUsers: [],
   blockedByUsers: [],
+  popupModal: false,
   showProfile: false,
   showEditProfileForm: false,
   showEvent: false,
@@ -61,7 +26,8 @@ const initialState = {
   showChat: false,
   currentChatMessages: [],
   currentChatId: 0,
-  hangoutId: ''
+  hangoutId: '',
+  userToReview: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -73,10 +39,12 @@ const reducer = (state = initialState, action) => {
       return { ...state, allUsers: action.allUsers }
     }
     case 'REMOVE_USER': {
-      return { ...state, allUsers: state.allUsers.filter(user => user.email !== action.userEmail) }
+      return {
+        ...state,
+        allUsers: state.allUsers.filter(user => user.email !== action.userEmail)
+      }
     }
     case 'SET_USER': {
-      console.log(action.user)
       return {
         ...state,
         user: action.user,
@@ -113,9 +81,16 @@ const reducer = (state = initialState, action) => {
     }
     case 'REMOVE_USER_CHAT': {
       if (state.showChat && state.currentChatId === action.chatId) {
-        return { ...state, chats: state.chats.filter(chat => chat.chat_id !== action.chatId), showChat: false }
+        return {
+          ...state,
+          chats: state.chats.filter(chat => chat.chat_id !== action.chatId),
+          showChat: false
+        }
       }
-      return { ...state, chats: state.chats.filter(chat => chat.chat_id !== action.chatId) }
+      return {
+        ...state,
+        chats: state.chats.filter(chat => chat.chat_id !== action.chatId)
+      }
     }
     case 'SHOW_CHAT': {
       return {
@@ -265,16 +240,19 @@ const reducer = (state = initialState, action) => {
         sentHangoutRequests: [...state.sentHangoutRequests, action.toUser]
       }
     }
-      console.log("INSIDE REDUCER")
-      console.log(state.user.first_name)
-      console.log(action.newChat)
+
     case 'ACCEPT_REQUEST': {
       // remove hangout request from receivedHangoutRequests in store, add new Chat to chats in store if one doesn't already exist, change active view to chats, add userlimited to accepted_hangouts
       const receivedHangoutRequests = state.receivedHangoutRequests.filter(
-        request => {
-          request.email !== action.fromUserEmail
-        }
+        request => request.email !== action.newChat.participants[0].email
       )
+      const sentHangoutRequests = state.sentHangoutRequests.filter(
+        request => request.email !== action.newChat.participants[0].email
+      )
+      const updatedAcceptedHangouts = [
+        ...state.acceptedHangouts,
+        action.newChat.participants[0]
+      ]
       let included = false
       for (const chat of state.chats) {
         if (chat.chat_id === action.newChat.chat_id) {
@@ -289,11 +267,24 @@ const reducer = (state = initialState, action) => {
       }
       return {
         ...state,
-        activeView: 'chats',
         receivedHangoutRequests,
+        sentHangoutRequests,
         chats,
-        acceptedHangouts: action.newChat.participants[0]
+        acceptedHangouts: updatedAcceptedHangouts
       }
+    }
+    case 'RECEIVE_REQUEST': {
+      return {
+        ...state,
+        receivedHangoutRequests: [
+          ...state.receivedHangoutRequests,
+          action.userLimited
+        ],
+        popupModal: true
+      }
+    }
+    case 'CLOSE_MAIN_MODAL': {
+      return { ...state, popupModal: false }
     }
     case 'DECLINE_REQUEST': {
       const receivedHangoutRequests = state.receivedHangoutRequests.filter(
@@ -324,10 +315,28 @@ const reducer = (state = initialState, action) => {
       return { ...state, showReview: false, user: updatedUser }
     }
     case 'START_HANGOUT': {
+      const updatedOngoingHangouts = [
+        ...state.ongoingHangouts,
+        { hangout_id: action.hangoutId, participants: [action.participants[1]] }
+      ]
+      const updatedAcceptedHangouts = state.acceptedHangouts.filter(
+        hangout => hangout.email !== action.participants[1].email
+      )
       return {
         ...state,
-        ongoingHangouts: action.participants[1],
-        hangoutId: action.hangoutId
+        ongoingHangouts: updatedOngoingHangouts,
+        acceptedHangouts: updatedAcceptedHangouts
+      }
+    }
+    case 'FINISH_HANGOUT': {
+      const updatedOngoingHangouts = state.ongoingHangouts.filter(
+        hangout => hangout.hangout_id !== action.hangoutId
+      )
+      return {
+        ...state,
+        ongoingHangouts: updatedOngoingHangouts,
+        userToReview: action.userToReview,
+        showReview: true
       }
     }
     default: {

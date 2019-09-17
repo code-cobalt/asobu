@@ -1,23 +1,44 @@
 import React, { Component } from 'react'
-import { Text, View, ScrollView, Image, TouchableOpacity, StyleSheet, Button } from 'react-native'
-import { connect } from "react-redux"
-import { startHangout } from "../src/actions/users"
+import {
+  Text,
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Button
+} from 'react-native'
+import { connect } from 'react-redux'
+import { startHangout, finishHangout } from '../src/actions/users'
 
 export const AcceptedHangouts = props => {
   return (
     <>
       <View style={{ flex: 1 }}>
-        <Text style={styles.title}>
-          Meeting up with
-        </Text>
+        <Text style={styles.title}>Meeting up with</Text>
         <ScrollView>
           {props.acceptedHangouts.map((hangout, index) => {
             return (
               <View style={styles.request} key={index}>
-                <Image source={{ uri: hangout.profile_photo }} style={styles.user__image} />
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flex: 1 }}>
+                <Image
+                  source={{ uri: hangout.profile_photo }}
+                  style={styles.user__image}
+                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flex: 1
+                  }}
+                >
                   <Text style={styles.user__name}>{hangout.first_name}</Text>
-                  <Button title="Start Hangout" onPress={() => props.startHangout([props.currentUserLimited, hangout])} />
+                  <Button
+                    title="Start Hangout"
+                    onPress={() =>
+                      props.startHangout([props.currentUserLimited, hangout])
+                    }
+                  />
                 </View>
               </View>
             )
@@ -25,17 +46,35 @@ export const AcceptedHangouts = props => {
         </ScrollView>
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={styles.title}>
-          Currently hanging out
-        </Text>
+        <Text style={styles.title}>Currently hanging out</Text>
         <ScrollView>
           {props.ongoingHangouts.map(hangout => {
             return (
-              <View style={styles.request} key={hangout.email}>
-                <Image source={{ uri: hangout.profile_photo }} style={styles.user__image} />
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flex: 1 }}>
-                  <Text style={styles.user__name}>{hangout.first_name}</Text>
-                  <Button title="Start Hangout" onPress={() => console.log("Stop hangout")} />
+              <View style={styles.request} key={hangout.participants[0].email}>
+                <Image
+                  source={{ uri: hangout.participants[0].profile_photo }}
+                  style={styles.user__image}
+                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flex: 1
+                  }}
+                >
+                  <Text style={styles.user__name}>
+                    {hangout.participants[0].first_name}
+                  </Text>
+                  <Button
+                    title="Stop Hangout"
+                    onPress={() =>
+                      props.finishHangout(
+                        hangout.hangout_id,
+                        hangout.participants[0].email
+                      )
+                    }
+                  />
                 </View>
               </View>
             )
@@ -95,11 +134,12 @@ const styles = StyleSheet.create({
     right: 0,
     position: 'absolute',
     bottom: 0
-  },
+  }
 })
 
 const mapStateToProps = state => {
   return {
+    user: state.user,
     acceptedHangouts: state.acceptedHangouts,
     ongoingHangouts: state.ongoingHangouts,
     currentUserLimited: {
@@ -111,8 +151,13 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    startHangout: (participants) => dispatch(startHangout(participants))
+    startHangout: participants => dispatch(startHangout(participants)),
+    finishHangout: (hangoutId, userToReview) =>
+      dispatch(finishHangout(hangoutId, userToReview))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AcceptedHangouts)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AcceptedHangouts)

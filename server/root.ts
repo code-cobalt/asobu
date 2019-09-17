@@ -32,6 +32,7 @@ interface UpdatedUser {
   phone_number: string
   profile_photo: string
   interests: string[]
+  equipped_badges: string[]
 }
 
 interface Stats {
@@ -44,9 +45,10 @@ interface Stats {
 }
 
 interface UserLimited {
-  first_name: String
-  email: String
-  profile_photo: String
+  first_name: string
+  email: string
+  profile_photo: string
+  equipped_badges: string[]
 }
 
 interface NewEvent {
@@ -314,7 +316,8 @@ const root = {
         ongoing_hangouts: [],
         pending_revies: [],
         blocked_users: [],
-        blocked_by_users: []
+        blocked_by_users: [],
+        equipped_badges: []
       })
       const hash = bcrypt.hashSync(userObj.password, 10)
       userObj.password_hash = hash
@@ -486,12 +489,14 @@ const root = {
       const fromUserLimited = {
         email: params.currentUserEmail,
         first_name: currentUser.first_name,
-        profile_photo: currentUser.profile_photo
+        profile_photo: currentUser.profile_photo,
+        equipped_badges: currentUser.equipped_badges
       }
       const toUserLimited = {
         email: params.toUserEmail,
         first_name: toUser.first_name,
-        profile_photo: toUser.profile_photo
+        profile_photo: toUser.profile_photo,
+        equipped_badges: toUser.equipped_badges
       }
       await User.updateOne(
         { email: params.currentUserEmail },
@@ -522,12 +527,14 @@ const root = {
       const fromUserLimited = {
         email: params.fromUserEmail,
         first_name: fromUser.first_name,
-        profile_photo: fromUser.profile_photo
+        profile_photo: fromUser.profile_photo,
+        equipped_badges: fromUser.equipped_badges
       }
       const toUserLimited = {
         email: params.currentUserEmail,
         first_name: currentUser.first_name,
-        profile_photo: currentUser.profile_photo
+        profile_photo: currentUser.profile_photo,
+        equipped_badges: currentUser.equipped_badges
       }
       if (existingChat) {
         //still remove hangout request if the users already know each other. just don't create a chat

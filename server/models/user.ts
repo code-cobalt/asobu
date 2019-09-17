@@ -49,7 +49,8 @@ const UserSchema = new mongoose.Schema({
     { first_name: String, email: String, profile_photo: String }
   ],
   blocked_users: [String],
-  blocked_by_users: [String]
+  blocked_by_users: [String],
+  equipped_badges: [String]
 })
 
 //separating list of users who a user has blocked and who a user has been blocked by will easily allow future functionality to unblock a user.

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { getChat, getUserChats } from '../src/actions/chats'
-import { getUsers } from '../src/actions/users'
+import { getUsers, getUserLimited } from '../src/actions/users'
 import Profile from './Profile'
 import Results from './Results'
 import Inbox from './Inbox'
@@ -15,11 +15,24 @@ interface Props {
   removeUser: Function
   removeUserChat: Function
   acceptHangoutRequest: Function
+  receiveHangoutRequest: Function
   context: Function
   getUsers: Function
   getChat: Function
   socket: WebSocket
-  blockedUsers: string[]
+  hiddenUsers: string[]
+  hangouts: [Hangout]
+}
+
+interface Hangout {
+  hangout_id: String
+  participants: [UserLimited]
+}
+
+interface UserLimited {
+  first_name: String
+  email: String
+  profile_photo: String
 }
 
 class Main extends Component<Props> {
@@ -27,7 +40,7 @@ class Main extends Component<Props> {
     this.props.socket.send(`l0 ${this.props.email}`)
     // comment out socket.send to use dummy data
     this.props.socket.onmessage = async event => {
-      console.log(`SERVER MESSAGE: ${event.data}`)
+      console.log(`FROM SERVER: ${event.data}`)
       const message = event.data.split(' ')
       //Heartbeat
       if (message[0] === 'p0') {
@@ -45,15 +58,27 @@ class Main extends Component<Props> {
         this.props.removeUser(message[1])
         this.props.removeUserChat(~~message[2])
       }
+      //Send Hangout Request
+      if (message[0] == 'h0') {
+        const newUserLimited = await getUserLimited(message[1])
+        this.props.receiveHangoutRequest(newUserLimited)
+      }
       //Accept Hangout Request
       if (message[0] === 'h1') {
-        const allChats = await getUserChats(this.props.email)
-        console.log(this.props.email)
-        console.log(allChats)
-        this.props.acceptHangoutRequest(allChats.pop())
+        const newChatMessages = await getUserChats(this.props.email)
+        const newChat = newChatMessages.pop()
+        this.props.acceptHangoutRequest(newChat)
+        Alert.alert(
+          `${message[2]} has accepted your hangout request!`,
+          'Visit chats to start talking!'
+        )
       }
     }
-    this.props.getUsers(this.props.email, this.props.blockedUsers)
+    this.props.getUsers(
+      this.props.email,
+      this.props.hiddenUsers,
+      this.props.hangouts
+    )
   }
 
   render() {
@@ -82,7 +107,15 @@ const mapStateToProps = state => {
     activeView: state.activeView,
     allUsers: state.allUsers,
     email: state.user.email,
-    blockedUsers: [...state.blockedUsers, ...state.blockedByUsers]
+    hiddenUsers: [
+      ...state.blockedUsers,
+      ...state.blockedByUsers,
+      ...state.user.received_hangout_requests.map(request => request.email),
+      ...state.user.accepted_hangouts.map(hangout => {
+        if (hangout.email) return hangout.email
+      })
+    ],
+    hangouts: state.ongoingHangouts
   }
 }
 
@@ -101,11 +134,20 @@ const mapDispatchToProps = dispatch => {
       })
     },
     getChat: chatId => dispatch(getChat(chatId)),
-    getUsers: (currentUserEmail, blockedUsers) =>
-      dispatch(getUsers(currentUserEmail, blockedUsers)),
-    removeUser: userEmail => { dispatch({ type: 'REMOVE_USER', userEmail }) },
-    removeUserChat: (chatId) => { dispatch({ type: 'REMOVE_USER_CHAT', chatId }) },
-    acceptHangoutRequest: (newChat) => { dispatch({ type: 'ACCEPT_REQUEST', newChat }) },
+    getUsers: (currentUserEmail, blockedUsers, hangouts) =>
+      dispatch(getUsers(currentUserEmail, blockedUsers, hangouts)),
+    removeUser: userEmail => {
+      dispatch({ type: 'REMOVE_USER', userEmail })
+    },
+    removeUserChat: chatId => {
+      dispatch({ type: 'REMOVE_USER_CHAT', chatId })
+    },
+    acceptHangoutRequest: newChat => {
+      dispatch({ type: 'ACCEPT_REQUEST', newChat })
+    },
+    receiveHangoutRequest: userLimited => {
+      dispatch({ type: 'RECEIVE_REQUEST', userLimited })
+    }
   }
 }
 

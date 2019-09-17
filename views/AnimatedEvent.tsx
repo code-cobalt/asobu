@@ -165,9 +165,10 @@ export class AnimatedEvent extends Component<Props> {
             </Text>
           </View>
           <View style={styles.button__block}>
+            {/* commenting this out for now until we decide to add some functionality
             <TouchableOpacity style={styles.event__button}>
               <Text style={styles.button__text}>Attendees</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             {rsvpButton}
             {editButton}
             {deleteButton}
