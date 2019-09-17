@@ -16,6 +16,14 @@ export const loginQuery = gql`
         event_id
         is_creator
       }
+      stats {
+        funny
+        fun
+        intellectual
+        interesting
+        kind
+        therapeutic
+      }
       chats {
         chat_id
         participants {
