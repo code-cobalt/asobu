@@ -51,10 +51,11 @@ export const getUserLimited = async userEmail => {
 }
 
 export const getUsers = (currentUserEmail, [...hiddenUsers], [...hangouts]) => {
-  //blockedUsers is an array of all the user emails who the current user has blocked or been blocked by.
+  //hiddenUsers is an array of all the user emails who the current user has blocked or been blocked by or has already accepted/received hangouts with.
   //don't return any users in this array
   //create a hashmap to reduce time complexity
   const hangoutUsers = []
+  //get nested emails out of hangout objects and add them to users who should be hidden from results
   for (const hangout of hangouts) {
     hangout.participants.forEach(participant =>
       hangoutUsers.push(participant.email)
