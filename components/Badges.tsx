@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, Image, StyleSheet, TextInput } from "react-native"
+import { join } from 'path'
 
 export default class Badges extends Component {
   render() {
@@ -10,14 +11,29 @@ export default class Badges extends Component {
     //   )
     // })
     return (
-      <>
-        <Image source={require("../assets/scroll_gold.png")} style={{ height: 40, width: 40 }}></Image>
-        <Image source={require("../assets/leaf_gold.png")} style={{ height: 40, width: 40 }}></Image>
-        <Image source={require("../assets/crown_badge3.png")} style={{ height: 40, width: 40 }}></Image>
-      </>
+      <View style={styles.badges}>
+        <View style={styles.badges__equipped}>
+          <Image source={require("../assets/funny_gold.png")} style={{ height: 40, width: 40 }}></Image>
+        </View>
+        <View style={styles.badges__equipped}>
+          <Image source={require("../assets/socket.png")} style={{ height: 40, width: 40 }}></Image>
+        </View>
+        <View style={styles.badges__equipped}>
+          <Image source={require("../assets/socket.png")} style={{ height: 40, width: 40 }}></Image>
+        </View>
+      </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  badges: {
+    flexDirection: 'row',
+  },
+  badges__equipped: {
+    margin: 5
+  }
+})
 
 
 //style={user.hasBadge ? styles.active : styles.inactive}
