@@ -15,6 +15,7 @@ import {
   acceptHangoutRequest,
   declineHangoutRequest
 } from '../src/actions/hangouts'
+import Badges from './Badges'
 
 const PendingHangouts = props => {
   return (
@@ -74,6 +75,9 @@ const PendingHangouts = props => {
                   >
                     <Ionicons name="md-close" size={32} color="white" />
                   </TouchableOpacity>
+                  <View>
+                    <Badges badges={request.equipped_badges} />
+                  </View>
                 </View>
               </View>
             )
