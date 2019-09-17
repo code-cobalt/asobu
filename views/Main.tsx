@@ -47,12 +47,8 @@ class Main extends Component<Props> {
       }
       //Accept Hangout Request
       if (message[0] === 'h1') {
-        console.log('websocket object: ', message)
-        console.log('inside web socket listener in Main.tsx')
-        console.log('newChatId: ', message[2])
-        const newChat = await fetchChat(message[2])
-        console.log('newChat: ', newChat)
-        this.props.acceptHangoutRequest(newChat)
+        const newChatMessages = await getUserChats(this.props.email)
+        this.props.acceptHangoutRequest(newChatMessages.pop())
       }
     }
     this.props.getUsers(this.props.email, this.props.blockedUsers)
