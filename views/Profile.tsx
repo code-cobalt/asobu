@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native'
 import { Divider } from 'react-native-elements'
 import { connect } from 'react-redux'
 import Badges from './../components/Badges'
@@ -15,6 +15,16 @@ interface Event {
   event_id: string
   is_creator: boolean
 }
+
+interface Stats {
+  kind: number
+  interesting: number
+  fun: number
+  funny: number
+  therapeutic: number
+  intellectual: number
+}
+
 interface User {
   id: string
   first_name: string
@@ -29,6 +39,7 @@ interface User {
   sent_hangout_requests: Array<UserLimited>
   received_hangout_requests: Array<UserLimited>
   imei: string
+  stats: Stats
 }
 
 interface Props {
@@ -37,10 +48,11 @@ interface Props {
 }
 
 class Profile extends Component<Props> {
+
   render() {
     console.log(this.props.user.id)
     return (
-      <View style={styles.profile}>
+      <SafeAreaView>
         <ScrollView>
           <View style={styles.profile__header}>
             <TouchableOpacity style={styles.photo_container}>
@@ -88,32 +100,44 @@ class Profile extends Component<Props> {
             </View>
             <Divider style={styles.divider} />
             <View style={styles.all__badges}>
-              <Text style={styles.info__title}>All Badges</Text>
+              <Text style={styles.info__title}>Your Badges</Text>
               <View style={styles.badge__container}>
-                <Badges />
+                <View style={styles.badge__category}>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/crown_badge.png')}/>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/crown_badge2.png')}/>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/crown_badge3.png')}/>
+                </View>
+                <View style={styles.badge__category}>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/kind_bronze.png')}/>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/kind_silver.png')}/>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/kind_gold.png')}/>
+                </View>
+                <View style={styles.badge__category}>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/funny_bronze.png')}/>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/funny_silver.png')}/>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/funny_gold.png')}/>
+                </View>
+                <View style={styles.badge__category}>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/intellectual_bronze.png')}/>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/intellectual_silver.png')}/>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/intellectual_gold.png')}/>
+                </View>
+                <View style={styles.badge__category}>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/therapeutic_bronze.png')}/>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/therapeutic_silver.png')}/>
+                  <Image style={{ marginRight: 25, marginLeft: 25, height: 40, width: 40 }} source={require('../assets/therapeutic_gold.png')}/>
+                </View>
               </View>
             </View>
           </View>
-          {/* <View style={styles.button__container}>
-            <TouchableOpacity style={styles.edit__button}>
-              <Text style={styles.button__text}>Sent Hangout Requests</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.edit__button}>
-              <Text style={styles.button__text}>Received Hangout Requests</Text>
-            </TouchableOpacity>
-          </View> */}
         </ScrollView>
         <EditProfile />
-      </View>
+      </SafeAreaView>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  // profile: {
-  //   flex: 1,
-  //   marginTop: 20
-  // },
   edit__button: {
     alignItems: 'center',
     alignSelf: 'center',
@@ -207,8 +231,18 @@ const styles = StyleSheet.create({
     marginTop: 25
   },
   badge__container: {
+    flexDirection: 'column',
+    marginTop: 25,
+    alignItems: 'center',
+    backgroundColor: '#bfc0bd',
+    paddingTop: 25,
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 5
+  },
+  badge__category: {
     flexDirection: 'row',
-    marginTop: 25
+    marginBottom: 25
   },
   button__container: {
     flexDirection: "row",
