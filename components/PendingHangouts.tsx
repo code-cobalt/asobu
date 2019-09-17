@@ -1,8 +1,19 @@
 import React, { Component } from 'react'
-import { Text, View, ScrollView, Image, TouchableOpacity, Button, StyleSheet } from 'react-native'
+import {
+  Text,
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Button,
+  StyleSheet
+} from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { connect } from "react-redux"
-import { acceptHangoutRequest, declineHangoutRequest } from '../src/actions/hangouts'
+import { connect } from 'react-redux'
+import {
+  acceptHangoutRequest,
+  declineHangoutRequest
+} from '../src/actions/hangouts'
 
 const PendingHangouts = props => {
   return (
@@ -27,19 +38,22 @@ const PendingHangouts = props => {
                     flex: 1
                   }}
                 >
-                  <Text style={styles.user__name}>
-                    {request.first_name}
-                  </Text>
+                  <Text style={styles.user__name}>{request.first_name}</Text>
                   <TouchableOpacity
-                    onPress={() => {
-                      props.acceptHangoutRequest(
+                    onPress={async () => {
+                      const newChat = await acceptHangoutRequest(
                         props.currentUserEmail,
                         request.email
                       )
-                      props.socket.send(`h1 ${props.currentUserEmail} ${request.email}`)
-                    }
-
-                    }
+                      props.dispatchHangoutRequest(newChat)
+                      setTimeout(
+                        () =>
+                          props.socket.send(
+                            `h1 ${props.currentUserEmail} ${request.email}`
+                          ),
+                        5000
+                      )
+                    }}
                     style={styles.accept__button}
                   >
                     <Ionicons name="md-checkmark" size={32} color="white" />
@@ -114,21 +128,24 @@ const styles = StyleSheet.create({
     right: 0,
     position: 'absolute',
     bottom: 0
-  },
+  }
 })
 
 const mapStateToProps = state => {
   return {
     receivedHangoutRequests: state.receivedHangoutRequests,
     currentUserEmail: state.user.email,
+    currentUserFirstName: state.user.first_name,
+    curentUserProfilePhoto: state.user.profile_photo,
     currentProfile: state.currentProfile,
     showProfile: state.showProfile
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
-    acceptHangoutRequest: (currentUserEmail, fromUserEmail) =>
-      dispatch(acceptHangoutRequest(currentUserEmail, fromUserEmail)),
+    dispatchHangoutRequest: newChat => {
+      dispatch({ type: 'ACCEPT_REQUEST', newChat })
+    },
     declineHangoutRequest: (currentUserEmail, fromUserEmail) =>
       dispatch(declineHangoutRequest(currentUserEmail, fromUserEmail)),
     closeProfile: () => {
@@ -137,4 +154,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PendingHangouts)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PendingHangouts)
