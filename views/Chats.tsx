@@ -1,18 +1,18 @@
-import { View, StyleSheet } from 'react-native'
+import { SafeAreaView, View, StyleSheet } from 'react-native'
 import ChatList from '../components/ChatList'
 
 const Chats = () => {
   return (
-    <View style={styles.events}>
+    <SafeAreaView style={styles.events}>
       <ChatList />
-    </View>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   events: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   }
 })
 
