@@ -1,7 +1,11 @@
 import axios from 'axios'
 import { apiUrl } from '../../environment.js'
 import { print } from 'graphql'
-import { getChatQuery, getUserChatsQuery, createMessageQuery } from '../queries/chats'
+import {
+  getChatQuery,
+  getUserChatsQuery,
+  createMessageQuery
+} from '../queries/chats'
 
 export const getChat = chatId => {
   return async dispatch => {
