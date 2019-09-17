@@ -53,16 +53,16 @@ mongoose.connect(process.env.DB_URL, {
 const db = mongoose.connection
 db.once('open', () => console.log('Connected to DB'))
 
-const config = {
-  database: process.env.DB_URL,
-  dropDatabase: true
-}
+// const config = {
+//   database: process.env.DB_URL,
+//   dropDatabase: true
+// }
 
 // **DO NOT DELETE**
 // NOTE: To avoid overages on our MongoDB/Cloudinary, please refrain from
 // seeding, querying, and uploading too often!
-const seeder = new Seeder(config)
-const collections = seeder.readCollectionsFromPath(path.resolve('./data'))
+// const seeder = new Seeder(config)
+// const collections = seeder.readCollectionsFromPath(path.resolve('./data'))
 
 // seeder
 //   .import(collections)
@@ -216,10 +216,10 @@ const quizGames = new QuizGames()
 const wss = new server({ port: 3001 })
 const hangoutSocketServer = new server({ port: 3002 })
 
-wss.on('connection', (ws) => {
-  console.log("CONNECTED")
-  ws.on('message', (msg) => {
-    console.log(msg)
+wss.on('connection', ws => {
+  console.log('CONNECTED')
+  ws.on('message', msg => {
+    console.log('FROM CLIENT: ', msg)
     const message = msg.split(' ')
     //[0] - Login Code, [1] - User Email
     if (message[0] === 'l0') {
@@ -245,7 +245,9 @@ wss.on('connection', (ws) => {
       // if (clients.clientList[message[1]]) {
       //   clients.clientList[message[1]].heartbeat = true
       // }
-      if (clients.clientList[message[1]]) { clients.clientList[message[1]].heartbeat = true }
+      if (clients.clientList[message[1]]) {
+        clients.clientList[message[1]].heartbeat = true
+      }
     }
     //[0] - Message Code, [1] - Target Email, [2] - Chat ID
     if (message[0] === 'm0') {
@@ -254,7 +256,8 @@ wss.on('connection', (ws) => {
       //     clients.clientList[client].socket.send(`m0 ${message[2]}`)
       //   }
       // }
-      if (clients.clientList[message[1]]) clients.clientList[message[1]].socket.send(`m0 ${message[2]}`)
+      if (clients.clientList[message[1]])
+        clients.clientList[message[1]].socket.send(`m0 ${message[2]}`)
     }
     //[0] - Hangout Request Code, [1] - Sender Email, [2] - Target Email
     if (message[0] === 'h0') {
@@ -263,11 +266,15 @@ wss.on('connection', (ws) => {
       //     clients.clientList[client].socket.send(`h0 ${message[1]}`)
       //   }
       // }
-      if (clients.clientList[message[2]]) clients.clientList[message[2]].socket.send(`h0 ${message[1]}`)
+      if (clients.clientList[message[2]])
+        clients.clientList[message[2]].socket.send(`h0 ${message[1]}`)
     }
-    //[0] - Hangout Accept Code, [1] - Accepting Email, [2] - Target Email
+    //[0] - Hangout Accept Code, [1] - Accepting Email, [2] - Target Email, [3] - Chat ID
     if (message[0] === 'h1') {
-      if (clients.clientList[message[2]]) clients.clientList[message[2]].socket.send(`h1 ${message[1]}`)
+      if (clients.clientList[message[2]])
+        clients.clientList[message[2]].socket.send(
+          `h1 ${message[1]} ${message[3]}`
+        )
     }
     //[0] - Block Code, [1] - Requesting Email, [2] - Target Email, [3] - Chat ID
     if (message[0] === 'b0') {
@@ -276,17 +283,16 @@ wss.on('connection', (ws) => {
       //     clients.clientList[client].socket.send(`b0 ${message[1]} ${message[3]}`)
       //   }
       // }
-      if (clients.clientList[message[2]]) clients.clientList[message[2]].socket.send(`b0 ${message[1]} ${message[3]}`)
+      if (clients.clientList[message[2]])
+        clients.clientList[message[2]].socket.send(`b0 ${message[1]}`)
     }
   })
-  ws.on('close', (event) => {
-
-  })
+  ws.on('close', event => {})
 })
 
-hangoutSocketServer.on('connection', (ws) => {
+hangoutSocketServer.on('connection', ws => {
   console.log('USER ACTIVE')
-  ws.on('message', (msg) => {
+  ws.on('message', msg => {
     console.log(msg)
     const message = msg.split(' ')
     let newClient = new Client(message[1], ws)
@@ -331,9 +337,7 @@ hangoutSocketServer.on('connection', (ws) => {
       //game quiz finished
     }
   })
-  ws.on('close', (event) => {
-
-  })
+  ws.on('close', event => {})
 })
 
 app.listen(port, () => console.log(`Listening on ${port}`))
