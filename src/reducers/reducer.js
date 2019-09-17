@@ -26,7 +26,8 @@ const initialState = {
   showChat: false,
   currentChatMessages: [],
   currentChatId: 0,
-  hangoutId: ''
+  hangoutId: '',
+  userToReview: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -248,6 +249,10 @@ const reducer = (state = initialState, action) => {
       const sentHangoutRequests = state.sentHangoutRequests.filter(
         request => request.email !== action.newChat.participants[0].email
       )
+      const updatedAcceptedHangouts = [
+        ...state.acceptedHangouts,
+        action.newChat.participants[0]
+      ]
       let included = false
       for (const chat of state.chats) {
         if (chat.chat_id === action.newChat.chat_id) {
@@ -265,7 +270,7 @@ const reducer = (state = initialState, action) => {
         receivedHangoutRequests,
         sentHangoutRequests,
         chats,
-        acceptedHangouts: action.newChat.participants[0]
+        acceptedHangouts: updatedAcceptedHangouts
       }
     }
     case 'RECEIVE_REQUEST': {
@@ -310,10 +315,28 @@ const reducer = (state = initialState, action) => {
       return { ...state, showReview: false, user: updatedUser }
     }
     case 'START_HANGOUT': {
+      const updatedOngoingHangouts = [
+        ...state.ongoingHangouts,
+        { hangout_id: action.hangoutId, participants: [action.participants[1]] }
+      ]
+      const updatedAcceptedHangouts = state.acceptedHangouts.filter(
+        hangout => hangout.email !== action.participants[1].email
+      )
       return {
         ...state,
-        ongoingHangouts: action.participants[1],
-        hangoutId: action.hangoutId
+        ongoingHangouts: updatedOngoingHangouts,
+        acceptedHangouts: updatedAcceptedHangouts
+      }
+    }
+    case 'FINISH_HANGOUT': {
+      const updatedOngoingHangouts = state.ongoingHangouts.filter(
+        hangout => hangout.hangout_id !== action.hangoutId
+      )
+      return {
+        ...state,
+        ongoingHangouts: updatedOngoingHangouts,
+        userToReview: action.userToReview,
+        showReview: true
       }
     }
     default: {
