@@ -111,6 +111,7 @@ export const reviewUser = async (
       newStats
     }
   })
+  console.log('After review')
 }
 
 export const addExp = (userEmail, points) => {
