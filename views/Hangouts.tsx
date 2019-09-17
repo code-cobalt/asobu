@@ -21,6 +21,7 @@ import {
   acceptHangoutRequest,
   declineHangoutRequest
 } from '../src/actions/hangouts'
+import { SocketContext } from '../components/SocketProvider'
 
 interface UserLimited {
   first_name: string
@@ -83,10 +84,10 @@ class Hangouts extends React.Component<Props> {
             />
           </View>
           {this.state.visibleHangout === 'pending' ? (
-            <PendingHangouts />
+            <SocketContext.Consumer>{socket => (<PendingHangouts socket={socket} />)}</SocketContext.Consumer>
           ) : (
-            <AcceptedHangouts />
-          )}
+              <AcceptedHangouts />
+            )}
           <View>
             <Button
               title="Close"

@@ -31,11 +31,14 @@ const PendingHangouts = props => {
                     {request.first_name}
                   </Text>
                   <TouchableOpacity
-                    onPress={() =>
+                    onPress={() => {
                       props.acceptHangoutRequest(
                         props.currentUserEmail,
                         request.email
                       )
+                      props.socket.send(`h1 ${props.currentUserEmail} ${request.email}`)
+                    }
+
                     }
                     style={styles.accept__button}
                   >
