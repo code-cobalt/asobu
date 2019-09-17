@@ -183,6 +183,8 @@ const schema = buildSchema(`
         Events: [Event]
         Event(eventId: String!): Event
         Chat(chatId: Int!): Chat
+        Hangouts: [Hangout]
+        Hangout(hangoutId: String!): Hangout
     }
 
     type Mutation {
@@ -198,7 +200,7 @@ const schema = buildSchema(`
         CreateMessage(newMessage: NewMessage!): Message
         AttendEvent(eventId: String!, user: UserLimitedInput!): String
         UnattendEvent(eventId: String!, userEmail: String!): String
-        ReviewUser(currentUserEmail: String!, reviewedUserEmail: String!, newStats: StatsInput!): String
+        ReviewUser(currentUserEmail: String!, reviewedUserEmail: String!, newStats: StatsInput!): Stats
         AddExp(userEmail: String!, points: Int): Int
         SendHangoutRequest(currentUserEmail: String!, toUserEmail: String!): String
         AcceptHangoutRequest(currentUserEmail: String!, fromUserEmail: String!): UserChat
