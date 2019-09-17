@@ -44,7 +44,6 @@ const reducer = (state = initialState, action) => {
       }
     }
     case 'SET_USER': {
-      console.log(action.user)
       return {
         ...state,
         user: action.user,
@@ -266,7 +265,6 @@ const reducer = (state = initialState, action) => {
       }
       return {
         ...state,
-        activeView: 'chats',
         receivedHangoutRequests,
         chats,
         acceptedHangouts: updatedAcceptedHangouts
