@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, ScrollView, Button } from 'react-native'
 import Modal from 'react-native-modal'
-import ReviewCounter from "./ReviewCounter"
-import { connect } from "react-redux"
-import { reviewUser, addExp } from "../src/actions/users"
+import ReviewCounter from './ReviewCounter'
+import { connect } from 'react-redux'
+import { reviewUser, addExp } from '../src/actions/users'
 
 interface State {
-  totalPoints: number,
-  funny: number,
-  intellectual: number,
-  fun: number,
-  kind: number,
-  therapeutic: number,
+  totalPoints: number
+  funny: number
+  intellectual: number
+  fun: number
+  kind: number
+  therapeutic: number
   interesting: number
 }
 
@@ -32,10 +32,16 @@ class Review extends Component<Props, State> {
   }
 
   onChange = (name, action) => {
-    if (action === "increment" && this.state.totalPoints !== 0) {
-      this.setState({ [name]: this.state[name] + 1, totalPoints: this.state.totalPoints - 1 })
-    } else if (action === "decrement" && this.state[name] > 0) {
-      this.setState({ [name]: this.state[name] - 1, totalPoints: this.state.totalPoints + 1 })
+    if (action === 'increment' && this.state.totalPoints !== 0) {
+      this.setState({
+        [name]: this.state[name] + 1,
+        totalPoints: this.state.totalPoints - 1
+      })
+    } else if (action === 'decrement' && this.state[name] > 0) {
+      this.setState({
+        [name]: this.state[name] - 1,
+        totalPoints: this.state.totalPoints + 1
+      })
     }
   }
 
@@ -48,11 +54,12 @@ class Review extends Component<Props, State> {
       therapeutic: this.state.therapeutic,
       interesting: this.state.interesting
     }
-    reviewUser("levans@email.com", "jamesp@email.com", stats)
-    this.props.addExp("levans@email.com", 40)
+    reviewUser('levans@email.com', 'jamesp@email.com', stats)
+    this.props.addExp('levans@email.com', 40)
   }
 
   render() {
+    console.log(this.props.userToReview)
     return (
       <Modal
         isVisible={this.props.showReview}
@@ -61,13 +68,45 @@ class Review extends Component<Props, State> {
         backdropOpacity={0.85}
         style={styles.modal}
       >
-        <Text style={styles.review__title}>You have {this.state.totalPoints} points left</Text>
-        <ReviewCounter value={this.state.funny} onChange={this.onChange} name={"funny"} label={"Funny"} />
-        <ReviewCounter value={this.state.intellectual} onChange={this.onChange} name={"intellectual"} label={"Intellectual"} />
-        <ReviewCounter value={this.state.fun} onChange={this.onChange} name={"fun"} label={"Fun"} />
-        <ReviewCounter value={this.state.kind} onChange={this.onChange} name={"kind"} label={"Kind"} />
-        <ReviewCounter value={this.state.therapeutic} onChange={this.onChange} name={"therapeutic"} label={"Therapeutic"} />
-        <ReviewCounter value={this.state.interesting} onChange={this.onChange} name={"interesting"} label={"Interesting"} />
+        <Text style={styles.review__title}>
+          You have {this.state.totalPoints} points left
+        </Text>
+        <ReviewCounter
+          value={this.state.funny}
+          onChange={this.onChange}
+          name={'funny'}
+          label={'Funny'}
+        />
+        <ReviewCounter
+          value={this.state.intellectual}
+          onChange={this.onChange}
+          name={'intellectual'}
+          label={'Intellectual'}
+        />
+        <ReviewCounter
+          value={this.state.fun}
+          onChange={this.onChange}
+          name={'fun'}
+          label={'Fun'}
+        />
+        <ReviewCounter
+          value={this.state.kind}
+          onChange={this.onChange}
+          name={'kind'}
+          label={'Kind'}
+        />
+        <ReviewCounter
+          value={this.state.therapeutic}
+          onChange={this.onChange}
+          name={'therapeutic'}
+          label={'Therapeutic'}
+        />
+        <ReviewCounter
+          value={this.state.interesting}
+          onChange={this.onChange}
+          name={'interesting'}
+          label={'Interesting'}
+        />
         <Button onPress={() => this.reviewUser()} title="Review"></Button>
       </Modal>
     )
@@ -78,10 +117,9 @@ const styles = StyleSheet.create({
   modal: {
     flex: 1,
     textAlign: 'center'
-
   },
   review__title: {
-    color: "#fff"
+    color: '#fff'
   },
   review__container: {
     flex: 1
@@ -90,7 +128,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    showReview: state.showReview
+    showReview: state.showReview,
+    userToReview: state.userToReview
   }
 }
 
@@ -100,4 +139,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Review)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Review)
