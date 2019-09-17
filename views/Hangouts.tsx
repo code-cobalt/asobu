@@ -17,6 +17,7 @@ import UserModal from '../components/UserModal'
 import PendingHangouts from '../components/PendingHangouts'
 import AcceptedHangouts from '../components/AcceptedHangouts'
 import SwitchSelector from 'react-native-switch-selector'
+import Review from '../components/Review'
 import {
   acceptHangoutRequest,
   declineHangoutRequest
@@ -84,10 +85,12 @@ class Hangouts extends React.Component<Props> {
             />
           </View>
           {this.state.visibleHangout === 'pending' ? (
-            <SocketContext.Consumer>{socket => (<PendingHangouts socket={socket} />)}</SocketContext.Consumer>
+            <SocketContext.Consumer>
+              {socket => <PendingHangouts socket={socket} />}
+            </SocketContext.Consumer>
           ) : (
-              <AcceptedHangouts />
-            )}
+            <AcceptedHangouts />
+          )}
           <View>
             <Button
               title="Close"
@@ -96,6 +99,7 @@ class Hangouts extends React.Component<Props> {
           </View>
         </Modal>
         <UserModal />
+        <Review />
       </View>
     )
   }
