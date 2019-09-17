@@ -11,6 +11,7 @@ const initialState = {
   chats: [],
   blockedUsers: [],
   blockedByUsers: [],
+  popupModal: false,
   showProfile: false,
   showEditProfileForm: false,
   showEvent: false,
@@ -242,9 +243,10 @@ const reducer = (state = initialState, action) => {
     case 'ACCEPT_REQUEST': {
       // remove hangout request from receivedHangoutRequests in store, add new Chat to chats in store if one doesn't already exist, change active view to chats, add userlimited to accepted_hangouts
       const receivedHangoutRequests = state.receivedHangoutRequests.filter(
-        request => {
-          request.email !== action.fromUserEmail
-        }
+        request => request.email !== action.newChat.participants[0].email
+      )
+      const sentHangoutRequests = state.sentHangoutRequests.filter(
+        request => request.email !== action.newChat.participants[0].email
       )
       let included = false
       for (const chat of state.chats) {
@@ -261,9 +263,23 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         receivedHangoutRequests,
+        sentHangoutRequests,
         chats,
         acceptedHangouts: action.newChat.participants[0]
       }
+    }
+    case 'RECEIVE_REQUEST': {
+      return {
+        ...state,
+        receivedHangoutRequests: [
+          ...state.receivedHangoutRequests,
+          action.userLimited
+        ],
+        popupModal: true
+      }
+    }
+    case 'CLOSE_MAIN_MODAL': {
+      return { ...state, popupModal: false }
     }
     case 'DECLINE_REQUEST': {
       const receivedHangoutRequests = state.receivedHangoutRequests.filter(
