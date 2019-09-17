@@ -151,7 +151,14 @@ export const reviewUserQuery = gql`
       currentUserEmail: $currentUserEmail
       reviewedUserEmail: $reviewedUserEmail
       newStats: $newStats
-    )
+    ) {
+      funny
+      intellectual
+      fun
+      kind
+      therapeutic
+      interesting
+    }
   }
 `
 
