@@ -140,12 +140,12 @@ export const startHangout = participants => {
   }
 }
 
-export const finishHangout = hangoutId => {
+export const finishHangout = (hangoutId, userToReview) => {
   return async dispatch => {
     await axios.post(`${apiUrl}/graphql`, {
       query: print(finishHangoutQuery),
       variables: { hangoutId }
     })
-    dispatch({ type: 'FINISH_HANGOUT' })
+    dispatch({ type: 'FINISH_HANGOUT', hangoutId, userToReview })
   }
 }
