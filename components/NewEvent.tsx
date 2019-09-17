@@ -5,7 +5,9 @@ import {
   View,
   Text,
   TextInput,
-  ScrollView
+  ScrollView,
+  ImageBackground,
+  TouchableOpacity
 } from 'react-native'
 import ModalDropdown from 'react-native-modal-dropdown'
 import DateTimePicker from 'react-native-modal-datetime-picker'
@@ -108,9 +110,12 @@ class NewEvent extends React.Component<Props, State> {
         animationIn="slideInUp"
         animationOut="slideOutDown"
         backdropOpacity={1}
-        backdropColor="white"
+        backdropColor="black"
+        style={styles.modal}
       >
         <ScrollView contentContainerStyle={styles.newEvent}>
+        <ImageBackground style={styles.imageBackground} source={require("../assets/login.jpg")}>
+
           <View style={styles.text__formgroup}>
             <Text style={styles.input__text}>Name your Event!</Text>
             <TextInput
@@ -132,6 +137,8 @@ class NewEvent extends React.Component<Props, State> {
             />
             <Text style={styles.input__text}>Tell us about it!</Text>
             <TextInput
+              multiline={true}
+              numberOfLines={5}
               style={styles.event__input}
               onChangeText={text =>
                 this.setState({
@@ -139,8 +146,10 @@ class NewEvent extends React.Component<Props, State> {
                 })
               }
             />
-            <Text>Attendee Limit</Text>
             <ModalDropdown
+              defaultValue="Guest Limit"
+              textStyle={styles.modal__dropdown__text}
+              style={styles.modal__dropdown}
               options={Array.from(Array(101).keys()).slice(1)}
               onSelect={selection =>
                 this.setState({
@@ -148,13 +157,15 @@ class NewEvent extends React.Component<Props, State> {
                 })
               }
             />
-            <Button
-              title="Select Start"
+            <TouchableOpacity
+              style={styles.modal__dropdown}
               onPress={() => this.setState({ showStartDate: true })}
-            />
-            {this.state.newEvent.start && (
-              <Text>{moment(this.state.newEvent.start).format('LLL')}</Text>
-            )}
+            >
+              <Text style={styles.input__text}>Start Date</Text>
+              {this.state.newEvent.start && (
+                <Text>{moment(this.state.newEvent.start).format('LLL')}</Text>
+              )}
+            </TouchableOpacity>
             <DateTimePicker
               isVisible={this.state.showStartDate}
               mode="datetime"
@@ -167,13 +178,15 @@ class NewEvent extends React.Component<Props, State> {
               }
               onCancel={() => this.setState({ showStartDate: false })}
             />
-            <Button
-              title="Select End"
+            <TouchableOpacity
+              style={styles.modal__dropdown}
               onPress={() => this.setState({ showEndDate: true })}
-            />
-            {this.state.newEvent.end && (
-              <Text>{moment(this.state.newEvent.end).format('LLL')}</Text>
-            )}
+            >
+              <Text style={styles.input__text}>End Date</Text>
+              {this.state.newEvent.end && (
+                <Text>{moment(this.state.newEvent.end).format('LLL')}</Text>
+              )}
+            </TouchableOpacity>
             <DateTimePicker
               isVisible={this.state.showEndDate}
               mode="datetime"
@@ -186,27 +199,35 @@ class NewEvent extends React.Component<Props, State> {
               }
               onCancel={() => this.setState({ showEndDate: false })}
             />
-            <Text>Cover Photo</Text>
-            <Button title="Upload Photo" onPress={this.handleUpload} />
-            <Text>Tags</Text>
+            <TouchableOpacity style={styles.modal__dropdown} onPress={this.handleUpload} >
+              <Text style={styles.input__text}>Upload Photo</Text>
+            </TouchableOpacity>
             {this.state.newEvent.tags.map(tag => (
               <Text>
                 {tag} <Text onPress={() => this.removeTag(tag)}>delete</Text>
               </Text>
             ))}
             <ModalDropdown
+              defaultValue="Tags"
               options={this.state.tagOptions}
               onSelect={(index, value) => this.addTag(value)}
+              textStyle={styles.modal__dropdown__text}
+              style={styles.modal__dropdown}
             />
-            <Button
-              title="Submit"
+            <TouchableOpacity
+              style={styles.newEvent__button}
               onPress={() => this.props.createEvent(this.state.newEvent)}
-            />
-            <Button
-              title="Cancel"
+            >
+              <Text style={styles.input__text}>Submit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.newEvent__button}  
               onPress={() => this.props.closeNewEventForm()}
-            />
+            >
+              <Text style={styles.input__text}>Cancel</Text>
+            </TouchableOpacity>
           </View>
+          </ImageBackground>
         </ScrollView>
       </Modal>
     )
@@ -214,16 +235,28 @@ class NewEvent extends React.Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
+  modal: {
+    flex: 1
+  },
   picker: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0
   },
+  imageBackground: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   text__formgroup: {
     width: '90%'
   },
   newEvent: {
+    flex: 1,
     marginTop: 60,
     alignItems: 'center'
   },
@@ -238,8 +271,31 @@ const styles = StyleSheet.create({
   },
   input__text: {
     alignSelf: 'center',
-    fontWeight: '700'
-  }
+    color: '#fff',
+    fontWeight: '800',
+  },
+  modal__dropdown__text: {
+    alignSelf: 'center',
+    color: '#fff',
+    fontWeight: '800',
+    fontSize: 14
+  },
+  modal__dropdown: {
+    width: '50%',
+    backgroundColor: 'blue',
+    borderRadius: 10,
+    marginBottom: 10,
+    padding: 10,
+    alignSelf: 'center'
+  },
+  newEvent__button: {
+    width: '50%',
+    backgroundColor: '#73d961',
+    padding: 15,
+    borderRadius: 50,
+    marginTop: 15,
+    alignSelf: 'center'
+  },
 })
 
 const mapStateToProps = state => {
