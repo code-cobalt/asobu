@@ -58,11 +58,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
-    equipped_badges: [
-      'lol_silver.png',
-      'kind_bronze.png',
-      'intellectual_bronze.png'
-    ],
+    equipped_badges: ['funny_silver', 'kind_bronze', 'intellectual_bronze'],
     imei: '358363043724657'
   },
   {
@@ -110,11 +106,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
-    equipped_badges: [
-      'kind_silver.png',
-      'intellectual_gold.png',
-      'therapeutic_silver.png'
-    ],
+    equipped_badges: ['kind_silver', 'intellectual_gold', 'therapeutic_silver'],
     imei: '356628020481477'
   },
   {
@@ -162,7 +154,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
-    equipped_badges: ['intellectual_bronze.png'],
+    equipped_badges: ['intellectual_bronze'],
     imei: '860588012837160'
   },
   {
@@ -210,11 +202,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
-    equipped_badges: [
-      'intellectual_gold.png',
-      'kind_silver.png',
-      'funny_bronze.png'
-    ],
+    equipped_badges: ['intellectual_gold', 'kind_silver', 'funny_bronze'],
     imei: '350751383349937'
   },
   {
@@ -262,11 +250,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
-    equipped_badges: [
-      'funny_bronze.png',
-      'intellectual_bronze.png',
-      'kind_bronze.png'
-    ],
+    equipped_badges: ['funny_bronze', 'intellectual_bronze', 'kind_bronze'],
     imei: '20309624801284'
   }
 ]

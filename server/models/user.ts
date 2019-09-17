@@ -29,19 +29,39 @@ const UserSchema = new mongoose.Schema({
   ],
   events: [{ event_id: String, is_creator: Boolean }],
   sent_hangout_requests: [
-    { first_name: String, email: String, profile_photo: String }
+    {
+      first_name: String,
+      email: String,
+      profile_photo: String,
+      equipped_badges: [String]
+    }
   ],
   received_hangout_requests: [
-    { first_name: String, email: String, profile_photo: String }
+    {
+      first_name: String,
+      email: String,
+      profile_photo: String,
+      equipped_badges: [String]
+    }
   ],
   accepted_hangouts: [
-    { first_name: String, email: String, profile_photo: String }
+    {
+      first_name: String,
+      email: String,
+      profile_photo: String,
+      equipped_badges: [String]
+    }
   ],
   ongoing_hangouts: [
     {
       hangout_id: String,
       participants: [
-        { first_name: String, email: String, profile_photo: String }
+        {
+          first_name: String,
+          email: String,
+          profile_photo: String,
+          equipped_badges: [String]
+        }
       ]
     }
   ],

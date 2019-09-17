@@ -12,6 +12,7 @@ interface UserLimited {
   exp: number
   lvl: number
   interests: string[]
+  equipped_badges: string[]
 }
 
 interface Socket {
@@ -38,32 +39,31 @@ const User: React.FunctionComponent<Props> = props => {
             style={styles.user__image}
           />
         )}
-        <View style={styles.column}>
 
         
         <View style={styles.user__textcontainer}>
           <Text style={styles.user__name}>{props.user.first_name}</Text>
           <Text style={styles.user__text}>Level {props.user.lvl}</Text>
         </View>
-        <View style={styles.user__badges}>
-          <Badges />
-        </View>
-
-        </View>
-        <TouchableOpacity style={styles.hangout__request} 
+          <View style={styles.user__badges}>
+            <Badges badges={props.user.equipped_badges} />
+          </View>
+          <TouchableOpacity
+            style={styles.hangout__request}
             onPress={() => {
-            props.sendHangoutRequest(props.currentUserEmail, {
-              first_name: props.user.first_name,
-              email: props.user.email,
-              profile_photo: props.user.profile_photo
-            })
-            props.socket.send(
-              `h0 ${props.currentUserEmail} ${props.user.email}`
-            )
-            }}>
-          <Text style={styles.hangout__text}>Hang!</Text>
+              props.sendHangoutRequest(props.currentUserEmail, {
+                first_name: props.user.first_name,
+                email: props.user.email,
+                profile_photo: props.user.profile_photo
+              })
+              props.socket.send(
+                `h0 ${props.currentUserEmail} ${props.user.email}`
+              )
+            }}
+          >
+            <Text style={styles.hangout__text}>Hang!</Text>
+          </TouchableOpacity>
         </TouchableOpacity>
-    </TouchableOpacity>
   )
 }
 
