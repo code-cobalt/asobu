@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { getChat, getUserChats } from '../src/actions/chats'
+import { getChat, getUserChats, fetchChat } from '../src/actions/chats'
 import { getUsers } from '../src/actions/users'
 import Profile from './Profile'
 import Results from './Results'
@@ -26,7 +26,7 @@ class Main extends Component<Props> {
   componentDidMount() {
     this.props.socket.send(`l0 ${this.props.email}`)
     this.props.socket.onmessage = async event => {
-      console.log(`SERVER MESSAGE: ${event.data}`)
+      console.log(`FROM SERVER: ${event.data}`)
       const message = event.data.split(' ')
       //Heartbeat
       if (message[0] === 'p0') {
@@ -44,10 +44,12 @@ class Main extends Component<Props> {
       }
       //Accept Hangout Request
       if (message[0] === 'h1') {
-        const allChats = await getUserChats(this.props.email)
-        console.log(this.props.email)
-        console.log(allChats)
-        this.props.acceptHangoutRequest(allChats.pop())
+        console.log('websocket object: ', message)
+        console.log('inside web socket listener in Main.tsx')
+        console.log('newChatId: ', message[2])
+        const newChat = await fetchChat(message[2])
+        console.log('newChat: ', newChat)
+        this.props.acceptHangoutRequest(newChat)
       }
     }
     this.props.getUsers(this.props.email, this.props.blockedUsers)
@@ -100,9 +102,15 @@ const mapDispatchToProps = dispatch => {
     getChat: chatId => dispatch(getChat(chatId)),
     getUsers: (currentUserEmail, blockedUsers) =>
       dispatch(getUsers(currentUserEmail, blockedUsers)),
-    removeUser: userEmail => { dispatch({ type: 'REMOVE_USER', userEmail }) },
-    removeUserChat: (chatId) => { dispatch({ type: 'REMOVE_USER_CHAT', chatId }) },
-    acceptHangoutRequest: (newChat) => { dispatch({ type: 'ACCEPT_REQUEST', newChat }) },
+    removeUser: userEmail => {
+      dispatch({ type: 'REMOVE_USER', userEmail })
+    },
+    removeUserChat: chatId => {
+      dispatch({ type: 'REMOVE_USER_CHAT', chatId })
+    },
+    acceptHangoutRequest: newChat => {
+      dispatch({ type: 'ACCEPT_REQUEST', newChat })
+    }
   }
 }
 
