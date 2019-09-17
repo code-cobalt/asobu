@@ -13,7 +13,6 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "postinstall": "yarn backend",
     "build": "tsc"
   },
   "dependencies": {
