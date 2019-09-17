@@ -119,6 +119,32 @@ Remember to **always** pull from the super master before pushing and making a PR
   - events (array of objects)
     - event_id (id)
     - is_creator (boolean)
+  - sent_hangout_requests (array of objects)
+    - first_name (string)
+    - email (string)
+    - profile_photo (string)
+    - equipped_badges (array of strings)
+  - received_hangout_requests (array of objects)
+    - first_name (string)
+    - email (string)
+    - profile_photo (string)
+    - equipped_badges (array of strings)
+  - accepted_hangouts (array of objects)
+    - first_name (string)
+    - email (string)
+    - profile_photo (string)
+    - equipped_badges (array of strings)
+  - ongoing_hangouts (array of objects)
+    - hangout_id (string)
+    - participants (array of objects)
+      - first_name (string)
+      - email (string)
+      - profile_photo (string)
+      - equipped_badges (array of strings)
+  - pending_reviews (array of objects)
+    - first_name (string)
+    - email (string)
+    - profile_photo (string)
   - imei (string)
 
 #### Messages (Array of Objects)
@@ -127,6 +153,7 @@ Remember to **always** pull from the super master before pushing and making a PR
 - from (object)
   - email (string)
   - first_name (string)
+  - profile_photo (string)
 - timestamp (datetime)
 - content (string)
 
@@ -158,6 +185,17 @@ Remember to **always** pull from the super master before pushing and making a PR
     - content (string)
     - timestamp (datetime)
 
+#### Hangouts (Array of Objects)
+
+- Hangout (object)
+  - id (auto)
+  - status (string)
+  - participants (array of objects)
+    - first_name (string)
+    - email (string)
+    - profile_photo (string)
+    - equipped_badges (array of strings)
+
 ## Database
 
 The database is <span style="color:lightblue">**MongoDB**</span> hosted by Atlas. The credentials are in your .env files. You can make use of <span style="color:lightblue">**Compass**</span> as a MongoDB Administrative GUI to see and live-edit data. Using the credentials in your .env, you'll have the information you need for setup.
@@ -169,55 +207,60 @@ Cloud storage is provided by <span style="color:lightblue">**Cloudinary**</span>
 ## Game Mechanics
 
 ### Experience Curve
+
 | Level | Experience |
 | :---: | ---------- |
-| 1     | 0          |
-| 2     | 100        |
-| 3     | 200        |
-| 4     | 400        |
-| 5     | 600        |
-| 6     | 900        |
-| 7     | 1200       |
-| 8     | 1600       |
-| 9     | 2000       |
-| 10    | 3000       |
+|   1   | 0          |
+|   2   | 100        |
+|   3   | 200        |
+|   4   | 400        |
+|   5   | 600        |
+|   6   | 900        |
+|   7   | 1200       |
+|   8   | 1600       |
+|   9   | 2000       |
+|  10   | 3000       |
 
 ### Experience Gains
-| Action               | Experience |
-| :----:               | :--------: |
-| Create Account       | 0          |
-| Fill Out Profile     | 40         |
-| Send Hangout Request | 10         |
-| Confirm Hangout      | 50         |
-| Finish Hangout       | 30         |
-| Submit Review        | 40         |
-| Create Event         | 20         |
-| Confirm Event        | 50         |
+
+|        Action        | Experience |
+| :------------------: | :--------: |
+|    Create Account    |     0      |
+|   Fill Out Profile   |     40     |
+| Send Hangout Request |     10     |
+|   Confirm Hangout    |     50     |
+|    Finish Hangout    |     30     |
+|    Submit Review     |     40     |
+|     Create Event     |     20     |
+|    Confirm Event     |     50     |
 
 ### Experience Multipliers
-| Condition            | Multiplier |
-| :-------:            | :--------: |
-| Partner is level 1   | 3x         |
-| Partner is level 10  | 3x         |
+
+|      Condition      | Multiplier |
+| :-----------------: | :--------: |
+| Partner is level 1  |     3x     |
+| Partner is level 10 |     3x     |
 
 ### Reviews
+
 | Level | Review Points |
 | :---: | :-----------: |
-| 1     | 2             |
-| 2     | 3             |
-| 3     | 3             |
-| 4     | 4             |
-| 5     | 4             |
-| 6     | 4             |
-| 7     | 5             |
-| 8     | 5             |
-| 9     | 5             |
-| 10    | 6             |
+|   1   |       2       |
+|   2   |       3       |
+|   3   |       3       |
+|   4   |       4       |
+|   5   |       4       |
+|   6   |       4       |
+|   7   |       5       |
+|   8   |       5       |
+|   9   |       5       |
+|  10   |       6       |
 
 ### Badge Thresholds
+
 | Tier | Points Required |
 | :--: | :-------------: |
-| 1    | 1               |
-| 2    | 5               |
-| 3    | 15              |
-| 4    | 30              |
+|  1   |        1        |
+|  2   |        5        |
+|  3   |       15        |
+|  4   |       30        |
