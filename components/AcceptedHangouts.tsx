@@ -69,7 +69,12 @@ export const AcceptedHangouts = props => {
                   </Text>
                   <Button
                     title="Stop Hangout"
-                    onPress={() => props.finishHangout(hangout.id)}
+                    onPress={() =>
+                      props.finishHangout(
+                        hangout.hangout_id,
+                        hangout.participants[0].email
+                      )
+                    }
                   />
                 </View>
               </View>
