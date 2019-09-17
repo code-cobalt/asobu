@@ -1,9 +1,17 @@
 import React, { Component } from 'react'
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  ScrollView
+} from 'react-native'
 import { Divider } from 'react-native-elements'
 import { connect } from 'react-redux'
 import Badges from './../components/Badges'
-import EditProfile from "../components/EditProfile"
+import EditProfile from '../components/EditProfile'
 
 interface UserLimited {
   first_name: string
@@ -28,6 +36,7 @@ interface User {
   events: Array<Event>
   sent_hangout_requests: Array<UserLimited>
   received_hangout_requests: Array<UserLimited>
+  equipped_badges: string[]
   imei: string
 }
 
@@ -52,22 +61,27 @@ class Profile extends Component<Props> {
               )}
               {this.props.user.profile_photo === null && (
                 <Image
-                  source={require("../assets/default_profile.png")}
+                  source={require('../assets/default_profile.png')}
                   style={styles.user__image}
                 />
               )}
             </TouchableOpacity>
-            <TouchableOpacity style={styles.edit__button} onPress={this.props.editProfile}>
+            <TouchableOpacity
+              style={styles.edit__button}
+              onPress={() => this.props.editProfile()}
+            >
               <Text style={styles.button__text}>Edit Profile</Text>
             </TouchableOpacity>
             <View style={styles.basic_info_container}>
               <Text style={styles.user__name}>
                 {this.props.user.first_name} {this.props.user.last_name}
               </Text>
-              <Text style={styles.user__level}>Level {this.props.user.lvl}</Text>
+              <Text style={styles.user__level}>
+                Level {this.props.user.lvl}
+              </Text>
               <Text style={styles.user__xp}>XP {this.props.user.exp}</Text>
               <View style={styles.top__badges}>
-                <Badges />
+                <Badges badges={this.props.user.equipped_badges} />
               </View>
             </View>
           </View>
@@ -84,14 +98,14 @@ class Profile extends Component<Props> {
               <Text style={styles.info__title}>email</Text>
               <Text style={styles.inner__text}>{this.props.user.email}</Text>
               <Text style={styles.info__title}>Phone #</Text>
-              <Text style={styles.inner__text}>{this.props.user.phone_number}</Text>
+              <Text style={styles.inner__text}>
+                {this.props.user.phone_number}
+              </Text>
             </View>
             <Divider style={styles.divider} />
             <View style={styles.all__badges}>
               <Text style={styles.info__title}>All Badges</Text>
-              <View style={styles.badge__container}>
-                <Badges />
-              </View>
+              <View style={styles.badge__container}>{/* <Badges /> */}</View>
             </View>
           </View>
           {/* <View style={styles.button__container}>
@@ -130,12 +144,12 @@ const styles = StyleSheet.create({
   profile__header: {
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: "#e5e6e5"
+    backgroundColor: '#e5e6e5'
   },
   profile__body: {
     padding: 25,
     flexDirection: 'column',
-    backgroundColor: "#e5e6e5"
+    backgroundColor: '#e5e6e5'
   },
   photo_container: {
     marginTop: 20,
@@ -154,15 +168,15 @@ const styles = StyleSheet.create({
   user__image: {
     borderRadius: 125,
     height: 250,
-    width: 250,
+    width: 250
   },
   user__name: {
     fontSize: 28,
-    fontWeight: "800"
+    fontWeight: '800'
   },
   user__level: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     marginTop: 10
   },
   user__xp: {
@@ -173,10 +187,10 @@ const styles = StyleSheet.create({
   info__title: {
     fontSize: 20,
     alignSelf: 'flex-start',
-    fontWeight: '800',
+    fontWeight: '800'
   },
   interests__container: {
-    width: "100%",
+    width: '100%',
     height: 80,
     backgroundColor: 'white',
     marginTop: 15,
@@ -211,10 +225,10 @@ const styles = StyleSheet.create({
     marginTop: 25
   },
   button__container: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 15,
     marginBottom: 25
-  },
+  }
 })
 
 const mapStateToProps = state => {
@@ -225,8 +239,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    editProfile: () => dispatch({ type: "SHOW_EDIT_PROFILE_FORM" })
+    editProfile: () => dispatch({ type: 'SHOW_EDIT_PROFILE_FORM' })
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Profile)
