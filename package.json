@@ -1,5 +1,5 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "server.ts",
   "engines": {
     "node": "10.x"
   },
@@ -13,7 +13,6 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "build": "tsc"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.1",
