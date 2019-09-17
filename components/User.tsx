@@ -23,93 +23,108 @@ interface Props {
 const User: React.FunctionComponent<Props> = props => {
   return (
     <TouchableOpacity
-     
+      style={styles.user}
       onPress={() => props.showProfile(props.user)}
     >
-      <View style={styles.user}>
         {props.user.profile_photo !== null && (
           <Image
             source={{ uri: props.user.profile_photo }}
             style={styles.user__image}
           />
         )}
+        <View style={styles.column}>
+
+        
         <View style={styles.user__textcontainer}>
           <Text style={styles.user__name}>{props.user.first_name}</Text>
           <Text style={styles.user__text}>Level {props.user.lvl}</Text>
-          <Text style={styles.user__text}>XP: {props.user.exp}</Text>
         </View>
-        <View style={styles.column}>
-          <View style={styles.user__badges}>
-            <Badges />
-          </View>
-          <TouchableOpacity style={styles.hangout__request} 
-              onPress={() =>
-              props.sendHangoutRequest(props.currentUserEmail, {
-                first_name: props.user.first_name,
-                email: props.user.email,
-                profile_photo: props.user.profile_photo
-              })
-            }>
-            <Text style={styles.hangout}>Hangout Now!</Text>
-          </TouchableOpacity>
+        <View style={styles.user__badges}>
+          <Badges />
         </View>
-      </View>
+
+        </View>
+        <TouchableOpacity style={styles.hangout__request} 
+            onPress={() =>
+            props.sendHangoutRequest(props.currentUserEmail, {
+              first_name: props.user.first_name,
+              email: props.user.email,
+              profile_photo: props.user.profile_photo
+            })
+          }>
+          <Text style={styles.hangout__text}>Hang!</Text>
+        </TouchableOpacity>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
   user: {
+    height: 100,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 10,
     marginTop: 30,
-    backgroundColor: '#e5e6e5',
-    borderRadius: 40,
+    marginLeft: 5,
+    marginRight: 5,
+    backgroundColor: '#22222280',
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5, 
+    borderRadius: 20,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    textShadowRadius: 2,
+    shadowColor: "#000"
   },
   user__image: {
-    borderRadius: 45,
-    height: 90,
-    width: 90
+    borderRadius: 5,
+    height: '100%',
+    aspectRatio: 2/2
   },
   user__textcontainer: {
+    height: '50%',
     flexDirection: 'column',
     alignItems: 'center',
-    marginLeft: 50,
-    right: 40
   },
   user__name: {
     fontSize: 22,
     fontWeight: '700',
-    color: 'white'
+    color: 'white',
+    marginBottom: 5
   },
   user__text: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "600",
     color: 'white'
   },
   user__badges: {
+    height: '50%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    right: 30
+    marginBottom: 7
   },
-  hangout: {
+  hangout__text: {
     color: 'white',
-    marginRight: 25,
-    marginLeft: 20
+    alignSelf: 'center',
+    fontWeight: '900'
   },
   hangout__request: {
     marginTop: 10,
     backgroundColor: '#73d961',
-    borderRadius: 8,
-    right: 35
+    height: '100%',
+    borderBottomRightRadius: 5,
+    borderTopRightRadius: 5,
+    bottom: 5,
+    width: '15%',
+    alignContent: "center",
+    justifyContent: 'center'
   },
   column: {
-    flexDirection: 'column',
-    marginRight: 20
+    flexDirection: 'column'
   }
+  
 })
 
 const mapStateToProps = state => {
