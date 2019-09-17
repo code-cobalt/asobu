@@ -1,12 +1,10 @@
 import { View, StyleSheet } from 'react-native'
 import ChatList from '../components/ChatList'
-import AnimatedChat from './AnimatedChat'
 
 const Chats = () => {
   return (
     <View style={styles.events}>
       <ChatList />
-      <AnimatedChat />
     </View>
   )
 }
