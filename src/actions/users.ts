@@ -5,6 +5,7 @@ import arrayHashConversion from 'array-hash-conversion'
 
 import {
   loginQuery,
+  getUserLimitedQuery,
   getUsersQuery,
   updateProfileQuery,
   blockUserQuery,
@@ -37,6 +38,16 @@ export const loginUser = (userEmail, userPassword) => {
     )
     dispatch({ type: 'SET_USER', user })
   }
+}
+
+export const getUserLimited = async userEmail => {
+  const res = await axios.post(`${apiUrl}/graphql`, {
+    query: print(getUserLimitedQuery),
+    variables: {
+      userEmail
+    }
+  })
+  return res.data.data.User
 }
 
 export const getUsers = (currentUserEmail, [...hiddenUsers], [...hangouts]) => {

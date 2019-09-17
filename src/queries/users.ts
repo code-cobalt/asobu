@@ -54,6 +54,16 @@ export const loginQuery = gql`
   }
 `
 
+export const getUserLimitedQuery = gql`
+  query User($userEmail: String!) {
+    User(userEmail: $userEmail) {
+      first_name
+      email
+      profile_photo
+    }
+  }
+`
+
 export const getUsersQuery = gql`
   query {
     Users {
