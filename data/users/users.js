@@ -58,6 +58,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
+    equipped_badges: [],
     imei: '358363043724657'
   },
   {
@@ -105,6 +106,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
+    equipped_badges: [],
     imei: '356628020481477'
   },
   {
@@ -152,6 +154,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
+    equipped_badges: [],
     imei: '860588012837160'
   },
   {
@@ -199,6 +202,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
+    equipped_badges: [],
     imei: '350751383349937'
   },
   {
@@ -246,6 +250,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
+    equipped_badges: [],
     imei: '20309624801284'
   }
 ]

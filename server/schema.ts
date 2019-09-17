@@ -16,6 +16,7 @@ const schema = buildSchema(`
         first_name: String
         email: String
         profile_photo: String
+        equipped_badges: [String]
     }
 
     type UserChat {
@@ -60,6 +61,7 @@ const schema = buildSchema(`
         pending_reviews: [UserLimited]
         blocked_users: [String]
         blocked_by_users: [String]
+        equipped_badges: [String]
         imei: String
     }
 
