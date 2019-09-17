@@ -153,6 +153,7 @@ Remember to **always** pull from the super master before pushing and making a PR
 - from (object)
   - email (string)
   - first_name (string)
+  - profile_photo (string)
 - timestamp (datetime)
 - content (string)
 
@@ -183,6 +184,17 @@ Remember to **always** pull from the super master before pushing and making a PR
       - profile_photo (file)
     - content (string)
     - timestamp (datetime)
+
+#### Hangouts (Array of Objects)
+
+- Hangout (object)
+  - id (auto)
+  - status (string)
+  - participants (array of objects)
+    - first_name (string)
+    - email (string)
+    - profile_photo (string)
+    - equipped_badges (array of strings)
 
 ## Database
 
