@@ -200,7 +200,8 @@ class QuizGame {
 const clients = new Clients()
 const activeClients = new ActiveClients()
 
-const wss = new server({ port: port })
+var HOST = location.origin.replace(/^http/, 'ws')
+const wss = new server(HOST)
 // const hangoutSocketServer = new server({ port: 3002 })
 
 wss.on('connection', ws => {
