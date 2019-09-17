@@ -54,12 +54,11 @@ class Review extends Component<Props, State> {
       therapeutic: this.state.therapeutic,
       interesting: this.state.interesting
     }
-    reviewUser('levans@email.com', 'jamesp@email.com', stats)
-    this.props.addExp('levans@email.com', 40)
+    reviewUser(this.props.currentUser, this.props.userToReview, stats)
+    this.props.addExp(this.props.currentUser, 40)
   }
 
   render() {
-    console.log(this.props.userToReview)
     return (
       <Modal
         isVisible={this.props.showReview}
@@ -129,7 +128,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     showReview: state.showReview,
-    userToReview: state.userToReview
+    userToReview: state.userToReview,
+    currentUser: state.user.email
   }
 }
 
