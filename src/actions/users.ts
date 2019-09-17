@@ -39,17 +39,29 @@ export const loginUser = (userEmail, userPassword) => {
   }
 }
 
-export const getUsers = (currentUserEmail, [...blockedUsers]) => {
+export const getUsers = (currentUserEmail, [...hiddenUsers], [...hangouts]) => {
   //blockedUsers is an array of all the user emails who the current user has blocked or been blocked by.
   //don't return any users in this array
   //create a hashmap to reduce time complexity
-  const blockedUsersObj = arrayHashConversion(blockedUsers, null, 1)
+  const hangoutUsers = []
+  for (const hangout of hangouts) {
+    hangout.participants.forEach(participant =>
+      hangoutUsers.push(participant.email)
+    )
+  }
+  const hiddenUsersObj = arrayHashConversion(
+    [...hiddenUsers, ...hangoutUsers],
+    null,
+    1
+  )
+
   return async dispatch => {
     const res = await axios.post(`${apiUrl}/graphql`, {
       query: print(getUsersQuery)
     })
+    //don't show current user, blocked/blocked by users, or users with current hangout status
     const allUsers = res.data.data.Users.filter(
-      user => !blockedUsersObj[user.email] && user.email !== currentUserEmail
+      user => !hiddenUsersObj[user.email] && user.email !== currentUserEmail
     )
     dispatch({
       type: 'SET_ALL_USERS',
