@@ -25,7 +25,9 @@ const UserList = props => {
 
 const styles = StyleSheet.create({
   users: {
-    marginBottom: 90
+    marginBottom: 10,
+    height: '100%',
+    width: '100%'
   },
   text__box: {
     backgroundColor: '#bcd634',
