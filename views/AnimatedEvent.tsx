@@ -146,8 +146,7 @@ export class AnimatedEvent extends Component<Props> {
           </Text>
           <View style={styles.image__container}>
             <Image
-              // source={{ uri: this.props.currentEvent.cover_photo }}
-              source={require('../assets/quidditch.jpg')}
+              source={{ uri: this.props.currentEvent.cover_photo }}
               style={styles.animated__photo}
             />
           </View>
