@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { getChat, getUserChats, fetchChat } from '../src/actions/chats'
+import { getChat, getUserChats } from '../src/actions/chats'
 import { getUsers } from '../src/actions/users'
 import Profile from './Profile'
 import Results from './Results'
@@ -19,7 +19,19 @@ interface Props {
   getUsers: Function
   getChat: Function
   socket: WebSocket
-  blockedUsers: string[]
+  hiddenUsers: string[]
+  hangouts: [Hangout]
+}
+
+interface Hangout {
+  hangout_id: String
+  participants: [UserLimited]
+}
+
+interface UserLimited {
+  first_name: String
+  email: String
+  profile_photo: String
 }
 
 class Main extends Component<Props> {
@@ -48,10 +60,18 @@ class Main extends Component<Props> {
       //Accept Hangout Request
       if (message[0] === 'h1') {
         const newChatMessages = await getUserChats(this.props.email)
-        this.props.acceptHangoutRequest(newChatMessages.pop())
+        const newChat = newChatMessages.pop()
+        this.props.acceptHangoutRequest(newChat)
+        alert(
+          `${newChat.participants[0].first_name} has accepted your hangout request! A new private chat has been created.`
+        )
       }
     }
-    this.props.getUsers(this.props.email, this.props.blockedUsers)
+    this.props.getUsers(
+      this.props.email,
+      this.props.hiddenUsers,
+      this.props.hangouts
+    )
   }
 
   render() {
@@ -80,7 +100,13 @@ const mapStateToProps = state => {
     activeView: state.activeView,
     allUsers: state.allUsers,
     email: state.user.email,
-    blockedUsers: [...state.blockedUsers, ...state.blockedByUsers]
+    hiddenUsers: [
+      ...state.blockedUsers,
+      ...state.blockedByUsers,
+      ...state.user.received_hangout_requests.map(request => request.email),
+      ...state.acceptedHangouts.map(hangout => hangout.email)
+    ],
+    hangouts: state.ongoingHangouts
   }
 }
 
@@ -99,8 +125,8 @@ const mapDispatchToProps = dispatch => {
       })
     },
     getChat: chatId => dispatch(getChat(chatId)),
-    getUsers: (currentUserEmail, blockedUsers) =>
-      dispatch(getUsers(currentUserEmail, blockedUsers)),
+    getUsers: (currentUserEmail, blockedUsers, hangouts) =>
+      dispatch(getUsers(currentUserEmail, blockedUsers, hangouts)),
     removeUser: userEmail => {
       dispatch({ type: 'REMOVE_USER', userEmail })
     },
