@@ -12,6 +12,7 @@ interface UserLimited {
   exp: number
   lvl: number
   interests: string[]
+  equipped_badges: string[]
 }
 
 interface Socket {
@@ -43,7 +44,7 @@ const User: React.FunctionComponent<Props> = props => {
         </View>
         <View style={styles.column}>
           <View style={styles.user__badges}>
-            <Badges />
+            <Badges badges={props.user.equipped_badges} />
           </View>
           <TouchableOpacity
             style={styles.hangout__request}
