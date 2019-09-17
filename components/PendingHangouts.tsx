@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {
   Text,
   View,
+  Alert,
   ScrollView,
   Image,
   TouchableOpacity,
@@ -45,11 +46,15 @@ const PendingHangouts = props => {
                         props.currentUserEmail,
                         request.email
                       )
+                      Alert.alert(
+                        `You have accepted ${request.first_name}'s hangout request!`,
+                        'Visit chats to start talking!'
+                      )
                       props.dispatchHangoutRequest(newChat)
                       setTimeout(
                         () =>
                           props.socket.send(
-                            `h1 ${props.currentUserEmail} ${request.email}`
+                            `h1 ${props.currentUserEmail} ${request.email} ${props.currentUserFirstName}`
                           ),
                         5000
                       )

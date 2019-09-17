@@ -12,20 +12,24 @@ interface UserLimited {
   exp: number
   lvl: number
   interests: string[]
+  equipped_badges: string[]
 }
+
+interface Socket {
+  send: Function
+}
+
 interface Props {
   user: UserLimited
   currentUserEmail: string
   sendHangoutRequest: Function
   showProfile: Function
+  socket: Socket
 }
 
 const User: React.FunctionComponent<Props> = props => {
   return (
-    <TouchableOpacity
-     
-      onPress={() => props.showProfile(props.user)}
-    >
+    <TouchableOpacity onPress={() => props.showProfile(props.user)}>
       <View style={styles.user}>
         {props.user.profile_photo !== null && (
           <Image
@@ -40,16 +44,21 @@ const User: React.FunctionComponent<Props> = props => {
         </View>
         <View style={styles.column}>
           <View style={styles.user__badges}>
-            <Badges />
+            <Badges badges={props.user.equipped_badges} />
           </View>
-          <TouchableOpacity style={styles.hangout__request} 
-              onPress={() =>
+          <TouchableOpacity
+            style={styles.hangout__request}
+            onPress={() => {
               props.sendHangoutRequest(props.currentUserEmail, {
                 first_name: props.user.first_name,
                 email: props.user.email,
                 profile_photo: props.user.profile_photo
               })
-            }>
+              props.socket.send(
+                `h0 ${props.currentUserEmail} ${props.user.email}`
+              )
+            }}
+          >
             <Text style={styles.hangout}>Hangout Now!</Text>
           </TouchableOpacity>
         </View>
@@ -66,7 +75,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 30,
     backgroundColor: '#e5e6e5',
-    borderRadius: 40,
+    borderRadius: 40
   },
   user__image: {
     borderRadius: 45,
@@ -86,7 +95,7 @@ const styles = StyleSheet.create({
   },
   user__text: {
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600',
     color: 'white'
   },
   user__badges: {

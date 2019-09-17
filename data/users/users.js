@@ -14,7 +14,7 @@ const users = [
     exp: 34,
     lvl: 2,
     stats: {
-      funny: 3,
+      funny: 5,
       intellectual: 1,
       fun: 3,
       kind: 2,
@@ -58,6 +58,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
+    equipped_badges: ['funny_silver', 'kind_bronze', 'intellectual_bronze'],
     imei: '358363043724657'
   },
   {
@@ -73,10 +74,10 @@ const users = [
     lvl: 2,
     stats: {
       funny: 4,
-      intellectual: 1,
+      intellectual: 15,
       fun: 2,
-      kind: 2,
-      therapeutic: 0,
+      kind: 5,
+      therapeutic: 10,
       interesting: 1
     },
     chats: [
@@ -105,6 +106,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
+    equipped_badges: ['kind_silver', 'intellectual_gold', 'therapeutic_silver'],
     imei: '356628020481477'
   },
   {
@@ -152,6 +154,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
+    equipped_badges: ['intellectual_bronze'],
     imei: '860588012837160'
   },
   {
@@ -167,7 +170,7 @@ const users = [
     lvl: 2,
     stats: {
       funny: 2,
-      intellectual: 6,
+      intellectual: 15,
       fun: 3,
       kind: 5,
       therapeutic: 2,
@@ -199,6 +202,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
+    equipped_badges: ['intellectual_gold', 'kind_silver', 'funny_bronze'],
     imei: '350751383349937'
   },
   {
@@ -246,6 +250,7 @@ const users = [
     pending_reviews: [],
     blocked_users: [],
     blocked_by_users: [],
+    equipped_badges: ['funny_bronze', 'intellectual_bronze', 'kind_bronze'],
     imei: '20309624801284'
   }
 ]

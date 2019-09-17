@@ -29,19 +29,39 @@ const UserSchema = new mongoose.Schema({
   ],
   events: [{ event_id: String, is_creator: Boolean }],
   sent_hangout_requests: [
-    { first_name: String, email: String, profile_photo: String }
+    {
+      first_name: String,
+      email: String,
+      profile_photo: String,
+      equipped_badges: [String]
+    }
   ],
   received_hangout_requests: [
-    { first_name: String, email: String, profile_photo: String }
+    {
+      first_name: String,
+      email: String,
+      profile_photo: String,
+      equipped_badges: [String]
+    }
   ],
   accepted_hangouts: [
-    { first_name: String, email: String, profile_photo: String }
+    {
+      first_name: String,
+      email: String,
+      profile_photo: String,
+      equipped_badges: [String]
+    }
   ],
   ongoing_hangouts: [
     {
       hangout_id: String,
       participants: [
-        { first_name: String, email: String, profile_photo: String }
+        {
+          first_name: String,
+          email: String,
+          profile_photo: String,
+          equipped_badges: [String]
+        }
       ]
     }
   ],
@@ -49,7 +69,8 @@ const UserSchema = new mongoose.Schema({
     { first_name: String, email: String, profile_photo: String }
   ],
   blocked_users: [String],
-  blocked_by_users: [String]
+  blocked_by_users: [String],
+  equipped_badges: [String]
 })
 
 //separating list of users who a user has blocked and who a user has been blocked by will easily allow future functionality to unblock a user.
