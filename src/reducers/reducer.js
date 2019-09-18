@@ -337,15 +337,22 @@ const reducer = (state = initialState, action) => {
       }
     }
     case 'FINISH_HANGOUT': {
+      console.log('INSIDE FINISH HANGOUTS')
       const updatedOngoingHangouts = state.ongoingHangouts.filter(
         hangout => hangout.hangout_id !== action.hangoutId
       )
       return {
         ...state,
         ongoingHangouts: updatedOngoingHangouts,
-        userToReview: action.userToReview,
-        showReview: true
+        userToReview: action.userToReview
       }
+    }
+    case 'SHOW_REVIEW': {
+      return { ...state, showReview: true }
+    }
+    case 'END_REVIEW': {
+      console.log('INSIDE END REVIEW')
+      return { ...state, userToReview: '' }
     }
     default: {
       return state

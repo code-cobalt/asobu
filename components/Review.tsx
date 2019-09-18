@@ -18,6 +18,7 @@ interface State {
 interface Props {
   showReview: boolean
   addExp: Function
+  reviewUser: Function
 }
 
 class Review extends Component<Props, State> {
@@ -54,7 +55,7 @@ class Review extends Component<Props, State> {
       therapeutic: this.state.therapeutic,
       interesting: this.state.interesting
     }
-    reviewUser(this.props.currentUser, this.props.userToReview, stats)
+    this.props.endReview(this.props.currentUser, this.props.userToReview, stats)
     this.props.addExp(this.props.currentUser, 40)
   }
 
@@ -135,7 +136,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addExp: (userEmail, points) => dispatch(addExp(userEmail, points))
+    addExp: (userEmail, points) => dispatch(addExp(userEmail, points)),
+    endReview: (currentUser, userToReview, stats) =>
+      dispatch(reviewUser(currentUser, userToReview, stats))
   }
 }
 
