@@ -50,6 +50,8 @@ interface Props {
   popupModal: boolean
   closeProfile: Function
   closeMainModal: Function
+  modalIsClosed: Function
+  userToReview: string
 }
 
 const options = [
@@ -67,6 +69,13 @@ class Hangouts extends React.Component<Props> {
     visibleHangout:
       this.props.receivedHangoutRequests.length > 0 ? 'pending' : 'accepted'
   }
+
+  renderReview = () => {
+    if (this.props.userToReview !== '') {
+      this.props.modalIsClosed()
+    }
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.userList}>
@@ -77,6 +86,7 @@ class Hangouts extends React.Component<Props> {
           animationOut="slideOutDown"
           backdropOpacity={0.85}
           style={styles.modal}
+          onModalHide={() => this.renderReview()}
         >
           <SafeAreaView>
             <SwitchSelector
@@ -184,7 +194,8 @@ const mapStateToProps = state => {
     showProfile: state.showProfile,
     acceptedHangouts: state.acceptedHangouts,
     ongoingHangouts: state.ongoingHangouts,
-    popupModal: state.popupModal
+    popupModal: state.popupModal,
+    userToReview: state.userToReview
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -198,6 +209,9 @@ const mapDispatchToProps = dispatch => {
     },
     closeMainModal: () => {
       dispatch({ type: 'CLOSE_MAIN_MODAL' })
+    },
+    modalIsClosed: () => {
+      dispatch({ type: 'SHOW_REVIEW' })
     }
   }
 }

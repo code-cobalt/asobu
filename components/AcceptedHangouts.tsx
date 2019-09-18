@@ -12,7 +12,6 @@ import { startHangout, finishHangout } from '../src/actions/hangouts'
 import Badges from './Badges'
 
 export const AcceptedHangouts = props => {
-  console.log(props.pendingReviews)
   return (
     <>
       <View style={{ flex: 1 }}>
