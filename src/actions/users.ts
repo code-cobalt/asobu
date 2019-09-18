@@ -11,9 +11,31 @@ import {
   blockUserQuery,
   unblockUserQuery,
   reviewUserQuery,
-  addExpQuery
+  addExpQuery,
+  registerQuery
 } from '../queries/users'
 import { AsyncStorage } from 'react-native'
+
+export const registerUser = newUser => {
+  return async dispatch => {
+    const res = await axios.post(`${apiUrl}/graphql`, {
+      query: print(registerQuery),
+      variables: {
+        newUser
+      }
+    })
+    const user = res.data.data.CreateUser
+    await AsyncStorage.setItem(
+      'user',
+      JSON.stringify({
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.last_name
+      })
+    )
+    dispatch({ type: 'SET_USER', user })
+  }
+}
 
 export const loginUser = (userEmail, userPassword) => {
   return async dispatch => {
