@@ -25,12 +25,8 @@ const ChatList: React.FunctionComponent<Props> = props => {
       {props.chats &&
         props.chats.map(chat => {
           return (
-            <SocketContext.Consumer>
-              {socket => (
-                <Chat
-                  key={chat.chat_id} chat={chat} socket={socket}
-                />
-              )}
+            <SocketContext.Consumer key={chat.chat_id}>
+              {socket => <Chat chat={chat} socket={socket} />}
             </SocketContext.Consumer>
           )
         })}

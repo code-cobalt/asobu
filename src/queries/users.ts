@@ -63,6 +63,11 @@ export const loginQuery = gql`
       blocked_by_users
       equipped_badges
       imei
+      pending_reviews {
+        first_name
+        email
+        profile_photo
+      }
     }
   }
 `

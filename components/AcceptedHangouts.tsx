@@ -13,6 +13,7 @@ import { startHangout, finishHangout } from '../src/actions/users'
 import Badges from './Badges'
 
 export const AcceptedHangouts = props => {
+  console.log(props.pendingReviews)
   return (
     <>
       <View style={{ flex: 1 }}>
@@ -179,7 +180,8 @@ const mapStateToProps = state => {
       email: state.user.email,
       profile_photo: state.user.profile_photo,
       equipped_badges: state.user.equipped_badges
-    }
+    },
+    pendingReviews: state.pendingReviews
   }
 }
 const mapDispatchToProps = dispatch => {

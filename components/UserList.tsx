@@ -19,8 +19,8 @@ const UserList = props => {
       )
     } else {
       return (
-        <SocketContext.Consumer>
-          {socket => <User key={user.email} user={user} socket={socket} />}
+        <SocketContext.Consumer key={user.email}>
+          {socket => <User user={user} socket={socket} />}
         </SocketContext.Consumer>
       )
     }
