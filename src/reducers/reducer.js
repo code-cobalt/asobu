@@ -67,14 +67,17 @@ const reducer = (state = initialState, action) => {
     case 'SHOW_PROFILE': {
       return { ...state, currentProfile: action.profile, showProfile: true }
     }
+    case 'CLOSE_PROFILE': {
+      return { ...state, showProfile: false }
+    }
     case 'SHOW_EDIT_PROFILE_FORM': {
       return { ...state, showEditProfileForm: true }
     }
+    case 'CLOSE_EDIT_PROFILE_FORM': {
+      return { ...state, showEditProfileForm: false }
+    }
     case 'UPDATE_PROFILE': {
       return { ...state, user: action.updatedUser, showEditProfileForm: false }
-    }
-    case 'CLOSE_PROFILE': {
-      return { ...state, currentProfile: {}, showProfile: false }
     }
     case 'SET_CHATS': {
       return { ...state, chats: action.chats }
