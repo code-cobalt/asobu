@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
     bottom: 0
   },
   start_button: {
+    alignSelf: 'center',
     width: '50%',
     backgroundColor: 'blue',
     borderRadius: 10,

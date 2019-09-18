@@ -33,8 +33,12 @@ const ChatModal: React.FunctionComponent<Props> = props => {
       isVisible={props.showChat}
       animationIn="slideInUp"
       animationOut="slideOutDown"
+      hasBackdrop={true}
       backdropOpacity={1}
-      backdropColor="#fff"
+      backdropColor="#dcf9ff"
+      coverScreen={true}
+      style={{margin: 0, padding: 0}}
+
     >
       <View style={{ flex: 1 }}>
         <Text style={styles.back} onPress={() => props.goBack()}>
@@ -53,7 +57,7 @@ const ChatModal: React.FunctionComponent<Props> = props => {
             })}
         </ScrollView>
 
-        <View>
+        <View style={styles.input__container}>
           <SocketContext.Consumer>
             {socket => (
               <ChatInput
@@ -70,6 +74,10 @@ const ChatModal: React.FunctionComponent<Props> = props => {
 }
 
 const styles = StyleSheet.create({
+  input__container: {
+    width: '100%',
+    backgroundColor: '#fff'
+  },
   back: {
     marginTop: 25,
     marginLeft: 10,
