@@ -17,18 +17,19 @@ const ChatMessage = props => {
         />
       </View>
       <View style={{ flex: 3, justifyContent: 'center' }}>
-        <Text>{props.message.content}</Text>
+        <Text style={[
+          props.message.from.email === props.currentUserLimited.email
+            ? styles.chat__text__user
+            : styles.chat__text__friend      
+        ]}
+        >{props.message.content}</Text>
       </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  /* chat: {
-    width: "70%",
-    flexDirection: props.message.from.email,
-    marginBottom: 15
-  }, */
+  
   chat__image: {
     height: 40,
     width: 40,
@@ -40,12 +41,12 @@ const styles = StyleSheet.create({
     width: '70%',
     flexDirection: 'row-reverse',
     marginBottom: 15,
-    borderRadius: 50,
+    padding: 7,
+    borderRadius: 20,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     textShadowRadius: 2,
-    shadowColor: "#000",
-    padding: 5
+    shadowColor: "#000"
   },
   chat__friend: {
     backgroundColor: '#dee0e9',
@@ -53,11 +54,24 @@ const styles = StyleSheet.create({
     width: '70%',
     flexDirection: 'row',
     marginBottom: 15,
-    borderRadius: 50,
+    padding: 7,
+    borderRadius: 20,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     textShadowRadius: 2,
     shadowColor: "#000"
+  },
+  chat__text__user: {
+    paddingLeft: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontSize: 14
+  },
+  chat__text__friend: {
+    paddingRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontSize: 14
   }
 })
 
