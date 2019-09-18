@@ -13,9 +13,10 @@ import { startHangout, finishHangout } from '../src/actions/users'
 import Badges from './Badges'
 
 export const AcceptedHangouts = props => {
+  console.log(props.pendingReviews)
   return (
     <>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <Text style={styles.title}>Meeting up with</Text>
         <ScrollView style={styles.request}>
           {props.acceptedHangouts.map((hangout, index) => {
@@ -61,21 +62,21 @@ export const AcceptedHangouts = props => {
                   source={{ uri: hangout.participants[0].profile_photo }}
                   style={styles.user__image}
                 />
-               
-                  <Text style={styles.user__name}>
-                    {hangout.participants[0].first_name}
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.start_button}
-                    onPress={() =>
-                      props.finishHangout(
-                        hangout.hangout_id,
-                        hangout.participants[0].email
-                      )
-                    }
-                  >
-                    <Text style={styles.button_text}>Stop Hangout</Text>
-                  </TouchableOpacity>
+
+                <Text style={styles.user__name}>
+                  {hangout.participants[0].first_name}
+                </Text>
+                <TouchableOpacity
+                  style={styles.start_button}
+                  onPress={() =>
+                    props.finishHangout(
+                      hangout.hangout_id,
+                      hangout.participants[0].email
+                    )
+                  }
+                >
+                  <Text style={styles.button_text}>Stop Hangout</Text>
+                </TouchableOpacity>
               </View>
             )
           })}
@@ -166,7 +167,8 @@ const mapStateToProps = state => {
       first_name: state.user.first_name,
       email: state.user.email,
       profile_photo: state.user.profile_photo
-    }
+    },
+    pendingReviews: state.pendingReviews
   }
 }
 const mapDispatchToProps = dispatch => {
