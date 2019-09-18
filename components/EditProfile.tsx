@@ -1,31 +1,40 @@
 import React, { Component } from 'react'
-import { ImageBackground, ScrollView, Text, View, TextInput, StyleSheet, TouchableOpacity, Button } from 'react-native'
-import { connect } from "react-redux"
+import {
+  ImageBackground,
+  ScrollView,
+  Text,
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Button
+} from 'react-native'
+import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
 import { updateProfile } from '../src/actions/users'
-import { uploadPhoto } from "../src/actions/upload"
+import { uploadPhoto } from '../src/actions/upload'
 
 interface Props {
-  showEditProfileForm: boolean,
-  updateProfile: Function,
+  showEditProfileForm: boolean
+  updateProfile: Function
   user: User
 }
 
 interface User {
-  first_name: string,
-  last_name: string,
-  email: string,
-  phone_number: string,
-  profile_photo: string,
+  first_name: string
+  last_name: string
+  email: string
+  phone_number: string
+  profile_photo: string
   interests: Array<string>
 }
 
 interface State {
-  first_name: string,
-  last_name: string,
-  email: string,
-  phone_number: string,
-  profile_photo: string,
+  first_name: string
+  last_name: string
+  email: string
+  phone_number: string
+  profile_photo: string
   interests: Array<string>
 }
 
@@ -55,41 +64,54 @@ class EditProfile extends Component<Props, State> {
           style={styles.modal}
           backdropColor="black"
         >
-          <ImageBackground style={styles.imageBackground} source={require("../assets/login.jpg")}>
-
-          <View style={styles.profile__formgroup}>
-            <Text style={styles.field__text}>First Name</Text>
-            <TextInput
-              style={styles.profile__input}
-              value={this.state.first_name}
-              onChangeText={text => this.setState({ first_name: text })}
-            />
-          </View>
-          <View style={styles.profile__formgroup}>
-            <Text style={styles.field__text}>Last Name</Text>
-            <TextInput
-              style={styles.profile__input}
-              value={this.state.last_name}
-              onChangeText={text => this.setState({ last_name: text })}
-            />
-          </View>
-          <View style={styles.profile__formgroup}>
-            <Text style={styles.field__text}>Email</Text>
-            <TextInput
-              style={styles.profile__input}
-              value={this.state.email}
-              onChangeText={text => this.setState({ email: text })}
-            />
-          </View>
-          <TouchableOpacity style={styles.upload__button} onPress={this.handleUpload}>
-            <Text style={styles.field__text}>Upload a Photo!</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.updateProfile(this.state.email, this.state)}
-            style={styles.profile__button}
+          <ImageBackground
+            style={styles.imageBackground}
+            source={require('../assets/login.jpg')}
           >
-            <Text style={styles.profile__button__text}>Done</Text>
-          </TouchableOpacity>
+            <View style={styles.profile__formgroup}>
+              <Text style={styles.field__text}>First Name</Text>
+              <TextInput
+                style={styles.profile__input}
+                value={this.state.first_name}
+                onChangeText={text => this.setState({ first_name: text })}
+              />
+            </View>
+            <View style={styles.profile__formgroup}>
+              <Text style={styles.field__text}>Last Name</Text>
+              <TextInput
+                style={styles.profile__input}
+                value={this.state.last_name}
+                onChangeText={text => this.setState({ last_name: text })}
+              />
+            </View>
+            <View style={styles.profile__formgroup}>
+              <Text style={styles.field__text}>Email</Text>
+              <TextInput
+                style={styles.profile__input}
+                value={this.state.email}
+                onChangeText={text => this.setState({ email: text })}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.upload__button}
+              onPress={this.handleUpload}
+            >
+              <Text style={styles.field__text}>Upload a Photo!</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.closeEditProfileForm()}
+              style={styles.profile__button}
+            >
+              <Text style={styles.profile__button__text}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.updateProfile(this.state.email, this.state)
+              }
+              style={styles.profile__button}
+            >
+              <Text style={styles.profile__button__text}>Submit</Text>
+            </TouchableOpacity>
           </ImageBackground>
         </Modal>
       </>
@@ -108,12 +130,12 @@ const styles = StyleSheet.create({
   },
   modal: {
     height: '50%',
-    alignItems: "center"
+    alignItems: 'center'
   },
   field__text: {
     alignSelf: 'center',
     color: '#fff',
-    fontWeight: '800',
+    fontWeight: '800'
   },
   profile__formgroup: {
     width: '90%',
@@ -160,8 +182,15 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateProfile: (userEmail, updatedUser) => dispatch(updateProfile(userEmail, updatedUser))
+    updateProfile: (userEmail, updatedUser) =>
+      dispatch(updateProfile(userEmail, updatedUser)),
+    closeEditProfileForm: () => {
+      dispatch({ type: 'CLOSE_EDIT_PROFILE_FORM' })
+    }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfile)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditProfile)
