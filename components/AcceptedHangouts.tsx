@@ -61,21 +61,32 @@ export const AcceptedHangouts = props => {
                   source={{ uri: hangout.participants[0].profile_photo }}
                   style={styles.user__image}
                 />
-
-                <Text style={styles.user__name}>
-                  {hangout.participants[0].first_name}
-                </Text>
-                <TouchableOpacity
-                  style={styles.start_button}
-                  onPress={() =>
-                    props.finishHangout(
-                      hangout.hangout_id,
-                      hangout.participants[0].email
-                    )
-                  }
+                <View
+                  style={{
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flex: 1
+                  }}
                 >
-                  <Text style={styles.button_text}>Stop Hangout</Text>
-                </TouchableOpacity>
+                  <Text style={styles.user__name}>
+                    {hangout.participants[0].first_name}
+                  </Text>
+                  <View style={styles.badges}>
+                    <Badges badges={hangout.participants[0].equipped_badges} />
+                  </View>
+                  <TouchableOpacity
+                    style={styles.start_button}
+                    onPress={() =>
+                      props.finishHangout(
+                        hangout.hangout_id,
+                        hangout.participants[0].email
+                      )
+                    }
+                  >
+                    <Text style={styles.button_text}>Stop Hangout</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             )
           })}
@@ -165,7 +176,8 @@ const mapStateToProps = state => {
     currentUserLimited: {
       first_name: state.user.first_name,
       email: state.user.email,
-      profile_photo: state.user.profile_photo
+      profile_photo: state.user.profile_photo,
+      equipped_badges: state.user.equipped_badges
     }
   }
 }
