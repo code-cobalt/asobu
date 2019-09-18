@@ -164,7 +164,6 @@ const reducer = (state = initialState, action) => {
         allEvents: filteredEvents,
         user: updatedUser,
         resultsSwitch: 'events',
-        currentEvent: {},
         showEvent: false
       }
     }
@@ -178,7 +177,7 @@ const reducer = (state = initialState, action) => {
       return copiedState
     }
     case 'CLOSE_EVENT': {
-      return { ...state, currentEvent: {}, showEvent: false }
+      return { ...state, showEvent: false }
     }
     case 'ATTEND_EVENT': {
       //add currentUser to currentevent attendees list
