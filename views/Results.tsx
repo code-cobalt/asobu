@@ -5,7 +5,7 @@ import SwitchSelector from 'react-native-switch-selector'
 import Hangouts from './Hangouts'
 import Events from './Events'
 import AnimatedProfile from './AnimatedProfile'
-import AnimatedEvent from './AnimatedEvent'
+import EventModal from './EventModal'
 import NewEvent from '../components/NewEvent'
 
 const options = [
@@ -35,7 +35,7 @@ class Results extends Component<Props> {
         />
         {this.props.resultsSwitch === 'hangouts' ? <Hangouts /> : <Events />}
         {/* <AnimatedProfile /> */}
-        <AnimatedEvent />
+        <EventModal />
         {/* <NewEvent /> */}
       </>
     )
