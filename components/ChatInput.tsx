@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, TextInput, StyleSheet } from 'react-native'
+import { Text, TextInput, StyleSheet, View } from 'react-native'
 import { createMessage } from '../src/actions/chats'
 import { connect } from 'react-redux'
 
@@ -57,28 +57,35 @@ class ChatInput extends Component<Props> {
 
   render() {
     return (
-      <>
+      <View style={styles.input__container}>
         <TextInput
+          placeholder='Aa'
           style={styles.chat__input}
           onChangeText={text => this.setState({ inputText: text })}
           onSubmitEditing={text => this.handleSubmit(text)}
           value={this.state.inputText}
         />
-      </>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  input__container: {
+    width: '100%',
+    backgroundColor: '#fff'
+  },
   chat__input: {
-    height: 50,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 15,
-    borderRadius: 50,
+    marginTop: 15,
+    height: 40,
+    borderColor: '#e5e3ea',
+    borderWidth: 2,
+    marginBottom: 30,
+    borderRadius: 20,
     textAlign: 'center',
-    width: '95%',
-    alignSelf: 'center'
+    width: '70%',
+    alignSelf: 'center',
+    backgroundColor: '#efedf5'
   }
 })
 
