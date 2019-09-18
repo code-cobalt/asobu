@@ -23,7 +23,7 @@ interface Props {
 }
 
 const Comments: React.FunctionComponent<Props> = props => {
-  let commentsArray;
+  /* let commentsArray;
   if (props.comments !== undefined) {
     commentsArray = props.comments.map(comment => {
       <Comment
@@ -32,8 +32,7 @@ const Comments: React.FunctionComponent<Props> = props => {
             currentUserEmail={props.currentUserEmail}
           />
     })
-  }
-  console.log(commentsArray)
+  } */
   return (
     <View>
       {props.comments &&
