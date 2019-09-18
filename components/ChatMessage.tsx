@@ -64,12 +64,14 @@ const styles = StyleSheet.create({
   chat__text__user: {
     paddingLeft: 10,
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    fontSize: 14
   },
   chat__text__friend: {
     paddingRight: 10,
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    fontSize: 14
   }
 })
 
