@@ -107,6 +107,7 @@ class Hangouts extends React.Component<Props> {
           </View>
         </Modal>
         <UserModal />
+        <Review />
       </SafeAreaView>
     )
   }
