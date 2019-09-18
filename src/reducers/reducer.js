@@ -254,10 +254,14 @@ const reducer = (state = initialState, action) => {
       const sentHangoutRequests = state.sentHangoutRequests.filter(
         request => request.email !== action.newChat.participants[0].email
       )
-      const updatedAcceptedHangouts = [
-        ...state.acceptedHangouts,
-        action.newChat.participants[0]
-      ]
+      let participant
+      action.equippedBadges
+        ? (participant = {
+            ...action.newChat.participants[0],
+            equipped_badges: action.equippedBadges
+          })
+        : (participant = action.newChat.participants[0])
+      const updatedAcceptedHangouts = [...state.acceptedHangouts, participant]
       let included = false
       for (const chat of state.chats) {
         if (chat.chat_id === action.newChat.chat_id) {

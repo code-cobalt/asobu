@@ -15,7 +15,7 @@ import Badges from './Badges'
 export const AcceptedHangouts = props => {
   return (
     <>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <Text style={styles.title}>Meeting up with</Text>
         <ScrollView style={styles.request}>
           {props.acceptedHangouts.map((hangout, index) => {
@@ -61,21 +61,21 @@ export const AcceptedHangouts = props => {
                   source={{ uri: hangout.participants[0].profile_photo }}
                   style={styles.user__image}
                 />
-               
-                  <Text style={styles.user__name}>
-                    {hangout.participants[0].first_name}
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.start_button}
-                    onPress={() =>
-                      props.finishHangout(
-                        hangout.hangout_id,
-                        hangout.participants[0].email
-                      )
-                    }
-                  >
-                    <Text style={styles.button_text}>Stop Hangout</Text>
-                  </TouchableOpacity>
+
+                <Text style={styles.user__name}>
+                  {hangout.participants[0].first_name}
+                </Text>
+                <TouchableOpacity
+                  style={styles.start_button}
+                  onPress={() =>
+                    props.finishHangout(
+                      hangout.hangout_id,
+                      hangout.participants[0].email
+                    )
+                  }
+                >
+                  <Text style={styles.button_text}>Stop Hangout</Text>
+                </TouchableOpacity>
               </View>
             )
           })}
