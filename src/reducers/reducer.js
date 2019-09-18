@@ -5,7 +5,7 @@ const initialState = {
   receivedHangoutRequests: [],
   acceptedHangouts: [],
   ongoingHangouts: [],
-  pendingReview: [],
+  pendingReviews: [],
   user: {},
   allUsers: [],
   allEvents: [],
