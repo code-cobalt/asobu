@@ -177,7 +177,7 @@ class EditEvent extends React.Component<Props, State> {
           <Button title="Upload Photo" onPress={this.handleUpload} />
           <Text>Tags</Text>
           {this.state.updatedEvent.tags.map(tag => (
-            <Text>
+            <Text key={tag}>
               {tag} <Text onPress={() => this.removeTag(tag)}>delete</Text>
             </Text>
           ))}
