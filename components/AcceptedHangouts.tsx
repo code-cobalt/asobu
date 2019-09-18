@@ -178,7 +178,8 @@ const mapStateToProps = state => {
     currentUserLimited: {
       first_name: state.user.first_name,
       email: state.user.email,
-      profile_photo: state.user.profile_photo
+      profile_photo: state.user.profile_photo,
+      equipped_badges: state.user.equipped_badges
     },
     pendingReviews: state.pendingReviews
   }
