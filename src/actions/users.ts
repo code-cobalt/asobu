@@ -11,9 +11,7 @@ import {
   blockUserQuery,
   unblockUserQuery,
   reviewUserQuery,
-  addExpQuery,
-  startHangoutQuery,
-  finishHangoutQuery
+  addExpQuery
 } from '../queries/users'
 import { AsyncStorage } from 'react-native'
 
@@ -135,7 +133,6 @@ export const reviewUser = async (
       newStats
     }
   })
-  console.log('After review')
 }
 
 export const addExp = (userEmail, points) => {
@@ -148,29 +145,5 @@ export const addExp = (userEmail, points) => {
       }
     })
     dispatch({ type: 'ADD_EXP', exp: exp.data.data.AddExp })
-  }
-}
-
-export const startHangout = participants => {
-  return async dispatch => {
-    const hangoutId = await axios.post(`${apiUrl}/graphql`, {
-      query: print(startHangoutQuery),
-      variables: { participants }
-    })
-    dispatch({
-      type: 'START_HANGOUT',
-      participants,
-      hangoutId: hangoutId.data.data.StartHangout
-    })
-  }
-}
-
-export const finishHangout = (hangoutId, userToReview) => {
-  return async dispatch => {
-    await axios.post(`${apiUrl}/graphql`, {
-      query: print(finishHangoutQuery),
-      variables: { hangoutId }
-    })
-    dispatch({ type: 'FINISH_HANGOUT', hangoutId, userToReview })
   }
 }

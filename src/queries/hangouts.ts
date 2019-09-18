@@ -43,3 +43,14 @@ export const declineHangoutRequestQuery = gql`
     )
   }
 `
+
+export const startHangoutQuery = gql`
+  mutation StartHangout($participants: [UserLimitedInput]!) {
+    StartHangout(participants: $participants)
+  }
+`
+export const finishHangoutQuery = gql`
+  mutation FinishHangout($hangoutId: String!) {
+    FinishHangout(hangoutId: $hangoutId)
+  }
+`

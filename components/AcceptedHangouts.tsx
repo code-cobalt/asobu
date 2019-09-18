@@ -5,14 +5,14 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  StyleSheet,
-  Button
+  StyleSheet
 } from 'react-native'
 import { connect } from 'react-redux'
-import { startHangout, finishHangout } from '../src/actions/users'
+import { startHangout, finishHangout } from '../src/actions/hangouts'
 import Badges from './Badges'
 
 export const AcceptedHangouts = props => {
+  console.log(props.pendingReviews)
   return (
     <>
       <View style={{ flex: 1 }}>
@@ -179,7 +179,8 @@ const mapStateToProps = state => {
       email: state.user.email,
       profile_photo: state.user.profile_photo,
       equipped_badges: state.user.equipped_badges
-    }
+    },
+    pendingReviews: state.pendingReviews
   }
 }
 const mapDispatchToProps = dispatch => {

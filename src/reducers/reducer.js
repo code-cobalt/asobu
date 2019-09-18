@@ -5,7 +5,7 @@ const initialState = {
   receivedHangoutRequests: [],
   acceptedHangouts: [],
   ongoingHangouts: [],
-  pendingReview: [],
+  pendingReviews: [],
   user: {},
   allUsers: [],
   allEvents: [],
@@ -57,7 +57,7 @@ const reducer = (state = initialState, action) => {
         receivedHangoutRequests: action.user.received_hangout_requests,
         acceptedHangouts: action.user.accepted_hangouts,
         ongoingHangouts: action.user.ongoing_hangouts,
-        pendingReview: action.user.pending_reviews
+        pendingReviews: action.user.pending_reviews
       }
     }
     case 'TOGGLE_AUTH': {
@@ -164,7 +164,6 @@ const reducer = (state = initialState, action) => {
         allEvents: filteredEvents,
         user: updatedUser,
         resultsSwitch: 'events',
-        currentEvent: {},
         showEvent: false
       }
     }
@@ -178,7 +177,7 @@ const reducer = (state = initialState, action) => {
       return copiedState
     }
     case 'CLOSE_EVENT': {
-      return { ...state, currentEvent: {}, showEvent: false }
+      return { ...state, showEvent: false }
     }
     case 'ATTEND_EVENT': {
       //add currentUser to currentevent attendees list
