@@ -5,6 +5,7 @@ const initialState = {
   receivedHangoutRequests: [],
   acceptedHangouts: [],
   ongoingHangouts: [],
+  pendingReview: [],
   user: {},
   allUsers: [],
   allEvents: [],
@@ -55,7 +56,8 @@ const reducer = (state = initialState, action) => {
         sentHangoutRequests: action.user.sent_hangout_requests,
         receivedHangoutRequests: action.user.received_hangout_requests,
         acceptedHangouts: action.user.accepted_hangouts,
-        ongoingHangouts: action.user.ongoing_hangouts
+        ongoingHangouts: action.user.ongoing_hangouts,
+        pendingReview: action.user.pending_reviews
       }
     }
     case 'TOGGLE_AUTH': {
@@ -252,10 +254,14 @@ const reducer = (state = initialState, action) => {
       const sentHangoutRequests = state.sentHangoutRequests.filter(
         request => request.email !== action.newChat.participants[0].email
       )
-      const updatedAcceptedHangouts = [
-        ...state.acceptedHangouts,
-        action.newChat.participants[0]
-      ]
+      let participant
+      action.equippedBadges
+        ? (participant = {
+            ...action.newChat.participants[0],
+            equipped_badges: action.equippedBadges
+          })
+        : (participant = action.newChat.participants[0])
+      const updatedAcceptedHangouts = [...state.acceptedHangouts, participant]
       let included = false
       for (const chat of state.chats) {
         if (chat.chat_id === action.newChat.chat_id) {
