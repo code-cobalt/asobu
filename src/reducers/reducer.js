@@ -28,7 +28,9 @@ const initialState = {
   currentChatMessages: [],
   currentChatId: 0,
   hangoutId: '',
-  userToReview: ''
+  userToReview: '',
+  latitude: '',
+  longitude: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -337,7 +339,6 @@ const reducer = (state = initialState, action) => {
       }
     }
     case 'FINISH_HANGOUT': {
-      console.log('INSIDE FINISH HANGOUTS')
       const updatedOngoingHangouts = state.ongoingHangouts.filter(
         hangout => hangout.hangout_id !== action.hangoutId
       )
@@ -351,8 +352,14 @@ const reducer = (state = initialState, action) => {
       return { ...state, showReview: true }
     }
     case 'END_REVIEW': {
-      console.log('INSIDE END REVIEW')
       return { ...state, userToReview: '' }
+    }
+    case 'GET_LOCATION': {
+      return {
+        ...state,
+        latitude: action.latitude,
+        longitude: action.longitude
+      }
     }
     default: {
       return state
