@@ -5,6 +5,7 @@ const initialState = {
   receivedHangoutRequests: [],
   acceptedHangouts: [],
   ongoingHangouts: [],
+  pendingReview: [],
   user: {},
   allUsers: [],
   allEvents: [],
@@ -55,7 +56,8 @@ const reducer = (state = initialState, action) => {
         sentHangoutRequests: action.user.sent_hangout_requests,
         receivedHangoutRequests: action.user.received_hangout_requests,
         acceptedHangouts: action.user.accepted_hangouts,
-        ongoingHangouts: action.user.ongoing_hangouts
+        ongoingHangouts: action.user.ongoing_hangouts,
+        pendingReview: action.user.pending_reviews
       }
     }
     case 'TOGGLE_AUTH': {
