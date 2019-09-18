@@ -55,7 +55,10 @@ const PendingHangouts = props => {
                           `You have accepted ${request.first_name}'s hangout request!`,
                           'Visit chats to start talking!'
                         )
-                        props.dispatchHangoutRequest(newChat)
+                        props.dispatchHangoutRequest(
+                          newChat,
+                          request.equipped_badges
+                        )
                         setTimeout(
                           () =>
                             props.socket.send(
@@ -164,8 +167,8 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    dispatchHangoutRequest: newChat => {
-      dispatch({ type: 'ACCEPT_REQUEST', newChat })
+    dispatchHangoutRequest: (newChat, equippedBadges) => {
+      dispatch({ type: 'ACCEPT_REQUEST', newChat, equippedBadges })
     },
     declineHangoutRequest: (currentUserEmail, fromUserEmail) =>
       dispatch(declineHangoutRequest(currentUserEmail, fromUserEmail)),
