@@ -26,6 +26,7 @@ export const acceptHangoutRequestQuery = gql`
         first_name
         email
         profile_photo
+        equipped_badges
       }
     }
   }
