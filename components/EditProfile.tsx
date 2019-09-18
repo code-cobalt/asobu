@@ -16,6 +16,7 @@ import { uploadPhoto } from '../src/actions/upload'
 
 interface Props {
   showEditProfileForm: boolean
+  closeEditProfileForm: Function
   updateProfile: Function
   user: User
 }
