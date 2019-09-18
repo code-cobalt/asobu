@@ -70,6 +70,9 @@ const reducer = (state = initialState, action) => {
     case 'SHOW_EDIT_PROFILE_FORM': {
       return { ...state, showEditProfileForm: true }
     }
+    case 'CLOSE_EDIT_PROFILE_FORM': {
+      return { ...state, showEditProfileForm: false }
+    }
     case 'UPDATE_PROFILE': {
       return { ...state, user: action.updatedUser, showEditProfileForm: false }
     }
