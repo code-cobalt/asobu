@@ -142,7 +142,7 @@ class Signup extends Component<Props, State> {
         >
           <Text style={styles.signup__button__text}>Sign Up</Text>
         </TouchableOpacity>
-        <Text style={styles.signup__login} onPress={this.props.toggleAuth}>
+        <Text style={styles.signup__login} onPress={() => this.props.toggleAuth()}>
           Login
         </Text>
       </ImageBackground>
