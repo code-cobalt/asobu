@@ -152,10 +152,14 @@ export const addExp = (userEmail, points) => {
 }
 
 export const startHangout = participants => {
+  const updatedParticipants = participants.map(participant => {
+    delete participant.equipped_badges
+    return participant
+  })
   return async dispatch => {
     const hangoutId = await axios.post(`${apiUrl}/graphql`, {
       query: print(startHangoutQuery),
-      variables: { participants }
+      variables: { participants: updatedParticipants }
     })
     dispatch({
       type: 'START_HANGOUT',
@@ -166,6 +170,8 @@ export const startHangout = participants => {
 }
 
 export const finishHangout = (hangoutId, userToReview) => {
+  console.log('HangoutId', hangoutId)
+  console.log('UserToReview', userToReview)
   return async dispatch => {
     await axios.post(`${apiUrl}/graphql`, {
       query: print(finishHangoutQuery),
