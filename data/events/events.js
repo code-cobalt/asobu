@@ -57,28 +57,7 @@ const events = [
           'https://media.istockphoto.com/photos/happy-laughing-man-picture-id544358212?k=6&m=544358212&s=612x612&w=0&h=odURMNz2hty8LIfpVahaaUKpGU4vd-UlZx4jy-OAnJA='
       }
     ],
-    comments: [
-      {
-        from: {
-          first_name: 'Aaron',
-          email: 'aaronthetires@email.com',
-          profile_photo:
-            'https://media.istockphoto.com/photos/happy-laughing-man-picture-id544358212?k=6&m=544358212&s=612x612&w=0&h=odURMNz2hty8LIfpVahaaUKpGU4vd-UlZx4jy-OAnJA='
-        },
-        content: 'Are beginners welcome?',
-        timestamp: new Date()
-      },
-      {
-        from: {
-          first_name: 'Jerry',
-          email: 'jberr@email.com',
-          profile_photo:
-            'https://cdn.thedailymash.co.uk/wp-content/uploads/20190324205229/40-something-man-2-1.jpg'
-        },
-        content: 'Yes, all levels are welcome!',
-        timestamp: new Date()
-      }
-    ]
+    comments: []
   }
 ]
 
