@@ -25,9 +25,43 @@ interface Props {
   badges: string[]
 }
 const Badges: React.FunctionComponent<Props> = props => {
+  
   return (
     <>
-      {props.badges.map((badge, index) => (
+      {props.badges.length === 1 && (
+        <>
+          <Image
+            source={badges[props.badges[0]]}
+            style={{ margin: 2, height: 40, width: 40 }}
+            />
+          <Image
+            source={require('../assets/socket.png')}
+            style={{ margin: 2, height: 40, width: 40 }}
+            />
+          <Image
+            source={require('../assets/socket.png')}
+            style={{ margin: 2, height: 40, width: 40 }}
+            />
+        </>
+      )}
+      {props.badges.length === 2 && (
+        <>
+          <Image
+            source={badges[props.badges[0]]}
+            style={{ margin: 2, height: 40, width: 40 }}
+            />
+          <Image
+            source={badges[props.badges[1]]}
+            style={{ margin: 2, height: 40, width: 40 }}
+            />
+          <Image
+            source={require('../assets/socket.png')}
+            style={{ margin: 2, height: 40, width: 40 }}
+            />
+        </>
+      )}
+      {props.badges.length === 3 &&
+      props.badges.map((badge, index) => (
         <Image
           key={index}
           source={badges[badge]}
