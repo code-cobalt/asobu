@@ -4,7 +4,9 @@ import { print } from 'graphql'
 import {
   sendHangoutRequestQuery,
   acceptHangoutRequestQuery,
-  declineHangoutRequestQuery
+  declineHangoutRequestQuery,
+  startHangoutQuery,
+  finishHangoutQuery
 } from '../queries/hangouts'
 
 export const sendHangoutRequest = (currentUserEmail, toUser) => {
@@ -41,5 +43,28 @@ export const declineHangoutRequest = (currentUserEmail, fromUserEmail) => {
       }
     })
     dispatch({ type: 'DECLINE_REQUEST', fromUserEmail })
+  }
+}
+export const startHangout = participants => {
+  return async dispatch => {
+    const hangoutId = await axios.post(`${apiUrl}/graphql`, {
+      query: print(startHangoutQuery),
+      variables: { participants }
+    })
+    dispatch({
+      type: 'START_HANGOUT',
+      participants,
+      hangoutId: hangoutId.data.data.StartHangout
+    })
+  }
+}
+
+export const finishHangout = (hangoutId, userToReview) => {
+  return async dispatch => {
+    await axios.post(`${apiUrl}/graphql`, {
+      query: print(finishHangoutQuery),
+      variables: { hangoutId }
+    })
+    dispatch({ type: 'FINISH_HANGOUT', hangoutId, userToReview })
   }
 }

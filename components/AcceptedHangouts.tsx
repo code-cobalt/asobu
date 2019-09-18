@@ -5,11 +5,10 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  StyleSheet,
-  Button
+  StyleSheet
 } from 'react-native'
 import { connect } from 'react-redux'
-import { startHangout, finishHangout } from '../src/actions/users'
+import { startHangout, finishHangout } from '../src/actions/hangouts'
 import Badges from './Badges'
 
 export const AcceptedHangouts = props => {
