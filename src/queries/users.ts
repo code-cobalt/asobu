@@ -160,7 +160,7 @@ export const unblockUserQuery = gql`
 `
 
 export const reviewUserQuery = gql`
-  mutation reviewUser(
+  mutation ReviewUser(
     $currentUserEmail: String!
     $reviewedUserEmail: String!
     $newStats: StatsInput!
@@ -181,18 +181,7 @@ export const reviewUserQuery = gql`
 `
 
 export const addExpQuery = gql`
-  mutation addExp($userEmail: String!, $points: Int) {
+  mutation AddExp($userEmail: String!, $points: Int) {
     AddExp(userEmail: $userEmail, points: $points)
-  }
-`
-
-export const startHangoutQuery = gql`
-  mutation startHangout($participants: [UserLimitedInput]!) {
-    StartHangout(participants: $participants)
-  }
-`
-export const finishHangoutQuery = gql`
-  mutation finishHangout($hangoutId: String!) {
-    FinishHangout(hangoutId: $hangoutId)
   }
 `
