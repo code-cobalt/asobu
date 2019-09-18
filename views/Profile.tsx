@@ -61,228 +61,238 @@ interface Props {
 class Profile extends Component<Props> {
   render() {
     return (
-      <SafeAreaView>
-        <ScrollView>
-          <View style={styles.profile__header}>
-            <TouchableOpacity style={styles.photo_container}>
-              {this.props.user.profile_photo !== null && (
-                <Image
-                  source={{ uri: this.props.user.profile_photo }}
-                  style={styles.user__image}
-                />
-              )}
-              {this.props.user.profile_photo === null && (
-                <Image
-                  source={require('../assets/default_profile.png')}
-                  style={styles.user__image}
-                />
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.edit__button}
-              onPress={() => this.props.editProfile()}
-            >
-              <Text style={styles.button__text}>Edit Profile</Text>
-            </TouchableOpacity>
-            <View style={styles.basic_info_container}>
-              <Text style={styles.user__name}>
-                {this.props.user.first_name} {this.props.user.last_name}
-              </Text>
-              <Text style={styles.user__level}>
-                Level {this.props.user.lvl}
-              </Text>
-              <Text style={styles.user__xp}>XP {this.props.user.exp}</Text>
-              <View style={styles.top__badges}>
-                <Badges badges={this.props.user.equipped_badges} />
+      <View style={styles.parent__container}>
+        <SafeAreaView>
+          <ScrollView>
+            <View style={styles.profile__header}>
+              <TouchableOpacity style={styles.photo_container}>
+                {this.props.user.profile_photo !== null && (
+                  <Image
+                    source={{ uri: this.props.user.profile_photo }}
+                    style={styles.user__image}
+                  />
+                )}
+                {this.props.user.profile_photo === null && (
+                  <Image
+                    source={require('../assets/default_profile.png')}
+                    style={styles.user__image}
+                  />
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.edit__button}
+                onPress={() => this.props.editProfile()}
+              >
+                <Text style={styles.button__text}>Edit Profile</Text>
+              </TouchableOpacity>
+              <View style={styles.basic_info_container}>
+                <Text style={styles.user__name}>
+                  {this.props.user.first_name} {this.props.user.last_name}
+                </Text>
+                <Text style={styles.user__level}>
+                  Level {this.props.user.lvl}
+                </Text>
+                <Text style={styles.user__xp}>XP {this.props.user.exp}</Text>
+                <View style={styles.top__badges}>
+                  <Badges badges={this.props.user.equipped_badges} />
+                </View>
               </View>
-            </View>
-          </View>
-          <Divider style={styles.divider} />
-          <View style={styles.profile__body}>
-            <Text style={styles.info__title}>Your Interests</Text>
-            <View style={styles.interests__container}>
-              {this.props.user.interests.length > 0 &&
-                this.props.user.interests.map(interest => {
-                  return <Text style={styles.interests__text}>{interest}</Text>
-                })}
-            </View>
-            <View style={styles.email__phone}>
-              <Text style={styles.info__title}>email</Text>
-              <Text style={styles.inner__text}>{this.props.user.email}</Text>
-              <Text style={styles.info__title}>Phone #</Text>
-              <Text style={styles.inner__text}>
-                {this.props.user.phone_number}
-              </Text>
             </View>
             <Divider style={styles.divider} />
-            <View style={styles.all__badges}>
-              <Text style={styles.info__title}>Your Badges</Text>
-              <View style={styles.badge__container}>
-                <View style={styles.badge__category}>
-                  <Image
-                    style={styles.noBadge}
-                    source={require('../assets/crown_badge.png')}
-                  />
-                  <Image
-                    style={styles.noBadge}
-                    source={require('../assets/crown_badge2.png')}
-                  />
-                  <Image
-                    style={styles.noBadge}
-                    source={require('../assets/crown_badge3.png')}
-                  />
-                </View>
-                <View style={styles.badge__category}>
-                  {this.props.user.stats.kind >= 1 ? (
-                    <Image
-                      style={styles.ownBadge}
-                      source={require('../assets/kind_bronze.png')}
-                    />
-                  ) : (
+            <View style={styles.profile__body}>
+              <Text style={styles.info__title}>Your Interests</Text>
+              <View style={styles.interests__container}>
+                {this.props.user.interests.length > 0 &&
+                  this.props.user.interests.map(interest => {
+                    return <Text style={styles.interests__text}>{interest}</Text>
+                  })}
+              </View>
+              <View style={styles.email__phone}>
+                <Text style={styles.info__title}>email</Text>
+                <Text style={styles.inner__text}>{this.props.user.email}</Text>
+                <Text style={styles.info__title}>Phone #</Text>
+                <Text style={styles.inner__text}>
+                  {this.props.user.phone_number}
+                </Text>
+              </View>
+              <Divider style={styles.divider} />
+              <View style={styles.all__badges}>
+                <Text style={styles.info__title}>Your Badges</Text>
+                <View style={styles.badge__container}>
+                  <View style={styles.badge__category}>
                     <Image
                       style={styles.noBadge}
-                      source={require('../assets/kind_bronze.png')}
+                      source={require('../assets/crown_badge.png')}
                     />
-                  )}
-                  {this.props.user.stats.kind >= 5 ? (
-                    <Image
-                      style={styles.ownBadge}
-                      source={require('../assets/kind_silver.png')}
-                    />
-                  ) : (
                     <Image
                       style={styles.noBadge}
-                      source={require('../assets/kind_silver.png')}
+                      source={require('../assets/crown_badge2.png')}
                     />
-                  )}
-                  {this.props.user.stats.kind >= 15 ? (
-                    <Image
-                      style={styles.ownBadge}
-                      source={require('../assets/kind_gold.png')}
-                    />
-                  ) : (
                     <Image
                       style={styles.noBadge}
-                      source={require('../assets/kind_gold.png')}
+                      source={require('../assets/crown_badge3.png')}
                     />
-                  )}
-                </View>
-                <View style={styles.badge__category}>
-                  {this.props.user.stats.funny >= 1 ? (
-                    <Image
-                      style={styles.ownBadge}
-                      source={require('../assets/funny_bronze.png')}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.noBadge}
-                      source={require('../assets/funny_bronze.png')}
-                    />
-                  )}
-                  {this.props.user.stats.funny >= 5 ? (
-                    <Image
-                      style={styles.ownBadge}
-                      source={require('../assets/funny_silver.png')}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.noBadge}
-                      source={require('../assets/funny_silver.png')}
-                    />
-                  )}
-                  {this.props.user.stats.funny >= 15 ? (
-                    <Image
-                      style={styles.ownBadge}
-                      source={require('../assets/funny_gold.png')}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.noBadge}
-                      source={require('../assets/funny_gold.png')}
-                    />
-                  )}
-                </View>
-                <View style={styles.badge__category}>
-                  {this.props.user.stats.intellectual >= 1 ? (
-                    <Image
-                      style={styles.ownBadge}
-                      source={require('../assets/intellectual_bronze.png')}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.noBadge}
-                      source={require('../assets/intellectual_bronze.png')}
-                    />
-                  )}
-                  {this.props.user.stats.intellectual >= 5 ? (
-                    <Image
-                      style={styles.ownBadge}
-                      source={require('../assets/intellectual_silver.png')}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.noBadge}
-                      source={require('../assets/intellectual_silver.png')}
-                    />
-                  )}
-                  {this.props.user.stats.intellectual >= 15 ? (
-                    <Image
-                      style={styles.ownBadge}
-                      source={require('../assets/intellectual_gold.png')}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.noBadge}
-                      source={require('../assets/intellectual_gold.png')}
-                    />
-                  )}
-                </View>
-                <View style={styles.badge__category}>
-                  {this.props.user.stats.therapeutic >= 1 ? (
-                    <Image
-                      style={styles.ownBadge}
-                      source={require('../assets/therapeutic_bronze.png')}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.noBadge}
-                      source={require('../assets/therapeutic_bronze.png')}
-                    />
-                  )}
-                  {this.props.user.stats.therapeutic >= 5 ? (
-                    <Image
-                      style={styles.ownBadge}
-                      source={require('../assets/therapeutic_silver.png')}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.noBadge}
-                      source={require('../assets/therapeutic_silver.png')}
-                    />
-                  )}
-                  {this.props.user.stats.therapeutic >= 15 ? (
-                    <Image
-                      style={styles.ownBadge}
-                      source={require('../assets/therapeutic_gold.png')}
-                    />
-                  ) : (
-                    <Image
-                      style={styles.noBadge}
-                      source={require('../assets/therapeutic_gold.png')}
-                    />
-                  )}
+                  </View>
+                  <View style={styles.badge__category}>
+                    {this.props.user.stats.kind >= 1 ? (
+                      <Image
+                        style={styles.ownBadge}
+                        source={require('../assets/kind_bronze.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.noBadge}
+                        source={require('../assets/kind_bronze.png')}
+                      />
+                    )}
+                    {this.props.user.stats.kind >= 5 ? (
+                      <Image
+                        style={styles.ownBadge}
+                        source={require('../assets/kind_silver.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.noBadge}
+                        source={require('../assets/kind_silver.png')}
+                      />
+                    )}
+                    {this.props.user.stats.kind >= 15 ? (
+                      <Image
+                        style={styles.ownBadge}
+                        source={require('../assets/kind_gold.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.noBadge}
+                        source={require('../assets/kind_gold.png')}
+                      />
+                    )}
+                  </View>
+                  <View style={styles.badge__category}>
+                    {this.props.user.stats.funny >= 1 ? (
+                      <Image
+                        style={styles.ownBadge}
+                        source={require('../assets/funny_bronze.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.noBadge}
+                        source={require('../assets/funny_bronze.png')}
+                      />
+                    )}
+                    {this.props.user.stats.funny >= 5 ? (
+                      <Image
+                        style={styles.ownBadge}
+                        source={require('../assets/funny_silver.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.noBadge}
+                        source={require('../assets/funny_silver.png')}
+                      />
+                    )}
+                    {this.props.user.stats.funny >= 15 ? (
+                      <Image
+                        style={styles.ownBadge}
+                        source={require('../assets/funny_gold.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.noBadge}
+                        source={require('../assets/funny_gold.png')}
+                      />
+                    )}
+                  </View>
+                  <View style={styles.badge__category}>
+                    {this.props.user.stats.intellectual >= 1 ? (
+                      <Image
+                        style={styles.ownBadge}
+                        source={require('../assets/intellectual_bronze.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.noBadge}
+                        source={require('../assets/intellectual_bronze.png')}
+                      />
+                    )}
+                    {this.props.user.stats.intellectual >= 5 ? (
+                      <Image
+                        style={styles.ownBadge}
+                        source={require('../assets/intellectual_silver.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.noBadge}
+                        source={require('../assets/intellectual_silver.png')}
+                      />
+                    )}
+                    {this.props.user.stats.intellectual >= 15 ? (
+                      <Image
+                        style={styles.ownBadge}
+                        source={require('../assets/intellectual_gold.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.noBadge}
+                        source={require('../assets/intellectual_gold.png')}
+                      />
+                    )}
+                  </View>
+                  <View style={styles.badge__category}>
+                    {this.props.user.stats.therapeutic >= 1 ? (
+                      <Image
+                        style={styles.ownBadge}
+                        source={require('../assets/therapeutic_bronze.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.noBadge}
+                        source={require('../assets/therapeutic_bronze.png')}
+                      />
+                    )}
+                    {this.props.user.stats.therapeutic >= 5 ? (
+                      <Image
+                        style={styles.ownBadge}
+                        source={require('../assets/therapeutic_silver.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.noBadge}
+                        source={require('../assets/therapeutic_silver.png')}
+                      />
+                    )}
+                    {this.props.user.stats.therapeutic >= 15 ? (
+                      <Image
+                        style={styles.ownBadge}
+                        source={require('../assets/therapeutic_gold.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={styles.noBadge}
+                        source={require('../assets/therapeutic_gold.png')}
+                      />
+                    )}
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        </ScrollView>
-        <EditProfile />
-      </SafeAreaView>
+          </ScrollView>
+          <EditProfile />
+        </SafeAreaView>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  parent__container: {
+    backgroundColor: '#e5e6e5'
+  },
+  profile__header: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: '#e5e6e5'
+  },
   ownBadge: {
     marginRight: 25,
     marginLeft: 25,
@@ -308,11 +318,6 @@ const styles = StyleSheet.create({
   button__text: {
     fontWeight: '800',
     color: 'white'
-  },
-  profile__header: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    backgroundColor: '#e5e6e5'
   },
   profile__body: {
     padding: 25,
