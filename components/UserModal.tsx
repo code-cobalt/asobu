@@ -67,7 +67,7 @@ const UserModal: React.FunctionComponent<Props> = (props) => {
             onPress={() => props.closeProfile()}
             style={styles.profile__close}
           >
-            <Text>Close</Text>
+            <Text style={styles.button__text}>Close</Text>
           </TouchableOpacity>
         </ScrollView>
       </Modal>
@@ -81,8 +81,10 @@ const styles = StyleSheet.create({
   
   },
   button__text: {
-    fontWeight: '800',
-    color: 'white'
+    textAlign: 'center',
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 18
   },
   profile__header: {
     flexDirection: 'column',
