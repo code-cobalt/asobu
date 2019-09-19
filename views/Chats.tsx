@@ -3,14 +3,14 @@ import ChatList from '../components/ChatList'
 
 const Chats = () => {
   return (
-    <SafeAreaView style={styles.events}>
+    <SafeAreaView style={styles.chats}>
       <ChatList />
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  events: {
+  chats: {
     flex: 1,
     backgroundColor: '#fff',
   }

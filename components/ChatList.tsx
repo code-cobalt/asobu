@@ -36,7 +36,7 @@ const ChatList: React.FunctionComponent<Props> = props => {
 
 const styles = StyleSheet.create({
   chat_list: {
-    marginTop: 20
+    marginTop: 40
   }
 })
 

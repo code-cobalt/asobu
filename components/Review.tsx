@@ -142,7 +142,8 @@ class Review extends Component<Props, State> {
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: 40
   },
   review__title: {
     color: '#fff'
