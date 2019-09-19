@@ -51,20 +51,24 @@ class Main extends Component<Props> {
       }
       //Message Update
       if (message[0] === 'm0') {
+        console.log('CLIENT RECEIVED MESSAGE')
         this.props.getChat(parseInt(message[1]))
       }
       //Block User
       if (message[0] === 'b0') {
+        console.log('CLIENT BLOCKED')
         this.props.removeUser(message[1])
         this.props.removeUserChat(~~message[2])
       }
       //Send Hangout Request
       if (message[0] == 'h0') {
+        console.log('CLIENT RECEIVED HANGOUT REQUEST')
         const newUserLimited = await getUserLimited(message[1])
         this.props.receiveHangoutRequest(newUserLimited)
       }
       //Accept Hangout Request
       if (message[0] === 'h1') {
+        console.log('CLIENT HANGOUT REQUEST APPROVED')
         const newChatMessages = await getUserChats(this.props.email)
         const newChat = newChatMessages.pop()
         this.props.acceptHangoutRequest(newChat)
