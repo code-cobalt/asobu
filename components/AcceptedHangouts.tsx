@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {
   Text,
   View,
@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import { startHangout, finishHangout } from '../src/actions/hangouts'
 import Badges from './Badges'
 
-export const AcceptedHangouts = props => {
+const AcceptedHangouts = props => {
   return (
     <>
       <View style={{ flex: 1 }}>
@@ -41,7 +41,9 @@ export const AcceptedHangouts = props => {
                   <TouchableOpacity
                     style={styles.start_button}
                     onPress={() =>
-                      props.startHangout([props.currentUserLimited, hangout])
+                      props.socket.send(
+                        `s0 ${props.currentUserLimited.email} ${hangout.email} ${props.currentUserLimited.first_name}`
+                      )
                     }
                   >
                     <Text style={styles.button_text}>Start Hangout</Text>
