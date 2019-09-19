@@ -14,6 +14,7 @@ const initialState = {
   blockedByUsers: [],
   popupModal: false,
   showProfile: false,
+  showAttendees: false,
   showEditProfileForm: false,
   showEvent: false,
   showReview: false,
@@ -185,6 +186,12 @@ const reducer = (state = initialState, action) => {
     }
     case 'CLOSE_EVENT': {
       return { ...state, showEvent: false }
+    }
+    case 'SHOW_ATTENDEES': {
+      return { ...state, showAttendees: true}
+    }
+    case 'CLOSE_ATTENDEES': {
+      return { ...state, showAttendees: false}
     }
     case 'ATTEND_EVENT': {
       //add currentUser to currentevent attendees list
