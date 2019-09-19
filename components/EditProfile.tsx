@@ -99,12 +99,7 @@ class EditProfile extends Component<Props, State> {
             >
               <Text style={styles.field__text}>Upload a Photo!</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.props.closeEditProfileForm()}
-              style={styles.profile__button}
-            >
-              <Text style={styles.profile__button__text}>Cancel</Text>
-            </TouchableOpacity>
+
             <TouchableOpacity
               onPress={() =>
                 this.props.updateProfile(this.state.email, this.state)
@@ -113,6 +108,14 @@ class EditProfile extends Component<Props, State> {
             >
               <Text style={styles.profile__button__text}>Submit</Text>
             </TouchableOpacity>
+            
+            <TouchableOpacity
+              onPress={() => this.props.closeEditProfileForm()}
+              style={styles.profile__button}
+            >
+              <Text style={styles.profile__button__text}>Cancel</Text>
+            </TouchableOpacity>
+        
           </ImageBackground>
         </Modal>
       </>

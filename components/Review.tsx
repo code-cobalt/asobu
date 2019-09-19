@@ -19,6 +19,12 @@ interface Props {
   showReview: boolean
   addExp: Function
   reviewUser: Function
+  currentUser: CurrentUser
+}
+
+interface CurrentUser {
+  email: string
+  lvl: number
 }
 
 class Review extends Component<Props, State> {
@@ -55,8 +61,28 @@ class Review extends Component<Props, State> {
       therapeutic: this.state.therapeutic,
       interesting: this.state.interesting
     }
-    this.props.endReview(this.props.currentUser, this.props.userToReview, stats)
-    this.props.addExp(this.props.currentUser, 40)
+    this.props.endReview(this.props.currentUser.email, this.props.userToReview, stats)
+    this.props.addExp(this.props.currentUser.email, 40)
+  }
+
+  currentUserPoints = async () => {
+    let currentPoints;
+    if (this.props.currentUser.lvl === 1) {
+      currentPoints = 2;
+    } else if (this.props.currentUser.lvl > 1 && this.props.currentUser.lvl < 4) {
+      currentPoints = 3;
+    } else if (this.props.currentUser.lvl > 3 && this.props.currentUser.lvl < 7) {
+      currentPoints = 4;
+    } else if (this.props.currentUser.lvl > 6 && this.props.currentUser.lvl < 10) {
+      currentPoints = 5;
+    } else if (this.props.currentUser.lvl === 10) {
+      currentPoints = 6;
+    }
+    this.setState({totalPoints: currentPoints})
+  }
+
+  componentDidMount() {
+    this.currentUserPoints()
   }
 
   render() {
@@ -130,7 +156,7 @@ const mapStateToProps = state => {
   return {
     showReview: state.showReview,
     userToReview: state.userToReview,
-    currentUser: state.user.email
+    currentUser: state.user
   }
 }
 

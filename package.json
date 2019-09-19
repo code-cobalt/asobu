@@ -23,6 +23,7 @@
     "expo": "^34.0.1",
     "expo-constants": "~6.0.0",
     "expo-image-picker": "~6.0.0",
+    "expo-location": "~6.0.0",
     "expo-permissions": "~6.0.0",
     "form-data": "^2.5.1",
     "global": "^4.4.0",
@@ -45,11 +46,11 @@
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "subscriptions-transport-ws": "^0.9.16",
-    "ws": "^7.1.2",
     "ts-node": "^8.3.0",
     "ts-node-dev": "^1.0.0-pre.42",
     "universal-websocket-client": "^1.0.2",
-    "websocket": "^1.0.29"
+    "websocket": "^1.0.29",
+    "ws": "^7.1.2"
   },
   "devDependencies": {
     "@types/react": "^16.9.2",
