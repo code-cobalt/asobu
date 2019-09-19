@@ -262,3 +262,11 @@ export const addExpQuery = gql`
     AddExp(userEmail: $userEmail, points: $points)
   }
 `
+
+export const getUserEquippedBadgesQuery = gql`
+  query User($userEmail: String!) {
+    User(userEmail: $userEmail) {
+      equipped_badges
+    }
+  }
+`
