@@ -22,6 +22,7 @@ interface Props {
   closeEvent: Function
   getEvents: Function
   showEditEventForm: Function
+  showAttendees: Function
   currentEvent: Event
   attendEvent: Function
   unattendEvent: Function
@@ -54,6 +55,19 @@ interface Event {
 
 
 const EventModal: React.FunctionComponent<Props> = (props) => {
+
+    let attendeesButton
+
+    if (props.currentEvent.attendees) {
+      attendeesButton = (
+        <TouchableOpacity
+          onPress={() => props.showAttendees()}
+          style={styles.event__button}
+          >
+            <Text style={styles.button__text}>Attendees</Text>
+          </TouchableOpacity>
+      )
+    }
 
     let rsvpButton
 
@@ -111,10 +125,7 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
           <Text style={styles.button__text}>Delete Event</Text>
         </TouchableOpacity>
       )
-      // attendeesButton = (
-      //   <TouchableOpacity
-      //     onPress={() => }
-      // )
+      
       }
     return (
       <>
@@ -157,6 +168,7 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
               <TouchableOpacity style={styles.event__button}>
                 <Text style={styles.button__text}>Attendees</Text>
               </TouchableOpacity> */}
+              {attendeesButton}
               {rsvpButton}
               {editButton}
               {deleteButton}
@@ -264,6 +276,11 @@ const mapDispatchToProps = dispatch => {
     showEditEventForm: () => {
       dispatch({
         type: 'SHOW_EDIT_EVENT_FORM'
+      })
+    },
+    showAttendees: () => {
+      dispatch({
+        type: 'SHOW_ATTENDEES'
       })
     },
     attendEvent: (eventId, user) => dispatch(attendEvent(eventId, user)),
