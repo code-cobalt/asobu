@@ -33,9 +33,11 @@ export const AcceptedHangouts = props => {
                   }}
                 >
                   <Text style={styles.user__name}>{hangout.first_name}</Text>
-                  <View style={styles.badges}>
-                    <Badges badges={hangout.equipped_badges} />
-                  </View>
+                  {hangout.equipped_badges && (
+                    <View style={styles.badges}>
+                      <Badges badges={hangout.equipped_badges} />
+                    </View>
+                  )}
                   <TouchableOpacity
                     style={styles.start_button}
                     onPress={() =>

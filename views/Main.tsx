@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { getChat, getUserChats } from '../src/actions/chats'
-import { getUsers, getUserLimited } from '../src/actions/users'
+import {
+  getUsers,
+  getUserLimited,
+  getUserEquippedBadges
+} from '../src/actions/users'
 import Profile from './Profile'
 import Results from './Results'
 import Inbox from './Inbox'
@@ -36,7 +40,7 @@ interface UserLimited {
 }
 
 class Main extends Component<Props> {
-  componentDidMount() {
+  componentWillMount() {
     this.props.socket.send(`l0 ${this.props.email}`)
     // comment out socket.send to use dummy data
     this.props.socket.onmessage = async event => {
@@ -51,23 +55,30 @@ class Main extends Component<Props> {
       }
       //Message Update
       if (message[0] === 'm0') {
+        console.log('CLIENT RECEIVED MESSAGE')
         this.props.getChat(parseInt(message[1]))
       }
       //Block User
       if (message[0] === 'b0') {
+        console.log('CLIENT BLOCKED')
         this.props.removeUser(message[1])
         this.props.removeUserChat(~~message[2])
       }
       //Send Hangout Request
       if (message[0] == 'h0') {
+        console.log('CLIENT RECEIVED HANGOUT REQUEST')
         const newUserLimited = await getUserLimited(message[1])
         this.props.receiveHangoutRequest(newUserLimited)
       }
       //Accept Hangout Request
       if (message[0] === 'h1') {
+        console.log('CLIENT HANGOUT REQUEST APPROVED')
         const newChatMessages = await getUserChats(this.props.email)
         const newChat = newChatMessages.pop()
-        this.props.acceptHangoutRequest(newChat)
+        const equipped_badges = await getUserEquippedBadges(
+          newChat.participants[0].email
+        )
+        this.props.acceptHangoutRequest(newChat, equipped_badges)
         Alert.alert(
           `${message[2]} has accepted your hangout request!`,
           'Visit chats to start talking!'
@@ -142,8 +153,8 @@ const mapDispatchToProps = dispatch => {
     removeUserChat: chatId => {
       dispatch({ type: 'REMOVE_USER_CHAT', chatId })
     },
-    acceptHangoutRequest: newChat => {
-      dispatch({ type: 'ACCEPT_REQUEST', newChat })
+    acceptHangoutRequest: (newChat, equippedBadges) => {
+      dispatch({ type: 'ACCEPT_REQUEST', newChat, equippedBadges })
     },
     receiveHangoutRequest: userLimited => {
       dispatch({ type: 'RECEIVE_REQUEST', userLimited })
