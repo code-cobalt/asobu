@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import Auth from '../components/Auth'
 import Application from './Application'
 import { sockethost } from '../environment'
 import { SocketProvider } from '../components/SocketProvider'
+import { loginUser } from '../src/actions/users'
 
 /* const connection = new WebSocket(sockethost) */
 
@@ -13,6 +14,13 @@ interface Props {
 }
 
 class Wrapper extends Component<Props> {
+  async componentWillMount() {
+    const userStringified = await AsyncStorage.getItem('user')
+    if (userStringified !== null) {
+      const user = JSON.parse(userStringified)
+      this.props.loginUser(user.email, user.password)
+    }
+  }
   render() {
     return (
       <>
@@ -34,7 +42,13 @@ const mapStateToProps = state => {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    loginUser: (email, password) => dispatch(loginUser(email, password))
+  }
+}
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Wrapper)
