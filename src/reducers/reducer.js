@@ -30,7 +30,8 @@ const initialState = {
   hangoutId: '',
   userToReview: '',
   latitude: '',
-  longitude: ''
+  longitude: '',
+  activeSearch: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -81,7 +82,11 @@ const reducer = (state = initialState, action) => {
       return { ...state, showEditProfileForm: false }
     }
     case 'UPDATE_PROFILE': {
-      return { ...state, user: action.updatedUser, showEditProfileForm: false }
+      return {
+        ...state,
+        user: Object.assign(state.user, action.updatedUser),
+        showEditProfileForm: false
+      }
     }
     case 'SET_CHATS': {
       return { ...state, chats: action.chats }
@@ -360,6 +365,12 @@ const reducer = (state = initialState, action) => {
         latitude: action.latitude,
         longitude: action.longitude
       }
+    }
+    case 'TOGGLE_ACTIVE_SEARCH': {
+      return { ...state, activeSearch: !state.activeSearch }
+    }
+    case 'LOGOUT': {
+      return { ...state, isLoggedIn: false }
     }
     default: {
       return state

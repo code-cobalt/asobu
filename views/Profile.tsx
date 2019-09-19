@@ -14,6 +14,7 @@ import { Divider } from 'react-native-elements'
 import { connect } from 'react-redux'
 import Badges from './../components/Badges'
 import EditProfile from '../components/EditProfile'
+import { logOut } from '../src/actions/users'
 
 interface UserLimited {
   first_name: string
@@ -56,6 +57,7 @@ interface User {
 interface Props {
   user: User
   editProfile: Function
+  toggleActiveSearch: Function
 }
 
 class Profile extends Component<Props> {
@@ -117,7 +119,9 @@ class Profile extends Component<Props> {
               <View style={styles.interests__container}>
                 {this.props.user.interests.length > 0 &&
                   this.props.user.interests.map(interest => {
-                    return <Text style={styles.interests__text}>{interest}</Text>
+                    return (
+                      <Text style={styles.interests__text}>{interest}</Text>
+                    )
                   })}
               </View>
               <View style={styles.email__phone}>
@@ -288,6 +292,18 @@ class Profile extends Component<Props> {
                   </View>
                 </View>
               </View>
+              <TouchableOpacity
+                style={styles.edit__button}
+                onPress={() => this.props.toggleActiveSearch()}
+              >
+                <Text style={styles.button__text}>Toggle active</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.edit__button}
+                onPress={() => this.props.logOut()}
+              >
+                <Text style={styles.button__text}>LOGOUT</Text>
+              </TouchableOpacity>
             </View>
           </ScrollView>
           <EditProfile />
@@ -435,7 +451,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    editProfile: () => dispatch({ type: 'SHOW_EDIT_PROFILE_FORM' })
+    editProfile: () => dispatch({ type: 'SHOW_EDIT_PROFILE_FORM' }),
+    toggleActiveSearch: () => dispatch({ type: 'TOGGLE_ACTIVE_SEARCH' }),
+    logOut: () => dispatch(logOut())
   }
 }
 

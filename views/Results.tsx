@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Switch, StyleSheet, Animated } from 'react-native'
+import { Switch, StyleSheet, Animated, View, Text, Button } from 'react-native'
 import { connect } from 'react-redux'
 import SwitchSelector from 'react-native-switch-selector'
 import Hangouts from './Hangouts'
@@ -16,6 +16,8 @@ const options = [
 interface Props {
   toggleResultsView: Function
   resultsSwitch: string
+  activeSearch: boolean
+  toggleActiveSearch: Function
 }
 class Results extends Component<Props> {
   componentDidMount() {
@@ -25,18 +27,36 @@ class Results extends Component<Props> {
   render() {
     return (
       <>
-        <SwitchSelector
-          options={options}
-          backgroundColor="#e5e6e5"
-          buttonColor="#73d961"
-          initial={0}
-          style={styles.results__switch}
-          onPress={value => this.props.toggleResultsView(value)}
-        />
-        {this.props.resultsSwitch === 'hangouts' ? <Hangouts /> : <Events />}
-        {/* <AnimatedProfile /> */}
-        <EventModal />
-        {/* <NewEvent /> */}
+        {!this.props.activeSearch ? (
+          <View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          >
+            <Text>
+              You are not active and will not be able to see other users
+            </Text>
+            <Button
+              title="Become active"
+              onPress={() => this.props.toggleActiveSearch()}
+            ></Button>
+          </View>
+        ) : (
+          <>
+            <SwitchSelector
+              options={options}
+              backgroundColor="#e5e6e5"
+              buttonColor="#73d961"
+              initial={0}
+              style={styles.results__switch}
+              onPress={value => this.props.toggleResultsView(value)}
+            />
+            {this.props.resultsSwitch === 'hangouts' ? (
+              <Hangouts />
+            ) : (
+              <Events />
+            )}
+            <EventModal />
+          </>
+        )}
       </>
     )
   }
@@ -54,7 +74,8 @@ const styles = StyleSheet.create({
 })
 const mapStateToProps = state => {
   return {
-    resultsSwitch: state.resultsSwitch
+    resultsSwitch: state.resultsSwitch,
+    activeSearch: state.activeSearch
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -64,7 +85,8 @@ const mapDispatchToProps = dispatch => {
         type: 'TOGGLE_RESULTS_VIEW',
         activeView
       })
-    }
+    },
+    toggleActiveSearch: () => dispatch({ type: 'TOGGLE_ACTIVE_SEARCH' })
   }
 }
 

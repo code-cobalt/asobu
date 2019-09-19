@@ -53,11 +53,19 @@ export const loginUser = (userEmail, userPassword) => {
       JSON.stringify({
         firstName: user.first_name,
         lastName: user.last_name,
-        email: user.last_name,
+        email: user.email,
+        password: userPassword,
         profilePhoto: user.profile_photo
       })
     )
     dispatch({ type: 'SET_USER', user })
+  }
+}
+
+export const logOut = () => {
+  return async dispatch => {
+    await AsyncStorage.removeItem('user')
+    dispatch({ type: 'LOGOUT' })
   }
 }
 
@@ -153,7 +161,6 @@ export const reviewUser = (currentUserEmail, reviewedUserEmail, newStats) => {
         newStats
       }
     })
-    console.log('INSIDE REVIEW USER')
     dispatch({ type: 'END_REVIEW' })
   }
 }
