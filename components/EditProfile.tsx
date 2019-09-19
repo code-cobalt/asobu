@@ -134,7 +134,9 @@ const styles = StyleSheet.create({
   },
   modal: {
     height: '100%',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 0,
+    margin: 0
   },
   field__text: {
     alignSelf: 'center',
