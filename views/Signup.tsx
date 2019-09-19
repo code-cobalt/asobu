@@ -6,7 +6,8 @@ import {
   TextInput,
   StyleSheet,
   ImageBackground,
-  ScrollView
+  ScrollView,
+  SafeAreaView
 } from 'react-native'
 import { connect } from 'react-redux'
 import { registerUser } from '../src/actions/users'
@@ -90,82 +91,88 @@ class Signup extends Component<Props, State> {
   render() {
     return (
       <ImageBackground
-        source={require('../assets/login.jpg')}
-        style={styles.signup}
+      source={require('../assets/login.jpg')}
+      style={styles.signup}
       >
-        <ScrollView style={styles.signup__scrollview} centerContent={true}>
-          <View style={styles.signup__formgroup}>
-            <Text style={styles.signup__label}>Email</Text>
-            <TextInput
-              value={this.state.email}
-              onChangeText={text => this.setState({ email: text })}
-              style={styles.signup__input}
-            />
-          </View>
-          <View style={styles.signup__formgroup}>
-            <Text style={styles.signup__label}>First Name</Text>
-            <TextInput
-              value={this.state.first_name}
-              onChangeText={text => this.setState({ first_name: text })}
-              style={styles.signup__input}
-            />
-          </View>
-          <View style={styles.signup__formgroup}>
-            <Text style={styles.signup__label}>Last Name</Text>
-            <TextInput
-              value={this.state.last_name}
-              onChangeText={text => this.setState({ last_name: text })}
-              style={styles.signup__input}
-            />
-          </View>
-          <View style={styles.signup__formgroup}>
-            <Text style={styles.signup__label}>Phone</Text>
-            <TextInput
-              value={this.state.phone_number}
-              onChangeText={text => this.setState({ phone_number: text })}
-              style={styles.signup__input}
-            />
-          </View>
-          <View style={styles.signup__formgroup}>
-            <Text style={styles.signup__label}>Password</Text>
-            <TextInput
-              value={this.state.password}
-              secureTextEntry={true}
-              onChangeText={text => this.setState({ password: text })}
-              style={styles.signup__input}
-            />
-          </View>
-          <View style={styles.signup__formgroup}>
-            <Text style={styles.signup__label}>Repeat Password</Text>
-            <TextInput
-              value={this.state.password2}
-              secureTextEntry={true}
-              onChangeText={text => this.setState({ password2: text })}
-              style={styles.signup__input}
-            />
-          </View>
-          <View style={styles.signup__formgroup}>
-            <Text style={styles.signup__label}>PIN</Text>
-            <TextInput
-              value={this.state.pin}
-              secureTextEntry={true}
-              onChangeText={text => this.setState({ pin: text })}
-              style={styles.signup__input}
-            />
-          </View>
-          <TouchableOpacity
-            onPress={() => this.handleSignup()}
-            style={styles.signup__button}
-          >
-            <Text style={styles.signup__button__text}>Sign Up</Text>
-          </TouchableOpacity>
-          <Text
-            style={styles.signup__login}
-            onPress={() => this.props.toggleAuth()}
-          >
-            Login
-          </Text>
-        </ScrollView>
+      <SafeAreaView>
+          <ScrollView style={styles.signup__scrollview} centerContent={true}>
+            <View style={styles.signup__formgroup}>
+              <Text style={styles.signup__label}>Email</Text>
+              <TextInput
+                value={this.state.email}
+                onChangeText={text => this.setState({ email: text })}
+                style={styles.signup__input}
+              />
+            </View>
+            <View style={styles.signup__formgroup}>
+              <Text style={styles.signup__label}>First Name</Text>
+              <TextInput
+                value={this.state.first_name}
+                onChangeText={text => this.setState({ first_name: text })}
+                style={styles.signup__input}
+              />
+            </View>
+            <View style={styles.signup__formgroup}>
+              <Text style={styles.signup__label}>Last Name</Text>
+              <TextInput
+                value={this.state.last_name}
+                onChangeText={text => this.setState({ last_name: text })}
+                style={styles.signup__input}
+              />
+            </View>
+            <View style={styles.signup__formgroup}>
+              <Text style={styles.signup__label}>Phone</Text>
+              <TextInput
+                value={this.state.phone_number}
+                onChangeText={text => this.setState({ phone_number: text })}
+                style={styles.signup__input}
+              />
+            </View>
+            <View style={styles.signup__formgroup}>
+              <Text style={styles.signup__label}>Password</Text>
+              <TextInput
+                value={this.state.password}
+                secureTextEntry={true}
+                onChangeText={text => this.setState({ password: text })}
+                style={styles.signup__input}
+              />
+            </View>
+            <View style={styles.signup__formgroup}>
+              <Text style={styles.signup__label}>Repeat Password</Text>
+              <TextInput
+                value={this.state.password2}
+                secureTextEntry={true}
+                onChangeText={text => this.setState({ password2: text })}
+                style={styles.signup__input}
+              />
+            </View>
+            <View style={styles.signup__formgroup}>
+              <Text style={styles.signup__label}>PIN</Text>
+              <TextInput
+                value={this.state.pin}
+                secureTextEntry={true}
+                onChangeText={text => this.setState({ pin: text })}
+                style={styles.signup__input}
+              />
+            </View>
+            <View style={styles.buttons__formgroup}>
+              <TouchableOpacity
+                onPress={() => this.handleSignup()}
+                style={styles.signup__button}
+              >
+                <Text style={styles.signup__button__text}>Sign Up</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.props.toggleAuth()}
+                style={styles.signup__button}
+                >
+                <Text style={styles.signup__button__text}>
+                  Login
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
       </ImageBackground>
     )
   }
@@ -175,13 +182,19 @@ const styles = StyleSheet.create({
   signup: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignContent: 'center'
   },
   signup__scrollview: {
-    width: '90%'
+    width: '100%',
   },
   signup__formgroup: {
-    width: '90%'
+    width: '90%',
+    alignSelf: 'center'
+    
+  },
+  buttons__formgroup: {
+    alignSelf: 'center',
+    alignItems: 'center'
   },
   signup__label: {
     marginLeft: 15,
@@ -196,14 +209,14 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     textAlign: 'center',
     backgroundColor: '#fff',
-    opacity: 0.8
+    opacity: 0.8,
   },
   signup__button: {
     width: '50%',
     backgroundColor: '#73d961',
     padding: 15,
     borderRadius: 50,
-    marginTop: 15
+    marginTop: 15,
   },
   signup__button__text: {
     textAlign: 'center',
