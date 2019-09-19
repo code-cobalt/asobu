@@ -39,12 +39,7 @@ const PendingReviews = props => {
                 )}
                 <TouchableOpacity
                   style={styles.start_button}
-                  onPress={() =>
-                    props.finishHangout(
-                      review.hangout_id,
-                      review.participants[0].email
-                    )
-                  }
+                  onPress={() => props.finishReview(review.email)}
                 >
                   <Text style={styles.button_text}>Review</Text>
                 </TouchableOpacity>
@@ -138,8 +133,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    finishHangout: (hangoutId, userToReview) =>
-      dispatch(finishHangout(hangoutId, userToReview))
+    finishReview: userToReview => {
+      dispatch({ type: 'FINISH_REVIEW', userToReview })
+    }
   }
 }
 
