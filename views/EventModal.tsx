@@ -111,6 +111,10 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
           <Text style={styles.button__text}>Delete Event</Text>
         </TouchableOpacity>
       )
+      // attendeesButton = (
+      //   <TouchableOpacity
+      //     onPress={() => }
+      // )
       }
     return (
       <>
@@ -121,6 +125,8 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
         backdropOpacity={1}
         style={styles.modal}
         backdropColor="#e5e6e5"
+        hasBackdrop={true}
+        coverScreen={true}
         >
         {/* <View style={styles.contentContainer}> */}
           <ScrollView style={styles.scrollView}>
