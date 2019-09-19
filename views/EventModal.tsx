@@ -5,16 +5,14 @@ import {
   Text,
   Image,
   StyleSheet,
-  Dimensions,
-  Animated,
-  Easing,
-  TouchableOpacity
+  TouchableOpacity,
+  SafeAreaView
 } from 'react-native'
 import { connect } from 'react-redux'
 import { attendEvent, unattendEvent, deleteEvent } from '../src/actions/events'
 import Comments from '../components/Comments'
+import Modal from 'react-native-modal'
 
-const { height, width } = Dimensions.get('window')
 
 interface Props {
   user: UserLimited
@@ -54,46 +52,23 @@ interface Event {
   comments: Array<Comment>
 }
 
-export class AnimatedEvent extends Component<Props> {
-  componentDidUpdate() {
-    if (this.props.showEvent) {
-      this.yTranslate.setValue(0)
-      Animated.spring(this.yTranslate, {
-        toValue: 1,
-        friction: 6
-      }).start()
-    } else {
-      Animated.timing(this.yTranslate, {
-        toValue: 0,
-        duration: 200,
-        easing: Easing.linear
-      }).start()
-    }
-  }
 
-  yTranslate = new Animated.Value(0)
-
-  render() {
-    let negativeHeight = -height
-    let modalMoveY = this.yTranslate.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, negativeHeight]
-    })
-    let translateStyle = { transform: [{ translateY: modalMoveY }] }
+const EventModal: React.FunctionComponent<Props> = (props) => {
 
     let rsvpButton
+
     if (
-      this.props.currentEvent.attendees &&
-      this.props.currentEvent.attendees
+      props.currentEvent.attendees &&
+      props.currentEvent.attendees
         .map(attendees => attendees.email)
-        .includes(this.props.user.email)
+        .includes(props.user.email)
     ) {
       rsvpButton = (
         <TouchableOpacity
           onPress={() =>
-            this.props.unattendEvent(
-              this.props.currentEvent.id,
-              this.props.user.email
+            props.unattendEvent(
+              props.currentEvent.id,
+              props.user.email
             )
           }
           style={styles.event__button}
@@ -105,7 +80,7 @@ export class AnimatedEvent extends Component<Props> {
       rsvpButton = (
         <TouchableOpacity
           onPress={() =>
-            this.props.attendEvent(this.props.currentEvent.id, this.props.user)
+            props.attendEvent(props.currentEvent.id, props.user)
           }
           style={styles.event__button}
         >
@@ -117,13 +92,13 @@ export class AnimatedEvent extends Component<Props> {
     let editButton
     let deleteButton
     if (
-      this.props.currentEvent.creator &&
-      this.props.user.email === this.props.currentEvent.creator.email
+      props.currentEvent.creator &&
+      props.user.email === props.currentEvent.creator.email
     ) {
       editButton = (
         <TouchableOpacity
-          style={styles.event__button}
-          onPress={() => this.props.showEditEventForm()}
+          style={styles.event__button} 
+          onPress={() => props.showEditEventForm()}
         >
           <Text style={styles.button__text}>Edit Event</Text>
         </TouchableOpacity>
@@ -131,68 +106,81 @@ export class AnimatedEvent extends Component<Props> {
       deleteButton = (
         <TouchableOpacity
           style={styles.event__button}
-          onPress={() => this.props.deleteEvent(this.props.currentEvent.id)}
+          onPress={() => props.deleteEvent(props.currentEvent.id)}
         >
           <Text style={styles.button__text}>Delete Event</Text>
         </TouchableOpacity>
       )
-    }
-
+      }
     return (
-      <Animated.View style={[styles.contentContainer, translateStyle]}>
-        <ScrollView style={styles.scrollView}>
-          <Text style={styles.back} onPress={() => this.props.closeEvent()}>
-            {'<'}
-          </Text>
-          <View style={styles.image__container}>
-            <Image
-              source={{ uri: this.props.currentEvent.cover_photo }}
-              style={styles.animated__photo}
-            />
-          </View>
-          <View style={styles.text__block}>
-            <Text style={styles.event__title}>
-              {this.props.currentEvent.name}
+      <>
+      <Modal
+        isVisible={props.showEvent}
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        backdropOpacity={1}
+        style={styles.modal}
+        backdropColor="#e5e6e5"
+        >
+        {/* <View style={styles.contentContainer}> */}
+          <ScrollView style={styles.scrollView}>
+            <Text style={styles.back} onPress={() => props.closeEvent()}>
+              {'<'}
             </Text>
-            <Text style={styles.event__subtitle}>Summary</Text>
-            <Text style={styles.event__text}>
-              {this.props.currentEvent.description}
-            </Text>
-            <Text style={styles.event__subtitle}>Location</Text>
-            <Text style={styles.event__text}>
-              {this.props.currentEvent.location}
-            </Text>
-          </View>
-          <View style={styles.button__block}>
-            {/* commenting this out for now until we decide to add some functionality
-            <TouchableOpacity style={styles.event__button}>
-              <Text style={styles.button__text}>Attendees</Text>
-            </TouchableOpacity> */}
-            {rsvpButton}
-            {editButton}
-            {deleteButton}
-          </View>
-          <View>
-            <View style={styles.comments_header}>
-              <Text style={styles.event__subtitle}>Comments</Text>
+            <View style={styles.image__container}>
+              <Image
+                source={{ uri: props.currentEvent.cover_photo }}
+                style={styles.animated__photo}
+              />
+            </View>
+            <View style={styles.text__block}>
+              <Text style={styles.event__title}>
+                {props.currentEvent.name}
+              </Text>
+              <Text style={styles.event__subtitle}>Summary</Text>
+              <Text style={styles.event__text}>
+                {props.currentEvent.description}
+              </Text>
+              <Text style={styles.event__subtitle}>Location</Text>
+              <Text style={styles.event__text}>
+                {props.currentEvent.location}
+              </Text>
+            </View>
+            <View style={styles.button__block}>
+              {/* commenting this out for now until we decide to add some functionality
+              <TouchableOpacity style={styles.event__button}>
+                <Text style={styles.button__text}>Attendees</Text>
+              </TouchableOpacity> */}
+              {rsvpButton}
+              {editButton}
+              {deleteButton}
             </View>
             <View>
-              <Comments comments={this.props.currentEvent.comments} />
+              <View style={styles.comments_header}>
+                <Text style={styles.event__subtitle}>Comments</Text>
+              </View>
+              <View>
+                <Comments comments={props.currentEvent.comments} />
+              </View>
             </View>
-          </View>
-        </ScrollView>
-      </Animated.View>
+          </ScrollView>
+        {/* </View> */}
+      </Modal>
+      </>
     )
   }
-}
+
 
 const styles = StyleSheet.create({
-  back: { marginTop: 25, marginBottom: 25, marginLeft: 10, fontSize: 20 },
+
+  back: { 
+    marginTop: 25, 
+    marginBottom: 25, 
+    marginLeft: 10, 
+    fontSize: 20 
+  },
   contentContainer: {
     position: 'absolute',
-    height: (height / 100) * 91.7,
-    width: width,
-    bottom: -height,
     backgroundColor: '#fff'
   },
   image__container: {
@@ -205,8 +193,6 @@ const styles = StyleSheet.create({
     height: undefined,
     borderRadius: 5
   },
-  image_container: {},
-  animated_photo: {},
   scrollView: {
     marginTop: 20
   },
@@ -284,4 +270,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AnimatedEvent)
+)(EventModal)
