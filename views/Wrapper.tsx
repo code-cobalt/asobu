@@ -21,7 +21,9 @@ class Wrapper extends Component<Props> {
             <Application />
           </SocketProvider>
         ) : (
-          <Auth />
+          <SocketProvider>
+            <Auth />
+          </SocketProvider>
         )}
       </>
     )
