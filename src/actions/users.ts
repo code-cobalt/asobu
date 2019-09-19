@@ -12,7 +12,8 @@ import {
   unblockUserQuery,
   reviewUserQuery,
   addExpQuery,
-  registerQuery
+  registerQuery,
+  getUserEquippedBadgesQuery
 } from '../queries/users'
 import { AsyncStorage } from 'react-native'
 
@@ -175,4 +176,14 @@ export const addExp = (userEmail, points) => {
     })
     dispatch({ type: 'ADD_EXP', exp: exp.data.data.AddExp })
   }
+}
+
+export const getUserEquippedBadges = async userEmail => {
+  const res = await axios.post(`${apiUrl}/graphql`, {
+    query: print(getUserEquippedBadgesQuery),
+    variables: {
+      userEmail: userEmail
+    }
+  })
+  return res.data.data.User.equipped_badges
 }

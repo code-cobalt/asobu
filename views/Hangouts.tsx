@@ -125,10 +125,10 @@ class Hangouts extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   results__switch: {
-    top: 40
+    marginTop: 10
   },
   userList: {
-    top: 40
+    marginBottom: 85
   },
   modal: {
     height: '50%',

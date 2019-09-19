@@ -64,7 +64,12 @@ class Results extends Component<Props> {
 
 const styles = StyleSheet.create({
   results__switch: {
-    top: 40
+    marginTop: 40,
+    paddingBottom: 5,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    textShadowRadius: 2,
+    shadowColor: "#000"
   }
 })
 const mapStateToProps = state => {

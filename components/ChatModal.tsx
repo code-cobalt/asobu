@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import ChatMessage from '../components/ChatMessage'
 import ChatInput from '../components/ChatInput'
@@ -40,10 +40,12 @@ const ChatModal: React.FunctionComponent<Props> = props => {
       style={{margin: 0, padding: 0}}
 
     >
-      <View style={{ flex: 1 }}>
-        <Text style={styles.back} onPress={() => props.goBack()}>
-          {'<'}
-        </Text>
+      <View style={{ marginTop: 20, flex: 1 }}>
+        <TouchableOpacity style={styles.back__arrow}>
+          <Text style={styles.back} onPress={() => props.goBack()}>
+            {'<'}
+          </Text>
+        </TouchableOpacity>
         <ScrollView style={styles.chat__messages}>
           {props.currentChatMessages.length > 0 &&
             props.currentChatMessages.map(message => {
@@ -77,6 +79,10 @@ const styles = StyleSheet.create({
   input__container: {
     width: '100%',
     backgroundColor: '#fff'
+  },
+  back__arrow: {
+    width: 20,
+    borderRadius: 30,
   },
   back: {
     marginTop: 25,
