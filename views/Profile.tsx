@@ -59,7 +59,19 @@ interface Props {
 }
 
 class Profile extends Component<Props> {
+
   render() {
+    let editButton;
+    editButton = (
+      
+        <TouchableOpacity
+          style={styles.edit__button}
+          onPress={() => this.props.editProfile()}
+        >
+          <Text style={styles.button__text}>Edit Profile</Text>
+        </TouchableOpacity>
+      
+    )
     return (
       <View style={styles.parent__container}>
         <SafeAreaView>
@@ -79,12 +91,13 @@ class Profile extends Component<Props> {
                   />
                 )}
               </TouchableOpacity>
-              <TouchableOpacity
+              {editButton}
+              {/* <TouchableOpacity
                 style={styles.edit__button}
                 onPress={() => this.props.editProfile()}
               >
                 <Text style={styles.button__text}>Edit Profile</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <View style={styles.basic_info_container}>
                 <Text style={styles.user__name}>
                   {this.props.user.first_name} {this.props.user.last_name}
