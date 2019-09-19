@@ -45,18 +45,12 @@ export const declineHangoutRequest = (currentUserEmail, fromUserEmail) => {
     dispatch({ type: 'DECLINE_REQUEST', fromUserEmail })
   }
 }
-export const startHangout = participants => {
-  return async dispatch => {
-    const hangoutId = await axios.post(`${apiUrl}/graphql`, {
-      query: print(startHangoutQuery),
-      variables: { participants }
-    })
-    dispatch({
-      type: 'START_HANGOUT',
-      participants,
-      hangoutId: hangoutId.data.data.StartHangout
-    })
-  }
+export const startHangout = async participants => {
+  const hangoutId = await axios.post(`${apiUrl}/graphql`, {
+    query: print(startHangoutQuery),
+    variables: { participants }
+  })
+  return hangoutId.data.data.StartHangout
 }
 
 export const finishHangout = (hangoutId, userToReview) => {

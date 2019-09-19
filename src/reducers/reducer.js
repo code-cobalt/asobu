@@ -82,7 +82,11 @@ const reducer = (state = initialState, action) => {
       return { ...state, showEditProfileForm: false }
     }
     case 'UPDATE_PROFILE': {
-      return { ...state, user: action.updatedUser, showEditProfileForm: false }
+      return {
+        ...state,
+        user: Object.assign(state.user, action.updatedUser),
+        showEditProfileForm: false
+      }
     }
     case 'SET_CHATS': {
       return { ...state, chats: action.chats }

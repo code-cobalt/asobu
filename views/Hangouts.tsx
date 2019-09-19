@@ -102,7 +102,9 @@ class Hangouts extends React.Component<Props> {
               {socket => <PendingHangouts socket={socket} />}
             </SocketContext.Consumer>
           ) : (
-            <AcceptedHangouts />
+            <SocketContext.Consumer>
+              {socket => <AcceptedHangouts socket={socket} />}
+            </SocketContext.Consumer>
           )}
           <View>
             <TouchableOpacity
