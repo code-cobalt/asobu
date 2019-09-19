@@ -160,7 +160,7 @@ class Signup extends Component<Props, State> {
                 onPress={() => this.handleSignup()}
                 style={styles.signup__button}
               >
-                <Text style={styles.signup__button__text}>Sign Up</Text>
+                <Text style={styles.signup__button__text}>Submit!</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => this.props.toggleAuth()}
@@ -189,17 +189,20 @@ const styles = StyleSheet.create({
   },
   signup__formgroup: {
     width: '90%',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop: 30
     
   },
   buttons__formgroup: {
     alignSelf: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 30
   },
   signup__label: {
     marginLeft: 15,
     marginBottom: 5,
-    color: '#fff'
+    color: '#fff',
+    fontWeight: '900'
   },
   signup__input: {
     height: 50,
@@ -212,7 +215,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   signup__button: {
-    width: '50%',
+    width: 180,
     backgroundColor: '#73d961',
     padding: 15,
     borderRadius: 50,
