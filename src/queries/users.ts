@@ -1,5 +1,77 @@
 import gql from 'graphql-tag'
 
+export const registerQuery = gql`
+  mutation CreateUser($newUser: NewUser!) {
+    CreateUser(newUser: $newUser) {
+      id
+      first_name
+      last_name
+      email
+      phone_number
+      profile_photo
+      interests
+      exp
+      lvl
+      events {
+        event_id
+        is_creator
+      }
+      stats {
+        funny
+        fun
+        intellectual
+        interesting
+        kind
+        therapeutic
+      }
+      chats {
+        chat_id
+        participants {
+          first_name
+          profile_photo
+          email
+        }
+      }
+      sent_hangout_requests {
+        first_name
+        email
+        profile_photo
+        equipped_badges
+      }
+      received_hangout_requests {
+        first_name
+        email
+        profile_photo
+        equipped_badges
+      }
+      accepted_hangouts {
+        first_name
+        email
+        profile_photo
+        equipped_badges
+      }
+      ongoing_hangouts {
+        hangout_id
+        participants {
+          first_name
+          email
+          profile_photo
+          equipped_badges
+        }
+      }
+      blocked_users
+      blocked_by_users
+      equipped_badges
+      imei
+      pending_reviews {
+        first_name
+        email
+        profile_photo
+      }
+    }
+  }
+`
+
 export const loginQuery = gql`
   query Login($userEmail: String!, $userPassword: String!) {
     Login(userEmail: $userEmail, userPassword: $userPassword) {

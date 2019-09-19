@@ -6,17 +6,19 @@ import {
   TextInput,
   StyleSheet,
   ImageBackground,
-  AsyncStorage
+  ScrollView
 } from 'react-native'
-import axios from 'axios'
 import { connect } from 'react-redux'
+import { registerUser } from '../src/actions/users'
 
 interface State {
   email: string
   first_name: string
   last_name: string
-  phone: string
+  phone_number: string
   password: string
+  password2: string
+  pin: string
 }
 
 interface User {
@@ -31,7 +33,7 @@ interface ServerData {
   email: string
   first_name: string
   last_name: string
-  phone: string
+  phone_number: string
   password_hash: null
   interests: string[]
   hobbies: string[]
@@ -50,6 +52,7 @@ interface Error {
 interface Props {
   setUser: Function
   toggleAuth: Function
+  registerUser: Function
 }
 
 class Signup extends Component<Props, State> {
@@ -57,28 +60,31 @@ class Signup extends Component<Props, State> {
     email: '',
     first_name: '',
     last_name: '',
-    phone: '',
-    password: ''
+    phone_number: '',
+    password: '',
+    password2: '',
+    pin: ''
   }
 
   handleSignup = async () => {
-    const user = await axios
-      .post<ServerData, Error>('http://192.168.10.127:3000/auth', {
-        email: this.state.email,
-        first_name: this.state.first_name,
-        last_name: this.state.last_name,
-        phone: this.state.phone,
-        password: this.state.password
-      })
-      .then(async response => {
-        console.log(response)
-        const user = response
-        if (user.err) {
-          console.log(user.err)
-        }
-        await AsyncStorage.setItem('token', JSON.stringify(user))
-        this.props.setUser(user)
-      })
+    if (this.state.password !== this.state.password2) {
+      alert('Passwords do not match. Please enter your passwords again.')
+      return
+    }
+    if (this.state.pin.length < 4) {
+      alert('PIN must be at least four digits long.')
+      return
+    }
+    if (/[^0-9]/.test(this.state.pin)) {
+      alert('PIN must consist only of digits.')
+      return
+    }
+    const newUser = {
+      ...this.state,
+      pin: ~~this.state.pin
+    }
+    delete newUser.password2
+    this.props.registerUser(newUser)
   }
 
   render() {
@@ -87,64 +93,79 @@ class Signup extends Component<Props, State> {
         source={require('../assets/login.jpg')}
         style={styles.signup}
       >
-        <View style={styles.signup__formgroup}>
-          <Text style={styles.signup__label}>Email</Text>
-          <TextInput
-            value={this.state.email}
-            onChangeText={text => this.setState({ email: text })}
-            style={styles.signup__input}
-          />
-        </View>
-        <View style={styles.signup__formgroup}>
-          <Text style={styles.signup__label}>First Name</Text>
-          <TextInput
-            value={this.state.first_name}
-            onChangeText={text => this.setState({ first_name: text })}
-            style={styles.signup__input}
-          />
-        </View>
-        <View style={styles.signup__formgroup}>
-          <Text style={styles.signup__label}>Last Name</Text>
-          <TextInput
-            value={this.state.last_name}
-            onChangeText={text => this.setState({ last_name: text })}
-            style={styles.signup__input}
-          />
-        </View>
-        <View style={styles.signup__formgroup}>
-          <Text style={styles.signup__label}>Phone</Text>
-          <TextInput
-            value={this.state.phone}
-            onChangeText={text => this.setState({ phone: text })}
-            style={styles.signup__input}
-          />
-        </View>
-        <View style={styles.signup__formgroup}>
-          <Text style={styles.signup__label}>Password</Text>
-          <TextInput
-            value={this.state.password}
-            secureTextEntry={true}
-            onChangeText={text => this.setState({ password: text })}
-            style={styles.signup__input}
-          />
-        </View>
-        <View style={styles.signup__formgroup}>
-          <Text style={styles.signup__label}>Repeat Password</Text>
-          <TextInput
-            value={this.state.password}
-            secureTextEntry={true}
-            style={styles.signup__input}
-          />
-        </View>
-        <TouchableOpacity
-          onPress={this.handleSignup}
-          style={styles.signup__button}
-        >
-          <Text style={styles.signup__button__text}>Sign Up</Text>
-        </TouchableOpacity>
-        <Text style={styles.signup__login} onPress={() => this.props.toggleAuth()}>
-          Login
-        </Text>
+        <ScrollView style={styles.signup__scrollview} centerContent={true}>
+          <View style={styles.signup__formgroup}>
+            <Text style={styles.signup__label}>Email</Text>
+            <TextInput
+              value={this.state.email}
+              onChangeText={text => this.setState({ email: text })}
+              style={styles.signup__input}
+            />
+          </View>
+          <View style={styles.signup__formgroup}>
+            <Text style={styles.signup__label}>First Name</Text>
+            <TextInput
+              value={this.state.first_name}
+              onChangeText={text => this.setState({ first_name: text })}
+              style={styles.signup__input}
+            />
+          </View>
+          <View style={styles.signup__formgroup}>
+            <Text style={styles.signup__label}>Last Name</Text>
+            <TextInput
+              value={this.state.last_name}
+              onChangeText={text => this.setState({ last_name: text })}
+              style={styles.signup__input}
+            />
+          </View>
+          <View style={styles.signup__formgroup}>
+            <Text style={styles.signup__label}>Phone</Text>
+            <TextInput
+              value={this.state.phone_number}
+              onChangeText={text => this.setState({ phone_number: text })}
+              style={styles.signup__input}
+            />
+          </View>
+          <View style={styles.signup__formgroup}>
+            <Text style={styles.signup__label}>Password</Text>
+            <TextInput
+              value={this.state.password}
+              secureTextEntry={true}
+              onChangeText={text => this.setState({ password: text })}
+              style={styles.signup__input}
+            />
+          </View>
+          <View style={styles.signup__formgroup}>
+            <Text style={styles.signup__label}>Repeat Password</Text>
+            <TextInput
+              value={this.state.password2}
+              secureTextEntry={true}
+              onChangeText={text => this.setState({ password2: text })}
+              style={styles.signup__input}
+            />
+          </View>
+          <View style={styles.signup__formgroup}>
+            <Text style={styles.signup__label}>PIN</Text>
+            <TextInput
+              value={this.state.pin}
+              secureTextEntry={true}
+              onChangeText={text => this.setState({ pin: text })}
+              style={styles.signup__input}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => this.handleSignup()}
+            style={styles.signup__button}
+          >
+            <Text style={styles.signup__button__text}>Sign Up</Text>
+          </TouchableOpacity>
+          <Text
+            style={styles.signup__login}
+            onPress={() => this.props.toggleAuth()}
+          >
+            Login
+          </Text>
+        </ScrollView>
       </ImageBackground>
     )
   }
@@ -155,6 +176,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  signup__scrollview: {
+    width: '90%'
   },
   signup__formgroup: {
     width: '90%'
@@ -207,7 +231,8 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: 'TOGGLE_AUTH'
       })
-    }
+    },
+    registerUser: newUser => dispatch(registerUser(newUser))
   }
 }
 
