@@ -7,6 +7,7 @@ import {
   getUserLimited,
   getUserEquippedBadges
 } from '../src/actions/users'
+import { startHangout } from '../src/actions/hangouts'
 import Profile from './Profile'
 import Results from './Results'
 import Inbox from './Inbox'
@@ -20,23 +21,34 @@ interface Props {
   removeUserChat: Function
   acceptHangoutRequest: Function
   receiveHangoutRequest: Function
+  startHangout: Function
   context: Function
+  dispatchStartHangout: Function
   getUsers: Function
   getChat: Function
   socket: WebSocket
   hiddenUsers: string[]
   hangouts: [Hangout]
+  currentUserLimited: UserLimitedBadges
+  acceptedHangouts: Array<UserLimitedBadges>
 }
 
 interface Hangout {
-  hangout_id: String
+  hangout_id: string
   participants: [UserLimited]
 }
 
 interface UserLimited {
-  first_name: String
-  email: String
-  profile_photo: String
+  first_name: string
+  email: string
+  profile_photo: string
+}
+
+interface UserLimitedBadges {
+  first_name: string
+  email: string
+  profile_photo: string
+  equipped_badges: string[]
 }
 
 class Main extends Component<Props> {
@@ -65,7 +77,7 @@ class Main extends Component<Props> {
         this.props.removeUserChat(~~message[2])
       }
       //Send Hangout Request
-      if (message[0] == 'h0') {
+      if (message[0] === 'h0') {
         console.log('CLIENT RECEIVED HANGOUT REQUEST')
         const newUserLimited = await getUserLimited(message[1])
         this.props.receiveHangoutRequest(newUserLimited)
@@ -83,6 +95,43 @@ class Main extends Component<Props> {
           `${message[2]} has accepted your hangout request!`,
           'Visit chats to start talking!'
         )
+      }
+      //Start Hangout Request
+      if (message[0] === 's0') {
+        console.log('CLIENT RECEIVED START HANGOUT REQUEST')
+        Alert.alert(
+          'Please Confirm',
+          `Have you and ${message[2]} started your hangout?`,
+          [
+            {
+              text: 'No',
+              onPress: () => console.log('DENIED START HANGOUT REQUEST')
+            },
+            {
+              text: 'Yes',
+              onPress: async () => {
+                console.log('CONFIRMED START HANGOUT')
+                const hangout = this.props.acceptedHangouts.filter(
+                  hangout => hangout.email === message[1]
+                )
+                const participants = [
+                  this.props.currentUserLimited,
+                  hangout.pop()
+                ]
+                const hangoutId = await startHangout(participants)
+                this.props.dispatchStartHangout(participants, hangoutId)
+                this.props.socket.send(
+                  `s1 ${this.props.email} ${message[1]} ${hangoutId}`
+                )
+              }
+            }
+          ],
+          { cancelable: false }
+        )
+      }
+      //Confirm Start Hangout
+      if (message[0] === 's1') {
+        console.log('START HANGOUT CONFIRMED')
       }
     }
     this.props.getUsers(
@@ -126,7 +175,14 @@ const mapStateToProps = state => {
         if (hangout.email) return hangout.email
       })
     ],
-    hangouts: state.ongoingHangouts
+    hangouts: state.ongoingHangouts,
+    currentUserLimited: {
+      first_name: state.user.first_name,
+      email: state.user.email,
+      profile_photo: state.user.profile_photo,
+      equipped_badges: state.user.equipped_badges
+    },
+    acceptedHangouts: state.acceptedHangouts
   }
 }
 
@@ -158,6 +214,9 @@ const mapDispatchToProps = dispatch => {
     },
     receiveHangoutRequest: userLimited => {
       dispatch({ type: 'RECEIVE_REQUEST', userLimited })
+    },
+    dispatchStartHangout: (participants, hangoutId) => {
+      dispatch({ type: 'START_HANGOUT', participants, hangoutId })
     }
   }
 }
