@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   modal: {
-    height: '50%',
+    height: '100%',
     alignItems: 'center'
   },
   field__text: {
