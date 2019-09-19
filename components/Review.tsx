@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView, Button } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Button, TouchableOpacity } from 'react-native'
 import Modal from 'react-native-modal'
 import ReviewCounter from './ReviewCounter'
 import { connect } from 'react-redux'
@@ -20,6 +20,8 @@ interface Props {
   addExp: Function
   reviewUser: Function
   currentUser: CurrentUser
+  endReview: Function
+  userToReview: string
 }
 
 interface CurrentUser {
@@ -133,7 +135,12 @@ class Review extends Component<Props, State> {
           name={'interesting'}
           label={'Interesting'}
         />
-        <Button onPress={() => this.reviewUser()} title="Review"></Button>
+        <TouchableOpacity 
+          style={styles.review__button}
+          onPress={() => this.reviewUser()} 
+          >
+            <Text style={styles.button__text}>Finish Review!</Text>
+        </TouchableOpacity>
       </Modal>
     )
   }
@@ -142,13 +149,31 @@ class Review extends Component<Props, State> {
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: 40
   },
   review__title: {
-    color: '#fff'
+    color: '#fff',
+    fontWeight: '900',
+    marginBottom: 40
   },
   review__container: {
     flex: 1
+  },
+  review__button: {
+    width: '50%',
+    backgroundColor: 'blue',
+    borderRadius: 10,
+    marginBottom: 100,
+    padding: 15,
+    marginTop: 20,
+    alignSelf: 'center'
+  },
+  button__text: {
+    textAlign: 'center',
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 18
   }
 })
 

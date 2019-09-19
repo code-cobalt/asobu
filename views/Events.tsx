@@ -25,7 +25,7 @@ class Events extends Component<Props> {
 const styles = StyleSheet.create({
   events: {
     flex: 1,
-    marginTop: 40,
+    marginTop: 5,
     marginBottom: 25
   }
 })
