@@ -15,6 +15,7 @@ const UserList = props => {
       return (
         <>
         <TouchableOpacity
+        // Each child in a list should have a unique "key" prop error, possible that the key here is not implemented properly.
         key={user.email}
         style={styles.user__faded}
         onPress={() => props.showProfile(user)}
