@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import Badges from './Badges'
 import { connect } from 'react-redux'
 import { sendHangoutRequest } from '../src/actions/hangouts'
+import { userInfo } from 'os'
 
 interface UserLimited {
   id: string
@@ -41,14 +42,23 @@ const User: React.FunctionComponent<Props> = props => {
           />
         )}
 
-        <View style={styles.user__textcontainer}>
-          <Text style={styles.user__name}>{props.user.first_name}</Text>
-          <Text style={styles.user__text}>Level {props.user.lvl}</Text>
-        </View>
-          <View style={styles.user__badges}>
-            <Badges badges={props.user.equipped_badges} />
+        {props.user.equipped_badges === null || props.user.equipped_badges === undefined ? 
+        <>
+          <View style={{alignItems: 'center'}}>
+              <Text style={{ color: '#fff', fontSize: 22, marginRight: '40%', alignSelf: 'center', fontWeight: '700' }}>{props.user.first_name}</Text>
           </View>
-          <TouchableOpacity
+          
+        </>
+            :
+            <>
+            <View style={styles.user__textcontainer}>
+              <Text style={styles.user__name}>{props.user.first_name}</Text>
+              <Text style={styles.user__text}>Level {props.user.lvl}</Text>
+            </View>
+            <View style={styles.user__badges}>
+              <Badges badges={props.user.equipped_badges} />
+            </View>
+            <TouchableOpacity
             style={styles.hangout__request}
             onPress={() => {
               props.sendHangoutRequest(props.currentUserEmail, {
@@ -59,11 +69,13 @@ const User: React.FunctionComponent<Props> = props => {
               })
               props.socket.send(
                 `h0 ${props.currentUserEmail} ${props.user.email}`
-              )
+                )
             }}
-          >
+            >
             <Text style={styles.hangout__text}>Hang!</Text>
           </TouchableOpacity>
+          </>
+            }
         </TouchableOpacity>
   )
 }
