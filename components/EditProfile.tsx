@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {
+  Alert,
   ImageBackground,
   ScrollView,
   Image,
@@ -95,8 +96,9 @@ class EditProfile extends Component<Props, State> {
         }
       })
     } else {
-      alert(
-        'You may only have 3 equipped badges. Click on an equipped badge to remove it and make space for a different one.'
+      Alert.alert(
+        '3 Equipped Badges Allowed',
+        'Click on an equipped badge to remove it and make space for a different one.'
       )
     }
   }
