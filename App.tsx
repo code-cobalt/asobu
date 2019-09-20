@@ -2,18 +2,19 @@ import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Provider } from 'react-redux'
 import { store } from './src/store'
-import Wrapper from "./views/Wrapper"
+import Wrapper from './views/Wrapper'
+import SocketProvider from './components/SocketProvider'
 
 export default class App extends Component {
-
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   render() {
     return (
       <Provider store={store}>
         <View style={styles.container}>
-          <Wrapper />
+          <SocketProvider>
+            <Wrapper />
+          </SocketProvider>
         </View>
       </Provider>
     )
@@ -22,12 +23,12 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   app__main: {
-    flex: 12,
+    flex: 12
   },
   app__navbar: {
-    flex: 1,
+    flex: 1
   }
 })
