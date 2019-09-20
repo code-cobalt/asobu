@@ -5,7 +5,8 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Alert
 } from 'react-native'
 import { connect } from 'react-redux'
 import { startHangout, finishHangout } from '../src/actions/hangouts'
@@ -80,12 +81,34 @@ const AcceptedHangouts = props => {
                   </View>
                   <TouchableOpacity
                     style={styles.start_button}
-                    onPress={() =>
-                      props.finishHangout(
-                        hangout.hangout_id,
-                        hangout.participants[0].email
-                      )
-                    }
+                    onPress={() => {
+                      {
+                        Alert.alert(
+                          `Are you sure you'd like to finish this hangout?`,
+                          '',
+                          [
+                            {
+                              text: 'No',
+                              onPress: () =>
+                                console.log('User cancelled finish hangout.')
+                            },
+                            {
+                              text: 'Yes',
+                              onPress: () => {
+                                debugger
+                                props.socket.send(
+                                  `f1 ${props.user.email} ${hangout.participants[0].email} ${hangout.hangout_id}`
+                                )
+                                props.finishHangout(
+                                  hangout.hangout_id,
+                                  hangout.participants[0]
+                                )
+                              }
+                            }
+                          ]
+                        )
+                      }
+                    }}
                   >
                     <Text style={styles.button_text}>Stop Hangout</Text>
                   </TouchableOpacity>
