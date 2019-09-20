@@ -85,7 +85,7 @@ const reducer = (state = initialState, action) => {
     case 'UPDATE_PROFILE': {
       return {
         ...state,
-        user: Object.assign(state.user, action.updatedUser),
+        user: Object.assign({}, state.user, action.updatedUser),
         showEditProfileForm: false
       }
     }
@@ -359,7 +359,6 @@ const reducer = (state = initialState, action) => {
     }
     case 'END_REVIEW': {
       return { ...state, userToReview: {}, isReviewing: false }
-
     }
     case 'GET_LOCATION': {
       return {
