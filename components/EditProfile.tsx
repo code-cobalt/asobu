@@ -27,32 +27,61 @@ interface User {
   email: string
   phone_number: string
   profile_photo: string
-  interests: Array<string>
+  interests: string[]
 }
 
 interface State {
-  first_name: string
-  last_name: string
-  email: string
-  phone_number: string
-  profile_photo: string
-  interests: Array<string>
+  updatedUser: User
+  interestOptions: string[]
 }
 
 class EditProfile extends Component<Props, State> {
   state = {
-    first_name: this.props.user.first_name,
-    last_name: this.props.user.last_name,
-    email: this.props.user.email,
-    phone_number: this.props.user.phone_number,
-    profile_photo: this.props.user.profile_photo,
-    interests: this.props.user.interests
+    updatedUser: {
+      first_name: this.props.user.first_name,
+      last_name: this.props.user.last_name,
+      email: this.props.user.email,
+      phone_number: this.props.user.phone_number,
+      profile_photo: this.props.user.profile_photo,
+      interests: this.props.user.interests
+    },
+    interestOptions: [
+      'soccer',
+      'football',
+      'sports',
+      'baseball',
+      'basketball',
+      'tennis',
+      'running',
+      'hiking',
+      'reading',
+      'dance',
+      'clubbing',
+      'food',
+      'politics',
+      'tech',
+      'science',
+      'religion',
+      'travel',
+      'foreign-language',
+      'gaming',
+      'cooking',
+      'drawing',
+      'music',
+      'magic'
+    ].filter(interest => !this.props.user.interests.includes(interest))
   }
 
   handleUpload = async () => {
     const image = await uploadPhoto()
-    this.setState({ profile_photo: image })
+    this.setState({
+      updatedUser: { ...this.state.updatedUser, profile_photo: image }
+    })
   }
+
+  addInterest = interest => {}
+
+  removeInterest = interest => {}
 
   render() {
     return (
@@ -73,24 +102,36 @@ class EditProfile extends Component<Props, State> {
               <Text style={styles.field__text}>First Name</Text>
               <TextInput
                 style={styles.profile__input}
-                value={this.state.first_name}
-                onChangeText={text => this.setState({ first_name: text })}
+                value={this.state.updatedUser.first_name}
+                onChangeText={text =>
+                  this.setState({
+                    updatedUser: { ...this.state.updatedUser, first_name: text }
+                  })
+                }
               />
             </View>
             <View style={styles.profile__formgroup}>
               <Text style={styles.field__text}>Last Name</Text>
               <TextInput
                 style={styles.profile__input}
-                value={this.state.last_name}
-                onChangeText={text => this.setState({ last_name: text })}
+                value={this.state.updatedUser.last_name}
+                onChangeText={text =>
+                  this.setState({
+                    updatedUser: { ...this.state.updatedUser, last_name: text }
+                  })
+                }
               />
             </View>
             <View style={styles.profile__formgroup}>
               <Text style={styles.field__text}>Email</Text>
               <TextInput
                 style={styles.profile__input}
-                value={this.state.email}
-                onChangeText={text => this.setState({ email: text })}
+                value={this.state.updatedUser.email}
+                onChangeText={text =>
+                  this.setState({
+                    updatedUser: { ...this.state.updatedUser, email: text }
+                  })
+                }
               />
             </View>
             <TouchableOpacity
@@ -102,20 +143,22 @@ class EditProfile extends Component<Props, State> {
 
             <TouchableOpacity
               onPress={() =>
-                this.props.updateProfile(this.state.email, this.state)
+                this.props.updateProfile(
+                  this.state.updatedUser.email,
+                  this.state.updatedUser
+                )
               }
               style={styles.profile__button}
             >
               <Text style={styles.profile__button__text}>Submit</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity
               onPress={() => this.props.closeEditProfileForm()}
               style={styles.profile__button}
             >
               <Text style={styles.profile__button__text}>Cancel</Text>
             </TouchableOpacity>
-        
           </ImageBackground>
         </Modal>
       </>
