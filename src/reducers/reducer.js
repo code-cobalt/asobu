@@ -374,11 +374,15 @@ const reducer = (state = initialState, action) => {
       return { ...state, isLoggedIn: false }
     }
     case 'FINISH_REVIEW': {
+      const updatedPendingReviews = state.pendingReviews.filter(
+        review => review.email !== action.userToReview
+      )
       return {
         ...state,
         popupModal: false,
         userToReview: action.userToReview,
-        isReviewing: true
+        isReviewing: true,
+        pendingReviews: updatedPendingReviews
       }
     }
     default: {
