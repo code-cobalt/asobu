@@ -30,7 +30,8 @@ const initialState = {
   hangoutId: '',
   userToReview: '',
   latitude: '',
-  longitude: ''
+  longitude: '',
+  activeSearch: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -364,6 +365,12 @@ const reducer = (state = initialState, action) => {
         latitude: action.latitude,
         longitude: action.longitude
       }
+    }
+    case 'TOGGLE_ACTIVE_SEARCH': {
+      return { ...state, activeSearch: !state.activeSearch }
+    }
+    case 'LOGOUT': {
+      return { ...state, isLoggedIn: false }
     }
     default: {
       return state
