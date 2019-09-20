@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
+import ModalDropdown from 'react-native-modal-dropdown'
 import { updateProfile } from '../src/actions/users'
 import { uploadPhoto } from '../src/actions/upload'
 
@@ -138,7 +139,7 @@ class EditProfile extends Component<Props, State> {
               style={styles.upload__button}
               onPress={this.handleUpload}
             >
-              <Text style={styles.field__text}>Upload a Photo!</Text>
+              <Text style={styles.field__text}>Upload a Profile Photo!</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -150,6 +151,19 @@ class EditProfile extends Component<Props, State> {
               }
               style={styles.profile__button}
             >
+              <Text style={styles.field__text}>Your Interests:</Text>
+              {this.state.updatedUser.interests.map(interest => (
+                <Text key={interest}>
+                  {interest}{' '}
+                  <Text onPress={() => this.removeInterest(interest)}>
+                    delete
+                  </Text>
+                </Text>
+              ))}
+              <ModalDropdown
+                options={this.state.interestOptions}
+                onSelect={(index, value) => this.addInterest(value)}
+              />
               <Text style={styles.profile__button__text}>Submit</Text>
             </TouchableOpacity>
 
