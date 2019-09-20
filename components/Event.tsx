@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginRight: 10,
     marginLeft: 10,
-    backgroundColor: '#e5e6e5',
+    backgroundColor: '#fff',
     borderRadius: 10
   },
   event__title: {
