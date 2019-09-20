@@ -160,7 +160,19 @@ class EditProfile extends Component<Props, State> {
             >
               <Text style={styles.field__text}>Upload a Profile Photo!</Text>
             </TouchableOpacity>
-
+            <Text style={styles.field__text}>Your Interests:</Text>
+            {this.state.updatedUser.interests.map(interest => (
+              <Text key={interest}>
+                {interest}{' '}
+                <Text onPress={() => this.removeInterest(interest)}>
+                  delete
+                </Text>
+              </Text>
+            ))}
+            <ModalDropdown
+              options={this.state.interestOptions}
+              onSelect={(index, value) => this.addInterest(value)}
+            />
             <TouchableOpacity
               onPress={() =>
                 this.props.updateProfile(
@@ -170,19 +182,6 @@ class EditProfile extends Component<Props, State> {
               }
               style={styles.profile__button}
             >
-              <Text style={styles.field__text}>Your Interests:</Text>
-              {this.state.updatedUser.interests.map(interest => (
-                <Text key={interest}>
-                  {interest}{' '}
-                  <Text onPress={() => this.removeInterest(interest)}>
-                    delete
-                  </Text>
-                </Text>
-              ))}
-              <ModalDropdown
-                options={this.state.interestOptions}
-                onSelect={(index, value) => this.addInterest(value)}
-              />
               <Text style={styles.profile__button__text}>Submit</Text>
             </TouchableOpacity>
 
@@ -242,7 +241,7 @@ const styles = StyleSheet.create({
     width: '50%',
     backgroundColor: 'blue',
     borderRadius: 10,
-    marginBottom: 100,
+    marginBottom: 15,
     padding: 15
   },
   profile__button__text: {
