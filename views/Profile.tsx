@@ -165,11 +165,13 @@ class Profile extends Component<Props> {
                       .map(badge =>
                         this.props.badgeOptions.includes(badge) ? (
                           <Image
+                            key={badge}
                             style={styles.ownBadge}
                             source={badges[badge]}
                           />
                         ) : (
                           <Image
+                            key={badge}
                             style={styles.noBadge}
                             source={badges[badge]}
                           />
@@ -182,11 +184,13 @@ class Profile extends Component<Props> {
                       .map(badge =>
                         this.props.badgeOptions.includes(badge) ? (
                           <Image
+                            key={badge}
                             style={styles.ownBadge}
                             source={badges[badge]}
                           />
                         ) : (
                           <Image
+                            key={badge}
                             style={styles.noBadge}
                             source={badges[badge]}
                           />
@@ -199,11 +203,13 @@ class Profile extends Component<Props> {
                       .map(badge =>
                         this.props.badgeOptions.includes(badge) ? (
                           <Image
+                            key={badge}
                             style={styles.ownBadge}
                             source={badges[badge]}
                           />
                         ) : (
                           <Image
+                            key={badge}
                             style={styles.noBadge}
                             source={badges[badge]}
                           />
@@ -216,11 +222,13 @@ class Profile extends Component<Props> {
                       .map(badge =>
                         this.props.badgeOptions.includes(badge) ? (
                           <Image
+                            key={badge}
                             style={styles.ownBadge}
                             source={badges[badge]}
                           />
                         ) : (
                           <Image
+                            key={badge}
                             style={styles.noBadge}
                             source={badges[badge]}
                           />
@@ -233,11 +241,13 @@ class Profile extends Component<Props> {
                       .map(badge =>
                         this.props.badgeOptions.includes(badge) ? (
                           <Image
+                            key={badge}
                             style={styles.ownBadge}
                             source={badges[badge]}
                           />
                         ) : (
                           <Image
+                            key={badge}
                             style={styles.noBadge}
                             source={badges[badge]}
                           />

@@ -217,7 +217,10 @@ class EditProfile extends Component<Props, State> {
               <Text style={styles.field__text}>Equipped Badges:</Text>
               <View style={styles.top__badges}>
                 {this.state.updatedUser.equipped_badges.map(badge => (
-                  <TouchableOpacity onPress={() => this.removeBadge(badge)}>
+                  <TouchableOpacity
+                    key={badge}
+                    onPress={() => this.removeBadge(badge)}
+                  >
                     <Image
                       source={badges[badge]}
                       style={{ margin: 2, height: 40, width: 40 }}
@@ -265,87 +268,122 @@ class EditProfile extends Component<Props, State> {
                 <Text style={styles.field__text}>Add New Equipped Badges:</Text>
                 <View style={styles.badge__container}>
                   <View style={styles.badge__category}>
-                    {badgeNames.slice(0, 3).map(badge =>
+                    {badgeNames.slice(0, 3).map((badge, index) =>
                       this.props.badgeOptions.includes(badge) &&
                       !this.state.updatedUser.equipped_badges.includes(
                         badge
                       ) ? (
-                        <TouchableOpacity onPress={() => this.addBadge(badge)}>
+                        <TouchableOpacity
+                          key={badge}
+                          onPress={() => this.addBadge(badge)}
+                        >
                           <Image
                             style={styles.ownBadge}
                             source={badges[badge]}
                           />
                         </TouchableOpacity>
                       ) : (
-                        <Image style={styles.noBadge} source={badges[badge]} />
+                        <Image
+                          style={styles.noBadge}
+                          key={index}
+                          source={badges[badge]}
+                        />
                       )
                     )}
                   </View>
                   <View style={styles.badge__category}>
-                    {badgeNames.slice(3, 6).map(badge =>
+                    {badgeNames.slice(3, 6).map((badge, index) =>
                       this.props.badgeOptions.includes(badge) &&
                       !this.state.updatedUser.equipped_badges.includes(
                         badge
                       ) ? (
-                        <TouchableOpacity onPress={() => this.addBadge(badge)}>
+                        <TouchableOpacity
+                          key={badge}
+                          onPress={() => this.addBadge(badge)}
+                        >
                           <Image
                             style={styles.ownBadge}
                             source={badges[badge]}
                           />
                         </TouchableOpacity>
                       ) : (
-                        <Image style={styles.noBadge} source={badges[badge]} />
+                        <Image
+                          key={index}
+                          style={styles.noBadge}
+                          source={badges[badge]}
+                        />
                       )
                     )}
                   </View>
                   <View style={styles.badge__category}>
-                    {badgeNames.slice(6, 9).map(badge =>
+                    {badgeNames.slice(6, 9).map((badge, index) =>
                       this.props.badgeOptions.includes(badge) &&
                       !this.state.updatedUser.equipped_badges.includes(
                         badge
                       ) ? (
-                        <TouchableOpacity onPress={() => this.addBadge(badge)}>
+                        <TouchableOpacity
+                          key={badge}
+                          onPress={() => this.addBadge(badge)}
+                        >
                           <Image
                             style={styles.ownBadge}
                             source={badges[badge]}
                           />
                         </TouchableOpacity>
                       ) : (
-                        <Image style={styles.noBadge} source={badges[badge]} />
+                        <Image
+                          key={index}
+                          style={styles.noBadge}
+                          source={badges[badge]}
+                        />
                       )
                     )}
                   </View>
                   <View style={styles.badge__category}>
-                    {badgeNames.slice(9, 12).map(badge =>
+                    {badgeNames.slice(9, 12).map((badge, index) =>
                       this.props.badgeOptions.includes(badge) &&
                       !this.state.updatedUser.equipped_badges.includes(
                         badge
                       ) ? (
-                        <TouchableOpacity onPress={() => this.addBadge(badge)}>
+                        <TouchableOpacity
+                          key={badge}
+                          onPress={() => this.addBadge(badge)}
+                        >
                           <Image
                             style={styles.ownBadge}
                             source={badges[badge]}
                           />
                         </TouchableOpacity>
                       ) : (
-                        <Image style={styles.noBadge} source={badges[badge]} />
+                        <Image
+                          key={index}
+                          style={styles.noBadge}
+                          source={badges[badge]}
+                        />
                       )
                     )}
                   </View>
                   <View style={styles.badge__category}>
-                    {badgeNames.slice(12, 15).map(badge =>
+                    {badgeNames.slice(12, 15).map((badge, index) =>
                       this.props.badgeOptions.includes(badge) &&
                       !this.state.updatedUser.equipped_badges.includes(
                         badge
                       ) ? (
-                        <TouchableOpacity onPress={() => this.addBadge(badge)}>
+                        <TouchableOpacity
+                          key={badge}
+                          onPress={() => this.addBadge(badge)}
+                        >
                           <Image
                             style={styles.ownBadge}
                             source={badges[badge]}
                           />
                         </TouchableOpacity>
                       ) : (
-                        <Image style={styles.noBadge} source={badges[badge]} />
+                        <Image
+                          key={index}
+                          style={styles.noBadge}
+                          source={badges[badge]}
+                        />
                       )
                     )}
                   </View>

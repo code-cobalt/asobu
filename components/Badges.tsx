@@ -27,14 +27,17 @@ const Badges: React.FunctionComponent<Props> = props => {
       {props.badges.length === 1 && (
         <>
           <Image
+            key={0}
             source={badges[props.badges[0]]}
             style={{ margin: 2, height: 40, width: 40 }}
           />
           <Image
+            key={1}
             source={require('../assets/socket.png')}
             style={{ margin: 2, height: 40, width: 40 }}
           />
           <Image
+            key={2}
             source={require('../assets/socket.png')}
             style={{ margin: 2, height: 40, width: 40 }}
           />
@@ -43,14 +46,17 @@ const Badges: React.FunctionComponent<Props> = props => {
       {props.badges.length === 2 && (
         <>
           <Image
+            key={0}
             source={badges[props.badges[0]]}
             style={{ margin: 2, height: 40, width: 40 }}
           />
           <Image
+            key={1}
             source={badges[props.badges[1]]}
             style={{ margin: 2, height: 40, width: 40 }}
           />
           <Image
+            key={2}
             source={require('../assets/socket.png')}
             style={{ margin: 2, height: 40, width: 40 }}
           />
