@@ -104,13 +104,12 @@ class Profile extends Component<Props> {
             <Divider style={styles.divider} />
             <View style={styles.profile__body}>
               <Text style={styles.info__title}>Your Interests</Text>
-              <View style={styles.interests__container}>
-                {this.props.user.interests.length > 0 &&
-                  this.props.user.interests.map(interest => {
-                    return (
-                      <Text style={styles.interests__text}>{interest}</Text>
-                    )
-                  })}
+              <View>
+                {this.props.user.interests.length > 0 && (
+                  <Text style={styles.interests__text}>
+                    {this.props.user.interests.join(', ')}
+                  </Text>
+                )}
               </View>
               <View style={styles.email__phone}>
                 <Text style={styles.info__title}>email</Text>
