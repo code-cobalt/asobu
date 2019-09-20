@@ -93,7 +93,15 @@ class EditProfile extends Component<Props, State> {
     })
   }
 
-  removeInterest = interest => {}
+  removeInterest = interest => {
+    const interests = this.state.updatedUser.interests.filter(
+      userInterest => userInterest !== interest
+    )
+    this.setState({
+      updatedUser: { ...this.state.updatedUser, interests },
+      interestOptions: [...this.state.interestOptions, interest]
+    })
+  }
 
   render() {
     return (
