@@ -158,7 +158,7 @@ class EditProfile extends Component<Props, State> {
               style={styles.upload__button}
               onPress={this.handleUpload}
             >
-              <Text style={styles.field__text}>Upload a Profile Photo!</Text>
+              <Text style={styles.field__text}>Upload a Photo!</Text>
             </TouchableOpacity>
             <Text style={styles.field__text}>Your Interests:</Text>
             {this.state.updatedUser.interests.map(interest => (
