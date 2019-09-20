@@ -31,7 +31,8 @@ const initialState = {
   userToReview: {},
   latitude: '',
   longitude: '',
-  activeSearch: false
+  activeSearch: false,
+  isReviewing: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -357,7 +358,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, showReview: true }
     }
     case 'END_REVIEW': {
-      return { ...state, userToReview: {} }
+      return { ...state, userToReview: {}, isReviewing: false }
+
     }
     case 'GET_LOCATION': {
       return {
@@ -371,6 +373,18 @@ const reducer = (state = initialState, action) => {
     }
     case 'LOGOUT': {
       return { ...state, isLoggedIn: false }
+    }
+    case 'FINISH_REVIEW': {
+      const updatedPendingReviews = state.pendingReviews.filter(
+        review => review.email !== action.userToReview
+      )
+      return {
+        ...state,
+        popupModal: false,
+        userToReview: action.userToReview,
+        isReviewing: true,
+        pendingReviews: updatedPendingReviews
+      }
     }
     default: {
       return state

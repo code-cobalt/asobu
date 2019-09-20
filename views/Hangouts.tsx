@@ -59,6 +59,7 @@ interface Props {
   closeMainModal: Function
   modalIsClosed: Function
   userToReview: UserLimitedBadges
+  isReviewing: boolean
 }
 
 const options = [
@@ -88,7 +89,10 @@ class Hangouts extends React.Component<Props> {
       <SafeAreaView style={styles.userList}>
         <UserList />
         <Modal
-          isVisible={this.state.modalVisible || this.props.popupModal}
+          isVisible={
+            (this.state.modalVisible || this.props.popupModal) &&
+            !this.props.isReviewing
+          }
           animationIn="slideInUp"
           animationOut="slideOutDown"
           backdropOpacity={0.85}
@@ -204,7 +208,8 @@ const mapStateToProps = state => {
     acceptedHangouts: state.acceptedHangouts,
     ongoingHangouts: state.ongoingHangouts,
     popupModal: state.popupModal,
-    userToReview: state.userToReview
+    userToReview: state.userToReview,
+    isReviewing: state.isReviewing
   }
 }
 const mapDispatchToProps = dispatch => {

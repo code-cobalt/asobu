@@ -11,73 +11,52 @@ import {
 import { connect } from 'react-redux'
 import { startHangout, finishHangout } from '../src/actions/hangouts'
 import Badges from './Badges'
+import PendingReviews from './PendingReviews'
 
 const AcceptedHangouts = props => {
   return (
     <>
-      <View style={{ flex: 1 }}>
-        <Text style={styles.title}>Meeting up with</Text>
-        <ScrollView style={styles.request}>
-          {props.acceptedHangouts.map((hangout, index) => {
-            return (
-              <View key={index}>
-                <Image
-                  source={{ uri: hangout.profile_photo }}
-                  style={styles.user__image}
-                />
-                <View
-                  style={{
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    flex: 1
-                  }}
-                >
-                  <Text style={styles.user__name}>{hangout.first_name}</Text>
-                  {hangout.equipped_badges && (
-                    <View style={styles.badges}>
-                      <Badges badges={hangout.equipped_badges} />
+      {props.pendingReviews.length > 0 ? (
+        <PendingReviews />
+      ) : (
+        <>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.title}>Meeting up with</Text>
+            <ScrollView style={styles.request}>
+              {props.acceptedHangouts.map((hangout, index) => {
+                return (
+                  <View key={index}>
+                    <Image
+                      source={{ uri: hangout.profile_photo }}
+                      style={styles.user__image}
+                    />
+                    <View
+                      style={{
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flex: 1
+                      }}
+                    >
+                      <Text style={styles.user__name}>
+                        {hangout.first_name}
+                      </Text>
+                      {hangout.equipped_badges && (
+                        <View style={styles.badges}>
+                          <Badges badges={hangout.equipped_badges} />
+                        </View>
+                      )}
+                      <TouchableOpacity
+                        style={styles.start_button}
+                        onPress={() =>
+                          props.socket.send(
+                            `s0 ${props.currentUserLimited.email} ${hangout.email} ${props.currentUserLimited.first_name}`
+                          )
+                        }
+                      >
+                        <Text style={styles.button_text}>Start Hangout</Text>
+                      </TouchableOpacity>
                     </View>
-                  )}
-                  <TouchableOpacity
-                    style={styles.start_button}
-                    onPress={() =>
-                      props.socket.send(
-                        `s0 ${props.currentUserLimited.email} ${hangout.email} ${props.currentUserLimited.first_name}`
-                      )
-                    }
-                  >
-                    <Text style={styles.button_text}>Start Hangout</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )
-          })}
-        </ScrollView>
-      </View>
-      <View style={{ flex: 1 }}>
-        <Text style={styles.title}>Currently hanging out</Text>
-        <ScrollView style={styles.request}>
-          {props.ongoingHangouts.map(hangout => {
-            return (
-              <View key={hangout.participants[0].email}>
-                <Image
-                  source={{ uri: hangout.participants[0].profile_photo }}
-                  style={styles.user__image}
-                />
-                <View
-                  style={{
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    flex: 1
-                  }}
-                >
-                  <Text style={styles.user__name}>
-                    {hangout.participants[0].first_name}
-                  </Text>
-                  <View style={styles.badges}>
-                    <Badges badges={hangout.participants[0].equipped_badges} />
                   </View>
                   <TouchableOpacity
                     style={styles.start_button}
