@@ -27,6 +27,8 @@ interface Props {
   attendEvent: Function
   unattendEvent: Function
   deleteEvent: Function
+  triggerAttendees: Function
+  triggeredAttendees: boolean
 }
 
 interface UserLimited {
@@ -58,10 +60,23 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
 
     let attendeesButton
 
+    const openAttendees = () => {
+      props.triggerAttendees()
+      props.closeEvent()
+    }
+
+    const attendeesModalChecker = () => {
+      if (props.triggeredAttendees) {
+        props.showAttendees()
+      }
+    }
+
     if (props.currentEvent.attendees) {
       attendeesButton = (
         <TouchableOpacity
-          onPress={() => props.showAttendees()}
+          onPress={() => 
+            openAttendees()
+          }
           style={styles.event__button}
           >
             <Text style={styles.button__text}>Attendees</Text>
@@ -131,10 +146,10 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
       <>
       <Modal
         isVisible={props.showEvent}
+        onModalHide={attendeesModalChecker}
         animationIn="slideInUp"
         animationOut="slideOutDown"
         backdropOpacity={1}
-        style={styles.modal}
         backdropColor="#e5e6e5"
         hasBackdrop={true}
         coverScreen={true}
@@ -260,9 +275,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
+    attendeeModal: state.showAttendees,
     showEvent: state.showEvent,
     currentEvent: state.currentEvent,
-    user: state.user
+    user: state.user,
+    triggeredAttendees: state.triggerAttendees
   }
 }
 
@@ -281,6 +298,16 @@ const mapDispatchToProps = dispatch => {
     showAttendees: () => {
       dispatch({
         type: 'SHOW_ATTENDEES'
+      })
+    },
+    triggerAttendees: () => {
+      dispatch({
+        type: 'TRIGGER_ATTENDEES'
+      })
+    },
+    untriggerAttendees: () => {
+      dispatch({
+        type: 'UNTRIGGER_ATTENDEES'
       })
     },
     attendEvent: (eventId, user) => dispatch(attendEvent(eventId, user)),
