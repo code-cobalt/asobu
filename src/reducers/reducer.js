@@ -15,6 +15,7 @@ const initialState = {
   popupModal: false,
   showProfile: false,
   showAttendees: false,
+  triggerAttendees: false,
   showEditProfileForm: false,
   showEvent: false,
   showReview: false,
@@ -188,10 +189,16 @@ const reducer = (state = initialState, action) => {
       return { ...state, showEvent: false }
     }
     case 'SHOW_ATTENDEES': {
-      return { ...state, showAttendees: true}
+      return { ...state, showAttendees: true, showEvent: false}
     }
     case 'CLOSE_ATTENDEES': {
       return { ...state, showAttendees: false}
+    }
+    case 'TRIGGER_ATTENDEES': {
+      return { ...state, triggerAttendees: true}
+    }
+    case 'UNTRIGGER_ATTENDEES': {
+      return { ...state, triggerAttendees: false}
     }
     case 'ATTEND_EVENT': {
       //add currentUser to currentevent attendees list
