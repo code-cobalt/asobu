@@ -28,7 +28,7 @@ const initialState = {
   currentChatMessages: [],
   currentChatId: 0,
   hangoutId: '',
-  userToReview: '',
+  userToReview: {},
   latitude: '',
   longitude: '',
   activeSearch: false
@@ -357,7 +357,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, showReview: true }
     }
     case 'END_REVIEW': {
-      return { ...state, userToReview: '' }
+      return { ...state, userToReview: {} }
     }
     case 'GET_LOCATION': {
       return {
