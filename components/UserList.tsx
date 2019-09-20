@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
   users: {
     marginBottom: 10,
     height: '100%',
-    width: '100%'
+    width: '100%',
+    backgroundColor: '#e5e6e5'
   },
   text__box: {
     backgroundColor: '#bcd634',
