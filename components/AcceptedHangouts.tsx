@@ -95,7 +95,6 @@ const AcceptedHangouts = props => {
                             {
                               text: 'Yes',
                               onPress: () => {
-                                debugger
                                 props.socket.send(
                                   `f1 ${props.user.email} ${hangout.participants[0].email} ${hangout.hangout_id}`
                                 )
