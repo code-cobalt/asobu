@@ -11,6 +11,7 @@ import { loginUser } from '../src/actions/users'
 
 interface Props {
   isLoggedIn: boolean
+  loginUser: Function
 }
 
 class Wrapper extends Component<Props> {

@@ -31,6 +31,13 @@ interface UserLimited {
   profile_photo: string
 }
 
+interface UserLimitedBadges {
+  first_name: string
+  email: string
+  profile_photo: string
+  equipped_badges: string[]
+}
+
 interface Profile {
   first_name: string
   profile_photo: string
@@ -51,7 +58,8 @@ interface Props {
   closeProfile: Function
   closeMainModal: Function
   modalIsClosed: Function
-  userToReview: string
+  userToReview: UserLimitedBadges
+  isReviewing: boolean
 }
 
 const options = [
@@ -71,7 +79,7 @@ class Hangouts extends React.Component<Props> {
   }
 
   renderReview = () => {
-    if (this.props.userToReview !== '') {
+    if (this.props.userToReview.email) {
       this.props.modalIsClosed()
     }
   }
@@ -81,7 +89,10 @@ class Hangouts extends React.Component<Props> {
       <SafeAreaView style={styles.userList}>
         <UserList />
         <Modal
-          isVisible={this.state.modalVisible || this.props.popupModal}
+          isVisible={
+            (this.state.modalVisible || this.props.popupModal) &&
+            !this.props.isReviewing
+          }
           animationIn="slideInUp"
           animationOut="slideOutDown"
           backdropOpacity={0.85}
@@ -198,7 +209,8 @@ const mapStateToProps = state => {
     acceptedHangouts: state.acceptedHangouts,
     ongoingHangouts: state.ongoingHangouts,
     popupModal: state.popupModal,
-    userToReview: state.userToReview
+    userToReview: state.userToReview,
+    isReviewing: state.isReviewing
   }
 }
 const mapDispatchToProps = dispatch => {

@@ -58,6 +58,7 @@ interface Props {
   user: User
   editProfile: Function
   toggleActiveSearch: Function
+  logOut: Function
 }
 
 class Profile extends Component<Props> {

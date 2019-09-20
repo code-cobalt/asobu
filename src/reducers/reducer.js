@@ -30,10 +30,11 @@ const initialState = {
   currentChatMessages: [],
   currentChatId: 0,
   hangoutId: '',
-  userToReview: '',
+  userToReview: {},
   latitude: '',
   longitude: '',
-  activeSearch: false
+  activeSearch: false,
+  isReviewing: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -346,10 +347,10 @@ const reducer = (state = initialState, action) => {
     case 'START_HANGOUT': {
       const updatedOngoingHangouts = [
         ...state.ongoingHangouts,
-        { hangout_id: action.hangoutId, participants: [action.participants[1]] }
+        { hangout_id: action.hangoutId, participants: [action.participant] }
       ]
       const updatedAcceptedHangouts = state.acceptedHangouts.filter(
-        hangout => hangout.email !== action.participants[1].email
+        hangout => hangout.email !== action.participant.email
       )
       return {
         ...state,
@@ -371,7 +372,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, showReview: true }
     }
     case 'END_REVIEW': {
-      return { ...state, userToReview: '' }
+      return { ...state, userToReview: {}, isReviewing: false }
+
     }
     case 'GET_LOCATION': {
       return {
@@ -385,6 +387,18 @@ const reducer = (state = initialState, action) => {
     }
     case 'LOGOUT': {
       return { ...state, isLoggedIn: false }
+    }
+    case 'FINISH_REVIEW': {
+      const updatedPendingReviews = state.pendingReviews.filter(
+        review => review.email !== action.userToReview
+      )
+      return {
+        ...state,
+        popupModal: false,
+        userToReview: action.userToReview,
+        isReviewing: true,
+        pendingReviews: updatedPendingReviews
+      }
     }
     default: {
       return state
