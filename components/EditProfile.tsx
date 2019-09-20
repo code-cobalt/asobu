@@ -6,21 +6,20 @@ import {
   View,
   TextInput,
   StyleSheet,
-  TouchableOpacity,
-  Button
+  TouchableOpacity
 } from 'react-native'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { updateProfile } from '../src/actions/users'
 import { uploadPhoto } from '../src/actions/upload'
-import { runInThisContext } from 'vm'
 
 interface Props {
   showEditProfileForm: boolean
   closeEditProfileForm: Function
   updateProfile: Function
   user: User
+  badgeOptions: string[]
 }
 
 interface User {
@@ -255,7 +254,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     showEditProfileForm: state.showEditProfileForm,
-    user: state.user
+    user: state.user,
+    badgeOptions: state.badgeOptions
   }
 }
 

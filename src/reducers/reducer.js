@@ -32,7 +32,8 @@ const initialState = {
   latitude: '',
   longitude: '',
   activeSearch: false,
-  isReviewing: false
+  isReviewing: false,
+  badgeOptions: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -63,6 +64,9 @@ const reducer = (state = initialState, action) => {
         ongoingHangouts: action.user.ongoing_hangouts,
         pendingReviews: action.user.pending_reviews
       }
+    }
+    case 'SET_BADGE_OPTIONS': {
+      return { ...state, badgeOptions: action.badgeOptions }
     }
     case 'TOGGLE_AUTH': {
       return { ...state, showLogin: !state.showLogin }
