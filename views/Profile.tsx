@@ -14,24 +14,7 @@ import { connect } from 'react-redux'
 import Badges from './../components/Badges'
 import EditProfile from '../components/EditProfile'
 import { logOut } from '../src/actions/users'
-
-const badges = {
-  crown_badge: require('../assets/crown_badge.png'),
-  crown_badge2: require('../assets/crown_badge2.png'),
-  crown_badge3: require('../assets/crown_badge3.png'),
-  funny_bronze: require('../assets/funny_bronze.png'),
-  funny_silver: require('../assets/funny_silver.png'),
-  funny_gold: require('../assets/funny_gold.png'),
-  intellectual_bronze: require('../assets/intellectual_bronze.png'),
-  intellectual_silver: require('../assets/intellectual_silver.png'),
-  intellectual_gold: require('../assets/intellectual_gold.png'),
-  kind_bronze: require('../assets/kind_bronze.png'),
-  kind_silver: require('../assets/kind_silver.png'),
-  kind_gold: require('../assets/kind_gold.png'),
-  therapeutic_bronze: require('../assets/therapeutic_bronze.png'),
-  therapeutic_silver: require('../assets/therapeutic_silver.png'),
-  therapeutic_gold: require('../assets/therapeutic_gold.png')
-}
+import { badges } from '../components/Badges'
 
 const badgeNames = Object.keys(badges)
 
