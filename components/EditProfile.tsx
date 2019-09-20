@@ -14,6 +14,7 @@ import Modal from 'react-native-modal'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { updateProfile } from '../src/actions/users'
 import { uploadPhoto } from '../src/actions/upload'
+import { runInThisContext } from 'vm'
 
 interface Props {
   showEditProfileForm: boolean
@@ -80,7 +81,17 @@ class EditProfile extends Component<Props, State> {
     })
   }
 
-  addInterest = interest => {}
+  addInterest = interest => {
+    this.setState({
+      updatedUser: {
+        ...this.state.updatedUser,
+        interests: [...this.state.updatedUser.interests, interest]
+      },
+      interestOptions: this.state.interestOptions.filter(
+        option => option !== interest
+      )
+    })
+  }
 
   removeInterest = interest => {}
 
