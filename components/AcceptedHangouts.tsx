@@ -57,45 +57,45 @@ const AcceptedHangouts = props => {
                         <Text style={styles.button_text}>Start Hangout</Text>
                       </TouchableOpacity>
                     </View>
-                  </View>
-                  <TouchableOpacity
-                    style={styles.start_button}
-                    onPress={() => {
-                      {
-                        Alert.alert(
-                          `Are you sure you'd like to finish this hangout?`,
-                          '',
-                          [
-                            {
-                              text: 'No',
-                              onPress: () =>
-                                console.log('User cancelled finish hangout.')
-                            },
-                            {
-                              text: 'Yes',
-                              onPress: () => {
-                                props.socket.send(
-                                  `f1 ${props.user.email} ${hangout.participants[0].email} ${hangout.hangout_id}`
-                                )
-                                props.finishHangout(
-                                  hangout.hangout_id,
-                                  hangout.participants[0]
-                                )
+                    <TouchableOpacity
+                      style={styles.start_button}
+                      onPress={() => {
+                        {
+                          Alert.alert(
+                            `Are you sure you'd like to finish this hangout?`,
+                            '',
+                            [
+                              {
+                                text: 'No',
+                                onPress: () =>
+                                  console.log('User cancelled finish hangout.')
+                              },
+                              {
+                                text: 'Yes',
+                                onPress: () => {
+                                  props.socket.send(
+                                    `f1 ${props.user.email} ${hangout.participants[0].email} ${hangout.hangout_id}`
+                                  )
+                                  props.finishHangout(
+                                    hangout.hangout_id,
+                                    hangout.participants[0]
+                                  )
+                                }
                               }
-                            }
-                          ]
-                        )
-                      }
-                    }}
-                  >
-                    <Text style={styles.button_text}>Stop Hangout</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )
-          })}
-        </ScrollView>
-      </View>
+                            ]
+                          )
+                        }
+                      }}
+                    >
+                      <Text style={styles.button_text}>Stop Hangout</Text>
+                    </TouchableOpacity>
+                  </View>
+                )
+              })}
+            </ScrollView>
+          </View>
+        </>
+      )}
     </>
   )
 }
