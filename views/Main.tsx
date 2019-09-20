@@ -24,6 +24,7 @@ interface Props {
   startHangout: Function
   context: Function
   dispatchStartHangout: Function
+  dispatchFinishHangout: Function
   getUsers: Function
   getChat: Function
   socket: WebSocket
@@ -135,6 +136,12 @@ class Main extends Component<Props> {
         const user = await getUserLimited(message[1])
         this.props.dispatchStartHangout(user, message[2])
       }
+      //Hangout has been finished by other user
+      if (message[0] === 'f1') {
+        console.log('FINISH HANGOUT')
+        const user = await getUserLimited(message[1])
+        this.props.dispatchFinishHangout(user, message[2])
+      }
     }
     this.props.getUsers(
       this.props.email,
@@ -219,6 +226,9 @@ const mapDispatchToProps = dispatch => {
     },
     dispatchStartHangout: (participant, hangoutId) => {
       dispatch({ type: 'START_HANGOUT', participant, hangoutId })
+    },
+    dispatchFinishHangout: (userToReview, hangoutId) => {
+      dispatch({ type: 'FINISH_HANGOUT', userToReview, hangoutId })
     }
   }
 }
