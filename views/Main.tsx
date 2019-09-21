@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Alert } from 'react-native'
+import { View, StyleSheet, Alert, AlertIOS } from 'react-native'
 import { connect } from 'react-redux'
 import { getChat, getUserChats } from '../src/actions/chats'
 import {
@@ -11,6 +11,7 @@ import { startHangout } from '../src/actions/hangouts'
 import Profile from './Profile'
 import Results from './Results'
 import Inbox from './Inbox'
+import registerPush from '../registerPush'
 
 interface Props {
   activeView: string
@@ -53,6 +54,7 @@ interface UserLimitedBadges {
 }
 
 class Main extends Component<Props> {
+  
   componentWillMount() {
     this.props.socket.send(`l0 ${this.props.email}`)
     // comment out socket.send to use dummy data
