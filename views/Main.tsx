@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Alert } from 'react-native'
+import { View, StyleSheet, Alert, AlertIOS } from 'react-native'
 import { connect } from 'react-redux'
 import { getChat, getUserChats } from '../src/actions/chats'
 import {
@@ -11,6 +11,7 @@ import { startHangout } from '../src/actions/hangouts'
 import Profile from './Profile'
 import Results from './Results'
 import Inbox from './Inbox'
+import registerPush from '../registerPush'
 import DialogInput from 'react-native-dialog-input'
 
 interface Props {
@@ -59,6 +60,7 @@ interface UserLimitedBadges {
   equipped_badges: string[]
 }
 
+class Main extends Component<Props> {
 const questions = []
 
 class Main extends Component<Props, State> {
