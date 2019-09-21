@@ -88,9 +88,9 @@ class Hangouts extends React.Component<Props> {
 
   setUserLocation(bool) {
     const updatedUser = {
-      longitude: this.props.longitude.toString(),
-      latitude: this.props.latitude.toString(),
-      isActive: bool
+      longitude: this.props.longitude,
+      latitude: this.props.latitude,
+      is_active: bool
     }
     this.setState({ active: bool })
     this.props.toggleActiveSearch(this.props.email, updatedUser)
@@ -103,6 +103,7 @@ class Hangouts extends React.Component<Props> {
   }
 
   render() {
+    console.log('This is active', this.props.isActive)
     return (
       <SafeAreaView style={styles.userList}>
         <View>
