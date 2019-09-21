@@ -175,10 +175,9 @@ export const getUsersQuery = gql`
       exp
       lvl
       equipped_badges
-      imei
+      is_active
       longitude
       latitude
-      is_active
       token
     }
   }
@@ -287,7 +286,7 @@ export const setUserLocationQuery = gql`
     UpdateUser(userEmail: $userEmail, updatedUser: $updatedUser) {
       latitude
       longitude
-      isActive
+      is_active
     }
   }
 `
