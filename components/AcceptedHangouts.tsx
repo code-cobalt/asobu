@@ -108,7 +108,7 @@ const AcceptedHangouts = props => {
                               text: "Let's play!",
                               onPress: () =>
                                 props.socket.send(
-                                  `q0 ${props.user.email} ${hangout.hangout_id} ${hangout.participants[0].email}`
+                                  `q0 ${props.user.email} ${props.user.first_name} ${hangout.hangout_id} ${hangout.participants[0].email}`
                                 )
                             }
                           ]

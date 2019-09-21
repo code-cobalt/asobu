@@ -142,6 +142,31 @@ class Main extends Component<Props> {
         const user = await getUserLimited(message[1])
         this.props.dispatchFinishHangout(user, message[2])
       }
+      //Hangout partner has requested to play game
+      if (message[0] === 'q0') {
+        console.log('GAME REQUESTED')
+        Alert.alert(
+          "Let's play a game!",
+          `Would you like to play an icebreaker game with ${message[2]}?`,
+          [
+            {
+              text: 'Maybe later.',
+              onPress: () => console.log('User denied game request.')
+            },
+            {
+              text: 'Lets play!',
+              onPress: () =>
+                this.props.socket.send(`q1 ${this.props.email} ${message[1]}`)
+            }
+          ]
+        )
+      }
+      //Receive quiz question
+      if (message[0] === 'q1') {
+      }
+      //View partner's answer
+      if (message[0] === 'q2') {
+      }
     }
     this.props.getUsers(
       this.props.email,
