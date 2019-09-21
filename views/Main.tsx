@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Alert } from 'react-native'
+import { View, StyleSheet, Alert, AlertIOS } from 'react-native'
 import { connect } from 'react-redux'
 import { getChat, getUserChats } from '../src/actions/chats'
 import {
@@ -11,6 +11,8 @@ import { startHangout } from '../src/actions/hangouts'
 import Profile from './Profile'
 import Results from './Results'
 import Inbox from './Inbox'
+import registerPush from '../registerPush'
+import DialogInput from 'react-native-dialog-input'
 
 interface Props {
   activeView: string
@@ -34,6 +36,12 @@ interface Props {
   acceptedHangouts: Array<UserLimitedBadges>
 }
 
+interface State {
+  isDialogVisible: boolean
+  questionNum: number
+  targetEmail: string
+}
+
 interface Hangout {
   hangout_id: string
   participants: [UserLimited]
@@ -53,6 +61,15 @@ interface UserLimitedBadges {
 }
 
 class Main extends Component<Props> {
+const questions = []
+
+class Main extends Component<Props, State> {
+  state = {
+    isDialogVisible: false,
+    questionNum: 0,
+    targetEmail: ''
+  }
+
   componentWillMount() {
     this.props.socket.send(`l0 ${this.props.email}`)
     // comment out socket.send to use dummy data
@@ -63,7 +80,6 @@ class Main extends Component<Props> {
       if (message[0] === 'p0') {
         this.props.socket.send(`p0 ${this.props.email}`)
         // comment out socket.send to use dummy data
-
         console.log('PONGED')
       }
       //Message Update
@@ -142,6 +158,38 @@ class Main extends Component<Props> {
         const user = await getUserLimited(message[1])
         this.props.dispatchFinishHangout(user, message[2])
       }
+      //Hangout partner has requested to play game
+      if (message[0] === 'q0') {
+        console.log('GAME REQUESTED')
+        Alert.alert(
+          "Let's play a game!",
+          `Would you like to play an icebreaker game with ${message[2]}?`,
+          [
+            {
+              text: 'Maybe later.',
+              onPress: () => console.log('User denied game request.')
+            },
+            {
+              text: 'Lets play!',
+              onPress: () =>
+                this.props.socket.send(`q1 ${this.props.email} ${message[1]}`)
+            }
+          ]
+        )
+      }
+      //Receive quiz question
+      if (message[0] === 'q1') {
+        console.log('RECEIVED GAME QUESTION')
+        this.setState({
+          isDialogVisible: true,
+          questionNum: message[2],
+          targetEmail: message[1]
+        })
+      }
+      //View partner's answer
+      if (message[0] === 'q2') {
+        console.log('RECEIVED PARTNERS GAME RESPONSE')
+      }
     }
     this.props.getUsers(
       this.props.email,
@@ -160,7 +208,23 @@ class Main extends Component<Props> {
     } else if (this.props.activeView === 'chats') {
       mainView = <Inbox />
     }
-    return <View style={styles.main}>{mainView}</View>
+    return (
+      <>
+        <DialogInput
+          isDialogVisible={this.state.isDialogVisible}
+          title={`Round ${this.state.questionNum + 1}`}
+          message={questions[this.state.questionNum]}
+          submitInput={inputText =>
+            this.props.socket.send(
+              `q2 ${this.props.email} ${this.state.targetEmail} ${this.state
+                .questionNum + 1} ${inputText}`
+            )
+          }
+          closeDialog={() => this.setState({ isDialogVisible: false })}
+        ></DialogInput>
+        <View style={styles.main}>{mainView}</View>
+      </>
+    )
   }
 }
 

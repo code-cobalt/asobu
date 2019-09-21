@@ -4,7 +4,6 @@ import {
   Text,
   Image,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   ScrollView,
   SafeAreaView
@@ -15,6 +14,9 @@ import { connect } from 'react-redux'
 import Badges from './../components/Badges'
 import EditProfile from '../components/EditProfile'
 import { logOut } from '../src/actions/users'
+import { badges } from '../components/Badges'
+
+const badgeNames = Object.keys(badges)
 
 interface UserLimited {
   first_name: string
@@ -50,7 +52,7 @@ interface User {
   sent_hangout_requests: Array<UserLimited>
   received_hangout_requests: Array<UserLimited>
   equipped_badges: string[]
-  imei: string
+  token: string
   stats: Stats
 }
 
@@ -59,9 +61,42 @@ interface Props {
   editProfile: Function
   toggleActiveSearch: Function
   logOut: Function
+  badgeOptions: string[]
+  setBadgeOptions: Function
 }
 
 class Profile extends Component<Props> {
+  componentDidMount() {
+    const badgeOptions = []
+    if (this.props.user.stats.kind >= 1) {
+      badgeOptions.push('kind_bronze')
+    }
+    if (this.props.user.stats.kind >= 5) {
+      badgeOptions.push('kind_silver')
+    }
+    if (this.props.user.stats.kind >= 15) {
+      badgeOptions.push('kind_gold')
+    }
+    if (this.props.user.stats.funny >= 1) {
+      badgeOptions.push('funny_bronze')
+    }
+    if (this.props.user.stats.funny >= 5) {
+      badgeOptions.push('funny_silver')
+    }
+    if (this.props.user.stats.funny >= 15) {
+      badgeOptions.push('funny_gold')
+    }
+    if (this.props.user.stats.intellectual >= 1) {
+      badgeOptions.push('intellectual_bronze')
+    }
+    if (this.props.user.stats.intellectual >= 5) {
+      badgeOptions.push('intellectual_silver')
+    }
+    if (this.props.user.stats.intellectual >= 15) {
+      badgeOptions.push('intellectual_gold')
+    }
+    this.props.setBadgeOptions(badgeOptions)
+  }
 
   render() {
     let editButton;
@@ -117,13 +152,12 @@ class Profile extends Component<Props> {
             <Divider style={styles.divider} />
             <View style={styles.profile__body}>
               <Text style={styles.info__title}>Your Interests</Text>
-              <View style={styles.interests__container}>
-                {this.props.user.interests.length > 0 &&
-                  this.props.user.interests.map(interest => {
-                    return (
-                      <Text style={styles.interests__text}>{interest}</Text>
-                    )
-                  })}
+              <View>
+                {this.props.user.interests.length > 0 && (
+                  <Text style={styles.interests__text}>
+                    {this.props.user.interests.join(', ')}
+                  </Text>
+                )}
               </View>
               <View style={styles.email__phone}>
                 <Text style={styles.info__title}>email</Text>
@@ -138,158 +172,99 @@ class Profile extends Component<Props> {
                 <Text style={styles.info__title}>Your Badges</Text>
                 <View style={styles.badge__container}>
                   <View style={styles.badge__category}>
-                    <Image
-                      style={styles.noBadge}
-                      source={require('../assets/crown_badge.png')}
-                    />
-                    <Image
-                      style={styles.noBadge}
-                      source={require('../assets/crown_badge2.png')}
-                    />
-                    <Image
-                      style={styles.noBadge}
-                      source={require('../assets/crown_badge3.png')}
-                    />
+                    {badgeNames
+                      .slice(0, 3)
+                      .map(badge =>
+                        this.props.badgeOptions.includes(badge) ? (
+                          <Image
+                            key={badge}
+                            style={styles.ownBadge}
+                            source={badges[badge]}
+                          />
+                        ) : (
+                          <Image
+                            key={badge}
+                            style={styles.noBadge}
+                            source={badges[badge]}
+                          />
+                        )
+                      )}
                   </View>
                   <View style={styles.badge__category}>
-                    {this.props.user.stats.kind >= 1 ? (
-                      <Image
-                        style={styles.ownBadge}
-                        source={require('../assets/kind_bronze.png')}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.noBadge}
-                        source={require('../assets/kind_bronze.png')}
-                      />
-                    )}
-                    {this.props.user.stats.kind >= 5 ? (
-                      <Image
-                        style={styles.ownBadge}
-                        source={require('../assets/kind_silver.png')}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.noBadge}
-                        source={require('../assets/kind_silver.png')}
-                      />
-                    )}
-                    {this.props.user.stats.kind >= 15 ? (
-                      <Image
-                        style={styles.ownBadge}
-                        source={require('../assets/kind_gold.png')}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.noBadge}
-                        source={require('../assets/kind_gold.png')}
-                      />
-                    )}
+                    {badgeNames
+                      .slice(3, 6)
+                      .map(badge =>
+                        this.props.badgeOptions.includes(badge) ? (
+                          <Image
+                            key={badge}
+                            style={styles.ownBadge}
+                            source={badges[badge]}
+                          />
+                        ) : (
+                          <Image
+                            key={badge}
+                            style={styles.noBadge}
+                            source={badges[badge]}
+                          />
+                        )
+                      )}
                   </View>
                   <View style={styles.badge__category}>
-                    {this.props.user.stats.funny >= 1 ? (
-                      <Image
-                        style={styles.ownBadge}
-                        source={require('../assets/funny_bronze.png')}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.noBadge}
-                        source={require('../assets/funny_bronze.png')}
-                      />
-                    )}
-                    {this.props.user.stats.funny >= 5 ? (
-                      <Image
-                        style={styles.ownBadge}
-                        source={require('../assets/funny_silver.png')}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.noBadge}
-                        source={require('../assets/funny_silver.png')}
-                      />
-                    )}
-                    {this.props.user.stats.funny >= 15 ? (
-                      <Image
-                        style={styles.ownBadge}
-                        source={require('../assets/funny_gold.png')}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.noBadge}
-                        source={require('../assets/funny_gold.png')}
-                      />
-                    )}
+                    {badgeNames
+                      .slice(6, 9)
+                      .map(badge =>
+                        this.props.badgeOptions.includes(badge) ? (
+                          <Image
+                            key={badge}
+                            style={styles.ownBadge}
+                            source={badges[badge]}
+                          />
+                        ) : (
+                          <Image
+                            key={badge}
+                            style={styles.noBadge}
+                            source={badges[badge]}
+                          />
+                        )
+                      )}
                   </View>
                   <View style={styles.badge__category}>
-                    {this.props.user.stats.intellectual >= 1 ? (
-                      <Image
-                        style={styles.ownBadge}
-                        source={require('../assets/intellectual_bronze.png')}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.noBadge}
-                        source={require('../assets/intellectual_bronze.png')}
-                      />
-                    )}
-                    {this.props.user.stats.intellectual >= 5 ? (
-                      <Image
-                        style={styles.ownBadge}
-                        source={require('../assets/intellectual_silver.png')}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.noBadge}
-                        source={require('../assets/intellectual_silver.png')}
-                      />
-                    )}
-                    {this.props.user.stats.intellectual >= 15 ? (
-                      <Image
-                        style={styles.ownBadge}
-                        source={require('../assets/intellectual_gold.png')}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.noBadge}
-                        source={require('../assets/intellectual_gold.png')}
-                      />
-                    )}
+                    {badgeNames
+                      .slice(9, 12)
+                      .map(badge =>
+                        this.props.badgeOptions.includes(badge) ? (
+                          <Image
+                            key={badge}
+                            style={styles.ownBadge}
+                            source={badges[badge]}
+                          />
+                        ) : (
+                          <Image
+                            key={badge}
+                            style={styles.noBadge}
+                            source={badges[badge]}
+                          />
+                        )
+                      )}
                   </View>
                   <View style={styles.badge__category}>
-                    {this.props.user.stats.therapeutic >= 1 ? (
-                      <Image
-                        style={styles.ownBadge}
-                        source={require('../assets/therapeutic_bronze.png')}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.noBadge}
-                        source={require('../assets/therapeutic_bronze.png')}
-                      />
-                    )}
-                    {this.props.user.stats.therapeutic >= 5 ? (
-                      <Image
-                        style={styles.ownBadge}
-                        source={require('../assets/therapeutic_silver.png')}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.noBadge}
-                        source={require('../assets/therapeutic_silver.png')}
-                      />
-                    )}
-                    {this.props.user.stats.therapeutic >= 15 ? (
-                      <Image
-                        style={styles.ownBadge}
-                        source={require('../assets/therapeutic_gold.png')}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.noBadge}
-                        source={require('../assets/therapeutic_gold.png')}
-                      />
-                    )}
+                    {badgeNames
+                      .slice(12, 15)
+                      .map(badge =>
+                        this.props.badgeOptions.includes(badge) ? (
+                          <Image
+                            key={badge}
+                            style={styles.ownBadge}
+                            source={badges[badge]}
+                          />
+                        ) : (
+                          <Image
+                            key={badge}
+                            style={styles.noBadge}
+                            source={badges[badge]}
+                          />
+                        )
+                      )}
                   </View>
                 </View>
               </View>
@@ -446,7 +421,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    badgeOptions: state.badgeOptions
   }
 }
 
@@ -454,7 +430,10 @@ const mapDispatchToProps = dispatch => {
   return {
     editProfile: () => dispatch({ type: 'SHOW_EDIT_PROFILE_FORM' }),
     toggleActiveSearch: () => dispatch({ type: 'TOGGLE_ACTIVE_SEARCH' }),
-    logOut: () => dispatch(logOut())
+    logOut: () => dispatch(logOut()),
+    setBadgeOptions: badgeOptions => {
+      dispatch({ type: 'SET_BADGE_OPTIONS', badgeOptions })
+    }
   }
 }
 

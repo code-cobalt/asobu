@@ -145,7 +145,9 @@ Remember to **always** pull from the super master before pushing and making a PR
     - first_name (string)
     - email (string)
     - profile_photo (string)
-  - imei (string)
+  - longitude (int)
+  - latitude (int)
+  - token (string)
 
 #### Messages (Array of Objects)
 
