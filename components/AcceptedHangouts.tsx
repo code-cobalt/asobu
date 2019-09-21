@@ -48,11 +48,15 @@ const AcceptedHangouts = props => {
                       )}
                       <TouchableOpacity
                         style={styles.start_button}
-                        onPress={() =>
+                        onPress={() => {
                           props.socket.send(
                             `s0 ${props.currentUserLimited.email} ${hangout.email} ${props.currentUserLimited.first_name}`
                           )
-                        }
+                          Alert.alert(
+                            'Your hangout will begin when the other user confirms.',
+                            ''
+                          )
+                        }}
                       >
                         <Text style={styles.button_text}>Start Hangout</Text>
                       </TouchableOpacity>
@@ -90,6 +94,17 @@ const AcceptedHangouts = props => {
                     <TouchableOpacity
                       style={styles.start_button}
                       onPress={() => {
+                        Alert.alert(
+                          `Would you like to play an icebreaker activity with ${hangout.participants[0].first_name}?`,
+                          `Your game will start when ${hangout.participants[0].first_name} accepts.`
+                        )
+                      }}
+                    >
+                      <Text style={styles.button_text}>Play a game!</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.start_button}
+                      onPress={() => {
                         {
                           Alert.alert(
                             `Are you sure you'd like to finish this hangout?`,
@@ -118,9 +133,6 @@ const AcceptedHangouts = props => {
                       }}
                     >
                       <Text style={styles.button_text}>Stop Hangout</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.start_button}>
-                      <Text style={styles.button_text}>Play a game!</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
