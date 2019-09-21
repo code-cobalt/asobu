@@ -147,8 +147,8 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
       <Modal
         isVisible={props.showEvent}
         onModalHide={attendeesModalChecker}
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
+        animationIn="zoomIn"
+        animationOut="zoomOut"
         backdropOpacity={1}
         backdropColor="#e5e6e5"
         hasBackdrop={true}
