@@ -67,7 +67,7 @@ const reducer = (state = initialState, action) => {
         pendingReviews: action.user.pending_reviews,
         latitude: action.user.latitude,
         longitude: action.user.longitude,
-        isActive: action.user.isActive
+        isActive: action.user.is_active
       }
     }
     case 'SET_BADGE_OPTIONS': {

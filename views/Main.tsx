@@ -32,8 +32,8 @@ interface Props {
   hangouts: [Hangout]
   currentUserLimited: UserLimitedBadges
   acceptedHangouts: Array<UserLimitedBadges>
-  latitude: string
-  longitude: string
+  latitude: number
+  longitude: number
 }
 
 interface Hangout {

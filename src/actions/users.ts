@@ -109,19 +109,11 @@ export const getUsers = (
       query: print(getUsersQuery)
     })
     //don't show current user, blocked/blocked by users, or users with current hangout status
-    /* const allUsers = res.data.data.Users.filter(
+    const allUsers = res.data.data.Users.filter(
       user =>
         !hiddenUsersObj[user.email] &&
         user.email !== currentUserEmail &&
-        distance(
-          parseFloat(latitude),
-          parseFloat(longitude),
-          parseFloat(user.latitude),
-          parseFloat(user.longitude)
-        ) < 10
-    ) */
-    const allUsers = res.data.data.Users.filter(
-      user => !hiddenUsersObj[user.email] && user.email !== currentUserEmail
+        distance(latitude, longitude, user.latitude, user.longitude) < 10
     )
     dispatch({
       type: 'SET_ALL_USERS',

@@ -19,8 +19,8 @@ interface Props {
   resultsSwitch: string
   isActive: boolean
   toggleActiveSearch: Function
-  latitude: string
-  longitude: string
+  latitude: number
+  longitude: number
   email: string
 }
 class Results extends Component<Props> {
@@ -30,8 +30,8 @@ class Results extends Component<Props> {
 
   setUserLocation() {
     const updatedUser = {
-      longitude: this.props.longitude.toString(),
-      latitude: this.props.latitude.toString(),
+      longitude: this.props.longitude,
+      latitude: this.props.latitude,
       isActive: true
     }
     this.props.toggleActiveSearch(this.props.email, updatedUser)

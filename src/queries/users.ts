@@ -68,6 +68,9 @@ export const registerQuery = gql`
         email
         profile_photo
       }
+      longitude
+      latitude
+      is_active
     }
   }
 `
@@ -142,7 +145,7 @@ export const loginQuery = gql`
       }
       longitude
       latitude
-      isActive
+      is_active
     }
   }
 `
@@ -175,6 +178,7 @@ export const getUsersQuery = gql`
       imei
       longitude
       latitude
+      is_active
     }
   }
 `
