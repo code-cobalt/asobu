@@ -15,7 +15,8 @@ import {
   addExpQuery,
   registerQuery,
   getUserEquippedBadgesQuery,
-  setUserLocationQuery
+  setUserLocationQuery,
+  updateUserTokenQuery
 } from '../queries/users'
 import { AsyncStorage } from 'react-native'
 
@@ -210,4 +211,14 @@ export const toggleActive = (userEmail, updatedUser) => {
     })
     dispatch({ type: 'TOGGLE_ACTIVE_SEARCH' })
   }
+}
+export const updateUserToken = async (userEmail, token) => {
+  const res = await axios.post(`${apiUrl}/graphql`, {
+    query: print(updateUserTokenQuery),
+    variables: {
+      userEmail,
+      updatedUser: { token }
+    }
+  })
+  return res.data.data.UpdateUser.token
 }

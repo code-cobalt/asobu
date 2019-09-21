@@ -72,7 +72,8 @@ class Main extends Component<Props, State> {
     targetEmail: ''
   }
 
-  componentWillMount() {
+  async componentWillMount() {
+    await registerPush(this.props.email)
     this.props.socket.send(`l0 ${this.props.email}`)
     // comment out socket.send to use dummy data
     this.props.socket.onmessage = async event => {

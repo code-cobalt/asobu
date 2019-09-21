@@ -290,3 +290,11 @@ export const setUserLocationQuery = gql`
     }
   }
 `
+
+export const updateUserTokenQuery = gql`
+  mutation UpdateUser($userEmail: String!, $updatedUser: UpdatedUser!) {
+    UpdateUser(userEmail: $userEmail, updatedUser: $updatedUser) {
+      token
+    }
+  }
+`
