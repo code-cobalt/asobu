@@ -140,6 +140,9 @@ export const loginQuery = gql`
         email
         profile_photo
       }
+      longitude
+      latitude
+      isActive
     }
   }
 `
@@ -169,6 +172,8 @@ export const getUsersQuery = gql`
       lvl
       equipped_badges
       imei
+      longitude
+      latitude
     }
   }
 `
@@ -267,6 +272,16 @@ export const getUserEquippedBadgesQuery = gql`
   query User($userEmail: String!) {
     User(userEmail: $userEmail) {
       equipped_badges
+    }
+  }
+`
+
+export const setUserLocationQuery = gql`
+  mutation UpdateUser($userEmail: String!, $updatedUser: UpdatedUser!) {
+    UpdateUser(userEmail: $userEmail, updatedUser: $updatedUser) {
+      latitude
+      longitude
+      isActive
     }
   }
 `
