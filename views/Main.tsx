@@ -62,7 +62,6 @@ interface UserLimitedBadges {
   equipped_badges: string[]
 }
 
-class Main extends Component<Props> {
 const questions = []
 
 class Main extends Component<Props, State> {
