@@ -178,9 +178,9 @@ class Profile extends Component<Props> {
                         this.props.badgeOptions.includes(badge) ? (
                             <Tooltip 
                               key={badge}
-                              popover={<Text style={{ fontWeight: '700', color: 'grey' }}>You're an event master!</Text>}
+                              popover={<Text style={styles.tooltip__text}>You're an event master!</Text>}
                               toggleOnPress={true}
-                              containerStyle={{backgroundColor: '#fff', borderWidth: 1, borderColor: 'green'}}
+                              containerStyle={styles.tooltip__container}
                               width={250}
                               height={100}
                               >
@@ -193,9 +193,9 @@ class Profile extends Component<Props> {
                         ) : (
                             <Tooltip 
                               key={badge}
-                              popover={<Text style={{ fontWeight: '700', color: 'grey' }}>Create more events to unlock this badge!</Text>}
+                              popover={<Text style={styles.tooltip__text}>Create more events to unlock this badge!</Text>}
                               toggleOnPress={true}
-                              containerStyle={{backgroundColor: '#fff', borderWidth: 1, borderColor: 'green'}}
+                              containerStyle={styles.tooltip__container}
                               width={250}
                               height={100}
                               >
@@ -215,9 +215,9 @@ class Profile extends Component<Props> {
                         this.props.badgeOptions.includes(badge) ? (
                           <Tooltip 
                             key={badge} 
-                            popover={<Text style={{ fontWeight: '700', color: 'grey' }}>Congratulations, you're hilarious!</Text>}
+                            popover={<Text style={styles.tooltip__text}>Congratulations, you're hilarious!</Text>}
                             toggleOnPress={true}
-                            containerStyle={{backgroundColor: '#fff', borderWidth: 1, borderColor: 'green'}}
+                            containerStyle={styles.tooltip__container}
                             width={250}
                             height={100}
                             >
@@ -230,9 +230,9 @@ class Profile extends Component<Props> {
                           ) : (
                           <Tooltip
                             key={badge}
-                            popover={<Text style={{ fontWeight: '900', color: 'grey' }}>Get more 'funny' reviews to unlock this badge!</Text>}
+                            popover={<Text style={styles.tooltip__text}>Get more 'funny' reviews to unlock this badge!</Text>}
                             toggleOnPress={true}
-                            containerStyle={{backgroundColor: '#fff', borderWidth: 1, borderColor: 'green' }}
+                            containerStyle={styles.tooltip__container}
                             width={250}
                             height={100}
                             >
@@ -252,9 +252,9 @@ class Profile extends Component<Props> {
                         this.props.badgeOptions.includes(badge) ? (
                           <Tooltip 
                             key={badge}
-                            popover={<Text style={{ fontWeight: '700', color: 'grey' }}>Congratulations, you're a genius!</Text>}
+                            popover={<Text style={styles.tooltip__text}>Congratulations, you're a genius!</Text>}
                             toggleOnPress={true}
-                            containerStyle={{backgroundColor: '#fff', borderWidth: 1, borderColor: 'green'}}
+                            containerStyle={styles.tooltip__container}
                             width={250}
                             height={100}
                             >
@@ -267,9 +267,9 @@ class Profile extends Component<Props> {
                         ) : (
                           <Tooltip 
                             key={badge}
-                            popover={<Text style={{ fontWeight: '700', color: 'grey' }}>Get more 'intelligent' reviews to unlock this badge!</Text>}
+                            popover={<Text style={styles.tooltip__text}>Get more 'intelligent' reviews to unlock this badge!</Text>}
                             toggleOnPress={true}
-                            containerStyle={{backgroundColor: '#fff', borderWidth: 1, borderColor: 'green'}}
+                            containerStyle={styles.tooltip__container}
                             width={250}
                             height={100}
                             >
@@ -289,9 +289,9 @@ class Profile extends Component<Props> {
                         this.props.badgeOptions.includes(badge) ? (
                           <Tooltip
                             key={badge} 
-                            popover={<Text style={{ fontWeight: '700', color: 'grey' }}>Congratulations, you're a kind soul!</Text>}
+                            popover={<Text style={styles.tooltip__text}>Congratulations, you're a kind soul!</Text>}
                             toggleOnPress={true}
-                            containerStyle={{backgroundColor: '#fff', borderWidth: 1, borderColor: 'green'}}
+                            containerStyle={styles.tooltip__container}
                             width={250}
                             height={100}
                             >
@@ -304,9 +304,9 @@ class Profile extends Component<Props> {
                         ) : (
                           <Tooltip 
                             key={badge}
-                            popover={<Text style={{ fontWeight: '700', color: 'grey' }}>Get more 'kindness' reviews to unlock this badge!</Text>}
+                            popover={<Text style={styles.tooltip__text}>Get more 'kindness' reviews to unlock this badge!</Text>}
                             toggleOnPress={true}
-                            containerStyle={{backgroundColor: '#fff', borderWidth: 1, borderColor: 'green'}}
+                            containerStyle={styles.tooltip__container}
                             width={250}
                             height={100}
                             >
@@ -326,9 +326,9 @@ class Profile extends Component<Props> {
                         this.props.badgeOptions.includes(badge) ? (
                           <Tooltip 
                             key={badge}
-                            popover={<Text style={{ fontWeight: '700', color: 'grey' }}>Congratulations, you're a good listener!</Text>}
+                            popover={<Text style={styles.tooltip__text}>Congratulations, you're a good listener!</Text>}
                             toggleOnPress={true}
-                            containerStyle={{backgroundColor: '#fff', borderWidth: 1, borderColor: 'green'}}
+                            containerStyle={styles.tooltip__container}
                             width={250}
                             height={100}
                             >
@@ -341,9 +341,9 @@ class Profile extends Component<Props> {
                         ) : (
                           <Tooltip 
                             key={badge}
-                            popover={<Text style={{ fontWeight: '700', color: 'grey' }}>Get more 'therapeutic' reviews to unlock this badge!</Text>}
+                            popover={<Text style={styles.tooltip__text}>Get more 'therapeutic' reviews to unlock this badge!</Text>}
                             toggleOnPress={true}
-                            containerStyle={{backgroundColor: '#fff', borderWidth: 1, borderColor: 'green'}}
+                            containerStyle={styles.tooltip__container}
                             width={250}
                             height={100}
                             >
@@ -380,6 +380,15 @@ class Profile extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  tooltip__text: {
+    fontWeight: '700', 
+    color: 'grey'
+  },
+  tooltip__container: {
+    backgroundColor: '#fff', 
+    borderWidth: 1, 
+    borderColor: 'green'
+  },
   parent__container: {
     backgroundColor: '#e5e6e5'
   },
