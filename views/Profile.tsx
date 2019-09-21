@@ -52,7 +52,7 @@ interface User {
   sent_hangout_requests: Array<UserLimited>
   received_hangout_requests: Array<UserLimited>
   equipped_badges: string[]
-  imei: string
+  token: string
   stats: Stats
 }
 
