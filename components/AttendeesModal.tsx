@@ -29,8 +29,8 @@ if (props.currentEvent.attendees !== undefined && props.currentEvent.attendees.l
     <Modal
         isVisible={props.showAttendees}
         onModalHide={unTrigger}
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
+        animationIn="lightSpeedIn"
+        animationOut="lightSpeedOut"
         backdropOpacity={1}
         backdropColor="#e5e6e5"
         hasBackdrop={true}
