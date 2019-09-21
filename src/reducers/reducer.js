@@ -32,7 +32,8 @@ const initialState = {
   latitude: '',
   longitude: '',
   activeSearch: false,
-  isReviewing: false
+  isReviewing: false,
+  badgeOptions: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -64,6 +65,9 @@ const reducer = (state = initialState, action) => {
         pendingReviews: action.user.pending_reviews
       }
     }
+    case 'SET_BADGE_OPTIONS': {
+      return { ...state, badgeOptions: action.badgeOptions }
+    }
     case 'TOGGLE_AUTH': {
       return { ...state, showLogin: !state.showLogin }
     }
@@ -85,7 +89,7 @@ const reducer = (state = initialState, action) => {
     case 'UPDATE_PROFILE': {
       return {
         ...state,
-        user: Object.assign(state.user, action.updatedUser),
+        user: Object.assign({}, state.user, action.updatedUser),
         showEditProfileForm: false
       }
     }
@@ -359,7 +363,6 @@ const reducer = (state = initialState, action) => {
     }
     case 'END_REVIEW': {
       return { ...state, userToReview: {}, isReviewing: false }
-
     }
     case 'GET_LOCATION': {
       return {

@@ -150,6 +150,7 @@ export const getUserLimitedQuery = gql`
       first_name
       email
       profile_photo
+      interests
       equipped_badges
     }
   }

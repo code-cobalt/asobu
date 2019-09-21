@@ -1,10 +1,17 @@
 import React, { Component } from 'react'
-import { Text, View, Image, TouchableOpacity, TextInput, StyleSheet, ScrollView } from 'react-native'
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+  ScrollView
+} from 'react-native'
 import Modal from 'react-native-modal'
 import { connect } from 'react-redux'
-import Badges from "./Badges"
+import Badges from './Badges'
 import { Divider } from 'react-native-elements'
-
 
 interface Props {
   showProfile: boolean
@@ -13,14 +20,14 @@ interface Props {
 }
 
 interface CurrentProfile {
-  profile_photo: string,
-  lvl: string,
+  profile_photo: string
+  lvl: string
   first_name: string
   interests: [string]
   equipped_badges: string[]
 }
 
-const UserModal: React.FunctionComponent<Props> = (props) => {
+const UserModal: React.FunctionComponent<Props> = props => {
   return (
     <>
       <Modal
@@ -42,7 +49,7 @@ const UserModal: React.FunctionComponent<Props> = (props) => {
               )}
               {props.currentProfile.profile_photo === null && (
                 <Image
-                  source={require("../assets/default_profile.png")}
+                  source={require('../assets/default_profile.png')}
                   style={styles.user__image}
                 />
               )}
@@ -51,17 +58,26 @@ const UserModal: React.FunctionComponent<Props> = (props) => {
               <Text style={styles.user__name}>
                 {props.currentProfile.first_name}
               </Text>
-              <Text style={styles.user__level}>Level {props.currentProfile.lvl}</Text>
+              <Text style={styles.user__level}>
+                Level {props.currentProfile.lvl}
+              </Text>
               <View style={styles.top__badges}>
-                <Badges badges={props.currentProfile.equipped_badges}/>
+                <Badges badges={props.currentProfile.equipped_badges} />
               </View>
             </View>
           </View>
           <Divider style={styles.divider} />
           <View style={styles.profile__body}>
-            <Text style={styles.info__title}>{props.currentProfile.first_name}'s Interests</Text>
-           
+            <Text style={styles.info__title}>
+              {props.currentProfile.first_name}'s Interests
+            </Text>
             <Divider style={styles.divider} />
+            {props.currentProfile.interests &&
+              props.currentProfile.interests.length > 0 && (
+                <Text style={styles.info__title}>
+                  {props.currentProfile.interests.join(', ')}
+                </Text>
+              )}
           </View>
           <TouchableOpacity
             onPress={() => props.closeProfile()}
@@ -75,11 +91,8 @@ const UserModal: React.FunctionComponent<Props> = (props) => {
   )
 }
 
-
 const styles = StyleSheet.create({
-  modal: {
-  
-  },
+  modal: {},
   button__text: {
     fontWeight: '800',
     color: 'white'
@@ -87,12 +100,12 @@ const styles = StyleSheet.create({
   profile__header: {
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: "#e5e6e5"
+    backgroundColor: '#e5e6e5'
   },
   profile__body: {
     padding: 25,
     flexDirection: 'column',
-    backgroundColor: "#e5e6e5"
+    backgroundColor: '#e5e6e5'
   },
   photo_container: {
     marginTop: 20,
@@ -110,15 +123,15 @@ const styles = StyleSheet.create({
   user__image: {
     borderRadius: 125,
     height: 250,
-    width: 250,
+    width: 250
   },
   user__name: {
     fontSize: 28,
-    fontWeight: "800"
+    fontWeight: '800'
   },
   user__level: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     marginTop: 10
   },
   user__xp: {
@@ -129,10 +142,10 @@ const styles = StyleSheet.create({
   info__title: {
     fontSize: 20,
     alignSelf: 'flex-start',
-    fontWeight: '800',
+    fontWeight: '800'
   },
   interests__container: {
-    width: "100%",
+    width: '100%',
     height: 80,
     backgroundColor: 'white',
     marginTop: 15,
@@ -167,7 +180,7 @@ const styles = StyleSheet.create({
     marginTop: 25
   },
   button__container: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 15,
     marginBottom: 25
   },
@@ -191,7 +204,6 @@ const styles = StyleSheet.create({
   }
 })
 
-
 const mapStateToProps = state => {
   return {
     currentProfile: state.currentProfile,
@@ -209,4 +221,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserModal)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserModal)
