@@ -17,7 +17,7 @@ const UserList = props => {
           </Text>
         </View>
       )
-    } else {
+    } else if (props.isActive) {
       return (
         <SocketContext.Consumer key={user.email}>
           {socket => <User user={user} socket={socket} />}
@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     allUsers: state.allUsers,
-    sentHangoutRequests: state.sentHangoutRequests
+    sentHangoutRequests: state.sentHangoutRequests,
+    isActive: state.isActive
   }
 }
 

@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  SafeAreaView
+  SafeAreaView,
+  Switch
 } from 'react-native'
 import UserList from '../components/UserList'
 import { Ionicons } from '@expo/vector-icons'
@@ -24,6 +25,7 @@ import {
   declineHangoutRequest
 } from '../src/actions/hangouts'
 import { SocketContext } from '../components/SocketProvider'
+import { toggleActive } from '../src/actions/users'
 
 interface UserLimited {
   first_name: string
@@ -53,6 +55,11 @@ interface Props {
   modalIsClosed: Function
   userToReview: string
   isReviewing: boolean
+  isActive: boolean
+  toggleActiveSearch: Function
+  longitude: number
+  latitude: number
+  email: string
 }
 
 const options = [
@@ -68,7 +75,18 @@ class Hangouts extends React.Component<Props> {
       this.props.ongoingHangouts.length > 0,
     profileVisible: Object.keys(this.props.currentProfile).length > 0,
     visibleHangout:
-      this.props.receivedHangoutRequests.length > 0 ? 'pending' : 'accepted'
+      this.props.receivedHangoutRequests.length > 0 ? 'pending' : 'accepted',
+    active: this.props.isActive
+  }
+
+  setUserLocation(bool) {
+    const updatedUser = {
+      longitude: this.props.longitude.toString(),
+      latitude: this.props.latitude.toString(),
+      isActive: bool
+    }
+    this.setState({ active: bool })
+    this.props.toggleActiveSearch(this.props.email, updatedUser)
   }
 
   renderReview = () => {
@@ -80,6 +98,16 @@ class Hangouts extends React.Component<Props> {
   render() {
     return (
       <SafeAreaView style={styles.userList}>
+        <View>
+          <Text style={{ alignSelf: 'flex-end', marginRight: 5 }}>
+            You're currently {this.state.active ? 'active' : 'inactive'}
+          </Text>
+          <Switch
+            value={this.state.active}
+            onValueChange={bool => this.setUserLocation(bool)}
+            thumbColor={'#73d961'}
+          />
+        </View>
         <UserList />
         <Modal
           isVisible={
@@ -202,7 +230,11 @@ const mapStateToProps = state => {
     ongoingHangouts: state.ongoingHangouts,
     popupModal: state.popupModal,
     userToReview: state.userToReview,
-    isReviewing: state.isReviewing
+    isReviewing: state.isReviewing,
+    isActive: state.isActive,
+    email: state.user.email,
+    longitude: state.longitude,
+    latitude: state.latitude
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -219,7 +251,9 @@ const mapDispatchToProps = dispatch => {
     },
     modalIsClosed: () => {
       dispatch({ type: 'SHOW_REVIEW' })
-    }
+    },
+    toggleActiveSearch: (email, updatedUser) =>
+      dispatch(toggleActive(email, updatedUser))
   }
 }
 
