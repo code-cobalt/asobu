@@ -57,6 +57,36 @@ const AcceptedHangouts = props => {
                         <Text style={styles.button_text}>Start Hangout</Text>
                       </TouchableOpacity>
                     </View>
+                  </View>
+                )
+              })}
+            </ScrollView>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.title}>Currently hanging out</Text>
+            <ScrollView style={styles.request}>
+              {props.ongoingHangouts.map(hangout => {
+                ;<View key={hangout.participants[0].email}>
+                  <Image
+                    source={{ uri: hangout.participants[0].profile_photo }}
+                    style={styles.user__image}
+                  />
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flex: 1
+                    }}
+                  >
+                    <Text style={styles.user__name}>
+                      {hangout.participants[0].first_name}
+                    </Text>
+                    <View style={styles.badges}>
+                      <Badges
+                        badges={hangout.participants[0].equipped_badges}
+                      />
+                    </View>
                     <TouchableOpacity
                       style={styles.start_button}
                       onPress={() => {
@@ -89,8 +119,11 @@ const AcceptedHangouts = props => {
                     >
                       <Text style={styles.button_text}>Stop Hangout</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.start_button}>
+                      <Text style={styles.button_text}>Play a game!</Text>
+                    </TouchableOpacity>
                   </View>
-                )
+                </View>
               })}
             </ScrollView>
           </View>
