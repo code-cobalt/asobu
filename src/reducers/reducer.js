@@ -28,11 +28,14 @@ const initialState = {
   currentChatMessages: [],
   currentChatId: 0,
   hangoutId: '',
-  userToReview: '',
+  userToReview: {},
   latitude: '',
   longitude: '',
   isActive: false,
-  isReviewing: false
+  isReviewing: false,
+  activeSearch: false,
+  isReviewing: false,
+  badgeOptions: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -67,6 +70,9 @@ const reducer = (state = initialState, action) => {
         isActive: action.user.isActive
       }
     }
+    case 'SET_BADGE_OPTIONS': {
+      return { ...state, badgeOptions: action.badgeOptions }
+    }
     case 'TOGGLE_AUTH': {
       return { ...state, showLogin: !state.showLogin }
     }
@@ -88,7 +94,7 @@ const reducer = (state = initialState, action) => {
     case 'UPDATE_PROFILE': {
       return {
         ...state,
-        user: Object.assign(state.user, action.updatedUser),
+        user: Object.assign({}, state.user, action.updatedUser),
         showEditProfileForm: false
       }
     }
@@ -336,10 +342,10 @@ const reducer = (state = initialState, action) => {
     case 'START_HANGOUT': {
       const updatedOngoingHangouts = [
         ...state.ongoingHangouts,
-        { hangout_id: action.hangoutId, participants: [action.participants[1]] }
+        { hangout_id: action.hangoutId, participants: [action.participant] }
       ]
       const updatedAcceptedHangouts = state.acceptedHangouts.filter(
-        hangout => hangout.email !== action.participants[1].email
+        hangout => hangout.email !== action.participant.email
       )
       return {
         ...state,
@@ -361,7 +367,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, showReview: true }
     }
     case 'END_REVIEW': {
-      return { ...state, userToReview: '', isReviewing: false }
+      return { ...state, userToReview: {}, isReviewing: false }
     }
     case 'GET_LOCATION': {
       return {

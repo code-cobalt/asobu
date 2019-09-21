@@ -33,6 +33,13 @@ interface UserLimited {
   profile_photo: string
 }
 
+interface UserLimitedBadges {
+  first_name: string
+  email: string
+  profile_photo: string
+  equipped_badges: string[]
+}
+
 interface Profile {
   first_name: string
   profile_photo: string
@@ -53,7 +60,7 @@ interface Props {
   closeProfile: Function
   closeMainModal: Function
   modalIsClosed: Function
-  userToReview: string
+  userToReview: UserLimitedBadges
   isReviewing: boolean
   isActive: boolean
   toggleActiveSearch: Function
@@ -90,7 +97,7 @@ class Hangouts extends React.Component<Props> {
   }
 
   renderReview = () => {
-    if (this.props.userToReview !== '') {
+    if (this.props.userToReview.email) {
       this.props.modalIsClosed()
     }
   }

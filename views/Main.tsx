@@ -24,6 +24,7 @@ interface Props {
   startHangout: Function
   context: Function
   dispatchStartHangout: Function
+  dispatchFinishHangout: Function
   getUsers: Function
   getChat: Function
   socket: WebSocket
@@ -121,7 +122,7 @@ class Main extends Component<Props> {
                   hangout.pop()
                 ]
                 const hangoutId = await startHangout(participants)
-                this.props.dispatchStartHangout(participants, hangoutId)
+                this.props.dispatchStartHangout(participants[1], hangoutId)
                 this.props.socket.send(
                   `s1 ${this.props.email} ${message[1]} ${hangoutId}`
                 )
@@ -134,6 +135,14 @@ class Main extends Component<Props> {
       //Confirm Start Hangout
       if (message[0] === 's1') {
         console.log('START HANGOUT CONFIRMED')
+        const user = await getUserLimited(message[1])
+        this.props.dispatchStartHangout(user, message[2])
+      }
+      //Hangout has been finished by other user
+      if (message[0] === 'f1') {
+        console.log('FINISH HANGOUT')
+        const user = await getUserLimited(message[1])
+        this.props.dispatchFinishHangout(user, message[2])
       }
     }
     this.props.getUsers(
@@ -223,8 +232,11 @@ const mapDispatchToProps = dispatch => {
     receiveHangoutRequest: userLimited => {
       dispatch({ type: 'RECEIVE_REQUEST', userLimited })
     },
-    dispatchStartHangout: (participants, hangoutId) => {
-      dispatch({ type: 'START_HANGOUT', participants, hangoutId })
+    dispatchStartHangout: (participant, hangoutId) => {
+      dispatch({ type: 'START_HANGOUT', participant, hangoutId })
+    },
+    dispatchFinishHangout: (userToReview, hangoutId) => {
+      dispatch({ type: 'FINISH_HANGOUT', userToReview, hangoutId })
     }
   }
 }

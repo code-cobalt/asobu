@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView, Button, TouchableOpacity } from 'react-native'
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  Button,
+  TouchableOpacity
+} from 'react-native'
 import Modal from 'react-native-modal'
 import ReviewCounter from './ReviewCounter'
 import { connect } from 'react-redux'
@@ -21,12 +28,19 @@ interface Props {
   reviewUser: Function
   currentUser: CurrentUser
   endReview: Function
-  userToReview: string
+  userToReview: UserLimited
 }
 
 interface CurrentUser {
   email: string
   lvl: number
+}
+
+interface UserLimited {
+  first_name: string
+  email: string
+  profile_photo: string
+  equipped_badges: string[]
 }
 
 class Review extends Component<Props, State> {
@@ -63,24 +77,37 @@ class Review extends Component<Props, State> {
       therapeutic: this.state.therapeutic,
       interesting: this.state.interesting
     }
-    this.props.endReview(this.props.currentUser.email, this.props.userToReview, stats)
+    this.props.endReview(
+      this.props.currentUser.email,
+      this.props.userToReview.email,
+      stats
+    )
     this.props.addExp(this.props.currentUser.email, 40)
   }
 
   currentUserPoints = async () => {
-    let currentPoints;
+    let currentPoints
     if (this.props.currentUser.lvl === 1) {
-      currentPoints = 2;
-    } else if (this.props.currentUser.lvl > 1 && this.props.currentUser.lvl < 4) {
-      currentPoints = 3;
-    } else if (this.props.currentUser.lvl > 3 && this.props.currentUser.lvl < 7) {
-      currentPoints = 4;
-    } else if (this.props.currentUser.lvl > 6 && this.props.currentUser.lvl < 10) {
-      currentPoints = 5;
+      currentPoints = 2
+    } else if (
+      this.props.currentUser.lvl > 1 &&
+      this.props.currentUser.lvl < 4
+    ) {
+      currentPoints = 3
+    } else if (
+      this.props.currentUser.lvl > 3 &&
+      this.props.currentUser.lvl < 7
+    ) {
+      currentPoints = 4
+    } else if (
+      this.props.currentUser.lvl > 6 &&
+      this.props.currentUser.lvl < 10
+    ) {
+      currentPoints = 5
     } else if (this.props.currentUser.lvl === 10) {
-      currentPoints = 6;
+      currentPoints = 6
     }
-    this.setState({totalPoints: currentPoints})
+    this.setState({ totalPoints: currentPoints })
   }
 
   componentDidMount() {
@@ -135,11 +162,11 @@ class Review extends Component<Props, State> {
           name={'interesting'}
           label={'Interesting'}
         />
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.review__button}
-          onPress={() => this.reviewUser()} 
-          >
-            <Text style={styles.button__text}>Finish Review!</Text>
+          onPress={() => this.reviewUser()}
+        >
+          <Text style={styles.button__text}>Finish Review!</Text>
         </TouchableOpacity>
       </Modal>
     )
