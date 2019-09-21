@@ -62,7 +62,7 @@ export const registerQuery = gql`
       blocked_users
       blocked_by_users
       equipped_badges
-      imei
+      token
       pending_reviews {
         first_name
         email
@@ -134,7 +134,7 @@ export const loginQuery = gql`
       blocked_users
       blocked_by_users
       equipped_badges
-      imei
+      token
       pending_reviews {
         first_name
         email
@@ -169,7 +169,7 @@ export const getUsersQuery = gql`
       exp
       lvl
       equipped_badges
-      imei
+      token
     }
   }
 `
@@ -209,7 +209,7 @@ export const updateProfileQuery = gql`
         profile_photo
       }
       equipped_badges
-      imei
+      token
     }
   }
 `
