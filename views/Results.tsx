@@ -32,7 +32,7 @@ class Results extends Component<Props> {
     const updatedUser = {
       longitude: this.props.longitude,
       latitude: this.props.latitude,
-      isActive: true
+      is_active: true
     }
     this.props.toggleActiveSearch(this.props.email, updatedUser)
   }
