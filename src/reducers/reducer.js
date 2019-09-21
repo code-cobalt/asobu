@@ -31,7 +31,7 @@ const initialState = {
   userToReview: '',
   latitude: '',
   longitude: '',
-  activeSearch: false,
+  isActive: false,
   isReviewing: false
 }
 
@@ -61,7 +61,10 @@ const reducer = (state = initialState, action) => {
         receivedHangoutRequests: action.user.received_hangout_requests,
         acceptedHangouts: action.user.accepted_hangouts,
         ongoingHangouts: action.user.ongoing_hangouts,
-        pendingReviews: action.user.pending_reviews
+        pendingReviews: action.user.pending_reviews,
+        latitude: action.user.latitude,
+        longitude: action.user.longitude,
+        isActive: action.user.isActive
       }
     }
     case 'TOGGLE_AUTH': {
@@ -368,7 +371,7 @@ const reducer = (state = initialState, action) => {
       }
     }
     case 'TOGGLE_ACTIVE_SEARCH': {
-      return { ...state, activeSearch: !state.activeSearch }
+      return { ...state, isActive: !state.isActive }
     }
     case 'LOGOUT': {
       return { ...state, isLoggedIn: false }
@@ -384,6 +387,9 @@ const reducer = (state = initialState, action) => {
         isReviewing: true,
         pendingReviews: updatedPendingReviews
       }
+    }
+    case 'TOGGLE_ACTIVE_SEARCH': {
+      return { ...state, isActive: true }
     }
     default: {
       return state
