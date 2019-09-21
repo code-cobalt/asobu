@@ -69,8 +69,8 @@ const AcceptedHangouts = props => {
           <View style={{ flex: 1 }}>
             <Text style={styles.title}>Currently hanging out</Text>
             <ScrollView style={styles.request}>
-              {props.ongoingHangouts.map(hangout => {
-                ;<View key={hangout.participants[0].email}>
+              {props.ongoingHangouts.map(hangout => (
+                <View key={hangout.participants[0].email}>
                   <Image
                     source={{ uri: hangout.participants[0].profile_photo }}
                     style={styles.user__image}
@@ -97,7 +97,21 @@ const AcceptedHangouts = props => {
                         Alert.alert(
                           `Would you like to play an icebreaker activity with ${hangout.participants[0].first_name}?`,
                           `Your game will start when ${hangout.participants[0].first_name} accepts.`
-                        )
+                        ),
+                          [
+                            {
+                              text: 'Nevermind',
+                              onPress: () =>
+                                console.log('User cancelled playing game.')
+                            },
+                            {
+                              text: "Let's play!",
+                              onPress: () =>
+                                props.socket.send(
+                                  `q0 ${props.user.email} ${hangout.hangout_id} ${hangout.participants[0].email}`
+                                )
+                            }
+                          ]
                       }}
                     >
                       <Text style={styles.button_text}>Play a game!</Text>
@@ -111,7 +125,7 @@ const AcceptedHangouts = props => {
                             '',
                             [
                               {
-                                text: 'No',
+                                text: 'Nevermind',
                                 onPress: () =>
                                   console.log('User cancelled finish hangout.')
                               },
@@ -136,7 +150,7 @@ const AcceptedHangouts = props => {
                     </TouchableOpacity>
                   </View>
                 </View>
-              })}
+              ))}
             </ScrollView>
           </View>
         </>
