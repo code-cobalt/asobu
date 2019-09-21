@@ -177,6 +177,7 @@ class Main extends Component<Props, State> {
       }
       //Receive quiz question
       if (message[0] === 'q1') {
+        console.log('RECEIVED GAME QUESTION')
         this.setState({
           isDialogVisible: true,
           questionNum: message[2],
@@ -185,6 +186,7 @@ class Main extends Component<Props, State> {
       }
       //View partner's answer
       if (message[0] === 'q2') {
+        console.log('RECEIVED PARTNERS GAME RESPONSE')
       }
     }
     this.props.getUsers(
