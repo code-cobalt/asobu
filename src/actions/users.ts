@@ -114,7 +114,7 @@ export const getUsers = (
       user =>
         !hiddenUsersObj[user.email] &&
         user.email !== currentUserEmail &&
-        distance(latitude, longitude, user.latitude, user.longitude) < 10
+        distance(latitude, longitude, user.latitude, user.longitude) < 30
     )
     dispatch({
       type: 'SET_ALL_USERS',
