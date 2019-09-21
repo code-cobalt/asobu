@@ -22,10 +22,13 @@ interface Props {
   closeEvent: Function
   getEvents: Function
   showEditEventForm: Function
+  showAttendees: Function
   currentEvent: Event
   attendEvent: Function
   unattendEvent: Function
   deleteEvent: Function
+  triggerAttendees: Function
+  triggeredAttendees: boolean
 }
 
 interface UserLimited {
@@ -54,6 +57,32 @@ interface Event {
 
 
 const EventModal: React.FunctionComponent<Props> = (props) => {
+
+    let attendeesButton
+
+    const openAttendees = () => {
+      props.triggerAttendees()
+      props.closeEvent()
+    }
+
+    const attendeesModalChecker = () => {
+      if (props.triggeredAttendees) {
+        props.showAttendees()
+      }
+    }
+
+    if (props.currentEvent.attendees) {
+      attendeesButton = (
+        <TouchableOpacity
+          onPress={() => 
+            openAttendees()
+          }
+          style={styles.event__button}
+          >
+            <Text style={styles.button__text}>Attendees</Text>
+          </TouchableOpacity>
+      )
+    }
 
     let rsvpButton
 
@@ -111,16 +140,19 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
           <Text style={styles.button__text}>Delete Event</Text>
         </TouchableOpacity>
       )
+      
       }
     return (
       <>
       <Modal
         isVisible={props.showEvent}
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
+        onModalHide={attendeesModalChecker}
+        animationIn="zoomIn"
+        animationOut="zoomOut"
         backdropOpacity={1}
-        style={styles.modal}
         backdropColor="#e5e6e5"
+        hasBackdrop={true}
+        coverScreen={true}
         >
         {/* <View style={styles.contentContainer}> */}
           <ScrollView style={styles.scrollView}>
@@ -151,6 +183,7 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
               <TouchableOpacity style={styles.event__button}>
                 <Text style={styles.button__text}>Attendees</Text>
               </TouchableOpacity> */}
+              {attendeesButton}
               {rsvpButton}
               {editButton}
               {deleteButton}
@@ -242,9 +275,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
+    attendeeModal: state.showAttendees,
     showEvent: state.showEvent,
     currentEvent: state.currentEvent,
-    user: state.user
+    user: state.user,
+    triggeredAttendees: state.triggerAttendees
   }
 }
 
@@ -258,6 +293,21 @@ const mapDispatchToProps = dispatch => {
     showEditEventForm: () => {
       dispatch({
         type: 'SHOW_EDIT_EVENT_FORM'
+      })
+    },
+    showAttendees: () => {
+      dispatch({
+        type: 'SHOW_ATTENDEES'
+      })
+    },
+    triggerAttendees: () => {
+      dispatch({
+        type: 'TRIGGER_ATTENDEES'
+      })
+    },
+    untriggerAttendees: () => {
+      dispatch({
+        type: 'UNTRIGGER_ATTENDEES'
       })
     },
     attendEvent: (eventId, user) => dispatch(attendEvent(eventId, user)),

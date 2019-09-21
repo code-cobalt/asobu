@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import EventList from '../components/EventList'
 import { getEvents } from '../src/actions/events'
 
+
 interface Props {
   getEvents: Function
 }
@@ -26,7 +27,8 @@ const styles = StyleSheet.create({
   events: {
     flex: 1,
     marginTop: 5,
-    marginBottom: 25
+    marginBottom: 25,
+    backgroundColor: '#e5e6e5'
   }
 })
 
