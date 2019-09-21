@@ -2,6 +2,7 @@ import axios from 'axios'
 import { apiUrl } from '../../environment.js'
 import { print } from 'graphql'
 import arrayHashConversion from 'array-hash-conversion'
+import { distance } from './distance'
 
 import {
   loginQuery,
@@ -13,7 +14,8 @@ import {
   reviewUserQuery,
   addExpQuery,
   registerQuery,
-  getUserEquippedBadgesQuery
+  getUserEquippedBadgesQuery,
+  setUserLocationQuery
 } from '../queries/users'
 import { AsyncStorage } from 'react-native'
 
@@ -79,7 +81,13 @@ export const getUserLimited = async userEmail => {
   return res.data.data.User
 }
 
-export const getUsers = (currentUserEmail, [...hiddenUsers], [...hangouts]) => {
+export const getUsers = (
+  currentUserEmail,
+  [...hiddenUsers],
+  [...hangouts],
+  latitude,
+  longitude
+) => {
   //hiddenUsers is an array of all the user emails who the current user has blocked or been blocked by or has already accepted/received hangouts with.
   //don't return any users in this array
   //create a hashmap to reduce time complexity
@@ -101,6 +109,17 @@ export const getUsers = (currentUserEmail, [...hiddenUsers], [...hangouts]) => {
       query: print(getUsersQuery)
     })
     //don't show current user, blocked/blocked by users, or users with current hangout status
+    /* const allUsers = res.data.data.Users.filter(
+      user =>
+        !hiddenUsersObj[user.email] &&
+        user.email !== currentUserEmail &&
+        distance(
+          parseFloat(latitude),
+          parseFloat(longitude),
+          parseFloat(user.latitude),
+          parseFloat(user.longitude)
+        ) < 10
+    ) */
     const allUsers = res.data.data.Users.filter(
       user => !hiddenUsersObj[user.email] && user.email !== currentUserEmail
     )
@@ -186,4 +205,17 @@ export const getUserEquippedBadges = async userEmail => {
     }
   })
   return res.data.data.User.equipped_badges
+}
+
+export const toggleActive = (userEmail, updatedUser) => {
+  return async dispatch => {
+    const res = await axios.post(`${apiUrl}/graphql`, {
+      query: print(setUserLocationQuery),
+      variables: {
+        userEmail,
+        updatedUser
+      }
+    })
+    dispatch({ type: 'TOGGLE_ACTIVE_SEARCH' })
+  }
 }
