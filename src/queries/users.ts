@@ -271,3 +271,11 @@ export const getUserEquippedBadgesQuery = gql`
     }
   }
 `
+
+export const updateUserTokenQuery = gql`
+  mutation UpdateUser($userEmail: String!, $updatedUser: UpdatedUser!) {
+    UpdateUser(userEmail: $userEmail, updatedUser: $updatedUser) {
+      token
+    }
+  }
+`
