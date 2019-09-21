@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import Badges from './Badges'
 import { connect } from 'react-redux'
 import { sendHangoutRequest } from '../src/actions/hangouts'
-import { userInfo } from 'os'
 
 interface UserLimited {
   id: string
