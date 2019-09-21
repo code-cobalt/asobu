@@ -64,6 +64,7 @@ interface UserLimitedBadges {
 
 const questions = []
 
+
 class Main extends Component<Props, State> {
   state = {
     isDialogVisible: false,

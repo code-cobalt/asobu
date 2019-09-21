@@ -426,8 +426,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   modal: {
-    height: '50%',
-    alignItems: 'center'
+    height: '100%',
+    alignItems: 'center',
+    padding: 0,
+    margin: 0
   },
   field__text: {
     alignSelf: 'center',

@@ -8,6 +8,7 @@ import AnimatedProfile from './AnimatedProfile'
 import EventModal from './EventModal'
 import NewEvent from '../components/NewEvent'
 import { toggleActive } from '../src/actions/users'
+import AttendeesModal from '../components/AttendeesModal'
 
 const options = [
   { label: 'Hangout', value: 'hangouts' },

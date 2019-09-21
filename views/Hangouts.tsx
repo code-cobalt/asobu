@@ -170,7 +170,8 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   userList: {
-    marginBottom: 85
+    marginBottom: 85,
+    backgroundColor: '#e5e6e5'
   },
   modal: {
     height: '50%',
