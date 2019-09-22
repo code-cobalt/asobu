@@ -76,6 +76,7 @@ const questions = [
   'Would you rather have unlimited international first-class tickets or never have to pay for food at restaurants?'
 ]
 
+
 class Main extends Component<Props, State> {
   state = {
     isDialogVisible: false,

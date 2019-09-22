@@ -7,6 +7,8 @@ import Events from './Events'
 import AnimatedProfile from './AnimatedProfile'
 import EventModal from './EventModal'
 import NewEvent from '../components/NewEvent'
+import AttendeesModal from '../components/AttendeesModal'
+
 
 const options = [
   { label: 'Hangout', value: 'hangouts' },
@@ -29,7 +31,7 @@ class Results extends Component<Props> {
       <>
         {!this.props.activeSearch ? (
           <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#e5e6e5' }}
           >
             <Text>
               You are not active and will not be able to see other users
@@ -40,7 +42,7 @@ class Results extends Component<Props> {
             ></Button>
           </View>
         ) : (
-          <>
+          <View style={{flex: 1, backgroundColor: '#e5e6e5'}}>
             <SwitchSelector
               options={options}
               backgroundColor="#e5e6e5"
@@ -49,13 +51,15 @@ class Results extends Component<Props> {
               style={styles.results__switch}
               onPress={value => this.props.toggleResultsView(value)}
             />
+          
             {this.props.resultsSwitch === 'hangouts' ? (
               <Hangouts />
             ) : (
               <Events />
             )}
             <EventModal />
-          </>
+            <AttendeesModal />
+          </View>
         )}
       </>
     )
