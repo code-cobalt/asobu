@@ -1,10 +1,16 @@
 import React from 'react'
-import { StyleSheet, ScrollView, Text, View, TouchableOpacity, Image } from 'react-native'
+import {
+  StyleSheet,
+  ScrollView,
+  Text,
+  View,
+  TouchableOpacity,
+  Image
+} from 'react-native'
 import { connect } from 'react-redux'
 import User from '../components/User'
 import { SocketContext } from './SocketProvider'
 import Badges from './Badges'
-
 
 const UserList = props => {
   const sentHangoutRequestEmails = props.sentHangoutRequests.map(
@@ -13,36 +19,33 @@ const UserList = props => {
   const userList = props.allUsers.map(user => {
     if (sentHangoutRequestEmails.includes(user.email)) {
       return (
-        <>
-        <TouchableOpacity
-        // Each child in a list should have a unique "key" prop error, possible that the key here is not implemented properly.
-        key={user.email}
-        style={styles.user__faded}
-        onPress={() => props.showProfile(user)}
-        >
-          {user.profile_photo !== null && (
-            <Image
-              source={{ uri: user.profile_photo }}
-              style={styles.user__image}
-            />
-          )}
-  
-          <View style={styles.user__textcontainer}>
-            <Text style={styles.user__name}>{user.first_name}</Text>
-            <Text style={styles.user__text}>Level {user.lvl}</Text>
-          </View>
+        <React.Fragment key={user.email}>
+          <TouchableOpacity
+            style={styles.user__faded}
+            onPress={() => props.showProfile(user)}
+          >
+            {user.profile_photo !== null && (
+              <Image
+                source={{ uri: user.profile_photo }}
+                style={styles.user__image}
+              />
+            )}
+
+            <View style={styles.user__textcontainer}>
+              <Text style={styles.user__name}>{user.first_name}</Text>
+              <Text style={styles.user__text}>Level {user.lvl}</Text>
+            </View>
             <View style={styles.user__badges}>
               <Badges badges={user.equipped_badges} />
             </View>
-            <TouchableOpacity
-              style={styles.hangout__request}
-              
-            >
+            <TouchableOpacity style={styles.hangout__request}>
               <Text style={styles.hangout__text}>Hang!</Text>
             </TouchableOpacity>
           </TouchableOpacity>
-          <Text style={styles.requested__text}>You asked {user.first_name} to hang out!</Text>
-          </>
+          <Text style={styles.requested__text}>
+            You asked {user.first_name} to hang out!
+          </Text>
+        </React.Fragment>
       )
     } else if (props.isActive) {
       return (
@@ -67,13 +70,13 @@ const styles = StyleSheet.create({
     marginRight: 5,
     backgroundColor: '#adadae',
     borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5, 
+    borderBottomLeftRadius: 5,
     borderRadius: 20,
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     textShadowRadius: 2,
-    shadowColor: "#000",
-    opacity: 0.1,
+    shadowColor: '#000',
+    opacity: 0.1
   },
   users: {
     marginBottom: 10,
@@ -95,12 +98,12 @@ const styles = StyleSheet.create({
   user__image: {
     borderRadius: 5,
     height: '100%',
-    aspectRatio: 2/2
+    aspectRatio: 2 / 2
   },
   user__textcontainer: {
     height: '50%',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   user__name: {
     fontSize: 22,
@@ -110,7 +113,7 @@ const styles = StyleSheet.create({
   },
   user__text: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: 'white'
   },
   user__badges: {
@@ -133,7 +136,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 5,
     bottom: 5,
     width: '15%',
-    alignContent: "center",
+    alignContent: 'center',
     justifyContent: 'center'
   },
   column: {
@@ -168,4 +171,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserList)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserList)
