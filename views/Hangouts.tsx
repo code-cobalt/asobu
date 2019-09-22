@@ -9,10 +9,10 @@ import {
   ScrollView,
   TextInput,
   SafeAreaView,
-  Switch
+  Switch,
+  ActivityIndicator
 } from 'react-native'
 import UserList from '../components/UserList'
-import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
 import UserModal from '../components/UserModal'
@@ -26,6 +26,7 @@ import {
 } from '../src/actions/hangouts'
 import { SocketContext } from '../components/SocketProvider'
 import { toggleActive } from '../src/actions/users'
+import Spinner from '../components/Spinner'
 
 interface UserLimited {
   first_name: string
@@ -103,64 +104,69 @@ class Hangouts extends React.Component<Props> {
   }
 
   render() {
-    console.log('This is active', this.props.isActive)
     return (
-      <SafeAreaView style={styles.userList}>
-        <View>
-          <Text style={{ alignSelf: 'flex-end', marginRight: 5 }}>
-            You're currently {this.state.active ? 'active' : 'inactive'}
-          </Text>
-          <Switch
-            value={this.state.active}
-            onValueChange={bool => this.setUserLocation(bool)}
-            thumbColor={'#73d961'}
-          />
-        </View>
-        <UserList />
-        <Modal
-          isVisible={
-            (this.state.modalVisible || this.props.popupModal) &&
-            !this.props.isReviewing
-          }
-          animationIn="slideInUp"
-          animationOut="slideOutDown"
-          backdropOpacity={0.85}
-          style={styles.modal}
-          onModalHide={() => this.renderReview()}
-        >
-          <SafeAreaView>
-            <SwitchSelector
-              options={options}
-              backgroundColor="#e5e6e5"
-              buttonColor="#73d961"
-              initial={this.state.visibleHangout === 'pending' ? 0 : 1}
-              onPress={value => this.setState({ visibleHangout: value })}
-            />
-          </SafeAreaView>
-          {this.state.visibleHangout === 'pending' ? (
-            <SocketContext.Consumer>
-              {socket => <PendingHangouts socket={socket} />}
-            </SocketContext.Consumer>
-          ) : (
-            <SocketContext.Consumer>
-              {socket => <AcceptedHangouts socket={socket} />}
-            </SocketContext.Consumer>
-          )}
-          <View>
-            <TouchableOpacity
-              style={styles.start_button}
-              onPress={() => {
-                this.setState({ modalVisible: false })
-                this.props.closeMainModal()
-              }}
+      <>
+        {this.props.allUsers.length > 0 ? (
+          <SafeAreaView style={styles.userList}>
+            <View>
+              <Text style={{ alignSelf: 'flex-end', marginRight: 5 }}>
+                You're currently {this.state.active ? 'active' : 'inactive'}
+              </Text>
+              <Switch
+                value={this.state.active}
+                onValueChange={bool => this.setUserLocation(bool)}
+                thumbColor={'#73d961'}
+              />
+            </View>
+            <UserList />
+            <Modal
+              isVisible={
+                (this.state.modalVisible || this.props.popupModal) &&
+                !this.props.isReviewing
+              }
+              animationIn="slideInUp"
+              animationOut="slideOutDown"
+              backdropOpacity={0.85}
+              style={styles.modal}
+              onModalHide={() => this.renderReview()}
             >
-              <Text style={styles.button_text}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <UserModal />
-        <Review />
-      </SafeAreaView>
+              <SafeAreaView>
+                <SwitchSelector
+                  options={options}
+                  backgroundColor="#e5e6e5"
+                  buttonColor="#73d961"
+                  initial={this.state.visibleHangout === 'pending' ? 0 : 1}
+                  onPress={value => this.setState({ visibleHangout: value })}
+                />
+              </SafeAreaView>
+              {this.state.visibleHangout === 'pending' ? (
+                <SocketContext.Consumer>
+                  {socket => <PendingHangouts socket={socket} />}
+                </SocketContext.Consumer>
+              ) : (
+                <SocketContext.Consumer>
+                  {socket => <AcceptedHangouts socket={socket} />}
+                </SocketContext.Consumer>
+              )}
+              <View>
+                <TouchableOpacity
+                  style={styles.start_button}
+                  onPress={() => {
+                    this.setState({ modalVisible: false })
+                    this.props.closeMainModal()
+                  }}
+                >
+                  <Text style={styles.button_text}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </Modal>
+            <UserModal />
+            <Review />
+          </SafeAreaView>
+        ) : (
+          <Spinner />
+        )}
+      </>
     )
   }
 }
@@ -226,6 +232,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 18
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
@@ -243,7 +254,8 @@ const mapStateToProps = state => {
     isActive: state.isActive,
     email: state.user.email,
     longitude: state.longitude,
-    latitude: state.latitude
+    latitude: state.latitude,
+    allUsers: state.allUsers
   }
 }
 const mapDispatchToProps = dispatch => {
