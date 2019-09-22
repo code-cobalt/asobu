@@ -51,6 +51,7 @@ class Results extends Component<Props> {
         />
         {this.props.resultsSwitch === 'hangouts' ? <Hangouts /> : <Events />}
         <EventModal />
+        <AttendeesModal />
       </>
     )
   }
