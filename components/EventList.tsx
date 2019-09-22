@@ -37,10 +37,12 @@ const EventList: React.FunctionComponent<Props> = props => {
   })
   return (
     <View>
-      <TouchableOpacity style={styles.create__event} onPress={() => props.showForm()}>
+      <TouchableOpacity
+        style={styles.create__event}
+        onPress={() => props.showForm()}
+      >
         <Text style={styles.button__text}>Create Event</Text>
         <NewEvent />
-        <EditEvent />
       </TouchableOpacity>
 
       <ScrollView>{eventList}</ScrollView>
