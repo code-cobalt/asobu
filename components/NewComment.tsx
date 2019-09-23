@@ -31,6 +31,7 @@ class NewComment extends React.Component<Props, State> {
   }
 
   handleSubmit = () => {
+    if (this.state.content === '') return alert('Please write a comment')
     this.props.createComment(this.props.eventId, {
       from: this.props.from,
       content: this.state.content

@@ -104,6 +104,20 @@ class NewEvent extends React.Component<Props, State> {
     this.setState({ ...copiedState })
   }
 
+  handleSubmit = () => {
+    if (this.state.newEvent.name === '')
+      return alert('Please provide an event name')
+    if (this.state.newEvent.location === '')
+      return alert('Please provide a location')
+    if (this.state.newEvent.description === '')
+      return alert('Please provide a description')
+    if (this.state.newEvent.start === null)
+      return alert('Please provide a start date')
+    if (this.state.newEvent.end === null)
+      return alert('Please provide an end date')
+    this.props.createEvent(this.state.newEvent)
+  }
+
   render() {
     return (
       <SafeAreaView>
@@ -227,7 +241,7 @@ class NewEvent extends React.Component<Props, State> {
                 />
                 <TouchableOpacity
                   style={styles.newEvent__button}
-                  onPress={() => this.props.createEvent(this.state.newEvent)}
+                  onPress={() => this.handleSubmit()}
                 >
                   <Text style={styles.input__text}>Submit</Text>
                 </TouchableOpacity>

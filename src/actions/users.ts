@@ -51,6 +51,9 @@ export const loginUser = (userEmail, userPassword) => {
         userPassword
       }
     })
+    if (res.data.errors !== undefined) {
+      return alert(res.data.errors[0].message)
+    }
     const user = res.data.data.Login
     await AsyncStorage.setItem(
       'user',
