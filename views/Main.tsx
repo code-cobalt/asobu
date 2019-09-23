@@ -62,7 +62,21 @@ interface UserLimitedBadges {
   equipped_badges: string[]
 }
 
-const questions = []
+const questions = [
+  "What's your most unique accomplishment?",
+  'If you could instantly become an expert in something, what would it be?',
+  "What is the scariest thing you've ever done for fun?",
+  'Would you rather be able to talk with animals or speak all foreign languages?',
+  'Would you rather mentally of physically never age?',
+  'If you have to sing karaoke, what song do you pick?',
+  'If aliens landed on earth tomorrow and offered to take you home with them, would you go?',
+  'Say you’re independently wealthy and don’t have to work, what would you do with your time?',
+  'Teleportation or flying?',
+  'If you had a time machine, would go back in time or into the future?',
+  'Would you rather lose the ability to read or lose the ability to speak?',
+  'Would you rather be covered in fur or covered in scales?',
+  'Would you rather have unlimited international first-class tickets or never have to pay for food at restaurants?'
+]
 
 
 class Main extends Component<Props, State> {
@@ -73,8 +87,8 @@ class Main extends Component<Props, State> {
   }
 
   async componentWillMount() {
-    await registerPush(this.props.email)
-    this.props.socket.send(`l0 ${this.props.email}`)
+    const pushRes = await registerPush(this.props.email)
+    this.props.socket.send(`l0 ${this.props.email} ${pushRes}`)
     // comment out socket.send to use dummy data
     this.props.socket.onmessage = async event => {
       console.log(`FROM SERVER: ${event.data}`)
