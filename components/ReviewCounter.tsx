@@ -6,11 +6,17 @@ const ReviewCounter = ({ value, onChange, name, label }) => {
     <>
       <Text style={styles.reviewcounter__label}>{label}</Text>
       <View style={styles.reviewcounter}>
-        <TouchableOpacity style={styles.reviewcounter__button} onPress={() => onChange(name, "decrement")}>
+        <TouchableOpacity
+          style={styles.reviewcounter__button}
+          onPress={() => onChange(name, 'decrement')}
+        >
           <Text style={styles.reviewcounter__icon}>-</Text>
         </TouchableOpacity>
         <Text style={styles.reviewcounter__count}>{value}</Text>
-        <TouchableOpacity style={styles.reviewcounter__button} onPress={() => onChange(name, "increment")}>
+        <TouchableOpacity
+          style={styles.reviewcounter__button}
+          onPress={() => onChange(name, 'increment')}
+        >
           <Text style={styles.reviewcounter__icon}>+</Text>
         </TouchableOpacity>
       </View>
@@ -20,32 +26,32 @@ const ReviewCounter = ({ value, onChange, name, label }) => {
 
 const styles = StyleSheet.create({
   reviewcounter: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
     flex: 1
   },
   reviewcounter__label: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
-    alignSelf: "center"
+    alignSelf: 'center'
   },
   reviewcounter__count: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16
   },
   reviewcounter__icon: {
-    color: "white",
+    color: 'white',
     fontSize: 20
   },
   reviewcounter__button: {
     height: 50,
     width: 50,
     borderRadius: 50,
-    borderColor: "#fff",
+    borderColor: '#fff',
     borderWidth: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
