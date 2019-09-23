@@ -12,3 +12,4 @@ web-build/
 web-report/
 .env
 **/.vscode/
+.DS_Store
