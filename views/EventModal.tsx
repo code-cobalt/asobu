@@ -110,7 +110,6 @@ const EventModal: React.FunctionComponent<Props> = props => {
     )
   }
 
-<<<<<<< HEAD
     let editButton
     let deleteButton
     let closeButton
@@ -146,33 +145,6 @@ const EventModal: React.FunctionComponent<Props> = props => {
       }
     return (
       <>
-=======
-  let editButton
-  let deleteButton
-  if (
-    props.currentEvent.creator &&
-    props.user.email === props.currentEvent.creator.email
-  ) {
-    editButton = (
-      <TouchableOpacity
-        style={styles.event__button}
-        onPress={() => props.showEditEventForm()}
-      >
-        <Text style={styles.button__text}>Edit Event</Text>
-      </TouchableOpacity>
-    )
-    deleteButton = (
-      <TouchableOpacity
-        style={styles.event__button}
-        onPress={() => props.deleteEvent(props.currentEvent.id)}
-      >
-        <Text style={styles.button__text}>Delete Event</Text>
-      </TouchableOpacity>
-    )
-  }
-  return (
-    <>
->>>>>>> 607c56b4256a6b4a825d4a037c8e3afb947a9b5f
       <Modal
         isVisible={props.showEvent}
         onModalHide={attendeesModalChecker}
