@@ -201,7 +201,7 @@ export const getUserQuery = gql`
         equipped_badges
       }
       ongoing_hangouts {
-        hangout_id
+        id
         participants {
           first_name
           email
