@@ -82,6 +82,80 @@ export const loginQuery = gql`
       first_name
       last_name
       email
+      password_hash
+      phone_number
+      profile_photo
+      interests
+      exp
+      lvl
+      events {
+        event_id
+        is_creator
+      }
+      stats {
+        funny
+        fun
+        intellectual
+        interesting
+        kind
+        therapeutic
+      }
+      chats {
+        chat_id
+        participants {
+          first_name
+          profile_photo
+          email
+        }
+      }
+      sent_hangout_requests {
+        first_name
+        email
+        profile_photo
+        equipped_badges
+      }
+      received_hangout_requests {
+        first_name
+        email
+        profile_photo
+        equipped_badges
+      }
+      accepted_hangouts {
+        first_name
+        email
+        profile_photo
+        equipped_badges
+      }
+      ongoing_hangouts {
+        hangout_id
+        participants {
+          first_name
+          email
+          profile_photo
+          equipped_badges
+        }
+      }
+      blocked_users
+      blocked_by_users
+      equipped_badges
+      token
+      pending_reviews {
+        first_name
+        email
+        profile_photo
+      }
+    }
+  }
+`
+
+export const getUserQuery = gql`
+  query User($userEmail: String!) {
+    User(userEmail: $userEmail) {
+      id
+      first_name
+      last_name
+      email
+      password_hash
       phone_number
       profile_photo
       interests
