@@ -27,7 +27,7 @@ const PendingHangouts = props => {
         <ScrollView style={styles.request}>
           {props.receivedHangoutRequests.map((request, index) => {
             return (
-              <View key={index}>
+              <View style={{ marginBottom: 55 }} key={index}>
                 <Image
                   source={{ uri: request.profile_photo }}
                   style={styles.user__image}
@@ -130,7 +130,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     borderRadius: 50,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginRight: 15
   },
   decline__button: {
     width: 50,
@@ -138,7 +139,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderRadius: 50,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginLeft: 15
   },
   badges: {
     flexDirection: 'row'

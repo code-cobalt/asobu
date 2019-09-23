@@ -110,31 +110,41 @@ const EventModal: React.FunctionComponent<Props> = props => {
     )
   }
 
-  let editButton
-  let deleteButton
-  if (
-    props.currentEvent.creator &&
-    props.user.email === props.currentEvent.creator.email
-  ) {
-    editButton = (
+    let editButton
+    let deleteButton
+    let closeButton
+    closeButton = (
       <TouchableOpacity
         style={styles.event__button}
-        onPress={() => props.showEditEventForm()}
+        onPress={() => props.closeEvent()}
       >
-        <Text style={styles.button__text}>Edit Event</Text>
+        <Text style={styles.button__text}>Close</Text>
       </TouchableOpacity>
     )
-    deleteButton = (
-      <TouchableOpacity
-        style={styles.event__button}
-        onPress={() => props.deleteEvent(props.currentEvent.id)}
-      >
-        <Text style={styles.button__text}>Delete Event</Text>
-      </TouchableOpacity>
-    )
-  }
-  return (
-    <>
+    if (
+      props.currentEvent.creator &&
+      props.user.email === props.currentEvent.creator.email
+    ) {
+      editButton = (
+        <TouchableOpacity
+          style={styles.event__button} 
+          onPress={() => props.showEditEventForm()}
+        >
+          <Text style={styles.button__text}>Edit Event</Text>
+        </TouchableOpacity>
+      )
+      deleteButton = (
+        <TouchableOpacity
+          style={styles.event__button}
+          onPress={() => props.deleteEvent(props.currentEvent.id)}
+        >
+          <Text style={styles.button__text}>Delete Event</Text>
+        </TouchableOpacity>
+      )
+      
+      }
+    return (
+      <>
       <Modal
         isVisible={props.showEvent}
         onModalHide={attendeesModalChecker}
@@ -147,9 +157,6 @@ const EventModal: React.FunctionComponent<Props> = props => {
       >
         {!props.showEditEvent ? (
           <ScrollView style={styles.scrollView}>
-            <Text style={styles.back} onPress={() => props.closeEvent()}>
-              {'<'}
-            </Text>
             <View style={styles.image__container}>
               {props.currentEvent.cover_photo !== '' ? (
                 <Image
@@ -182,6 +189,7 @@ const EventModal: React.FunctionComponent<Props> = props => {
               {rsvpButton}
               {editButton}
               {deleteButton}
+              {closeButton}
             </View>
             <View>
               <View style={styles.comments_header}>

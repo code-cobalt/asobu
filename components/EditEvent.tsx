@@ -1,7 +1,7 @@
 import React from 'react'
 import { updateEvent } from '../src/actions/events'
 import { connect } from 'react-redux'
-import { ScrollView, StyleSheet, Button, Text, TextInput } from 'react-native'
+import { ScrollView, StyleSheet, Button, Text, TextInput, SafeAreaView, View, TouchableOpacity } from 'react-native'
 import ModalDropdown from 'react-native-modal-dropdown'
 import moment from 'moment'
 import Spinner from './Spinner'
@@ -96,6 +96,7 @@ class EditEvent extends React.Component<Props, State> {
 
   render() {
     return (
+      <SafeAreaView>
       <ScrollView contentContainerStyle={styles.editEvent}>
         <Text style={styles.input__text}>Event Name</Text>
         <TextInput
@@ -185,40 +186,68 @@ class EditEvent extends React.Component<Props, State> {
           options={this.state.tagOptions}
           onSelect={(index, value) => this.addTag(value)}
         />
-        {this.state.loading ? (
+        <View style={styles.button__formgroup}>
+          {this.state.loading ? (
           <Spinner />
         ) : (
-          <Button title="Submit" onPress={() => this.handleSubmit()} />
+          <TouchableOpacity 
+            onPress={() => this.handleSubmit()}
+            style={styles.button}
+            >
+            <Text style={styles.button__text}>Submit</Text>
+          </TouchableOpacity>
         )}
-
-        <Button
-          title="Cancel Changes"
-          onPress={() => this.props.closeEditEventForm()}
-        />
+          <TouchableOpacity 
+            onPress={() => this.props.closeEditEventForm()}
+            style={styles.button}
+            >
+            <Text style={styles.button__text}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
+      </SafeAreaView>
     )
   }
 }
+
 const styles = StyleSheet.create({
   editEvent: {
-    marginTop: 60,
+    marginTop: 20,
+    marginBottom: 200,
     alignItems: 'center'
   },
-  picker: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0
+  button__formgroup: {
+    marginBottom: 50,
+    width: '100%'
+  },
+  button: {
+    width: '50%',
+    backgroundColor: '#73d961',
+    padding: 15,
+    borderRadius: 50,
+    marginTop: 15,
+    alignSelf: 'center'
+  },
+  button__text: {
+    textAlign: 'center',
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 18
   },
   text__formgroup: {
-    width: '90%'
+    flex: 1,
+    marginBottom: 30,
+    width: '100%',
+    marginTop: 20,
+    alignItems: 'center'
   },
   event__input: {
     height: 50,
+    width: '90%',
     borderColor: 'gray',
     backgroundColor: '#fff',
     borderWidth: 1,
-    borderRadius: 30,
+    borderRadius: 5,
     marginBottom: 30,
     textAlign: 'center'
   },
