@@ -114,10 +114,9 @@ class NewEvent extends React.Component<Props, State> {
           backdropOpacity={1}
           backdropColor="black"
           style={styles.modal}
-          coverScreen={true}
         >
-          <ScrollView contentContainerStyle={styles.newEvent}>
           <ImageBackground style={styles.imageBackground} source={require("../assets/login.jpg")}>
+          <ScrollView style={{ width: '100%' }} centerContent={true}>
 
             <View style={styles.text__formgroup}>
               <Text style={styles.input__text}>Name your Event!</Text>
@@ -228,10 +227,11 @@ class NewEvent extends React.Component<Props, State> {
                 onPress={() => this.props.closeNewEventForm()}
               >
                 <Text style={styles.input__text}>Cancel</Text>
+                
               </TouchableOpacity>
             </View>
-            </ImageBackground>
           </ScrollView>
+          </ImageBackground>
         </Modal>
       </SafeAreaView>
     )
@@ -262,10 +262,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     marginTop: 40,
-    alignItems: 'center'
-  },
-  newEvent: {
-    flex: 1,
     alignItems: 'center'
   },
   event__input: {
