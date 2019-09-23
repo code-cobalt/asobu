@@ -15,6 +15,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker'
 import { connect } from 'react-redux'
 import { createEvent } from '../src/actions/events'
 import Modal from 'react-native-modal'
+import Spinner from './Spinner'
 import moment from 'moment'
 import { uploadPhoto } from '../src/actions/upload'
 
@@ -45,6 +46,7 @@ interface State {
   showStartDate: boolean
   showEndDate: boolean
   tagOptions: string[]
+  loading: boolean
 }
 
 class NewEvent extends React.Component<Props, State> {
@@ -76,7 +78,8 @@ class NewEvent extends React.Component<Props, State> {
       end: null,
       tags: [],
       creator: this.props.currentUserLimited
-    }
+    },
+    loading: false
   }
 
   addTag = tag => {
@@ -98,10 +101,12 @@ class NewEvent extends React.Component<Props, State> {
   }
 
   handleUpload = async () => {
+    this.setState({ loading: true })
     const image = await uploadPhoto()
-    const copiedState = { ...this.state }
-    copiedState.newEvent.cover_photo = image
-    this.setState({ ...copiedState })
+    this.setState({
+      newEvent: { ...this.state.newEvent, cover_photo: image },
+      loading: false
+    })
   }
 
   handleSubmit = () => {
@@ -128,13 +133,12 @@ class NewEvent extends React.Component<Props, State> {
           backdropOpacity={1}
           backdropColor="black"
           style={styles.modal}
-          coverScreen={true}
         >
-          <ScrollView contentContainerStyle={styles.newEvent}>
-            <ImageBackground
-              style={styles.imageBackground}
-              source={require('../assets/login.jpg')}
-            >
+          <ImageBackground
+            style={styles.imageBackground}
+            source={require('../assets/login.jpg')}
+          >
+            <ScrollView style={{ width: '100%' }} centerContent={true}>
               <View style={styles.text__formgroup}>
                 <Text style={styles.input__text}>Name your Event!</Text>
                 <TextInput
@@ -239,12 +243,18 @@ class NewEvent extends React.Component<Props, State> {
                   textStyle={styles.modal__dropdown__text}
                   style={styles.modal__dropdown}
                 />
-                <TouchableOpacity
-                  style={styles.newEvent__button}
-                  onPress={() => this.handleSubmit()}
-                >
-                  <Text style={styles.input__text}>Submit</Text>
-                </TouchableOpacity>
+
+                {this.state.loading ? (
+                  <Spinner />
+                ) : (
+                  <TouchableOpacity
+                    style={styles.newEvent__button}
+                    onPress={() => this.props.createEvent(this.state.newEvent)}
+                  >
+                    <Text style={styles.input__text}>Submit</Text>
+                  </TouchableOpacity>
+                )}
+
                 <TouchableOpacity
                   style={styles.newEvent__button}
                   onPress={() => this.props.closeNewEventForm()}
@@ -252,8 +262,8 @@ class NewEvent extends React.Component<Props, State> {
                   <Text style={styles.input__text}>Cancel</Text>
                 </TouchableOpacity>
               </View>
-            </ImageBackground>
-          </ScrollView>
+            </ScrollView>
+          </ImageBackground>
         </Modal>
       </SafeAreaView>
     )
@@ -282,12 +292,9 @@ const styles = StyleSheet.create({
   },
   text__formgroup: {
     flex: 1,
+    marginBottom: 30,
     width: '100%',
     marginTop: 40,
-    alignItems: 'center'
-  },
-  newEvent: {
-    flex: 1,
     alignItems: 'center'
   },
   event__input: {
@@ -296,7 +303,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     backgroundColor: '#fff',
     borderWidth: 1,
-    borderRadius: 30,
+    borderRadius: 5,
     marginBottom: 30,
     textAlign: 'center'
   },

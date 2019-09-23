@@ -12,6 +12,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
+import Spinner from './Spinner'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { updateProfile } from '../src/actions/users'
 import { uploadPhoto } from '../src/actions/upload'
@@ -39,7 +40,7 @@ interface User {
 interface State {
   updatedUser: User
   interestOptions: string[]
-  // badgeOptions: string[]
+  loading: boolean
 }
 
 class EditProfile extends Component<Props, State> {
@@ -53,6 +54,7 @@ class EditProfile extends Component<Props, State> {
       interests: this.props.user.interests,
       equipped_badges: this.props.user.equipped_badges
     },
+    loading: false,
     interestOptions: [
       'soccer',
       'football',
@@ -81,9 +83,11 @@ class EditProfile extends Component<Props, State> {
   }
 
   handleUpload = async () => {
+    this.setState({ loading: true })
     const image = await uploadPhoto()
     this.setState({
-      updatedUser: { ...this.state.updatedUser, profile_photo: image }
+      updatedUser: { ...this.state.updatedUser, profile_photo: image },
+      loading: false
     })
   }
 
@@ -149,7 +153,7 @@ class EditProfile extends Component<Props, State> {
             style={styles.imageBackground}
             source={require('../assets/login.jpg')}
           >
-            <ScrollView style={{ width: '100%' }} centerContent={true}>
+            <ScrollView style={{ padding: 20, width: '100%' }} centerContent={true}>
               <View style={styles.profile__formgroup}>
                 <Text style={styles.field__text}>First Name</Text>
                 <TextInput
@@ -390,24 +394,29 @@ class EditProfile extends Component<Props, State> {
                 </View>
               </View>
 
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.updateProfile(
-                    this.state.updatedUser.email,
-                    this.state.updatedUser
-                  )
-                }
-                style={styles.profile__button}
-              >
-                <Text style={styles.profile__button__text}>Submit</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => this.props.closeEditProfileForm()}
-                style={styles.profile__button}
-              >
-                <Text style={styles.profile__button__text}>Cancel</Text>
-              </TouchableOpacity>
+              <View style={styles.button__formgroup}>
+              {this.state.loading ? (
+                <Spinner />
+              ) : (
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.updateProfile(
+                      this.props.user.email,
+                      this.state.updatedUser
+                    )
+                  }
+                  style={styles.profile__button}
+                >
+                  <Text style={styles.profile__button__text}>Submit</Text>
+                </TouchableOpacity>
+              )}
+                <TouchableOpacity
+                  onPress={() => this.props.closeEditProfileForm()}
+                  style={styles.profile__button}
+                >
+                  <Text style={styles.profile__button__text}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
             </ScrollView>
           </ImageBackground>
         </Modal>
@@ -446,10 +455,13 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 45,
-    borderRadius: 50,
+    borderRadius: 5,
     backgroundColor: '#fff',
     textAlign: 'center',
     opacity: 0.8
+  },
+  button__formgroup: {
+    marginBottom: 30
   },
   profile__button: {
     width: '50%',

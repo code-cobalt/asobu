@@ -99,16 +99,14 @@ class Profile extends Component<Props> {
   }
 
   render() {
-    let editButton;
+    let editButton
     editButton = (
-      
-        <TouchableOpacity
-          style={styles.edit__button}
-          onPress={() => this.props.editProfile()}
-        >
-          <Text style={styles.button__text}>Edit Profile</Text>
-        </TouchableOpacity>
-      
+      <TouchableOpacity
+        style={styles.edit__button}
+        onPress={() => this.props.editProfile()}
+      >
+        <Text style={styles.button__text}>Edit Profile</Text>
+      </TouchableOpacity>
     )
     return (
       <View style={styles.parent__container}>
@@ -124,7 +122,10 @@ class Profile extends Component<Props> {
                 )}
                 {this.props.user.profile_photo === null && (
                   <Image
-                    source={require('../assets/default_profile.png')}
+                    source={{
+                      uri:
+                        'http://res.cloudinary.com/code-cobalt/image/upload/v1569216639/demo/itm00silr9mpdrwjtung.jpg'
+                    }}
                     style={styles.user__image}
                   />
                 )}
@@ -159,7 +160,7 @@ class Profile extends Component<Props> {
                       {this.props.user.interests.join(', ')}
                     </Text>
                   )}
-              </View>
+                </View>
                 <Text style={styles.info__title}>email</Text>
                 <Text style={styles.inner__text}>{this.props.user.email}</Text>
                 <Text style={styles.info__title}>Phone #</Text>
@@ -172,189 +173,221 @@ class Profile extends Component<Props> {
                 <Text style={styles.info__title}>Your Badges</Text>
                 <View style={styles.badge__container}>
                   <View style={styles.badge__category}>
-                    {badgeNames
-                      .slice(0, 3)
-                      .map(badge =>
-                        this.props.badgeOptions.includes(badge) ? (
-                            <Tooltip 
-                              key={badge}
-                              popover={<Text style={styles.tooltip__text}>You're an event master!</Text>}
-                              toggleOnPress={true}
-                              containerStyle={styles.tooltip__container}
-                              width={250}
-                              height={100}
-                              >
-                                <Image
-                                  key={badge}
-                                  style={styles.ownBadge}
-                                  source={badges[badge]}
-                                />
-                            </Tooltip>
-                        ) : (
-                            <Tooltip 
-                              key={badge}
-                              popover={<Text style={styles.tooltip__text}>Create more events to unlock this badge!</Text>}
-                              toggleOnPress={true}
-                              containerStyle={styles.tooltip__container}
-                              width={250}
-                              height={100}
-                              >
-                                <Image
-                                  key={badge}
-                                  style={styles.noBadge}
-                                  source={badges[badge]}
-                                />
-                            </Tooltip>
-                        )
-                      )}
+                    {badgeNames.slice(0, 3).map(badge =>
+                      this.props.badgeOptions.includes(badge) ? (
+                        <Tooltip
+                          key={badge}
+                          popover={
+                            <Text style={styles.tooltip__text}>
+                              You're an event master!
+                            </Text>
+                          }
+                          toggleOnPress={true}
+                          containerStyle={styles.tooltip__container}
+                          width={250}
+                          height={100}
+                        >
+                          <Image
+                            key={badge}
+                            style={styles.ownBadge}
+                            source={badges[badge]}
+                          />
+                        </Tooltip>
+                      ) : (
+                        <Tooltip
+                          key={badge}
+                          popover={
+                            <Text style={styles.tooltip__text}>
+                              Create more events to unlock this badge!
+                            </Text>
+                          }
+                          toggleOnPress={true}
+                          containerStyle={styles.tooltip__container}
+                          width={250}
+                          height={100}
+                        >
+                          <Image
+                            key={badge}
+                            style={styles.noBadge}
+                            source={badges[badge]}
+                          />
+                        </Tooltip>
+                      )
+                    )}
                   </View>
                   <View style={styles.badge__category}>
-                    {badgeNames
-                      .slice(3, 6)
-                      .map(badge =>
-                        this.props.badgeOptions.includes(badge) ? (
-                          <Tooltip 
-                            key={badge} 
-                            popover={<Text style={styles.tooltip__text}>Congratulations, you're hilarious!</Text>}
-                            toggleOnPress={true}
-                            containerStyle={styles.tooltip__container}
-                            width={250}
-                            height={100}
-                            >
-                            <Image
-                              key={badge}
-                              style={styles.ownBadge}
-                              source={badges[badge]}
-                            />
-                          </Tooltip>
-                          ) : (
-                          <Tooltip
+                    {badgeNames.slice(3, 6).map(badge =>
+                      this.props.badgeOptions.includes(badge) ? (
+                        <Tooltip
+                          key={badge}
+                          popover={
+                            <Text style={styles.tooltip__text}>
+                              Congratulations, you're hilarious!
+                            </Text>
+                          }
+                          toggleOnPress={true}
+                          containerStyle={styles.tooltip__container}
+                          width={250}
+                          height={100}
+                        >
+                          <Image
                             key={badge}
-                            popover={<Text style={styles.tooltip__text}>Get more 'funny' reviews to unlock this badge!</Text>}
-                            toggleOnPress={true}
-                            containerStyle={styles.tooltip__container}
-                            width={250}
-                            height={100}
-                            >
-                            <Image
-                              key={badge}
-                              style={styles.noBadge}
-                              source={badges[badge]}
-                            />
-                          </Tooltip>
-                        )
-                      )}
+                            style={styles.ownBadge}
+                            source={badges[badge]}
+                          />
+                        </Tooltip>
+                      ) : (
+                        <Tooltip
+                          key={badge}
+                          popover={
+                            <Text style={styles.tooltip__text}>
+                              Get more 'funny' reviews to unlock this badge!
+                            </Text>
+                          }
+                          toggleOnPress={true}
+                          containerStyle={styles.tooltip__container}
+                          width={250}
+                          height={100}
+                        >
+                          <Image
+                            key={badge}
+                            style={styles.noBadge}
+                            source={badges[badge]}
+                          />
+                        </Tooltip>
+                      )
+                    )}
                   </View>
                   <View style={styles.badge__category}>
-                    {badgeNames
-                      .slice(6, 9)
-                      .map(badge =>
-                        this.props.badgeOptions.includes(badge) ? (
-                          <Tooltip 
+                    {badgeNames.slice(6, 9).map(badge =>
+                      this.props.badgeOptions.includes(badge) ? (
+                        <Tooltip
+                          key={badge}
+                          popover={
+                            <Text style={styles.tooltip__text}>
+                              Congratulations, you're a genius!
+                            </Text>
+                          }
+                          toggleOnPress={true}
+                          containerStyle={styles.tooltip__container}
+                          width={250}
+                          height={100}
+                        >
+                          <Image
                             key={badge}
-                            popover={<Text style={styles.tooltip__text}>Congratulations, you're a genius!</Text>}
-                            toggleOnPress={true}
-                            containerStyle={styles.tooltip__container}
-                            width={250}
-                            height={100}
-                            >
-                            <Image
-                              key={badge}
-                              style={styles.ownBadge}
-                              source={badges[badge]}
-                            />
-                          </Tooltip>
-                        ) : (
-                          <Tooltip 
+                            style={styles.ownBadge}
+                            source={badges[badge]}
+                          />
+                        </Tooltip>
+                      ) : (
+                        <Tooltip
+                          key={badge}
+                          popover={
+                            <Text style={styles.tooltip__text}>
+                              Get more 'intelligent' reviews to unlock this
+                              badge!
+                            </Text>
+                          }
+                          toggleOnPress={true}
+                          containerStyle={styles.tooltip__container}
+                          width={250}
+                          height={100}
+                        >
+                          <Image
                             key={badge}
-                            popover={<Text style={styles.tooltip__text}>Get more 'intelligent' reviews to unlock this badge!</Text>}
-                            toggleOnPress={true}
-                            containerStyle={styles.tooltip__container}
-                            width={250}
-                            height={100}
-                            >
-                            <Image
-                              key={badge}
-                              style={styles.noBadge}
-                              source={badges[badge]}
-                            />
-                          </Tooltip>
-                        )
-                      )}
+                            style={styles.noBadge}
+                            source={badges[badge]}
+                          />
+                        </Tooltip>
+                      )
+                    )}
                   </View>
                   <View style={styles.badge__category}>
-                    {badgeNames
-                      .slice(9, 12)
-                      .map(badge =>
-                        this.props.badgeOptions.includes(badge) ? (
-                          <Tooltip
-                            key={badge} 
-                            popover={<Text style={styles.tooltip__text}>Congratulations, you're a kind soul!</Text>}
-                            toggleOnPress={true}
-                            containerStyle={styles.tooltip__container}
-                            width={250}
-                            height={100}
-                            >
-                            <Image
-                              key={badge}
-                              style={styles.ownBadge}
-                              source={badges[badge]}
-                            />
-                          </Tooltip>
-                        ) : (
-                          <Tooltip 
+                    {badgeNames.slice(9, 12).map(badge =>
+                      this.props.badgeOptions.includes(badge) ? (
+                        <Tooltip
+                          key={badge}
+                          popover={
+                            <Text style={styles.tooltip__text}>
+                              Congratulations, you're a kind soul!
+                            </Text>
+                          }
+                          toggleOnPress={true}
+                          containerStyle={styles.tooltip__container}
+                          width={250}
+                          height={100}
+                        >
+                          <Image
                             key={badge}
-                            popover={<Text style={styles.tooltip__text}>Get more 'kindness' reviews to unlock this badge!</Text>}
-                            toggleOnPress={true}
-                            containerStyle={styles.tooltip__container}
-                            width={250}
-                            height={100}
-                            >
-                            <Image
-                              key={badge}
-                              style={styles.noBadge}
-                              source={badges[badge]}
-                            />
-                          </Tooltip>
-                        )
-                      )}
+                            style={styles.ownBadge}
+                            source={badges[badge]}
+                          />
+                        </Tooltip>
+                      ) : (
+                        <Tooltip
+                          key={badge}
+                          popover={
+                            <Text style={styles.tooltip__text}>
+                              Get more 'kindness' reviews to unlock this badge!
+                            </Text>
+                          }
+                          toggleOnPress={true}
+                          containerStyle={styles.tooltip__container}
+                          width={250}
+                          height={100}
+                        >
+                          <Image
+                            key={badge}
+                            style={styles.noBadge}
+                            source={badges[badge]}
+                          />
+                        </Tooltip>
+                      )
+                    )}
                   </View>
                   <View style={styles.badge__category}>
-                    {badgeNames
-                      .slice(12, 15)
-                      .map(badge =>
-                        this.props.badgeOptions.includes(badge) ? (
-                          <Tooltip 
+                    {badgeNames.slice(12, 15).map(badge =>
+                      this.props.badgeOptions.includes(badge) ? (
+                        <Tooltip
+                          key={badge}
+                          popover={
+                            <Text style={styles.tooltip__text}>
+                              Congratulations, you're a good listener!
+                            </Text>
+                          }
+                          toggleOnPress={true}
+                          containerStyle={styles.tooltip__container}
+                          width={250}
+                          height={100}
+                        >
+                          <Image
                             key={badge}
-                            popover={<Text style={styles.tooltip__text}>Congratulations, you're a good listener!</Text>}
-                            toggleOnPress={true}
-                            containerStyle={styles.tooltip__container}
-                            width={250}
-                            height={100}
-                            >
-                            <Image
-                              key={badge}
-                              style={styles.ownBadge}
-                              source={badges[badge]}
-                            />
-                          </Tooltip>
-                        ) : (
-                          <Tooltip 
+                            style={styles.ownBadge}
+                            source={badges[badge]}
+                          />
+                        </Tooltip>
+                      ) : (
+                        <Tooltip
+                          key={badge}
+                          popover={
+                            <Text style={styles.tooltip__text}>
+                              Get more 'therapeutic' reviews to unlock this
+                              badge!
+                            </Text>
+                          }
+                          toggleOnPress={true}
+                          containerStyle={styles.tooltip__container}
+                          width={250}
+                          height={100}
+                        >
+                          <Image
                             key={badge}
-                            popover={<Text style={styles.tooltip__text}>Get more 'therapeutic' reviews to unlock this badge!</Text>}
-                            toggleOnPress={true}
-                            containerStyle={styles.tooltip__container}
-                            width={250}
-                            height={100}
-                            >
-                            <Image
-                              key={badge}
-                              style={styles.noBadge}
-                              source={badges[badge]}
-                            />
-                          </Tooltip>
-                        )
-                      )}
+                            style={styles.noBadge}
+                            source={badges[badge]}
+                          />
+                        </Tooltip>
+                      )
+                    )}
                   </View>
                 </View>
               </View>
@@ -375,12 +408,12 @@ class Profile extends Component<Props> {
 
 const styles = StyleSheet.create({
   tooltip__text: {
-    fontWeight: '700', 
+    fontWeight: '700',
     color: 'grey'
   },
   tooltip__container: {
-    backgroundColor: '#fff', 
-    borderWidth: 1, 
+    backgroundColor: '#fff',
+    borderWidth: 1,
     borderColor: 'green'
   },
   parent__container: {

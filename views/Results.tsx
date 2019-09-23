@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import { StyleSheet, Animated, View, Text, Button } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import SwitchSelector from 'react-native-switch-selector'
 import Hangouts from './Hangouts'
 import Events from './Events'
-import AnimatedProfile from './AnimatedProfile'
 import EventModal from './EventModal'
-import NewEvent from '../components/NewEvent'
 import { toggleActive } from '../src/actions/users'
 import AttendeesModal from '../components/AttendeesModal'
 

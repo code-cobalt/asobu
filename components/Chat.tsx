@@ -97,23 +97,26 @@ class Chat extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   chat: {
-    alignSelf: 'center',
-    height: 120,
-    width: '95%',
+    height: 100,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 10,
-    marginTop: 30,
-    borderRadius: 40,
-    backgroundColor: '#22222280',
+    marginBottom: 20,
+    marginTop: 10,
+    marginLeft: 5,
+    marginRight: 5,
+    backgroundColor: '#adadae',
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5, 
+    borderRadius: 20,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     textShadowRadius: 2,
-    shadowColor: "#000"
+    shadowColor: "#000",
+    elevation: 3
   },
   chat__image: {
-    borderRadius: 40,
+    borderRadius: 5,
     height: '100%',
     aspectRatio: 2/2
   },

@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
-import { sockethost } from "../environment"
+import { sockethost } from '../environment'
 
 const connection = new WebSocket(sockethost)
-connection.onopen = (event) => {
+connection.onopen = event => {
   alert('Socket Connected')
 }
 
-export const SocketContext = React.createContext();
+export const SocketContext = React.createContext()
 
 export class SocketProvider extends Component {
   render() {

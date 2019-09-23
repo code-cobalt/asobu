@@ -7,6 +7,7 @@ export const registerQuery = gql`
       first_name
       last_name
       email
+      password_hash
       phone_number
       profile_photo
       interests
@@ -51,7 +52,7 @@ export const registerQuery = gql`
         equipped_badges
       }
       ongoing_hangouts {
-        hangout_id
+        id
         participants {
           first_name
           email
@@ -127,7 +128,7 @@ export const loginQuery = gql`
         equipped_badges
       }
       ongoing_hangouts {
-        hangout_id
+        id
         participants {
           first_name
           email
@@ -200,7 +201,7 @@ export const getUserQuery = gql`
         equipped_badges
       }
       ongoing_hangouts {
-        hangout_id
+        id
         participants {
           first_name
           email
@@ -264,6 +265,7 @@ export const updateProfileQuery = gql`
       first_name
       last_name
       email
+      password_hash
       phone_number
       profile_photo
       interests

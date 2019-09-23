@@ -15,7 +15,7 @@ const Inbox = props => {
 const styles = StyleSheet.create({
   events: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#efedf5'
   }
 })
 
