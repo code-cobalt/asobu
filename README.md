@@ -1,6 +1,8 @@
+# Asobu - Social Meetup Application
+
 ## Project Description
 
-This is a reactNative mobile social application. It contains game-ified elements designed to encourage users to find new people to meet. Profiles will contain user level (which is increased by using the application in various ways), profile photo, hobbies, interests, and a collection of badges, which are earned by using the application and being "reviewed" by others aftering meeting. Users will have the option to login and make themselves available for hanging out with other nearby members, and other nearby members will appear in a search result list. When selecting someone, you can send them an invite to hangout. If the other member accepts, a direct chat is opened up. Once you meet, you can register in the app that you've met in person and started your hangout. Once finished, you close the hangout and credit the other person's personality using a limited number of points. For example, if the person was particularly humorous, you can credit their "funny" stat. This is directly linked to the badges system in which users can gain special badges by receiving a certain amount of points in a stat.
+This is a reactNative mobile social application. It contains game-like elements designed to encourage users to find new people to meet. Profiles will contain user level (which is increased by using the application in various ways), profile photo, hobbies, interests, and a collection of badges, which are earned by using the application and being "reviewed" by others aftering meeting. Users will have the option to login and make themselves available for hanging out with other nearby members, and other nearby members will appear in a search result list. When selecting someone, you can send them an invite to hangout. If the other member accepts, a direct chat is opened up. Once you meet, you can register in the app that you've met in person and started your hangout. Once finished, you close the hangout and credit the other person's personality using a limited number of points. For example, if the person was particularly humorous, you can credit their "funny" stat. This is directly linked to the badges system in which users can gain special badges by receiving a certain amount of points in a stat.
 
 The application also includes an "events" list in which users can create or find relevant events near them to participate in and similarly review other users after the event is over.
 
@@ -31,7 +33,7 @@ Ensure you are not modifying the same file as another member in order to avoid m
 ### PR Guide
 
 - Commit all files
-- `git pull super <frontend/backend>`
+- `git pull super master`
 - `git push <local>`
 - Open PR to corresponding super branch (frontend or backend)
 
@@ -197,6 +199,10 @@ Remember to **always** pull from the super master before pushing and making a PR
     - email (string)
     - profile_photo (string)
     - equipped_badges (array of strings)
+
+## Server
+
+The server is made with <span style="color:lightblue">**Node/Express**</span> and is written in <span style="color:lightblue">**TypeScript**</span>. It contains <span style="color:lightblue">**WebSockets**</span> for live interactivity. Server calls are made through <span style="color:lightblue">**Axios**</span> and reach either a single REST endpoint for the Cloudinary upload or the <span style="color:lightblue">**GraphQL**</span> endpoint for database CRUD.
 
 ## Database
 
