@@ -360,15 +360,9 @@ class Profile extends Component<Props> {
               </View>
               <TouchableOpacity
                 style={styles.edit__button}
-                onPress={() => this.props.toggleActiveSearch()}
-              >
-                <Text style={styles.button__text}>Toggle active</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.edit__button}
                 onPress={() => this.props.logOut()}
               >
-                <Text style={styles.button__text}>LOGOUT</Text>
+                <Text style={styles.button__text}>Logout</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { apiUrl } from '../../environment.js'
 import { print } from 'graphql'
 import arrayHashConversion from 'array-hash-conversion'
+import { distance } from './distance'
 
 import {
   loginQuery,
@@ -14,6 +15,7 @@ import {
   addExpQuery,
   registerQuery,
   getUserEquippedBadgesQuery,
+  setUserLocationQuery,
   updateUserTokenQuery
 } from '../queries/users'
 import { AsyncStorage } from 'react-native'
@@ -80,7 +82,13 @@ export const getUserLimited = async userEmail => {
   return res.data.data.User
 }
 
-export const getUsers = (currentUserEmail, [...hiddenUsers], [...hangouts]) => {
+export const getUsers = (
+  currentUserEmail,
+  [...hiddenUsers],
+  [...hangouts],
+  latitude,
+  longitude
+) => {
   //hiddenUsers is an array of all the user emails who the current user has blocked or been blocked by or has already accepted/received hangouts with.
   //don't return any users in this array
   //create a hashmap to reduce time complexity
@@ -103,7 +111,10 @@ export const getUsers = (currentUserEmail, [...hiddenUsers], [...hangouts]) => {
     })
     //don't show current user, blocked/blocked by users, or users with current hangout status
     const allUsers = res.data.data.Users.filter(
-      user => !hiddenUsersObj[user.email] && user.email !== currentUserEmail
+      user =>
+        !hiddenUsersObj[user.email] &&
+        user.email !== currentUserEmail &&
+        distance(latitude, longitude, user.latitude, user.longitude) < 30
     )
     dispatch({
       type: 'SET_ALL_USERS',
@@ -189,6 +200,18 @@ export const getUserEquippedBadges = async userEmail => {
   return res.data.data.User.equipped_badges
 }
 
+export const toggleActive = (userEmail, updatedUser) => {
+  return async dispatch => {
+    const res = await axios.post(`${apiUrl}/graphql`, {
+      query: print(setUserLocationQuery),
+      variables: {
+        userEmail,
+        updatedUser
+      }
+    })
+    dispatch({ type: 'TOGGLE_ACTIVE_SEARCH' })
+  }
+}
 export const updateUserToken = async (userEmail, token) => {
   const res = await axios.post(`${apiUrl}/graphql`, {
     query: print(updateUserTokenQuery),
