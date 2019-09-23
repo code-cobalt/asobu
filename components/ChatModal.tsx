@@ -40,12 +40,14 @@ const ChatModal: React.FunctionComponent<Props> = props => {
       style={{margin: 0, padding: 0}}
 
     >
-      <View style={{ marginTop: 20, flex: 1 }}>
-        <TouchableOpacity style={styles.back__arrow}>
-          <Text style={styles.back} onPress={() => props.goBack()}>
-            {'<'}
-          </Text>
-        </TouchableOpacity>
+      <View style={{ flex: 1 }}>
+        <View style={styles.chat__header}>
+          <TouchableOpacity style={styles.back__arrow}>
+            <Text style={styles.back} onPress={() => props.goBack()}>
+              {'<'}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <ScrollView style={styles.chat__messages}>
           {props.currentChatMessages.length > 0 &&
             props.currentChatMessages.map(message => {
@@ -76,18 +78,23 @@ const ChatModal: React.FunctionComponent<Props> = props => {
 }
 
 const styles = StyleSheet.create({
+  chat__header: {
+    width: '100%',
+    height: '10%',
+    backgroundColor: '#7e7e83'
+  },
   input__container: {
     width: '100%',
     backgroundColor: '#fff'
   },
   back__arrow: {
-    width: 20,
-    borderRadius: 30,
+    borderRadius: 30
   },
   back: {
-    marginTop: 25,
+    marginTop: 35,
     marginLeft: 10,
-    fontSize: 20
+    fontSize: 30,
+    color: '#fff',
   },
   /* container: {
     position: 'absolute',
@@ -98,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   }, */
   chat__messages: {
-    marginTop: 25
+    paddingTop: 25
   }
 })
 
