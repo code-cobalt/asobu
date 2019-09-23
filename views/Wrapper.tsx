@@ -1,17 +1,14 @@
 import React, { Component } from 'react'
-import { Text, View, AsyncStorage } from 'react-native'
+import { AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import Auth from '../components/Auth'
 import Application from './Application'
-import { sockethost } from '../environment'
 import { SocketProvider } from '../components/SocketProvider'
-import { loginUser } from '../src/actions/users'
-
-/* const connection = new WebSocket(sockethost) */
+import { getUser } from '../src/actions/users'
 
 interface Props {
   isLoggedIn: boolean
-  loginUser: Function
+  setUser: Function
 }
 
 class Wrapper extends Component<Props> {
@@ -19,7 +16,10 @@ class Wrapper extends Component<Props> {
     const userStringified = await AsyncStorage.getItem('user')
     if (userStringified !== null) {
       const user = JSON.parse(userStringified)
-      this.props.loginUser(user.email, user.password)
+      const dbUser = await getUser(user.email)
+      if (dbUser.password_hash === user.password_hash) {
+        this.props.setUser(dbUser)
+      }
     }
   }
   render() {
@@ -47,7 +47,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loginUser: (email, password) => dispatch(loginUser(email, password))
+    setUser: user => {
+      dispatch({ type: 'SET_USER', user })
+    }
   }
 }
 
