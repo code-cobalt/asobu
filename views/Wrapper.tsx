@@ -17,7 +17,7 @@ class Wrapper extends Component<Props> {
     if (userStringified !== null) {
       const user = JSON.parse(userStringified)
       const dbUser = await getUser(user.email)
-      if (dbUser.password_hash === user.password_hash) {
+      if (dbUser.password_hash === user.passwordHash) {
         this.props.setUser(dbUser)
       }
     }
