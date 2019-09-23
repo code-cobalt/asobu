@@ -49,7 +49,10 @@ const UserModal: React.FunctionComponent<Props> = props => {
               )}
               {props.currentProfile.profile_photo === null && (
                 <Image
-                  source={require('../assets/default_profile.png')}
+                  source={{
+                    uri:
+                      'http://res.cloudinary.com/code-cobalt/image/upload/v1569216639/demo/itm00silr9mpdrwjtung.jpg'
+                  }}
                   style={styles.user__image}
                 />
               )}
