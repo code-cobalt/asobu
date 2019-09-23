@@ -73,8 +73,8 @@ class Main extends Component<Props, State> {
   }
 
   async componentWillMount() {
-    await registerPush(this.props.email)
-    this.props.socket.send(`l0 ${this.props.email}`)
+    const pushRes = await registerPush(this.props.email)
+    this.props.socket.send(`l0 ${this.props.email} ${pushRes}`)
     // comment out socket.send to use dummy data
     this.props.socket.onmessage = async event => {
       console.log(`FROM SERVER: ${event.data}`)
