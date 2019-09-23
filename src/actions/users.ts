@@ -33,8 +33,6 @@ export const registerUser = newUser => {
     await AsyncStorage.setItem(
       'user',
       JSON.stringify({
-        firstName: user.first_name,
-        lastName: user.last_name,
         email: user.email,
         passwordHash: user.password_hash
       })
@@ -56,11 +54,8 @@ export const loginUser = (userEmail, userPassword) => {
     await AsyncStorage.setItem(
       'user',
       JSON.stringify({
-        firstName: user.first_name,
-        lastName: user.last_name,
         email: user.email,
-        passwordHash: user.password_hash,
-        profilePhoto: user.profile_photo
+        passwordHash: user.password_hash
       })
     )
     dispatch({ type: 'SET_USER', user })
@@ -144,6 +139,16 @@ export const updateProfile = (userEmail, updatedUser) => {
         updatedUser
       }
     })
+    if (userEmail !== updatedUser.email) {
+      //if email is changed, update in async storage
+      await AsyncStorage.setItem(
+        'user',
+        JSON.stringify({
+          email: res.data.data.UpdateUser.email,
+          passwordHash: res.data.data.UpdateUser.password_hash
+        })
+      )
+    }
     dispatch({ type: 'UPDATE_PROFILE', updatedUser: res.data.data.UpdateUser })
   }
 }
