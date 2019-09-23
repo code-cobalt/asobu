@@ -260,6 +260,7 @@ const styles = StyleSheet.create({
   },
   text__formgroup: {
     flex: 1,
+    marginBottom: 30,
     width: '100%',
     marginTop: 40,
     alignItems: 'center'
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     backgroundColor: '#fff',
     borderWidth: 1,
-    borderRadius: 30,
+    borderRadius: 5,
     marginBottom: 30,
     textAlign: 'center'
   },
