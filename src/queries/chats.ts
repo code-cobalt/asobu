@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const getChatQuery = gql`
-  query Chat($chatId: Int!) {
+  query Chat($chatId: String!) {
     Chat(chatId: $chatId) {
       messages {
         id

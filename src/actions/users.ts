@@ -35,7 +35,8 @@ export const registerUser = newUser => {
       JSON.stringify({
         firstName: user.first_name,
         lastName: user.last_name,
-        email: user.last_name
+        email: user.email,
+        passwordHash: user.password_hash
       })
     )
     dispatch({ type: 'SET_USER', user })
