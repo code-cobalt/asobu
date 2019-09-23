@@ -12,6 +12,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
+import Spinner from './Spinner'
 import ModalDropdown from 'react-native-modal-dropdown'
 import { updateProfile } from '../src/actions/users'
 import { uploadPhoto } from '../src/actions/upload'
@@ -39,7 +40,7 @@ interface User {
 interface State {
   updatedUser: User
   interestOptions: string[]
-  // badgeOptions: string[]
+  loading: boolean
 }
 
 class EditProfile extends Component<Props, State> {
@@ -53,6 +54,7 @@ class EditProfile extends Component<Props, State> {
       interests: this.props.user.interests,
       equipped_badges: this.props.user.equipped_badges
     },
+    loading: false,
     interestOptions: [
       'soccer',
       'football',
@@ -81,9 +83,11 @@ class EditProfile extends Component<Props, State> {
   }
 
   handleUpload = async () => {
+    this.setState({ loading: true })
     const image = await uploadPhoto()
     this.setState({
-      updatedUser: { ...this.state.updatedUser, profile_photo: image }
+      updatedUser: { ...this.state.updatedUser, profile_photo: image },
+      loading: false
     })
   }
 
@@ -390,17 +394,21 @@ class EditProfile extends Component<Props, State> {
                 </View>
               </View>
 
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.updateProfile(
-                    this.state.updatedUser.email,
-                    this.state.updatedUser
-                  )
-                }
-                style={styles.profile__button}
-              >
-                <Text style={styles.profile__button__text}>Submit</Text>
-              </TouchableOpacity>
+              {this.state.loading ? (
+                <Spinner />
+              ) : (
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.updateProfile(
+                      this.state.updatedUser.email,
+                      this.state.updatedUser
+                    )
+                  }
+                  style={styles.profile__button}
+                >
+                  <Text style={styles.profile__button__text}>Submit</Text>
+                </TouchableOpacity>
+              )}
 
               <TouchableOpacity
                 onPress={() => this.props.closeEditProfileForm()}

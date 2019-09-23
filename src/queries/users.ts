@@ -7,6 +7,7 @@ export const registerQuery = gql`
       first_name
       last_name
       email
+      password_hash
       phone_number
       profile_photo
       interests
