@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { ScrollView, StyleSheet, Button, Text, TextInput } from 'react-native'
 import ModalDropdown from 'react-native-modal-dropdown'
 import moment from 'moment'
+import Spinner from './Spinner'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import { uploadPhoto } from '../src/actions/upload'
 
@@ -31,6 +32,7 @@ interface State {
   showStartDate: boolean
   showEndDate: boolean
   tagOptions: string[]
+  loading: boolean
 }
 
 class EditEvent extends React.Component<Props, State> {
@@ -52,7 +54,8 @@ class EditEvent extends React.Component<Props, State> {
       'tech',
       'dance',
       'books'
-    ].filter(tag => !this.props.event.tags.includes(tag))
+    ].filter(tag => !this.props.event.tags.includes(tag)),
+    loading: false
   }
 
   addTag = tag => {
@@ -76,10 +79,13 @@ class EditEvent extends React.Component<Props, State> {
   }
 
   handleUpload = async () => {
+    this.setState({ loading: true })
     const image = await uploadPhoto()
-    const copiedState = { ...this.state }
-    copiedState.updatedEvent.cover_photo = image
-    this.setState({ ...copiedState })
+    // one-lined this so that loading won't change until after image has been resolved
+    this.setState({
+      updatedEvent: { ...this.state.updatedEvent, cover_photo: image },
+      loading: false
+    })
   }
 
   handleSubmit = () => {
@@ -179,7 +185,12 @@ class EditEvent extends React.Component<Props, State> {
           options={this.state.tagOptions}
           onSelect={(index, value) => this.addTag(value)}
         />
-        <Button title="Submit" onPress={() => this.handleSubmit()} />
+        {this.state.loading ? (
+          <Spinner />
+        ) : (
+          <Button title="Submit" onPress={() => this.handleSubmit()} />
+        )}
+
         <Button
           title="Cancel Changes"
           onPress={() => this.props.closeEditEventForm()}
