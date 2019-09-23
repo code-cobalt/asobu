@@ -69,11 +69,11 @@ class Signup extends Component<Props, State> {
 
   handleSignup = async () => {
     if (this.state.email === '') {
-      alert('Please provide an email adress')
+      alert('Please provide an email address')
       return
     }
     if (!/\S+@\S+\.\S+/.test(this.state.email)) {
-      alert('Please provide a valid email adress')
+      alert('Please provide a valid email address')
       return
     }
     if (this.state.first_name === '') {
