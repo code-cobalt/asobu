@@ -34,6 +34,8 @@ interface Props {
   hangouts: [Hangout]
   currentUserLimited: UserLimitedBadges
   acceptedHangouts: Array<UserLimitedBadges>
+  latitude: number
+  longitude: number
 }
 
 interface State {
@@ -195,7 +197,9 @@ class Main extends Component<Props, State> {
     this.props.getUsers(
       this.props.email,
       this.props.hiddenUsers,
-      this.props.hangouts
+      this.props.hangouts,
+      this.props.latitude,
+      this.props.longitude
     )
   }
 
@@ -256,7 +260,9 @@ const mapStateToProps = state => {
       profile_photo: state.user.profile_photo,
       equipped_badges: state.user.equipped_badges
     },
-    acceptedHangouts: state.acceptedHangouts
+    acceptedHangouts: state.acceptedHangouts,
+    longitude: state.longitude,
+    latitude: state.latitude
   }
 }
 
@@ -275,8 +281,10 @@ const mapDispatchToProps = dispatch => {
       })
     },
     getChat: chatId => dispatch(getChat(chatId)),
-    getUsers: (currentUserEmail, blockedUsers, hangouts) =>
-      dispatch(getUsers(currentUserEmail, blockedUsers, hangouts)),
+    getUsers: (currentUserEmail, blockedUsers, hangouts, latitude, longitude) =>
+      dispatch(
+        getUsers(currentUserEmail, blockedUsers, hangouts, latitude, longitude)
+      ),
     removeUser: userEmail => {
       dispatch({ type: 'REMOVE_USER', userEmail })
     },

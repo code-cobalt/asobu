@@ -8,10 +8,11 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  SafeAreaView
+  SafeAreaView,
+  Switch,
+  ActivityIndicator
 } from 'react-native'
 import UserList from '../components/UserList'
-import { Ionicons } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import Modal from 'react-native-modal'
 import UserModal from '../components/UserModal'
@@ -24,6 +25,8 @@ import {
   declineHangoutRequest
 } from '../src/actions/hangouts'
 import { SocketContext } from '../components/SocketProvider'
+import { toggleActive } from '../src/actions/users'
+import Spinner from '../components/Spinner'
 
 interface UserLimited {
   first_name: string
@@ -60,6 +63,11 @@ interface Props {
   modalIsClosed: Function
   userToReview: UserLimitedBadges
   isReviewing: boolean
+  isActive: boolean
+  toggleActiveSearch: Function
+  longitude: number
+  latitude: number
+  email: string
 }
 
 const options = [
@@ -75,7 +83,18 @@ class Hangouts extends React.Component<Props> {
       this.props.ongoingHangouts.length > 0,
     profileVisible: Object.keys(this.props.currentProfile).length > 0,
     visibleHangout:
-      this.props.receivedHangoutRequests.length > 0 ? 'pending' : 'accepted'
+      this.props.receivedHangoutRequests.length > 0 ? 'pending' : 'accepted',
+    active: this.props.isActive
+  }
+
+  setUserLocation(bool) {
+    const updatedUser = {
+      longitude: this.props.longitude,
+      latitude: this.props.latitude,
+      is_active: bool
+    }
+    this.setState({ active: bool })
+    this.props.toggleActiveSearch(this.props.email, updatedUser)
   }
 
   renderReview = () => {
@@ -86,52 +105,68 @@ class Hangouts extends React.Component<Props> {
 
   render() {
     return (
-      <SafeAreaView style={styles.userList}>
-        <UserList />
-        <Modal
-          isVisible={
-            (this.state.modalVisible || this.props.popupModal) &&
-            !this.props.isReviewing
-          }
-          animationIn="slideInUp"
-          animationOut="slideOutDown"
-          backdropOpacity={0.85}
-          style={styles.modal}
-          onModalHide={() => this.renderReview()}
-        >
-          <SafeAreaView>
-            <SwitchSelector
-              options={options}
-              backgroundColor="#e5e6e5"
-              buttonColor="#73d961"
-              initial={this.state.visibleHangout === 'pending' ? 0 : 1}
-              onPress={value => this.setState({ visibleHangout: value })}
-            />
-          </SafeAreaView>
-          {this.state.visibleHangout === 'pending' ? (
-            <SocketContext.Consumer>
-              {socket => <PendingHangouts socket={socket} />}
-            </SocketContext.Consumer>
-          ) : (
-            <SocketContext.Consumer>
-              {socket => <AcceptedHangouts socket={socket} />}
-            </SocketContext.Consumer>
-          )}
-          <View>
-            <TouchableOpacity
-              style={styles.start_button}
-              onPress={() => {
-                this.setState({ modalVisible: false })
-                this.props.closeMainModal()
-              }}
+      <>
+        {this.props.allUsers.length > 0 ? (
+          <SafeAreaView style={styles.userList}>
+            <View>
+              <Text style={{ alignSelf: 'flex-end', marginRight: 5 }}>
+                You're currently {this.state.active ? 'active' : 'inactive'}
+              </Text>
+              <Switch
+                value={this.state.active}
+                onValueChange={bool => this.setUserLocation(bool)}
+                thumbColor={'#73d961'}
+              />
+            </View>
+            <UserList />
+            <Modal
+              isVisible={
+                (this.state.modalVisible || this.props.popupModal) &&
+                !this.props.isReviewing
+              }
+              animationIn="slideInUp"
+              animationOut="slideOutDown"
+              backdropOpacity={0.85}
+              style={styles.modal}
+              onModalHide={() => this.renderReview()}
             >
-              <Text style={styles.button_text}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <UserModal />
-        <Review />
-      </SafeAreaView>
+              <SafeAreaView>
+                <SwitchSelector
+                  options={options}
+                  backgroundColor="#e5e6e5"
+                  buttonColor="#73d961"
+                  initial={this.state.visibleHangout === 'pending' ? 0 : 1}
+                  onPress={value => this.setState({ visibleHangout: value })}
+                />
+              </SafeAreaView>
+              {this.state.visibleHangout === 'pending' ? (
+                <SocketContext.Consumer>
+                  {socket => <PendingHangouts socket={socket} />}
+                </SocketContext.Consumer>
+              ) : (
+                <SocketContext.Consumer>
+                  {socket => <AcceptedHangouts socket={socket} />}
+                </SocketContext.Consumer>
+              )}
+              <View>
+                <TouchableOpacity
+                  style={styles.start_button}
+                  onPress={() => {
+                    this.setState({ modalVisible: false })
+                    this.props.closeMainModal()
+                  }}
+                >
+                  <Text style={styles.button_text}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </Modal>
+            <UserModal />
+            <Review />
+          </SafeAreaView>
+        ) : (
+          <Spinner />
+        )}
+      </>
     )
   }
 }
@@ -197,6 +232,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 18
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
@@ -210,7 +250,12 @@ const mapStateToProps = state => {
     ongoingHangouts: state.ongoingHangouts,
     popupModal: state.popupModal,
     userToReview: state.userToReview,
-    isReviewing: state.isReviewing
+    isReviewing: state.isReviewing,
+    isActive: state.isActive,
+    email: state.user.email,
+    longitude: state.longitude,
+    latitude: state.latitude,
+    allUsers: state.allUsers
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -227,7 +272,9 @@ const mapDispatchToProps = dispatch => {
     },
     modalIsClosed: () => {
       dispatch({ type: 'SHOW_REVIEW' })
-    }
+    },
+    toggleActiveSearch: (email, updatedUser) =>
+      dispatch(toggleActive(email, updatedUser))
   }
 }
 

@@ -9,7 +9,7 @@ import {
   SafeAreaView
 } from 'react-native'
 
-import { Divider } from 'react-native-elements'
+import { Divider, Tooltip } from 'react-native-elements'
 import { connect } from 'react-redux'
 import Badges from './../components/Badges'
 import EditProfile from '../components/EditProfile'
@@ -151,15 +151,15 @@ class Profile extends Component<Props> {
             </View>
             <Divider style={styles.divider} />
             <View style={styles.profile__body}>
-              <Text style={styles.info__title}>Your Interests</Text>
-              <View>
-                {this.props.user.interests.length > 0 && (
-                  <Text style={styles.interests__text}>
-                    {this.props.user.interests.join(', ')}
-                  </Text>
-                )}
+              <View style={styles.info__container}>
+                <Text style={styles.info__title}>Your Interests</Text>
+                <View>
+                  {this.props.user.interests.length > 0 && (
+                    <Text style={styles.inner__text}>
+                      {this.props.user.interests.join(', ')}
+                    </Text>
+                  )}
               </View>
-              <View style={styles.email__phone}>
                 <Text style={styles.info__title}>email</Text>
                 <Text style={styles.inner__text}>{this.props.user.email}</Text>
                 <Text style={styles.info__title}>Phone #</Text>
@@ -176,17 +176,35 @@ class Profile extends Component<Props> {
                       .slice(0, 3)
                       .map(badge =>
                         this.props.badgeOptions.includes(badge) ? (
-                          <Image
-                            key={badge}
-                            style={styles.ownBadge}
-                            source={badges[badge]}
-                          />
+                            <Tooltip 
+                              key={badge}
+                              popover={<Text style={styles.tooltip__text}>You're an event master!</Text>}
+                              toggleOnPress={true}
+                              containerStyle={styles.tooltip__container}
+                              width={250}
+                              height={100}
+                              >
+                                <Image
+                                  key={badge}
+                                  style={styles.ownBadge}
+                                  source={badges[badge]}
+                                />
+                            </Tooltip>
                         ) : (
-                          <Image
-                            key={badge}
-                            style={styles.noBadge}
-                            source={badges[badge]}
-                          />
+                            <Tooltip 
+                              key={badge}
+                              popover={<Text style={styles.tooltip__text}>Create more events to unlock this badge!</Text>}
+                              toggleOnPress={true}
+                              containerStyle={styles.tooltip__container}
+                              width={250}
+                              height={100}
+                              >
+                                <Image
+                                  key={badge}
+                                  style={styles.noBadge}
+                                  source={badges[badge]}
+                                />
+                            </Tooltip>
                         )
                       )}
                   </View>
@@ -195,17 +213,35 @@ class Profile extends Component<Props> {
                       .slice(3, 6)
                       .map(badge =>
                         this.props.badgeOptions.includes(badge) ? (
-                          <Image
+                          <Tooltip 
+                            key={badge} 
+                            popover={<Text style={styles.tooltip__text}>Congratulations, you're hilarious!</Text>}
+                            toggleOnPress={true}
+                            containerStyle={styles.tooltip__container}
+                            width={250}
+                            height={100}
+                            >
+                            <Image
+                              key={badge}
+                              style={styles.ownBadge}
+                              source={badges[badge]}
+                            />
+                          </Tooltip>
+                          ) : (
+                          <Tooltip
                             key={badge}
-                            style={styles.ownBadge}
-                            source={badges[badge]}
-                          />
-                        ) : (
-                          <Image
-                            key={badge}
-                            style={styles.noBadge}
-                            source={badges[badge]}
-                          />
+                            popover={<Text style={styles.tooltip__text}>Get more 'funny' reviews to unlock this badge!</Text>}
+                            toggleOnPress={true}
+                            containerStyle={styles.tooltip__container}
+                            width={250}
+                            height={100}
+                            >
+                            <Image
+                              key={badge}
+                              style={styles.noBadge}
+                              source={badges[badge]}
+                            />
+                          </Tooltip>
                         )
                       )}
                   </View>
@@ -214,17 +250,35 @@ class Profile extends Component<Props> {
                       .slice(6, 9)
                       .map(badge =>
                         this.props.badgeOptions.includes(badge) ? (
-                          <Image
+                          <Tooltip 
                             key={badge}
-                            style={styles.ownBadge}
-                            source={badges[badge]}
-                          />
+                            popover={<Text style={styles.tooltip__text}>Congratulations, you're a genius!</Text>}
+                            toggleOnPress={true}
+                            containerStyle={styles.tooltip__container}
+                            width={250}
+                            height={100}
+                            >
+                            <Image
+                              key={badge}
+                              style={styles.ownBadge}
+                              source={badges[badge]}
+                            />
+                          </Tooltip>
                         ) : (
-                          <Image
+                          <Tooltip 
                             key={badge}
-                            style={styles.noBadge}
-                            source={badges[badge]}
-                          />
+                            popover={<Text style={styles.tooltip__text}>Get more 'intelligent' reviews to unlock this badge!</Text>}
+                            toggleOnPress={true}
+                            containerStyle={styles.tooltip__container}
+                            width={250}
+                            height={100}
+                            >
+                            <Image
+                              key={badge}
+                              style={styles.noBadge}
+                              source={badges[badge]}
+                            />
+                          </Tooltip>
                         )
                       )}
                   </View>
@@ -233,17 +287,35 @@ class Profile extends Component<Props> {
                       .slice(9, 12)
                       .map(badge =>
                         this.props.badgeOptions.includes(badge) ? (
-                          <Image
-                            key={badge}
-                            style={styles.ownBadge}
-                            source={badges[badge]}
-                          />
+                          <Tooltip
+                            key={badge} 
+                            popover={<Text style={styles.tooltip__text}>Congratulations, you're a kind soul!</Text>}
+                            toggleOnPress={true}
+                            containerStyle={styles.tooltip__container}
+                            width={250}
+                            height={100}
+                            >
+                            <Image
+                              key={badge}
+                              style={styles.ownBadge}
+                              source={badges[badge]}
+                            />
+                          </Tooltip>
                         ) : (
-                          <Image
+                          <Tooltip 
                             key={badge}
-                            style={styles.noBadge}
-                            source={badges[badge]}
-                          />
+                            popover={<Text style={styles.tooltip__text}>Get more 'kindness' reviews to unlock this badge!</Text>}
+                            toggleOnPress={true}
+                            containerStyle={styles.tooltip__container}
+                            width={250}
+                            height={100}
+                            >
+                            <Image
+                              key={badge}
+                              style={styles.noBadge}
+                              source={badges[badge]}
+                            />
+                          </Tooltip>
                         )
                       )}
                   </View>
@@ -252,17 +324,35 @@ class Profile extends Component<Props> {
                       .slice(12, 15)
                       .map(badge =>
                         this.props.badgeOptions.includes(badge) ? (
-                          <Image
+                          <Tooltip 
                             key={badge}
-                            style={styles.ownBadge}
-                            source={badges[badge]}
-                          />
+                            popover={<Text style={styles.tooltip__text}>Congratulations, you're a good listener!</Text>}
+                            toggleOnPress={true}
+                            containerStyle={styles.tooltip__container}
+                            width={250}
+                            height={100}
+                            >
+                            <Image
+                              key={badge}
+                              style={styles.ownBadge}
+                              source={badges[badge]}
+                            />
+                          </Tooltip>
                         ) : (
-                          <Image
+                          <Tooltip 
                             key={badge}
-                            style={styles.noBadge}
-                            source={badges[badge]}
-                          />
+                            popover={<Text style={styles.tooltip__text}>Get more 'therapeutic' reviews to unlock this badge!</Text>}
+                            toggleOnPress={true}
+                            containerStyle={styles.tooltip__container}
+                            width={250}
+                            height={100}
+                            >
+                            <Image
+                              key={badge}
+                              style={styles.noBadge}
+                              source={badges[badge]}
+                            />
+                          </Tooltip>
                         )
                       )}
                   </View>
@@ -270,15 +360,9 @@ class Profile extends Component<Props> {
               </View>
               <TouchableOpacity
                 style={styles.edit__button}
-                onPress={() => this.props.toggleActiveSearch()}
-              >
-                <Text style={styles.button__text}>Toggle active</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.edit__button}
                 onPress={() => this.props.logOut()}
               >
-                <Text style={styles.button__text}>LOGOUT</Text>
+                <Text style={styles.button__text}>Logout</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
@@ -290,6 +374,15 @@ class Profile extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  tooltip__text: {
+    fontWeight: '700', 
+    color: 'grey'
+  },
+  tooltip__container: {
+    backgroundColor: '#fff', 
+    borderWidth: 1, 
+    borderColor: 'green'
+  },
   parent__container: {
     backgroundColor: '#e5e6e5'
   },
@@ -375,10 +468,10 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   interests__text: {},
-  email__phone: {
+  info__container: {
     marginTop: 25,
     marginBottom: 25,
-    left: 15
+    marginLeft: 8
   },
   inner__text: {
     margin: 10,
