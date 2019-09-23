@@ -120,6 +120,15 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
 
     let editButton
     let deleteButton
+    let closeButton
+    closeButton = (
+      <TouchableOpacity
+        style={styles.event__button}
+        onPress={() => props.closeEvent()}
+      >
+        <Text style={styles.button__text}>Close</Text>
+      </TouchableOpacity>
+    )
     if (
       props.currentEvent.creator &&
       props.user.email === props.currentEvent.creator.email
@@ -156,9 +165,6 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
         >
         {/* <View style={styles.contentContainer}> */}
           <ScrollView style={styles.scrollView}>
-            <Text style={styles.back} onPress={() => props.closeEvent()}>
-              {'<'}
-            </Text>
             <View style={styles.image__container}>
               <Image
                 source={{ uri: props.currentEvent.cover_photo }}
@@ -187,6 +193,7 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
               {rsvpButton}
               {editButton}
               {deleteButton}
+              {closeButton}
             </View>
             <View>
               <View style={styles.comments_header}>
