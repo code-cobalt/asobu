@@ -23,16 +23,6 @@ interface Props {
 }
 
 const Comments: React.FunctionComponent<Props> = props => {
-  /* let commentsArray;
-  if (props.comments !== undefined) {
-    commentsArray = props.comments.map(comment => {
-      <Comment
-            key={comment.id}
-            comment={comment}
-            currentUserEmail={props.currentUserEmail}
-          />
-    })
-  } */
   return (
     <View>
       {props.comments &&

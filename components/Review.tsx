@@ -1,16 +1,9 @@
 import React, { Component } from 'react'
-import {
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
-  Button,
-  TouchableOpacity
-} from 'react-native'
+import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Modal from 'react-native-modal'
 import ReviewCounter from './ReviewCounter'
 import { connect } from 'react-redux'
-import { reviewUser, addExp } from '../src/actions/users'
+import { reviewUser } from '../src/actions/users'
 
 interface State {
   totalPoints: number
