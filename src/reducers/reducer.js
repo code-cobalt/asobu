@@ -199,16 +199,16 @@ const reducer = (state = initialState, action) => {
       return { ...state, showEvent: false }
     }
     case 'SHOW_ATTENDEES': {
-      return { ...state, showAttendees: true, showEvent: false}
+      return { ...state, showAttendees: true, showEvent: false }
     }
     case 'CLOSE_ATTENDEES': {
-      return { ...state, showAttendees: false}
+      return { ...state, showAttendees: false }
     }
     case 'TRIGGER_ATTENDEES': {
-      return { ...state, triggerAttendees: true}
+      return { ...state, triggerAttendees: true }
     }
     case 'UNTRIGGER_ATTENDEES': {
-      return { ...state, triggerAttendees: false}
+      return { ...state, triggerAttendees: false }
     }
     case 'ATTEND_EVENT': {
       //add currentUser to currentevent attendees list
