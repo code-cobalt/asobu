@@ -15,6 +15,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker'
 import { connect } from 'react-redux'
 import { createEvent } from '../src/actions/events'
 import Modal from 'react-native-modal'
+import Spinner from './Spinner'
 import moment from 'moment'
 import { uploadPhoto } from '../src/actions/upload'
 
@@ -45,6 +46,7 @@ interface State {
   showStartDate: boolean
   showEndDate: boolean
   tagOptions: string[]
+  loading: boolean
 }
 
 class NewEvent extends React.Component<Props, State> {
@@ -76,7 +78,8 @@ class NewEvent extends React.Component<Props, State> {
       end: null,
       tags: [],
       creator: this.props.currentUserLimited
-    }
+    },
+    loading: false
   }
 
   addTag = tag => {
@@ -98,10 +101,12 @@ class NewEvent extends React.Component<Props, State> {
   }
 
   handleUpload = async () => {
+    this.setState({ loading: true })
     const image = await uploadPhoto()
-    const copiedState = { ...this.state }
-    copiedState.newEvent.cover_photo = image
-    this.setState({ ...copiedState })
+    this.setState({
+      newEvent: { ...this.state.newEvent, cover_photo: image },
+      loading: false
+    })
   }
 
   render() {
@@ -117,119 +122,131 @@ class NewEvent extends React.Component<Props, State> {
           coverScreen={true}
         >
           <ScrollView contentContainerStyle={styles.newEvent}>
-          <ImageBackground style={styles.imageBackground} source={require("../assets/login.jpg")}>
-
-            <View style={styles.text__formgroup}>
-              <Text style={styles.input__text}>Name your Event!</Text>
-              <TextInput
-                style={styles.event__input}
-                onChangeText={text =>
-                  this.setState({
-                    newEvent: { ...this.state.newEvent, name: text }
-                  })
-                }
-              />
-              <Text style={styles.input__text}>Set a Location!</Text>
-              <TextInput
-                style={styles.event__input}
-                onChangeText={text =>
-                  this.setState({
-                    newEvent: { ...this.state.newEvent, location: text }
-                  })
-                }
-              />
-              <Text style={styles.input__text}>Tell us about it!</Text>
-              <TextInput
-                multiline={true}
-                numberOfLines={5}
-                style={styles.event__input}
-                onChangeText={text =>
-                  this.setState({
-                    newEvent: { ...this.state.newEvent, description: text }
-                  })
-                }
-              />
-              <ModalDropdown
-                defaultValue="Guest Limit"
-                textStyle={styles.modal__dropdown__text}
-                style={styles.modal__dropdown}
-                options={Array.from(Array(101).keys()).slice(1)}
-                onSelect={selection =>
-                  this.setState({
-                    newEvent: { ...this.state.newEvent, limit: selection }
-                  })
-                }
-              />
-              <TouchableOpacity
-                style={styles.modal__dropdown}
-                onPress={() => this.setState({ showStartDate: true })}
-              >
-                <Text style={styles.input__text}>Start Date</Text>
-                {this.state.newEvent.start && (
-                  <Text>{moment(this.state.newEvent.start).format('LLL')}</Text>
+            <ImageBackground
+              style={styles.imageBackground}
+              source={require('../assets/login.jpg')}
+            >
+              <View style={styles.text__formgroup}>
+                <Text style={styles.input__text}>Name your Event!</Text>
+                <TextInput
+                  style={styles.event__input}
+                  onChangeText={text =>
+                    this.setState({
+                      newEvent: { ...this.state.newEvent, name: text }
+                    })
+                  }
+                />
+                <Text style={styles.input__text}>Set a Location!</Text>
+                <TextInput
+                  style={styles.event__input}
+                  onChangeText={text =>
+                    this.setState({
+                      newEvent: { ...this.state.newEvent, location: text }
+                    })
+                  }
+                />
+                <Text style={styles.input__text}>Tell us about it!</Text>
+                <TextInput
+                  multiline={true}
+                  numberOfLines={5}
+                  style={styles.event__input}
+                  onChangeText={text =>
+                    this.setState({
+                      newEvent: { ...this.state.newEvent, description: text }
+                    })
+                  }
+                />
+                <ModalDropdown
+                  defaultValue="Guest Limit"
+                  textStyle={styles.modal__dropdown__text}
+                  style={styles.modal__dropdown}
+                  options={Array.from(Array(101).keys()).slice(1)}
+                  onSelect={selection =>
+                    this.setState({
+                      newEvent: { ...this.state.newEvent, limit: selection }
+                    })
+                  }
+                />
+                <TouchableOpacity
+                  style={styles.modal__dropdown}
+                  onPress={() => this.setState({ showStartDate: true })}
+                >
+                  <Text style={styles.input__text}>Start Date</Text>
+                  {this.state.newEvent.start && (
+                    <Text>
+                      {moment(this.state.newEvent.start).format('LLL')}
+                    </Text>
+                  )}
+                </TouchableOpacity>
+                <DateTimePicker
+                  isVisible={this.state.showStartDate}
+                  mode="datetime"
+                  minimumDate={new Date()}
+                  onConfirm={date =>
+                    this.setState({
+                      newEvent: { ...this.state.newEvent, start: date },
+                      showStartDate: false
+                    })
+                  }
+                  onCancel={() => this.setState({ showStartDate: false })}
+                />
+                <TouchableOpacity
+                  style={styles.modal__dropdown}
+                  onPress={() => this.setState({ showEndDate: true })}
+                >
+                  <Text style={styles.input__text}>End Date</Text>
+                  {this.state.newEvent.end && (
+                    <Text>{moment(this.state.newEvent.end).format('LLL')}</Text>
+                  )}
+                </TouchableOpacity>
+                <DateTimePicker
+                  isVisible={this.state.showEndDate}
+                  mode="datetime"
+                  minimumDate={new Date(this.state.newEvent.start)}
+                  onConfirm={date =>
+                    this.setState({
+                      newEvent: { ...this.state.newEvent, end: date },
+                      showEndDate: false
+                    })
+                  }
+                  onCancel={() => this.setState({ showEndDate: false })}
+                />
+                <TouchableOpacity
+                  style={styles.modal__dropdown}
+                  onPress={this.handleUpload}
+                >
+                  <Text style={styles.input__text}>Upload Photo</Text>
+                </TouchableOpacity>
+                {this.state.newEvent.tags.map(tag => (
+                  <Text>
+                    {tag}{' '}
+                    <Text onPress={() => this.removeTag(tag)}>delete</Text>
+                  </Text>
+                ))}
+                <ModalDropdown
+                  defaultValue="Tags"
+                  options={this.state.tagOptions}
+                  onSelect={(index, value) => this.addTag(value)}
+                  textStyle={styles.modal__dropdown__text}
+                  style={styles.modal__dropdown}
+                />
+                {this.state.loading ? (
+                  <Spinner />
+                ) : (
+                  <TouchableOpacity
+                    style={styles.newEvent__button}
+                    onPress={() => this.props.createEvent(this.state.newEvent)}
+                  >
+                    <Text style={styles.input__text}>Submit</Text>
+                  </TouchableOpacity>
                 )}
-              </TouchableOpacity>
-              <DateTimePicker
-                isVisible={this.state.showStartDate}
-                mode="datetime"
-                minimumDate={new Date()}
-                onConfirm={date =>
-                  this.setState({
-                    newEvent: { ...this.state.newEvent, start: date },
-                    showStartDate: false
-                  })
-                }
-                onCancel={() => this.setState({ showStartDate: false })}
-              />
-              <TouchableOpacity
-                style={styles.modal__dropdown}
-                onPress={() => this.setState({ showEndDate: true })}
-              >
-                <Text style={styles.input__text}>End Date</Text>
-                {this.state.newEvent.end && (
-                  <Text>{moment(this.state.newEvent.end).format('LLL')}</Text>
-                )}
-              </TouchableOpacity>
-              <DateTimePicker
-                isVisible={this.state.showEndDate}
-                mode="datetime"
-                minimumDate={new Date(this.state.newEvent.start)}
-                onConfirm={date =>
-                  this.setState({
-                    newEvent: { ...this.state.newEvent, end: date },
-                    showEndDate: false
-                  })
-                }
-                onCancel={() => this.setState({ showEndDate: false })}
-              />
-              <TouchableOpacity style={styles.modal__dropdown} onPress={this.handleUpload} >
-                <Text style={styles.input__text}>Upload Photo</Text>
-              </TouchableOpacity>
-              {this.state.newEvent.tags.map(tag => (
-                <Text>
-                  {tag} <Text onPress={() => this.removeTag(tag)}>delete</Text>
-                </Text>
-              ))}
-              <ModalDropdown
-                defaultValue="Tags"
-                options={this.state.tagOptions}
-                onSelect={(index, value) => this.addTag(value)}
-                textStyle={styles.modal__dropdown__text}
-                style={styles.modal__dropdown}
-              />
-              <TouchableOpacity
-                style={styles.newEvent__button}
-                onPress={() => this.props.createEvent(this.state.newEvent)}
-              >
-                <Text style={styles.input__text}>Submit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.newEvent__button}  
-                onPress={() => this.props.closeNewEventForm()}
-              >
-                <Text style={styles.input__text}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity
+                  style={styles.newEvent__button}
+                  onPress={() => this.props.closeNewEventForm()}
+                >
+                  <Text style={styles.input__text}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
             </ImageBackground>
           </ScrollView>
         </Modal>
@@ -281,7 +298,7 @@ const styles = StyleSheet.create({
   input__text: {
     alignSelf: 'center',
     color: '#fff',
-    fontWeight: '800',
+    fontWeight: '800'
   },
   modal__dropdown__text: {
     alignSelf: 'center',
@@ -304,7 +321,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 15,
     alignSelf: 'center'
-  },
+  }
 })
 
 const mapStateToProps = state => {
