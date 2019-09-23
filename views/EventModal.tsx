@@ -158,10 +158,20 @@ const EventModal: React.FunctionComponent<Props> = props => {
         {!props.showEditEvent ? (
           <ScrollView style={styles.scrollView}>
             <View style={styles.image__container}>
-              <Image
-                source={{ uri: props.currentEvent.cover_photo }}
-                style={styles.animated__photo}
-              />
+              {props.currentEvent.cover_photo !== '' ? (
+                <Image
+                  source={{ uri: props.currentEvent.cover_photo }}
+                  style={styles.animated__photo}
+                />
+              ) : (
+                <Image
+                  source={{
+                    uri:
+                      'http://res.cloudinary.com/code-cobalt/image/upload/v1569218014/demo/vsqwabgm74fpqpw1ghad.jpg'
+                  }}
+                  style={styles.animated__photo}
+                />
+              )}
             </View>
             <View style={styles.text__block}>
               <Text style={styles.event__title}>{props.currentEvent.name}</Text>

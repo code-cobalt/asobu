@@ -9,10 +9,20 @@ const Event = props => {
       onPress={() => props.showEvent(props.event)}
     >
       <View style={styles.photo__container}>
-        <Image
-          source={{ uri: props.event.cover_photo }}
-          style={styles.event__photo}
-        />
+        {props.event.cover_photo !== '' ? (
+          <Image
+            source={{ uri: props.event.cover_photo }}
+            style={styles.event__photo}
+          />
+        ) : (
+          <Image
+            source={{
+              uri:
+                'http://res.cloudinary.com/code-cobalt/image/upload/v1569218014/demo/vsqwabgm74fpqpw1ghad.jpg'
+            }}
+            style={styles.event__photo}
+          />
+        )}
       </View>
       <View style={styles.text__box}>
         <Text style={styles.event__title}>{props.event.name}</Text>

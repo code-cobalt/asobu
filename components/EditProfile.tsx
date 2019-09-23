@@ -401,7 +401,7 @@ class EditProfile extends Component<Props, State> {
                 <TouchableOpacity
                   onPress={() =>
                     this.props.updateProfile(
-                      this.state.updatedUser.email,
+                      this.props.user.email,
                       this.state.updatedUser
                     )
                   }
