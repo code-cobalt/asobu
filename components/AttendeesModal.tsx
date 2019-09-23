@@ -1,32 +1,39 @@
 import React from 'react'
-import { StyleSheet, ScrollView, Text, View, TouchableOpacity, Image } from 'react-native'
+import {
+  StyleSheet,
+  ScrollView,
+  Text,
+  View,
+  TouchableOpacity
+} from 'react-native'
 import { connect } from 'react-redux'
 import User from '../components/User'
 import { SocketContext } from './SocketProvider'
 import Modal from 'react-native-modal'
 
-
 const AttendeesModal = props => {
-
-const unTrigger = () => {
+  const unTrigger = () => {
     props.untriggerAttendees()
     props.showEvent()
-}
+  }
 
-let attendeesList;
-if (props.currentEvent.attendees !== undefined && props.currentEvent.attendees.length > 0) {
+  let attendeesList
+  if (
+    props.currentEvent.attendees !== undefined &&
+    props.currentEvent.attendees.length > 0
+  ) {
     attendeesList = props.currentEvent.attendees.map(attendee => {
-    return (
-      <SocketContext.Consumer key={attendee.email}>
-        {socket => <User user={attendee} socket={socket} />}
-      </SocketContext.Consumer>
-    )
+      return (
+        <SocketContext.Consumer key={attendee.email}>
+          {socket => <User user={attendee} socket={socket} />}
+        </SocketContext.Consumer>
+      )
     })
-}
-    
+  }
+
   return (
     <>
-    <Modal
+      <Modal
         isVisible={props.showAttendees}
         onModalHide={unTrigger}
         animationIn="lightSpeedIn"
@@ -35,17 +42,17 @@ if (props.currentEvent.attendees !== undefined && props.currentEvent.attendees.l
         backdropColor="#e5e6e5"
         hasBackdrop={true}
         coverScreen={true}
-    >
+      >
         <View style={styles.button__container}>
-            <TouchableOpacity 
-                style={styles.close__button}
-                onPress={props.closeAttendees}
-                >
-                <Text style={styles.button__text}>Close</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.close__button}
+            onPress={props.closeAttendees}
+          >
+            <Text style={styles.button__text}>Close</Text>
+          </TouchableOpacity>
         </View>
-            <ScrollView style={styles.users}>{attendeesList}</ScrollView>
-    </Modal>
+        <ScrollView style={styles.users}>{attendeesList}</ScrollView>
+      </Modal>
     </>
   )
 }
@@ -62,7 +69,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#73d961',
     padding: 15,
     borderRadius: 50,
-    marginTop: 15,
+    marginTop: 15
   },
   button__text: {
     fontWeight: '800',
@@ -87,12 +94,12 @@ const styles = StyleSheet.create({
   user__image: {
     borderRadius: 5,
     height: '100%',
-    aspectRatio: 2/2
+    aspectRatio: 2 / 2
   },
   user__textcontainer: {
     height: '50%',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   user__name: {
     fontSize: 22,
@@ -102,7 +109,7 @@ const styles = StyleSheet.create({
   },
   user__text: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: 'white'
   },
   user__badges: {
@@ -125,7 +132,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 5,
     bottom: 5,
     width: '15%',
-    alignContent: "center",
+    alignContent: 'center',
     justifyContent: 'center'
   },
   column: {
@@ -144,7 +151,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     showAttendees: state.showAttendees,
-    currentEvent: state.currentEvent,
+    currentEvent: state.currentEvent
   }
 }
 
@@ -152,19 +159,22 @@ const mapDispatchToProps = dispatch => {
   return {
     closeAttendees: () => {
       dispatch({
-        type: 'CLOSE_ATTENDEES',
-        })
+        type: 'CLOSE_ATTENDEES'
+      })
     },
     showEvent: () => {
-        dispatch({
-          type: 'SHOW_EVENT',
-        })
+      dispatch({
+        type: 'SHOW_EVENT'
+      })
     },
     untriggerAttendees: () =>
-        dispatch({
-            type: 'UNTRIGGER_ATTENDEES'
-        })
-    }
+      dispatch({
+        type: 'UNTRIGGER_ATTENDEES'
+      })
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AttendeesModal)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AttendeesModal)

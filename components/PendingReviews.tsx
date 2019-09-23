@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {
   Text,
   View,
@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import Badges from './Badges'
-import { finishHangout } from '../src/actions/hangouts'
 
 const PendingReviews = props => {
   return (

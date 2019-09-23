@@ -1,16 +1,9 @@
 import React, { Component } from 'react'
-import {
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
-  Button,
-  TouchableOpacity
-} from 'react-native'
+import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Modal from 'react-native-modal'
 import ReviewCounter from './ReviewCounter'
 import { connect } from 'react-redux'
-import { reviewUser, addExp } from '../src/actions/users'
+import { reviewUser } from '../src/actions/users'
 
 interface State {
   totalPoints: number
@@ -24,7 +17,6 @@ interface State {
 
 interface Props {
   showReview: boolean
-  addExp: Function
   reviewUser: Function
   currentUser: CurrentUser
   endReview: Function
@@ -82,7 +74,6 @@ class Review extends Component<Props, State> {
       this.props.userToReview.email,
       stats
     )
-    this.props.addExp(this.props.currentUser.email, 40)
   }
 
   currentUserPoints = async () => {
@@ -214,7 +205,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addExp: (userEmail, points) => dispatch(addExp(userEmail, points)),
     endReview: (currentUser, userToReview, stats) =>
       dispatch(reviewUser(currentUser, userToReview, stats))
   }

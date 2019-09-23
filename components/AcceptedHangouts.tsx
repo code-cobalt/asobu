@@ -11,150 +11,141 @@ import {
 import { connect } from 'react-redux'
 import { startHangout, finishHangout } from '../src/actions/hangouts'
 import Badges from './Badges'
-import PendingReviews from './PendingReviews'
+// import PendingReviews from './PendingReviews'
+// future feature: conditional rendering to show PendingReviews component if user hasn't reviewed someone yet
 
 const AcceptedHangouts = props => {
   return (
     <>
-      {props.pendingReviews.length > 0 ? (
-        <PendingReviews />
-      ) : (
-        <>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.title}>Meeting up with</Text>
-            <ScrollView style={styles.request}>
-              {props.acceptedHangouts.map((hangout, index) => {
-                return (
-                  <View key={index}>
-                    <Image
-                      source={{ uri: hangout.profile_photo }}
-                      style={styles.user__image}
-                    />
-                    <View
-                      style={{
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        flex: 1
-                      }}
-                    >
-                      <Text style={styles.user__name}>
-                        {hangout.first_name}
-                      </Text>
-                      {hangout.equipped_badges && (
-                        <View style={styles.badges}>
-                          <Badges badges={hangout.equipped_badges} />
-                        </View>
-                      )}
-                      <TouchableOpacity
-                        style={styles.start_button}
-                        onPress={() => {
-                          props.socket.send(
-                            `s0 ${props.currentUserLimited.email} ${hangout.email} ${props.currentUserLimited.first_name}`
-                          )
-                          Alert.alert(
-                            'Your hangout will begin when the other user confirms.',
-                            ''
-                          )
-                        }}
-                      >
-                        <Text style={styles.button_text}>Start Hangout</Text>
-                      </TouchableOpacity>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.title}>Meeting up with</Text>
+        <ScrollView style={styles.request}>
+          {props.acceptedHangouts.map((hangout, index) => {
+            return (
+              <View key={index}>
+                <Image
+                  source={{ uri: hangout.profile_photo }}
+                  style={styles.user__image}
+                />
+                <View
+                  style={{
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flex: 1
+                  }}
+                >
+                  <Text style={styles.user__name}>{hangout.first_name}</Text>
+                  {hangout.equipped_badges && (
+                    <View style={styles.badges}>
+                      <Badges badges={hangout.equipped_badges} />
                     </View>
-                  </View>
-                )
-              })}
-            </ScrollView>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.title}>Currently hanging out</Text>
-            <ScrollView style={styles.request}>
-              {props.ongoingHangouts.map(hangout => (
-                <View key={hangout.participants[0].email}>
-                  <Image
-                    source={{ uri: hangout.participants[0].profile_photo }}
-                    style={styles.user__image}
-                  />
-                  <View
-                    style={{
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      flex: 1
+                  )}
+                  <TouchableOpacity
+                    style={styles.start_button}
+                    onPress={() => {
+                      props.socket.send(
+                        `s0 ${props.currentUserLimited.email} ${hangout.email} ${props.currentUserLimited.first_name}`
+                      )
+                      Alert.alert(
+                        'Your hangout will begin when the other user confirms.',
+                        ''
+                      )
                     }}
                   >
-                    <Text style={styles.user__name}>
-                      {hangout.participants[0].first_name}
-                    </Text>
-                    <View style={styles.badges}>
-                      <Badges
-                        badges={hangout.participants[0].equipped_badges}
-                      />
-                    </View>
-                    <TouchableOpacity
-                      style={styles.start_button}
-                      onPress={() => {
-                        Alert.alert(
-                          `Would you like to play an icebreaker activity with ${hangout.participants[0].first_name}?`,
-                          `Your game will start when ${hangout.participants[0].first_name} accepts.`
-                        ),
-                          [
-                            {
-                              text: 'Nevermind',
-                              onPress: () =>
-                                console.log('User cancelled playing game.')
-                            },
-                            {
-                              text: "Let's play!",
-                              onPress: () =>
-                                props.socket.send(
-                                  `q0 ${props.user.email} ${props.user.first_name} ${hangout.hangout_id} ${hangout.participants[0].email}`
-                                )
-                            }
-                          ]
-                      }}
-                    >
-                      <Text style={styles.button_text}>Play a game!</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.start_button}
-                      onPress={() => {
-                        {
-                          Alert.alert(
-                            `Are you sure you'd like to finish this hangout?`,
-                            '',
-                            [
-                              {
-                                text: 'Nevermind',
-                                onPress: () =>
-                                  console.log('User cancelled finish hangout.')
-                              },
-                              {
-                                text: 'Yes',
-                                onPress: () => {
-                                  props.socket.send(
-                                    `f1 ${props.user.email} ${hangout.participants[0].email} ${hangout.hangout_id}`
-                                  )
-                                  props.finishHangout(
-                                    hangout.hangout_id,
-                                    hangout.participants[0]
-                                  )
-                                }
-                              }
-                            ]
-                          )
-                        }
-                      }}
-                    >
-                      <Text style={styles.button_text}>Stop Hangout</Text>
-                    </TouchableOpacity>
-                  </View>
+                    <Text style={styles.button_text}>Start Hangout</Text>
+                  </TouchableOpacity>
                 </View>
-              ))}
-            </ScrollView>
-          </View>
-        </>
-      )}
+              </View>
+            )
+          })}
+        </ScrollView>
+      </View>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.title}>Currently hanging out</Text>
+        <ScrollView style={styles.request}>
+          {props.ongoingHangouts.map(hangout => (
+            <View key={hangout.participants[0].email}>
+              <Image
+                source={{ uri: hangout.participants[0].profile_photo }}
+                style={styles.user__image}
+              />
+              <View
+                style={{
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flex: 1
+                }}
+              >
+                <Text style={styles.user__name}>
+                  {hangout.participants[0].first_name}
+                </Text>
+                <View style={styles.badges}>
+                  <Badges badges={hangout.participants[0].equipped_badges} />
+                </View>
+                <TouchableOpacity
+                  style={styles.start_button}
+                  onPress={() => {
+                    Alert.alert(
+                      `Would you like to play an icebreaker activity with ${hangout.participants[0].first_name}?`,
+                      `Your game will start when ${hangout.participants[0].first_name} accepts.`
+                    ),
+                      [
+                        {
+                          text: 'Nevermind',
+                          onPress: () =>
+                            console.log('User cancelled playing game.')
+                        },
+                        {
+                          text: "Let's play!",
+                          onPress: () =>
+                            props.socket.send(
+                              `q0 ${props.user.email} ${props.user.first_name} ${hangout.hangout_id} ${hangout.participants[0].email}`
+                            )
+                        }
+                      ]
+                  }}
+                >
+                  <Text style={styles.button_text}>Play a game!</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.start_button}
+                  onPress={() => {
+                    {
+                      Alert.alert(
+                        `Are you sure you'd like to finish this hangout?`,
+                        '',
+                        [
+                          {
+                            text: 'Nevermind',
+                            onPress: () =>
+                              console.log('User cancelled finish hangout.')
+                          },
+                          {
+                            text: 'Yes',
+                            onPress: () => {
+                              props.socket.send(
+                                `f1 ${props.user.email} ${hangout.participants[0].email} ${hangout.hangout_id}`
+                              )
+                              props.finishHangout(
+                                hangout.hangout_id,
+                                hangout.participants[0]
+                              )
+                            }
+                          }
+                        ]
+                      )
+                    }
+                  }}
+                >
+                  <Text style={styles.button_text}>Stop Hangout</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
     </>
   )
 }
