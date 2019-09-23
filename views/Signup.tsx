@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
   },
   signup__scrollview: {
     width: '100%',
+    marginTop: 20
   },
   signup__formgroup: {
     width: '90%',
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 15,
-    borderRadius: 50,
+    borderRadius: 5,
     textAlign: 'center',
     backgroundColor: '#fff',
     opacity: 0.8,

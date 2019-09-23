@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 50,
     marginTop: 15,
-    alignSelf: 'center'
   },
   button__text: {
     fontWeight: '800',

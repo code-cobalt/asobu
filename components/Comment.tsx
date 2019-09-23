@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { deleteComment } from '../src/actions/events'
 
@@ -27,32 +27,53 @@ const Comment: React.FunctionComponent<Props> = props => {
   return (
     <View style={styles.comment__container}>
       {props.currentUserEmail === props.comment.from.email && (
-        <Text
-          onPress={() => props.deleteComment(props.eventId, props.comment.id)}
-        >
-          Delete
-        </Text>
+        <TouchableOpacity
+          onPress={() => props.deleteComment(props.eventId, props.comment.id)}>
+          <Text
+            style={{textAlign: 'right', fontWeight: '900'}}
+          >
+            Delete
+          </Text>
+        </TouchableOpacity>
       )}
-      <View>
+      <View style={styles.comment__box}>
         <Image style={styles.comment__photo} source={{uri: props.comment.from.profile_photo}}/>
-        <Text>{props.comment.from.first_name} posted:</Text>
-        <Text>{props.comment.content}</Text>
-        <Text>{props.comment.timestamp}</Text>
+        <View style={styles.text__container}>
+          <Text style={styles.comment__text}>{props.comment.content}</Text>
+        </View>
       </View>
+      <Text>{props.comment.timestamp}</Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  comment__box: {
+    flexDirection: 'row'
+  },
+  text__container: {
+    width: '70%',
+    flexDirection: 'row',
+    padding: 10
+  },
+  comment__text: {  
+    fontWeight: '500',
+    marginLeft: 15,
+  },
   comment__container: {
     width: '90%',
-    backgroundColor: 'grey',
-    padding: 10,
-    margin: 15
+    borderRadius: 15,
+    backgroundColor: '#fff',
+    padding: 5,
+    margin: 15,
+    borderColor: 'grey',
+    borderWidth: .5
   },
   comment__photo: {
     height: 60,
-    width: 60
+    aspectRatio: 1/1,
+    marginBottom: 10,
+    borderRadius: 30
   }
 })
 
