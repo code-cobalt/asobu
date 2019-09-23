@@ -400,18 +400,19 @@ const reducer = (state = initialState, action) => {
     case 'LOGOUT': {
       return { ...state, isLoggedIn: false }
     }
-    case 'FINISH_REVIEW': {
-      const updatedPendingReviews = state.pendingReviews.filter(
-        review => review.email !== action.userToReview
-      )
-      return {
-        ...state,
-        popupModal: false,
-        userToReview: action.userToReview,
-        isReviewing: true,
-        pendingReviews: updatedPendingReviews
-      }
-    }
+    // case 'FINISH_REVIEW': {
+    // can use for future feature of caching pending user reviews
+    //   const updatedPendingReviews = state.pendingReviews.filter(
+    //     review => review.email !== action.userToReview
+    //   )
+    //   return {
+    //     ...state,
+    //     popupModal: false,
+    //     userToReview: action.userToReview,
+    //     isReviewing: true,
+    //     pendingReviews: updatedPendingReviews
+    //   }
+    // }
     case 'TOGGLE_ACTIVE_SEARCH': {
       return { ...state, isActive: true }
     }
