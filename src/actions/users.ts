@@ -7,6 +7,7 @@ import { distance } from './distance'
 import {
   loginQuery,
   getUserLimitedQuery,
+  getUserQuery,
   getUsersQuery,
   updateProfileQuery,
   blockUserQuery,
@@ -57,12 +58,22 @@ export const loginUser = (userEmail, userPassword) => {
         firstName: user.first_name,
         lastName: user.last_name,
         email: user.email,
-        password: userPassword,
+        passwordHash: user.password_hash,
         profilePhoto: user.profile_photo
       })
     )
     dispatch({ type: 'SET_USER', user })
   }
+}
+
+export const getUser = async userEmail => {
+  const res = await axios.post(`${apiUrl}/graphql`, {
+    query: print(getUserQuery),
+    variables: {
+      userEmail
+    }
+  })
+  return res.data.data.User
 }
 
 export const logOut = () => {
