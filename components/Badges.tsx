@@ -24,6 +24,25 @@ interface Props {
 const Badges: React.FunctionComponent<Props> = props => {
   return (
     <>
+      {props.badges.length === 0 && (
+        <>
+          <Image
+            key={0}
+            source={require('../assets/socket.png')}
+            style={{ margin: 2, height: 40, width: 40 }}
+          />
+          <Image
+            key={1}
+            source={require('../assets/socket.png')}
+            style={{ margin: 2, height: 40, width: 40 }}
+          />
+          <Image
+            key={2}
+            source={require('../assets/socket.png')}
+            style={{ margin: 2, height: 40, width: 40 }}
+          />
+        </>
+      )}
       {props.badges.length === 1 && (
         <>
           <Image
