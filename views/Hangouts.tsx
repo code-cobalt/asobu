@@ -25,7 +25,7 @@ import {
   declineHangoutRequest
 } from '../src/actions/hangouts'
 import { SocketContext } from '../components/SocketProvider'
-import { toggleActive } from '../src/actions/users'
+import { toggleActive, getUsers } from '../src/actions/users'
 import Spinner from '../components/Spinner'
 
 interface UserLimited {
@@ -68,6 +68,14 @@ interface Props {
   longitude: number
   latitude: number
   email: string
+  getUsers: Function
+  hiddenUsers: string[]
+  hangouts: [Hangout]
+}
+
+interface Hangout {
+  hangout_id: string
+  participants: [UserLimited]
 }
 
 const options = [
@@ -95,6 +103,15 @@ class Hangouts extends React.Component<Props> {
     }
     this.setState({ active: bool })
     this.props.toggleActiveSearch(this.props.email, updatedUser)
+    if (bool) {
+      this.props.getUsers(
+        this.props.email,
+        this.props.hiddenUsers,
+        this.props.hangouts,
+        this.props.latitude,
+        this.props.longitude
+      )
+    }
   }
 
   renderReview = () => {
@@ -255,7 +272,16 @@ const mapStateToProps = state => {
     email: state.user.email,
     longitude: state.longitude,
     latitude: state.latitude,
-    allUsers: state.allUsers
+    allUsers: state.allUsers,
+    hiddenUsers: [
+      ...state.blockedUsers,
+      ...state.blockedByUsers,
+      ...state.user.received_hangout_requests.map(request => request.email),
+      ...state.user.accepted_hangouts.map(hangout => {
+        if (hangout.email) return hangout.email
+      })
+    ],
+    hangouts: state.ongoingHangouts
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -274,7 +300,11 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: 'SHOW_REVIEW' })
     },
     toggleActiveSearch: (email, updatedUser) =>
-      dispatch(toggleActive(email, updatedUser))
+      dispatch(toggleActive(email, updatedUser)),
+    getUsers: (currentUserEmail, blockedUsers, hangouts, latitude, longitude) =>
+      dispatch(
+        getUsers(currentUserEmail, blockedUsers, hangouts, latitude, longitude)
+      )
   }
 }
 

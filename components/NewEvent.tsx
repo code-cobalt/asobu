@@ -218,7 +218,7 @@ class NewEvent extends React.Component<Props, State> {
                   <Text style={styles.input__text}>Upload Photo</Text>
                 </TouchableOpacity>
                 {this.state.newEvent.tags.map(tag => (
-                  <Text>
+                  <Text key={tag}>
                     {tag}{' '}
                     <Text onPress={() => this.removeTag(tag)}>delete</Text>
                   </Text>
@@ -230,6 +230,7 @@ class NewEvent extends React.Component<Props, State> {
                   textStyle={styles.modal__dropdown__text}
                   style={styles.modal__dropdown}
                 />
+
                 {this.state.loading ? (
                   <Spinner />
                 ) : (
@@ -240,6 +241,7 @@ class NewEvent extends React.Component<Props, State> {
                     <Text style={styles.input__text}>Submit</Text>
                   </TouchableOpacity>
                 )}
+
                 <TouchableOpacity
                   style={styles.newEvent__button}
                   onPress={() => this.props.closeNewEventForm()}
