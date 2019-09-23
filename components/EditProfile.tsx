@@ -149,7 +149,7 @@ class EditProfile extends Component<Props, State> {
             style={styles.imageBackground}
             source={require('../assets/login.jpg')}
           >
-            <ScrollView style={{ width: '100%' }} centerContent={true}>
+            <ScrollView style={{ padding: 20, width: '100%' }} centerContent={true}>
               <View style={styles.profile__formgroup}>
                 <Text style={styles.field__text}>First Name</Text>
                 <TextInput
@@ -390,24 +390,26 @@ class EditProfile extends Component<Props, State> {
                 </View>
               </View>
 
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.updateProfile(
-                    this.state.updatedUser.email,
-                    this.state.updatedUser
-                  )
-                }
-                style={styles.profile__button}
-              >
-                <Text style={styles.profile__button__text}>Submit</Text>
-              </TouchableOpacity>
+              <View style={styles.button__formgroup}>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.updateProfile(
+                      this.state.updatedUser.email,
+                      this.state.updatedUser
+                    )
+                  }
+                  style={styles.profile__button}
+                >
+                  <Text style={styles.profile__button__text}>Submit</Text>
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                onPress={() => this.props.closeEditProfileForm()}
-                style={styles.profile__button}
-              >
-                <Text style={styles.profile__button__text}>Cancel</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.props.closeEditProfileForm()}
+                  style={styles.profile__button}
+                >
+                  <Text style={styles.profile__button__text}>Cancel</Text>
+                </TouchableOpacity>
+                </View>
             </ScrollView>
           </ImageBackground>
         </Modal>
@@ -446,10 +448,13 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 45,
-    borderRadius: 50,
+    borderRadius: 5,
     backgroundColor: '#fff',
     textAlign: 'center',
     opacity: 0.8
+  },
+  button__formgroup: {
+    marginBottom: 30
   },
   profile__button: {
     width: '50%',
