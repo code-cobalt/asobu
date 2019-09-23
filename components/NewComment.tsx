@@ -35,7 +35,6 @@ class NewComment extends React.Component<Props, State> {
       from: this.props.from,
       content: this.state.content
     })
-    console.log('SUBMITTING')
     this.setState({ content: '' })
   }
 
