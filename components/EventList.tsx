@@ -4,12 +4,14 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native'
 import { connect } from 'react-redux'
 import Event from '../components/Event'
 import NewEvent from '../components/NewEvent'
 import EditEvent from '../components/EditEvent'
+import Spinner from './Spinner'
 
 interface Event {
   name: string
@@ -36,15 +38,23 @@ const EventList: React.FunctionComponent<Props> = props => {
     return <Event key={event.id} event={event} />
   })
   return (
-    <View>
-      <TouchableOpacity style={styles.create__event} onPress={() => props.showForm()}>
-        <Text style={styles.button__text}>Create Event</Text>
-        <NewEvent />
-        <EditEvent />
-      </TouchableOpacity>
+    <>
+      {eventList.length > 0 ? (
+        <View>
+          <TouchableOpacity
+            style={styles.create__event}
+            onPress={() => props.showForm()}
+          >
+            <Text style={styles.button__text}>Create Event</Text>
+            <NewEvent />
+          </TouchableOpacity>
 
-      <ScrollView>{eventList}</ScrollView>
-    </View>
+          <ScrollView>{eventList}</ScrollView>
+        </View>
+      ) : (
+        <Spinner />
+      )}
+    </>
   )
 }
 
@@ -65,6 +75,11 @@ const styles = StyleSheet.create({
   button__text: {
     fontWeight: '800',
     color: 'white'
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 

@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 import { attendEvent, unattendEvent, deleteEvent } from '../src/actions/events'
 import Comments from '../components/Comments'
 import Modal from 'react-native-modal'
-
+import EditEvent from '../components/EditEvent'
 
 interface Props {
   user: UserLimited
@@ -29,6 +29,7 @@ interface Props {
   deleteEvent: Function
   triggerAttendees: Function
   triggeredAttendees: boolean
+  showEditEvent: boolean
 }
 
 interface UserLimited {
@@ -55,69 +56,61 @@ interface Event {
   comments: Array<Comment>
 }
 
+const EventModal: React.FunctionComponent<Props> = props => {
+  let attendeesButton
 
-const EventModal: React.FunctionComponent<Props> = (props) => {
+  const openAttendees = () => {
+    props.triggerAttendees()
+    props.closeEvent()
+  }
 
-    let attendeesButton
-
-    const openAttendees = () => {
-      props.triggerAttendees()
-      props.closeEvent()
+  const attendeesModalChecker = () => {
+    if (props.triggeredAttendees) {
+      props.showAttendees()
     }
+  }
 
-    const attendeesModalChecker = () => {
-      if (props.triggeredAttendees) {
-        props.showAttendees()
-      }
-    }
+  if (props.currentEvent.attendees) {
+    attendeesButton = (
+      <TouchableOpacity
+        onPress={() => openAttendees()}
+        style={styles.event__button}
+      >
+        <Text style={styles.button__text}>Attendees</Text>
+      </TouchableOpacity>
+    )
+  }
 
-    if (props.currentEvent.attendees) {
-      attendeesButton = (
-        <TouchableOpacity
-          onPress={() => 
-            openAttendees()
-          }
-          style={styles.event__button}
-          >
-            <Text style={styles.button__text}>Attendees</Text>
-          </TouchableOpacity>
-      )
-    }
+  let rsvpButton
 
-    let rsvpButton
+  if (
+    props.currentEvent.attendees &&
+    props.currentEvent.attendees
+      .map(attendees => attendees.email)
+      .includes(props.user.email)
+  ) {
+    rsvpButton = (
+      <TouchableOpacity
+        onPress={() =>
+          props.unattendEvent(props.currentEvent.id, props.user.email)
+        }
+        style={styles.event__button}
+      >
+        <Text style={styles.button__text}>Unattend</Text>
+      </TouchableOpacity>
+    )
+  } else {
+    rsvpButton = (
+      <TouchableOpacity
+        onPress={() => props.attendEvent(props.currentEvent.id, props.user)}
+        style={styles.event__button}
+      >
+        <Text style={styles.button__text}>RSVP</Text>
+      </TouchableOpacity>
+    )
+  }
 
-    if (
-      props.currentEvent.attendees &&
-      props.currentEvent.attendees
-        .map(attendees => attendees.email)
-        .includes(props.user.email)
-    ) {
-      rsvpButton = (
-        <TouchableOpacity
-          onPress={() =>
-            props.unattendEvent(
-              props.currentEvent.id,
-              props.user.email
-            )
-          }
-          style={styles.event__button}
-        >
-          <Text style={styles.button__text}>Unattend</Text>
-        </TouchableOpacity>
-      )
-    } else {
-      rsvpButton = (
-        <TouchableOpacity
-          onPress={() =>
-            props.attendEvent(props.currentEvent.id, props.user)
-          }
-          style={styles.event__button}
-        >
-          <Text style={styles.button__text}>RSVP</Text>
-        </TouchableOpacity>
-      )
-    }
-
+<<<<<<< HEAD
     let editButton
     let deleteButton
     let closeButton
@@ -153,6 +146,33 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
       }
     return (
       <>
+=======
+  let editButton
+  let deleteButton
+  if (
+    props.currentEvent.creator &&
+    props.user.email === props.currentEvent.creator.email
+  ) {
+    editButton = (
+      <TouchableOpacity
+        style={styles.event__button}
+        onPress={() => props.showEditEventForm()}
+      >
+        <Text style={styles.button__text}>Edit Event</Text>
+      </TouchableOpacity>
+    )
+    deleteButton = (
+      <TouchableOpacity
+        style={styles.event__button}
+        onPress={() => props.deleteEvent(props.currentEvent.id)}
+      >
+        <Text style={styles.button__text}>Delete Event</Text>
+      </TouchableOpacity>
+    )
+  }
+  return (
+    <>
+>>>>>>> 607c56b4256a6b4a825d4a037c8e3afb947a9b5f
       <Modal
         isVisible={props.showEvent}
         onModalHide={attendeesModalChecker}
@@ -162,8 +182,8 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
         backdropColor="#e5e6e5"
         hasBackdrop={true}
         coverScreen={true}
-        >
-        {/* <View style={styles.contentContainer}> */}
+      >
+        {!props.showEditEvent ? (
           <ScrollView style={styles.scrollView}>
             <View style={styles.image__container}>
               <Image
@@ -172,9 +192,7 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
               />
             </View>
             <View style={styles.text__block}>
-              <Text style={styles.event__title}>
-                {props.currentEvent.name}
-              </Text>
+              <Text style={styles.event__title}>{props.currentEvent.name}</Text>
               <Text style={styles.event__subtitle}>Summary</Text>
               <Text style={styles.event__text}>
                 {props.currentEvent.description}
@@ -185,10 +203,6 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
               </Text>
             </View>
             <View style={styles.button__block}>
-              {/* commenting this out for now until we decide to add some functionality
-              <TouchableOpacity style={styles.event__button}>
-                <Text style={styles.button__text}>Attendees</Text>
-              </TouchableOpacity> */}
               {attendeesButton}
               {rsvpButton}
               {editButton}
@@ -204,20 +218,20 @@ const EventModal: React.FunctionComponent<Props> = (props) => {
               </View>
             </View>
           </ScrollView>
-        {/* </View> */}
+        ) : (
+          <EditEvent />
+        )}
       </Modal>
-      </>
-    )
-  }
-
+    </>
+  )
+}
 
 const styles = StyleSheet.create({
-
-  back: { 
-    marginTop: 25, 
-    marginBottom: 25, 
-    marginLeft: 10, 
-    fontSize: 20 
+  back: {
+    marginTop: 25,
+    marginBottom: 25,
+    marginLeft: 10,
+    fontSize: 20
   },
   contentContainer: {
     position: 'absolute',
@@ -248,7 +262,7 @@ const styles = StyleSheet.create({
   },
   comments_header: {
     marginTop: 20,
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   event__subtitle: {
     marginTop: 20,
@@ -286,7 +300,8 @@ const mapStateToProps = state => {
     showEvent: state.showEvent,
     currentEvent: state.currentEvent,
     user: state.user,
-    triggeredAttendees: state.triggerAttendees
+    triggeredAttendees: state.triggerAttendees,
+    showEditEvent: state.showEditEventForm
   }
 }
 
