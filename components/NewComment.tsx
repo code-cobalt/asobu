@@ -1,5 +1,12 @@
 import React from 'react'
-import { TouchableOpacity, View, Button, TextInput, Text, StyleSheet } from 'react-native'
+import {
+  TouchableOpacity,
+  View,
+  Button,
+  TextInput,
+  Text,
+  StyleSheet
+} from 'react-native'
 import { connect } from 'react-redux'
 import { createComment } from '../src/actions/events'
 
@@ -23,6 +30,15 @@ class NewComment extends React.Component<Props, State> {
     content: ''
   }
 
+  handleSubmit = () => {
+    this.props.createComment(this.props.eventId, {
+      from: this.props.from,
+      content: this.state.content
+    })
+    console.log('SUBMITTING')
+    this.setState({ content: '' })
+  }
+
   render() {
     return (
       <View>
@@ -30,16 +46,12 @@ class NewComment extends React.Component<Props, State> {
           style={styles.comment__input}
           placeholder={'Post new comment...'}
           onChangeText={text => this.setState({ content: text })}
+          value={this.state.content}
         />
 
         <TouchableOpacity
           style={styles.post__button}
-          onPress={() =>
-            this.props.createComment(this.props.eventId, {
-              from: this.props.from,
-              content: this.state.content
-            })
-          }
+          onPress={() => this.handleSubmit()}
         >
           <Text style={styles.button__text}>Post</Text>
         </TouchableOpacity>
@@ -67,7 +79,7 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 50,
     borderColor: 'gray',
-    borderWidth: .5,
+    borderWidth: 0.5,
     marginTop: 20,
     marginBottom: 5,
     borderRadius: 2,
