@@ -38,6 +38,7 @@ class ChatInput extends Component<Props> {
     inputText: ''
   }
   handleSubmit = async text => {
+    if (this.state.inputText === '') return alert('Please write a message')
     const messageData = {
       chat_id: this.props.chatId,
       content: text.nativeEvent.text,
@@ -59,7 +60,7 @@ class ChatInput extends Component<Props> {
     return (
       <View style={styles.input__container}>
         <TextInput
-          placeholder='Aa'
+          placeholder="Aa"
           style={styles.chat__input}
           onChangeText={text => this.setState({ inputText: text })}
           onSubmitEditing={text => this.handleSubmit(text)}

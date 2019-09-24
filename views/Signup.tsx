@@ -68,6 +68,30 @@ class Signup extends Component<Props, State> {
   }
 
   handleSignup = async () => {
+    if (this.state.email === '') {
+      alert('Please provide an email address')
+      return
+    }
+    if (!/\S+@\S+\.\S+/.test(this.state.email)) {
+      alert('Please provide a valid email address')
+      return
+    }
+    if (this.state.first_name === '') {
+      alert('Please provide a valid first name')
+      return
+    }
+    if (this.state.last_name === '') {
+      alert('Please provide a valid last name')
+      return
+    }
+    if (this.state.phone_number === '') {
+      alert('Please provide a phone number')
+      return
+    }
+    if (this.state.password === '') {
+      alert('Please provide a password')
+      return
+    }
     if (this.state.password !== this.state.password2) {
       alert('Passwords do not match. Please enter your passwords again.')
       return
@@ -91,10 +115,10 @@ class Signup extends Component<Props, State> {
   render() {
     return (
       <ImageBackground
-      source={require('../assets/login.jpg')}
-      style={styles.signup}
+        source={require('../assets/login.jpg')}
+        style={styles.signup}
       >
-      <SafeAreaView>
+        <SafeAreaView>
           <ScrollView style={styles.signup__scrollview} centerContent={true}>
             <View style={styles.signup__formgroup}>
               <Text style={styles.signup__label}>Email</Text>
@@ -165,10 +189,8 @@ class Signup extends Component<Props, State> {
               <TouchableOpacity
                 onPress={() => this.props.toggleAuth()}
                 style={styles.signup__button}
-                >
-                <Text style={styles.signup__button__text}>
-                  Login
-                </Text>
+              >
+                <Text style={styles.signup__button__text}>Login</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
@@ -192,7 +214,6 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     marginTop: 30
-    
   },
   buttons__formgroup: {
     alignSelf: 'center',
@@ -213,14 +234,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     textAlign: 'center',
     backgroundColor: '#fff',
-    opacity: 0.8,
+    opacity: 0.8
   },
   signup__button: {
     width: 180,
     backgroundColor: '#73d961',
     padding: 15,
     borderRadius: 50,
-    marginTop: 15,
+    marginTop: 15
   },
   signup__button__text: {
     textAlign: 'center',

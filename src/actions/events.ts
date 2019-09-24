@@ -34,6 +34,9 @@ export const createEvent = newEvent => {
       query: print(createEventQuery),
       variables: { newEvent: { ...newEvent, limit: ~~newEvent.limit } }
     })
+    if (res.data.errors !== undefined) {
+      return alert(res.data.errors[0].message)
+    }
     dispatch({
       type: 'CREATE_EVENT',
       newEvent: res.data.data.CreateEvent
