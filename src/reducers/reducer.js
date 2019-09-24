@@ -321,6 +321,9 @@ const reducer = (state = initialState, action) => {
         popupModal: true
       }
     }
+    case 'OPEN_MAIN_MODAL': {
+      return { ...state, popupModal: true }
+    }
     case 'CLOSE_MAIN_MODAL': {
       return { ...state, popupModal: false }
     }
