@@ -34,20 +34,10 @@ const User: React.FunctionComponent<Props> = props => {
       style={styles.user}
       onPress={() => props.showProfile(props.user)}
     >
-      {props.user.profile_photo ? (
-        <Image
-          source={{ uri: props.user.profile_photo }}
-          style={styles.user__image}
-        />
-      ) : (
-        <Image
-          source={{
-            uri:
-              'http://res.cloudinary.com/code-cobalt/image/upload/v1569216639/demo/itm00silr9mpdrwjtung.jpg'
-          }}
-          style={styles.user__image}
-        />
-      )}
+      <Image
+        source={{ uri: props.user.profile_photo }}
+        style={styles.user__image}
+      />
 
       {props.user.equipped_badges === null ||
       props.user.equipped_badges === undefined ? (

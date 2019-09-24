@@ -11,7 +11,6 @@ import { connect } from 'react-redux'
 import { getChat } from '../src/actions/chats'
 import { blockUser } from '../src/actions/users'
 
-
 interface Props {
   chat: Chat
   getChat: Function
@@ -50,7 +49,9 @@ class Chat extends React.Component<Props> {
               participant.email,
               this.props.chat.chat_id
             )
-            this.props.socket.send(`b0 ${this.props.currentUserEmail} ${participant.email} ${this.props.chat.chat_id}`)
+            this.props.socket.send(
+              `b0 ${this.props.currentUserEmail} ${participant.email} ${this.props.chat.chat_id}`
+            )
           }
         },
         {
@@ -71,10 +72,9 @@ class Chat extends React.Component<Props> {
         {this.props.chat.participants.map(participant => {
           return (
             <Image
-              key={participant.email}
               source={{ uri: participant.profile_photo }}
               style={styles.chat__image}
-            ></Image>
+            />
           )
         })}
         <View style={styles.chat__textcontainer}>
@@ -116,16 +116,16 @@ const styles = StyleSheet.create({
     marginRight: 5,
     backgroundColor: '#adadae',
     borderRadius: 5,
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     textShadowRadius: 2,
-    shadowColor: "#000",
+    shadowColor: '#000',
     elevation: 3
   },
   chat__image: {
     borderRadius: 5,
     height: '100%',
-    aspectRatio: 2/2
+    aspectRatio: 2 / 2
   },
   chat__textcontainer: {
     flexDirection: 'column',
