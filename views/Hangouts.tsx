@@ -27,6 +27,8 @@ import {
 import { SocketContext } from '../components/SocketProvider'
 import { toggleActive, getUsers } from '../src/actions/users'
 import Spinner from '../components/Spinner'
+import AnimatedLoader from "react-native-animated-loader";
+
 
 interface UserLimited {
   first_name: string
