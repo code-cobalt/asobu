@@ -67,7 +67,9 @@ class Chat extends React.Component<Props> {
     return (
       <TouchableOpacity
         style={styles.chat}
-        onPress={() => this.props.getChat(this.props.chat.chat_id)}
+        onPress={() => {
+          this.props.getChat(this.props.chat.chat_id, this.props.chat.participants[0].first_name)}
+        }
       >
         {this.props.chat.participants.map(participant => {
           return (
@@ -80,31 +82,25 @@ class Chat extends React.Component<Props> {
         <View style={styles.chat__textcontainer}>
           {this.props.chat.participants.map(participant => {
             return (
-              <View key={participant.email}>
+              <View key={participant.email} style={{ alignItems: 'center', justifyContent: 'space-around' }}>
                 <Text style={styles.chat__name}>{participant.first_name}</Text>
                 <Text
                   style={styles.chat__text}
                   onPress={() => this.confirmBlock(participant)}
                 >
-                  Block User
+                  Block
                 </Text>
               </View>
             )
           })}
         </View>
+        <View></View>
       </TouchableOpacity>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  user__badges: {
-    height: '50%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 7
-  },
   chat: {
     height: 100,
     flexDirection: 'row',
@@ -128,10 +124,8 @@ const styles = StyleSheet.create({
     aspectRatio: 2 / 2
   },
   chat__textcontainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginLeft: 50,
-    right: 40
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   chat__text: {
     fontWeight: '600',
@@ -155,13 +149,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    currentUserEmail: state.user.email
+    currentUserEmail: state.user.email,
+
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getChat: chatId => dispatch(getChat(chatId)),
+    getChat: (chatId, chatPartner) => dispatch(getChat(chatId, chatPartner)),
     blockUser: (currentUserEmail, blockedUserEmail, chatId) =>
       dispatch(blockUser(currentUserEmail, blockedUserEmail, chatId))
   }
