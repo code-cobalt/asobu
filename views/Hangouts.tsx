@@ -140,7 +140,7 @@ class Hangouts extends React.Component<Props> {
               <AnimatedLoader
                 visible={this.state.visible}
                 overlayColor="rgba(255,255,255,0.75)"
-                animationStyle={styles.lottie}
+                animationStyle={styles.animation}
                 speed={1}
                 loop={true}
                 />
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 2,
     shadowColor: '#000'
   },
-  lottie: {
+  animation: {
     width: 300,
     height: 300,
   },
