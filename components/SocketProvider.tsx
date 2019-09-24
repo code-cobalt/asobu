@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import { sockethost } from '../environment'
 
 const connection = new WebSocket(sockethost)
-connection.onopen = event => {
-  alert('Socket Connected')
-}
+
 
 export const SocketContext = React.createContext()
 
