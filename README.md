@@ -137,7 +137,7 @@ Remember to **always** pull from the super master before pushing and making a PR
     - profile_photo (string)
     - equipped_badges (array of strings)
   - ongoing_hangouts (array of objects)
-    - hangout_id (string)
+    - id (string)
     - participants (array of objects)
       - first_name (string)
       - email (string)
