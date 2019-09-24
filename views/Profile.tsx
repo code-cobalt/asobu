@@ -114,21 +114,10 @@ class Profile extends Component<Props> {
           <ScrollView>
             <View style={styles.profile__header}>
               <TouchableOpacity style={styles.photo_container}>
-                {this.props.user.profile_photo !== null && (
-                  <Image
-                    source={{ uri: this.props.user.profile_photo }}
-                    style={styles.user__image}
-                  />
-                )}
-                {this.props.user.profile_photo === null && (
-                  <Image
-                    source={{
-                      uri:
-                        'http://res.cloudinary.com/code-cobalt/image/upload/v1569216639/demo/itm00silr9mpdrwjtung.jpg'
-                    }}
-                    style={styles.user__image}
-                  />
-                )}
+                <Image
+                  source={{ uri: this.props.user.profile_photo }}
+                  style={styles.user__image}
+                />
               </TouchableOpacity>
               {editButton}
               {/* <TouchableOpacity

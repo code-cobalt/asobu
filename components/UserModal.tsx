@@ -41,21 +41,10 @@ const UserModal: React.FunctionComponent<Props> = props => {
         <ScrollView>
           <View style={styles.profile__header}>
             <TouchableOpacity style={styles.photo_container}>
-              {props.currentProfile.profile_photo !== null && (
-                <Image
-                  source={{ uri: props.currentProfile.profile_photo }}
-                  style={styles.user__image}
-                />
-              )}
-              {props.currentProfile.profile_photo === null && (
-                <Image
-                  source={{
-                    uri:
-                      'http://res.cloudinary.com/code-cobalt/image/upload/v1569216639/demo/itm00silr9mpdrwjtung.jpg'
-                  }}
-                  style={styles.user__image}
-                />
-              )}
+              <Image
+                source={{ uri: props.currentProfile.profile_photo }}
+                style={styles.user__image}
+              />
             </TouchableOpacity>
             <View style={styles.basic_info_container}>
               <Text style={styles.user__name}>
