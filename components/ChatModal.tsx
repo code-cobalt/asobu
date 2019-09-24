@@ -4,8 +4,7 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
-  FlatList
+  TouchableOpacity
 } from 'react-native'
 import { connect } from 'react-redux'
 import ChatMessage from '../components/ChatMessage'
@@ -32,6 +31,7 @@ interface Props {
   currentChatId: number
   currentUserLimited: UserLimited
   goBack: Function
+  chatPartner: string
 }
 
 const ChatModal: React.FunctionComponent<Props> = props => {
@@ -53,9 +53,18 @@ const ChatModal: React.FunctionComponent<Props> = props => {
               {'<'}
             </Text>
           </TouchableOpacity>
+          <Text style={{ fontWeight: '600', fontSize: 26, color: '#fff' }}>{props.chatPartner}</Text>
+          <View>
+            <Text style={{ color: '#7e7e83' }}>{props.chatPartner}</Text>
+          </View>
         </View>
         {props.currentChatMessages.length > 0 ? (
-          <ScrollView style={styles.chat__messages}>
+          <ScrollView 
+            style={styles.chat__messages}
+            ref={ref => this.scrollView = ref}
+            onContentSizeChange={(contentWidth, contentHeight)=>{        
+              this.scrollView.scrollToEnd({animated: true});
+            }}>
             {props.currentChatMessages.length > 0 &&
               props.currentChatMessages.map(message => {
                 return (
@@ -97,7 +106,11 @@ const styles = StyleSheet.create({
   chat__header: {
     width: '100%',
     height: '10%',
-    backgroundColor: '#7e7e83'
+    backgroundColor: '#7e7e83',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingBottom: 5
   },
   input__container: {
     width: '100%',
@@ -108,10 +121,9 @@ const styles = StyleSheet.create({
     borderRadius: 30
   },
   back: {
-    marginTop: 35,
     marginLeft: 10,
     fontSize: 30,
-    color: '#fff'
+    color: '#fff',
   },
   chat__messages: {
     paddingTop: 8,
@@ -130,7 +142,8 @@ const mapStateToProps = state => {
       profile_photo: state.user.profile_photo
     },
     currentChatMessages: state.currentChatMessages,
-    currentChatId: state.currentChatId
+    currentChatId: state.currentChatId,
+    chatPartner: state.chat_partner
   }
 }
 

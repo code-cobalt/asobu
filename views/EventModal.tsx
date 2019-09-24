@@ -13,6 +13,8 @@ import { attendEvent, unattendEvent, deleteEvent } from '../src/actions/events'
 import Comments from '../components/Comments'
 import Modal from 'react-native-modal'
 import EditEvent from '../components/EditEvent'
+import moment from 'moment'
+
 
 interface Props {
   user: UserLimited
@@ -51,6 +53,10 @@ interface Event {
   cover_photo: string
   description: string
   location: string
+  limit: number
+  tags: [string]
+  start: Date
+  end: Date
   attendees: Array<UserLimited>
   creator: UserLimited
   comments: Array<Comment>
@@ -175,14 +181,32 @@ const EventModal: React.FunctionComponent<Props> = props => {
             </View>
             <View style={styles.text__block}>
               <Text style={styles.event__title}>{props.currentEvent.name}</Text>
+              <Text style={{ alignSelf: 'center', marginTop: 5, fontWeight: '900' }}>Starts</Text>
+              <Text style={styles.event__text}>{moment(props.currentEvent.start).format('LLL')}</Text>
+              <Text style={{ alignSelf: 'center', marginTop: 5, fontWeight: '900' }}>Ends</Text>
+              <Text style={styles.event__text}>{moment(props.currentEvent.end).format('LLL')}</Text>
               <Text style={styles.event__subtitle}>Summary</Text>
               <Text style={styles.event__text}>
                 {props.currentEvent.description}
               </Text>
+              <Text style={styles.event__subtitle}>Event Tags</Text>
+              <View>
+                  {props.currentEvent.tags.length > 0 && (
+                    <Text style={styles.event__text}>
+                      {props.currentEvent.tags.join(', ')}
+                    </Text>
+                  )}
+                </View>
               <Text style={styles.event__subtitle}>Location</Text>
               <Text style={styles.event__text}>
                 {props.currentEvent.location}
               </Text>
+              <Text style={styles.event__subtitle}>Available Spots</Text>
+              {props.currentEvent.attendees === undefined || props.currentEvent.attendees === null ?
+              <Text style={styles.event__text}>{props.currentEvent.limit}/{props.currentEvent.limit}</Text>
+              :
+              <Text style={styles.event__text}>{props.currentEvent.limit - props.currentEvent.attendees.length}/{props.currentEvent.limit}</Text>
+              }
             </View>
             <View style={styles.button__block}>
               {attendeesButton}
@@ -238,6 +262,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   event__title: {
+    marginTop: 5,
     fontSize: 24,
     alignSelf: 'center',
     fontWeight: '800'

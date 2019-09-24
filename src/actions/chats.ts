@@ -7,7 +7,7 @@ import {
   createMessageQuery
 } from '../queries/chats'
 
-export const getChat = chatId => {
+export const getChat = (chatId, chatPartner) => {
   return async dispatch => {
     const res = await axios.post(`${apiUrl}/graphql`, {
       query: print(getChatQuery),
@@ -21,6 +21,7 @@ export const getChat = chatId => {
     dispatch({
       type: 'SHOW_CHAT',
       messages,
+      chatPartner,
       chatId
     })
   }

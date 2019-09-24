@@ -36,7 +36,8 @@ const initialState = {
   isActive: false,
   isReviewing: false,
   activeSearch: false,
-  badgeOptions: []
+  badgeOptions: [],
+  chat_partner: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -120,7 +121,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         currentChatMessages: [...action.messages],
         currentChatId: action.chatId,
-        showChat: true
+        showChat: true,
+        chat_partner: action.chatPartner
       }
     }
     case 'CLOSE_CHAT': {

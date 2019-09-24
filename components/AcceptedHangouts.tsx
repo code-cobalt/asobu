@@ -20,10 +20,12 @@ const AcceptedHangouts = props => {
       <View style={{ flex: 1 }}>
         <Text style={styles.title}>Meeting up with</Text>
         {props.acceptedHangouts.length > 0 ? (
-          <ScrollView style={styles.request}>
+          <ScrollView 
+          horizontal={true}
+          style={styles.request}>
             {props.acceptedHangouts.map((hangout, index) => {
               return (
-                <View key={index}>
+                <View style={{ height: '50%' }} key={index}>
                   <Image
                     source={{ uri: hangout.profile_photo }}
                     style={styles.user__image}
@@ -74,9 +76,11 @@ const AcceptedHangouts = props => {
       <View style={{ flex: 1 }}>
         <Text style={styles.title}>Currently hanging out</Text>
         {props.ongoingHangouts.length > 0 ? (
-          <ScrollView style={styles.request}>
+          <ScrollView 
+          horizontal={true}
+          style={styles.request}>
             {props.ongoingHangouts.map(hangout => (
-              <View key={hangout.participants[0].email}>
+              <View style={{height: '50%'}} key={hangout.participants[0].email}>
                 <Image
                   source={{ uri: hangout.participants[0].profile_photo }}
                   style={styles.user__image}
@@ -189,20 +193,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   request: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     margin: 10
   },
   user__image: {
     alignSelf: 'center',
-    borderRadius: 55,
-    height: 110,
-    width: 110,
+    borderRadius: 40,
+    height: 80,
+    width: 80,
     marginBottom: 5
   },
   user__name: {
     alignSelf: 'center',
     color: 'white',
-    fontSize: 34,
+    fontSize: 24,
     marginBottom: 5
   },
   accept__button: {
@@ -229,18 +233,19 @@ const styles = StyleSheet.create({
   },
   start_button: {
     alignSelf: 'center',
-    width: '50%',
+    width: '100%',
     backgroundColor: 'blue',
     borderRadius: 10,
     marginTop: 5,
-    marginBottom: 50,
-    padding: 15
+    alignItems: 'center',
+    justifyContent: 'center',
+
   },
   button_text: {
-    textAlign: 'center',
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 18
+    fontSize: 12,
+    margin: 5
   }
 })
 

@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     opacity: 0.1
   },
   users: {
-    marginBottom: 10,
+    marginBottom: 80,
     height: '100%',
     width: '100%',
     backgroundColor: '#e5e6e5'

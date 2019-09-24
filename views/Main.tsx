@@ -243,7 +243,7 @@ class Main extends Component<Props> {
 const styles = StyleSheet.create({
   main: {
     flex: 11,
-    backgroundColor: 'white'
+    backgroundColor: '#e5e6e5'
   }
 })
 
