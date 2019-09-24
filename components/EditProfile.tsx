@@ -226,6 +226,7 @@ class EditProfile extends Component<Props, State> {
                   options={this.state.interestOptions}
                   onSelect={(index, value) => this.addInterest(value)}
                   defaultValue='Select'
+                  dropdownStyle={{ width: '50%' }}
                   style={{ marginTop: 15, marginBottom: 15, backgroundColor: 'blue', paddingLeft: 15, paddingRight: 15, alignSelf: 'center' }}
                   textStyle={{ fontSize: 18, fontWeight: '600', color: 'white' }}
                 />
