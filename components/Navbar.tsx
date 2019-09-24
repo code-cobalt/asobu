@@ -4,6 +4,8 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 interface Props {
   setActiveView: Function
+  activeView: string
+  openModal: Function
 }
 
 class Navbar extends Component<Props> {
@@ -20,17 +22,29 @@ class Navbar extends Component<Props> {
           ></Image>
           <Text style={styles.navbar__text}>Profile</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.navbar__item}
-          onPress={() => this.props.setActiveView('results')}
-        >
-          <Image
-            style={styles.navbar__image}
-            source={require('../assets/home_black.png')}
-          ></Image>
-          <Text style={styles.navbar__text}>Home</Text>
-        </TouchableOpacity>
+        {this.props.activeView !== 'results' ? (
+          <TouchableOpacity
+            style={styles.navbar__item}
+            onPress={() => this.props.setActiveView('results')}
+          >
+            <Image
+              style={styles.navbar__image}
+              source={require('../assets/Main.png')}
+            ></Image>
+            <Text style={styles.navbar__text}>Hangouts</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => this.props.openModal()}
+            style={styles.navbar__item}
+          >
+            <Image
+              style={styles.navbar__image}
+              source={require('../assets/Main.png')}
+            ></Image>
+            <Text style={styles.navbar__text}>Open List</Text>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity
           style={styles.navbar__item}
           onPress={() => this.props.setActiveView('chats')}
@@ -51,7 +65,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#fff',
     borderColor: 'grey',
-    borderWidth: .5, 
+    borderWidth: 0.5,
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center'
@@ -65,12 +79,18 @@ const styles = StyleSheet.create({
   },
   navbar__image: {
     height: 40,
-    aspectRatio: 1/1
+    aspectRatio: 1 / 1
   },
   navbar__text: {
     color: 'black'
   }
 })
+
+const mapStateToProps = state => {
+  return {
+    activeView: state.activeView
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -79,11 +99,12 @@ const mapDispatchToProps = dispatch => {
         type: 'SET_ACTIVE_VIEW',
         activeView: view
       })
-    }
+    },
+    openModal: () => dispatch({ type: 'OPEN_MAIN_MODAL' })
   }
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Navbar)
