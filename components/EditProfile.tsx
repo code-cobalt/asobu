@@ -168,7 +168,7 @@ class EditProfile extends Component<Props, State> {
             source={require('../assets/login.jpg')}
           >
             <ScrollView
-              style={{ padding: 20, width: '100%' }}
+              style={{ height: '100%', width: '100%', paddingTop: 50 }}
               centerContent={true}
             >
               <View style={styles.profile__formgroup}>
@@ -219,23 +219,28 @@ class EditProfile extends Component<Props, State> {
               >
                 <Text style={styles.field__text}>Upload a Photo!</Text>
               </TouchableOpacity>
-              <Text style={styles.field__text}>Your Interests:</Text>
-              {this.state.updatedUser.interests.map(interest => (
-                <Text
-                  key={interest}
-                  style={{ alignSelf: 'center', color: 'white' }}
-                >
-                  {interest}{' '}
-                  <Text onPress={() => this.removeInterest(interest)}>x</Text>
-                </Text>
-              ))}
-              <ModalDropdown
-                options={this.state.interestOptions}
-                onSelect={(index, value) => this.addInterest(value)}
-                style={{ alignSelf: 'center' }}
-                textStyle={{ color: 'white' }}
-              />
-              <Text style={styles.field__text}>Equipped Badges:</Text>
+              <View style={{ backgroundColor: '#bfc0bd', width: '70%', alignSelf: 'center', padding: 5, borderWidth: .5, borderColor: 
+              'grey', borderRadius: 5 }}>
+                <Text style={{ fontSize: 20, alignSelf: 'center', color: 'black', fontWeight: '800'}}>Pick your Interests!</Text>
+                <ModalDropdown
+                  options={this.state.interestOptions}
+                  onSelect={(index, value) => this.addInterest(value)}
+                  defaultValue='Select'
+                  style={{ marginTop: 15, marginBottom: 15, backgroundColor: 'blue', paddingLeft: 15, paddingRight: 15, alignSelf: 'center' }}
+                  textStyle={{ fontSize: 18, fontWeight: '600', color: 'white' }}
+                />
+                {this.state.updatedUser.interests.map(interest => (
+                  <Text
+                    key={interest}
+                    style={{ backgroundColor: 'white', fontWeight: '500', marginBottom: 5, padding: 3, alignSelf: 'center', color: 'black' }}
+                  >
+                    {interest}{' '}
+                    <Text onPress={() => this.removeInterest(interest)}>   X</Text>
+                  </Text>
+                ))}
+              </View>
+              <View style={styles.badge__container}>
+              <Text style={{ color: 'black', fontWeight: '700', fontSize: 20 }}>Equipped Badges:</Text>
               <View style={styles.top__badges}>
                 {this.state.updatedUser.equipped_badges.map(badge => (
                   <TouchableOpacity
@@ -286,8 +291,7 @@ class EditProfile extends Component<Props, State> {
                 )}
               </View>
               <View>
-                <Text style={styles.field__text}>Add New Equipped Badges:</Text>
-                <View style={styles.badge__container}>
+                <Text style={{ alignSelf: 'center', color: 'black', fontWeight: '600', fontSize: 18, padding: 5, marginBottom: 10 }}>Tap badges to equip them!</Text>
                   <View style={styles.badge__category}>
                     {badgeNames.slice(0, 3).map((badge, index) =>
                       this.props.badgeOptions.includes(badge) &&
@@ -453,6 +457,7 @@ const styles = StyleSheet.create({
     margin: 0
   },
   field__text: {
+    fontSize: 16,
     alignSelf: 'center',
     color: '#fff',
     fontWeight: '800'
@@ -473,7 +478,7 @@ const styles = StyleSheet.create({
     opacity: 0.8
   },
   button__formgroup: {
-    marginBottom: 30
+    marginBottom: 80
   },
   profile__button: {
     width: '50%',
