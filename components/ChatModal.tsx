@@ -4,7 +4,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  FlatList
 } from 'react-native'
 import { connect } from 'react-redux'
 import ChatMessage from '../components/ChatMessage'
@@ -100,6 +101,7 @@ const styles = StyleSheet.create({
   },
   input__container: {
     width: '100%',
+    height: '10%',
     backgroundColor: '#fff'
   },
   back__arrow: {
@@ -111,16 +113,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#fff'
   },
-  /* container: {
-    position: 'absolute',
-    height: (height / 100) * 91.7,
-    width: width,
-    bottom: -height,
-    backgroundColor: '#fff',
-    justifyContent: 'space-between'
-  }, */
   chat__messages: {
-    paddingTop: 25
+    paddingTop: 8,
+    paddingBottom: 10,
+    height: '100%',
+    width: '100%'
   }
 })
 

@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import { getChat } from '../src/actions/chats'
 import { blockUser } from '../src/actions/users'
 
+
 interface Props {
   chat: Chat
   getChat: Function
@@ -32,6 +33,7 @@ interface Participant {
   email: string
   first_name: string
   profile_photo: string
+  equipped_badges: [string]
 }
 
 class Chat extends React.Component<Props> {
@@ -96,6 +98,13 @@ class Chat extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  user__badges: {
+    height: '50%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 7
+  },
   chat: {
     height: 100,
     flexDirection: 'row',
@@ -106,9 +115,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
     backgroundColor: '#adadae',
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5, 
-    borderRadius: 20,
+    borderRadius: 5,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     textShadowRadius: 2,
@@ -127,15 +134,16 @@ const styles = StyleSheet.create({
     right: 40
   },
   chat__text: {
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: 18,
     color: 'white'
   },
   chat__name: {
     fontSize: 28,
     color: 'white',
-    fontWeight: '900',
-    marginBottom: 30
+    fontWeight: '600',
+    marginBottom: 15,
+    alignSelf: 'flex-start'
   },
   chat__badges: {
     flexDirection: 'row',
