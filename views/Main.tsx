@@ -45,7 +45,7 @@ interface State {
 }
 
 interface Hangout {
-  hangout_id: string
+  id: string
   participants: [UserLimited]
 }
 
@@ -77,7 +77,6 @@ const questions = [
   'Would you rather be covered in fur or covered in scales?',
   'Would you rather have unlimited international first-class tickets or never have to pay for food at restaurants?'
 ]
-
 
 class Main extends Component<Props, State> {
   state = {

@@ -76,7 +76,7 @@ interface Props {
 }
 
 interface Hangout {
-  hangout_id: string
+  id: string
   participants: [UserLimited]
 }
 
