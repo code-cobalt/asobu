@@ -32,37 +32,49 @@ class Login extends Component<Props, State> {
         source={require('../assets/login.jpg')}
         style={styles.login}
       >
-        <View style={styles.login__formgroup}>
-          <Text style={styles.login__label}>Email</Text>
-          <TextInput
-            value={this.state.email}
-            onChangeText={text => this.setState({ email: text })}
-            style={styles.login__input}
-          />
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <Text style={{ color: '#fff', fontSize: 56 }}>Asobu</Text>
         </View>
-        <View style={styles.login__formgroup}>
-          <Text style={styles.login__label}>Password</Text>
-          <TextInput
-            value={this.state.password}
-            secureTextEntry={true}
-            onChangeText={text => this.setState({ password: text })}
-            style={styles.login__input}
-          />
+        <View
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            flex: 1
+          }}
+        >
+          <View style={styles.login__formgroup}>
+            <Text style={styles.login__label}>Email</Text>
+            <TextInput
+              value={this.state.email}
+              onChangeText={text => this.setState({ email: text })}
+              style={styles.login__input}
+            />
+          </View>
+          <View style={styles.login__formgroup}>
+            <Text style={styles.login__label}>Password</Text>
+            <TextInput
+              value={this.state.password}
+              secureTextEntry={true}
+              onChangeText={text => this.setState({ password: text })}
+              style={styles.login__input}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.loginUser(this.state.email, this.state.password)
+            }
+            style={styles.login__button}
+          >
+            <Text style={styles.login__button__text}>Login</Text>
+          </TouchableOpacity>
+          <Text
+            style={styles.login__signup}
+            onPress={() => this.props.toggleAuth()}
+          >
+            Sign Up
+          </Text>
         </View>
-        <TouchableOpacity
-          onPress={() =>
-            this.props.loginUser(this.state.email, this.state.password)
-          }
-          style={styles.login__button}
-        >
-          <Text style={styles.login__button__text}>Login</Text>
-        </TouchableOpacity>
-        <Text
-          style={styles.login__signup}
-          onPress={() => this.props.toggleAuth()}
-        >
-          Sign Up
-        </Text>
+        <View style={{ flex: 1 }}></View>
       </ImageBackground>
     )
   }
@@ -71,11 +83,12 @@ class Login extends Component<Props, State> {
 const styles = StyleSheet.create({
   login: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center'
   },
   login__formgroup: {
-    width: '90%'
+    width: '90%',
+    marginBottom: 15
   },
   login__label: {
     marginLeft: 15,

@@ -173,6 +173,7 @@ class NewEvent extends React.Component<Props, State> {
                   defaultValue="Guest Limit"
                   textStyle={styles.modal__dropdown__text}
                   style={styles.modal__dropdown}
+                  dropdownStyle={{ width: '50%' }}
                   options={Array.from(Array(101).keys()).slice(1)}
                   onSelect={selection =>
                     this.setState({
@@ -186,7 +187,7 @@ class NewEvent extends React.Component<Props, State> {
                 >
                   <Text style={styles.input__text}>Start Date</Text>
                   {this.state.newEvent.start && (
-                    <Text>
+                    <Text style={styles.event__date}>
                       {moment(this.state.newEvent.start).format('LLL')}
                     </Text>
                   )}
@@ -209,7 +210,9 @@ class NewEvent extends React.Component<Props, State> {
                 >
                   <Text style={styles.input__text}>End Date</Text>
                   {this.state.newEvent.end && (
-                    <Text>{moment(this.state.newEvent.end).format('LLL')}</Text>
+                    <Text style={styles.event__date}>
+                      {moment(this.state.newEvent.end).format('LLL')}
+                    </Text>
                   )}
                 </TouchableOpacity>
                 <DateTimePicker
@@ -230,20 +233,37 @@ class NewEvent extends React.Component<Props, State> {
                 >
                   <Text style={styles.input__text}>Upload Photo</Text>
                 </TouchableOpacity>
-                {this.state.newEvent.tags.map(tag => (
-                  <Text key={tag}>
-                    {tag}{' '}
-                    <Text onPress={() => this.removeTag(tag)}>delete</Text>
-                  </Text>
-                ))}
                 <ModalDropdown
                   defaultValue="Tags"
                   options={this.state.tagOptions}
                   onSelect={(index, value) => this.addTag(value)}
                   textStyle={styles.modal__dropdown__text}
                   style={styles.modal__dropdown}
+                  dropdownStyle={{ width: '50%' }}
                 />
-
+                {this.state.newEvent.tags.length > 0 && (
+                  <View
+                    style={{
+                      backgroundColor: '#fff',
+                      opacity: 0.8,
+                      width: '50%',
+                      borderRadius: 6,
+                      padding: 10
+                    }}
+                  >
+                    {this.state.newEvent.tags.map(tag => (
+                      <Text key={tag} style={{ alignSelf: 'center' }}>
+                        {tag}{' '}
+                        <Text
+                          style={{ alignSelf: 'flex-end' }}
+                          onPress={() => this.removeTag(tag)}
+                        >
+                          X
+                        </Text>
+                      </Text>
+                    ))}
+                  </View>
+                )}
                 {this.state.loading ? (
                   <Spinner />
                 ) : (
@@ -306,6 +326,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 30,
     textAlign: 'center'
+  },
+  event__date: {
+    color: '#fff'
   },
   input__text: {
     alignSelf: 'center',
