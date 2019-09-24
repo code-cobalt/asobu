@@ -26,10 +26,10 @@ const Event = props => {
       </View>
       <View style={styles.text__box}>
         <Text style={styles.event__title}>{props.event.name}</Text>
-        <Text style={styles.event__text}>
+        <Text style={{ fontSize: 18, alignSelf: 'center', marginTop: 10 }}>{props.event.description}</Text>
+        <Text style={{ fontSize: 12, alignSelf: 'center', marginTop: 20 }}>
           Created by {props.event.creator.first_name}
         </Text>
-        <Text style={styles.event__text}>{props.event.description}</Text>
       </View>
     </TouchableOpacity>
   )
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   event__text: {
+    fontSize: 18,
     padding: 5,
     alignSelf: 'center'
   },
