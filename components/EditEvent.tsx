@@ -1,7 +1,16 @@
 import React from 'react'
 import { updateEvent } from '../src/actions/events'
 import { connect } from 'react-redux'
-import { ScrollView, StyleSheet, Button, Text, TextInput, SafeAreaView, View, TouchableOpacity } from 'react-native'
+import {
+  ScrollView,
+  StyleSheet,
+  Button,
+  Text,
+  TextInput,
+  SafeAreaView,
+  View,
+  TouchableOpacity
+} from 'react-native'
 import ModalDropdown from 'react-native-modal-dropdown'
 import moment from 'moment'
 import Spinner from './Spinner'
@@ -97,114 +106,133 @@ class EditEvent extends React.Component<Props, State> {
   render() {
     return (
       <SafeAreaView>
-      <ScrollView contentContainerStyle={styles.editEvent}>
-        <Text style={styles.input__text}>Event Name</Text>
-        <TextInput
-          style={styles.event__input}
-          placeholder={this.props.event.name}
-          onChangeText={text =>
-            this.setState({
-              updatedEvent: { ...this.state.updatedEvent, name: text }
-            })
-          }
-        />
-        <Text style={styles.input__text}>Location</Text>
-        <TextInput
-          style={styles.event__input}
-          placeholder={this.props.event.location}
-          onChangeText={text =>
-            this.setState({
-              updatedEvent: { ...this.state.updatedEvent, location: text }
-            })
-          }
-        />
-        <Text style={styles.input__text}>Description</Text>
-        <TextInput
-          style={styles.event__input}
-          placeholder={this.props.event.description}
-          onChangeText={text =>
-            this.setState({
-              updatedEvent: { ...this.state.updatedEvent, description: text }
-            })
-          }
-        />
-        <Text>Attendee Limit</Text>
-        <ModalDropdown
-          value={this.props.event.limit}
-          options={Array.from(Array(101).keys()).slice(1)}
-          onSelect={selection =>
-            this.setState({
-              updatedEvent: { ...this.state.updatedEvent, limit: selection }
-            })
-          }
-        />
-        <Text>Start</Text>
-        <Button
-          title={moment(this.state.updatedEvent.start).format('LLL')}
-          onPress={() => this.setState({ showStartDate: true })}
-        />
-        <DateTimePicker
-          isVisible={this.state.showStartDate}
-          mode="datetime"
-          date={new Date(this.props.event.start)}
-          minimumDate={new Date()}
-          onConfirm={date =>
-            this.setState({
-              updatedEvent: { ...this.state.updatedEvent, start: date },
-              showStartDate: false
-            })
-          }
-          onCancel={() => this.setState({ showStartDate: false })}
-        />
-        <Text>End</Text>
-        <Button
-          title={moment(this.state.updatedEvent.end).format('LLL')}
-          onPress={() => this.setState({ showEndDate: true })}
-        />
-        <DateTimePicker
-          isVisible={this.state.showEndDate}
-          mode="datetime"
-          date={new Date(this.props.event.end)}
-          minimumDate={this.state.updatedEvent.start}
-          onConfirm={date =>
-            this.setState({
-              updatedEvent: { ...this.state.updatedEvent, end: date },
-              showEndDate: false
-            })
-          }
-          onCancel={() => this.setState({ showEndDate: false })}
-        />
-        <Text>Cover Photo</Text>
-        <Button title="Upload Photo" onPress={this.handleUpload} />
-        <Text>Tags</Text>
-        {this.state.updatedEvent.tags.map(tag => (
-          <Text key={tag}>
-            {tag} <Text onPress={() => this.removeTag(tag)}>delete</Text>
-          </Text>
-        ))}
-        <ModalDropdown
-          options={this.state.tagOptions}
-          onSelect={(index, value) => this.addTag(value)}
-        />
-        <View style={styles.button__formgroup}>
-          {this.state.loading ? (
-          <Spinner />
-        ) : (
-          <TouchableOpacity 
-            onPress={() => this.handleSubmit()}
-            style={styles.button}
+        <ScrollView contentContainerStyle={styles.editEvent}>
+          <Text style={styles.input__text}>Event Name</Text>
+          <TextInput
+            style={styles.event__input}
+            placeholder={this.props.event.name}
+            onChangeText={text =>
+              this.setState({
+                updatedEvent: { ...this.state.updatedEvent, name: text }
+              })
+            }
+          />
+          <Text style={styles.input__text}>Location</Text>
+          <TextInput
+            style={styles.event__input}
+            placeholder={this.props.event.location}
+            onChangeText={text =>
+              this.setState({
+                updatedEvent: { ...this.state.updatedEvent, location: text }
+              })
+            }
+          />
+          <Text style={styles.input__text}>Description</Text>
+          <TextInput
+            style={styles.event__input}
+            placeholder={this.props.event.description}
+            onChangeText={text =>
+              this.setState({
+                updatedEvent: { ...this.state.updatedEvent, description: text }
+              })
+            }
+          />
+          <Text>Attendee Limit</Text>
+          <ModalDropdown
+            value={this.props.event.limit}
+            options={Array.from(Array(101).keys()).slice(1)}
+            onSelect={selection =>
+              this.setState({
+                updatedEvent: { ...this.state.updatedEvent, limit: selection }
+              })
+            }
+          />
+          <Text>Start</Text>
+          <Button
+            title={moment(this.state.updatedEvent.start).format('LLL')}
+            onPress={() => this.setState({ showStartDate: true })}
+          />
+          <DateTimePicker
+            isVisible={this.state.showStartDate}
+            mode="datetime"
+            date={new Date(this.props.event.start)}
+            minimumDate={new Date()}
+            onConfirm={date =>
+              this.setState({
+                updatedEvent: { ...this.state.updatedEvent, start: date },
+                showStartDate: false
+              })
+            }
+            onCancel={() => this.setState({ showStartDate: false })}
+          />
+          <Text>End</Text>
+          <Button
+            title={moment(this.state.updatedEvent.end).format('LLL')}
+            onPress={() => this.setState({ showEndDate: true })}
+          />
+          <DateTimePicker
+            isVisible={this.state.showEndDate}
+            mode="datetime"
+            date={new Date(this.props.event.end)}
+            minimumDate={this.state.updatedEvent.start}
+            onConfirm={date =>
+              this.setState({
+                updatedEvent: { ...this.state.updatedEvent, end: date },
+                showEndDate: false
+              })
+            }
+            onCancel={() => this.setState({ showEndDate: false })}
+          />
+          <Text>Cover Photo</Text>
+          <Button title="Upload Photo" onPress={this.handleUpload} />
+          <Text>Tags</Text>
+
+          <ModalDropdown
+            options={this.state.tagOptions}
+            onSelect={(index, value) => this.addTag(value)}
+          />
+          {this.state.updatedEvent.tags.length > 0 && (
+            <View
+              style={{
+                backgroundColor: '#fff',
+                opacity: 0.8,
+                width: '50%',
+                borderRadius: 6,
+                padding: 10
+              }}
             >
-            <Text style={styles.button__text}>Submit</Text>
-          </TouchableOpacity>
-        )}
-          <TouchableOpacity 
-            onPress={() => this.props.closeEditEventForm()}
-            style={styles.button}
+              {this.state.updatedEvent.tags.map(tag => (
+                <Text key={tag} style={{ alignSelf: 'center' }}>
+                  {tag}{' '}
+                  <Text
+                    style={{ alignSelf: 'flex-end' }}
+                    onPress={() => this.removeTag(tag)}
+                  >
+                    X
+                  </Text>
+                </Text>
+              ))}
+            </View>
+          )}
+          <View style={styles.button__formgroup}>
+            {this.state.loading ? (
+              <Spinner />
+            ) : (
+              <TouchableOpacity
+                onPress={() => this.handleSubmit()}
+                style={styles.button}
+              >
+                <Text style={styles.button__text}>Submit</Text>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              onPress={() => this.props.closeEditEventForm()}
+              style={styles.button}
             >
-            <Text style={styles.button__text}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+              <Text style={styles.button__text}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     )
   }
