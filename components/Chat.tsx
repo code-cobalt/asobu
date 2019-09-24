@@ -71,7 +71,7 @@ class Chat extends React.Component<Props> {
       >
         {this.props.chat.participants.map(participant => {
           return (
-            <>
+            <React.Fragment key={participant.email}>
               {participant.profile_photo ? (
                 <Image
                   source={{ uri: participant.profile_photo }}
@@ -79,7 +79,6 @@ class Chat extends React.Component<Props> {
                 />
               ) : (
                 <Image
-                  key={participant.email}
                   source={{
                     uri:
                       'http://res.cloudinary.com/code-cobalt/image/upload/v1569216639/demo/itm00silr9mpdrwjtung.jpg'
@@ -87,7 +86,7 @@ class Chat extends React.Component<Props> {
                   style={styles.chat__image}
                 />
               )}
-            </>
+            </React.Fragment>
           )
         })}
         <View style={styles.chat__textcontainer}>
