@@ -23,10 +23,21 @@ const AcceptedHangouts = props => {
           {props.acceptedHangouts.map((hangout, index) => {
             return (
               <View key={index}>
-                <Image
-                  source={{ uri: hangout.profile_photo }}
-                  style={styles.user__image}
-                />
+                {hangout.profile_photo ? (
+                  <Image
+                    source={{ uri: hangout.profile_photo }}
+                    style={styles.user__image}
+                  />
+                ) : (
+                  <Image
+                    source={{
+                      uri:
+                        'http://res.cloudinary.com/code-cobalt/image/upload/v1569216639/demo/itm00silr9mpdrwjtung.jpg'
+                    }}
+                    style={styles.user__image}
+                  />
+                )}
+
                 <View
                   style={{
                     flexDirection: 'column',
