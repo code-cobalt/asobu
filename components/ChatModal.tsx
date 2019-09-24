@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  FlatList
+} from 'react-native'
 import { connect } from 'react-redux'
 import ChatMessage from '../components/ChatMessage'
 import ChatInput from '../components/ChatInput'
@@ -37,8 +44,7 @@ const ChatModal: React.FunctionComponent<Props> = props => {
       backdropOpacity={1}
       backdropColor="#dcf9ff"
       coverScreen={true}
-      style={{margin: 0, padding: 0}}
-
+      style={{ margin: 0, padding: 0 }}
     >
       <View style={{ flex: 1 }}>
         <View style={styles.chat__header}>
@@ -48,24 +54,28 @@ const ChatModal: React.FunctionComponent<Props> = props => {
             </Text>
           </TouchableOpacity>
         </View>
-        <ScrollView 
-          style={styles.chat__messages}
-          ref={ref => this.scrollView = ref}
-          onContentSizeChange={(contentWidth, contentHeight)=>{        
-            this.scrollView.scrollToEnd({animated: true});
-          }}
+        {props.currentChatMessages.length > 0 ? (
+          <ScrollView style={styles.chat__messages}>
+            {props.currentChatMessages.length > 0 &&
+              props.currentChatMessages.map(message => {
+                return (
+                  <ChatMessage
+                    key={message.id}
+                    message={message}
+                    currentUserLimited={props.currentUserLimited}
+                  />
+                )
+              })}
+          </ScrollView>
+        ) : (
+          <View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           >
-          {props.currentChatMessages.length > 0 &&
-            props.currentChatMessages.map(message => {
-              return (
-                <ChatMessage
-                  key={message.id}
-                  message={message}
-                  currentUserLimited={props.currentUserLimited}
-                />
-              )
-            })}
-        </ScrollView>
+            <Text style={{ color: '#fff' }}>
+              Be the first to send a message!
+            </Text>
+          </View>
+        )}
 
         <View style={styles.input__container}>
           <SocketContext.Consumer>
@@ -92,7 +102,7 @@ const styles = StyleSheet.create({
   input__container: {
     width: '100%',
     height: '10%',
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   back__arrow: {
     borderRadius: 30
@@ -101,13 +111,13 @@ const styles = StyleSheet.create({
     marginTop: 35,
     marginLeft: 10,
     fontSize: 30,
-    color: '#fff',
+    color: '#fff'
   },
   chat__messages: {
     paddingTop: 8,
     paddingBottom: 10,
     height: '100%',
-    width: '100%',
+    width: '100%'
   }
 })
 
