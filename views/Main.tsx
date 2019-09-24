@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Alert } from 'react-native'
+import { View, StyleSheet, Alert, AppState } from 'react-native'
 import { connect } from 'react-redux'
 import { getChat, getUserChats } from '../src/actions/chats'
 import {
@@ -71,116 +71,145 @@ const questions = [
 class Main extends Component<Props> {
   async componentWillMount() {
     const pushRes = await registerPush(this.props.email)
+
     this.props.socket.send(`l0 ${this.props.email} ${pushRes}`)
-    // comment out socket.send to use dummy data
     this.props.socket.onmessage = async event => {
       console.log(`FROM SERVER: ${event.data}`)
-      const message = event.data.split(' ')
-      //Heartbeat
-      if (message[0] === 'p0') {
-        this.props.socket.send(`p0 ${this.props.email}`)
-        // comment out socket.send to use dummy data
-        console.log('PONGED')
-      }
-      //Message Update
-      if (message[0] === 'm0') {
-        console.log('CLIENT RECEIVED MESSAGE')
-        this.props.getChat(message[1])
-      }
-      //Block User
-      if (message[0] === 'b0') {
-        console.log('CLIENT BLOCKED')
-        this.props.removeUser(message[1])
-        this.props.removeUserChat(~~message[2])
-      }
-      //Send Hangout Request
-      if (message[0] === 'h0') {
-        console.log('CLIENT RECEIVED HANGOUT REQUEST')
-        const newUserLimited = await getUserLimited(message[1])
-        this.props.receiveHangoutRequest(newUserLimited)
-      }
-      //Accept Hangout Request
-      if (message[0] === 'h1') {
-        console.log('CLIENT HANGOUT REQUEST APPROVED')
-        const newChatMessages = await getUserChats(this.props.email)
-        const newChat = newChatMessages.pop()
-        const equipped_badges = await getUserEquippedBadges(
-          newChat.participants[0].email
-        )
-        this.props.acceptHangoutRequest(newChat, equipped_badges)
-        Alert.alert(
-          `${message[2]} has accepted your hangout request!`,
-          'Visit chats to start talking!'
-        )
-      }
-      //Start Hangout Request
-      if (message[0] === 's0') {
-        console.log('CLIENT RECEIVED START HANGOUT REQUEST')
-        Alert.alert(
-          'Please Confirm',
-          `Have you and ${message[2]} started your hangout?`,
-          [
-            {
-              text: 'No',
-              onPress: () => console.log('DENIED START HANGOUT REQUEST')
-            },
-            {
-              text: 'Yes',
-              onPress: async () => {
-                console.log('CONFIRMED START HANGOUT')
-                const hangout = this.props.acceptedHangouts.filter(
-                  hangout => hangout.email === message[1]
-                )
-                const participants = [
-                  this.props.currentUserLimited,
-                  hangout.pop()
-                ]
-                const hangoutId = await startHangout(participants)
-                this.props.dispatchStartHangout(participants[1], hangoutId)
-                this.props.socket.send(
-                  `s1 ${this.props.email} ${message[1]} ${hangoutId}`
-                )
+      if (AppState.currentState === 'background') {
+        console.log('WS ')
+        let title
+        let content
+        switch (event.data.split(' ')[0]) {
+          case 'm0':
+            title = 'New,Message'
+            content = 'You,have,a,new,chat,message.'
+            break
+          case 'h0':
+            title = 'New,Hangout,Request'
+            content = 'You,have,received,a,new,hangout,request!'
+            break
+          case 'h1':
+            title = 'Approved,Hangout,Request'
+            content = 'Your,hangout,request,was,accepted!'
+            break
+          case 's0':
+            title = 'Start,Hangout,Request'
+            content = 'Your,partner,is,ready,to,start,your,hangout!'
+            break
+          default:
+            return
+        }
+        //send push notification if app isn't open
+        //[0] push, [1] Stringified array: [0]target email, [2] title , [3] message
+        this.props.socket.send(`push ${this.props.email} ${title} ${content}`)
+      } else {
+        const message = event.data.split(' ')
+        //Heartbeat
+        if (message[0] === 'p0') {
+          this.props.socket.send(`p0 ${this.props.email}`)
+          // comment out socket.send to use dummy data
+          console.log('PONGED')
+        }
+        //Message Update
+        if (message[0] === 'm0') {
+          console.log('CLIENT RECEIVED MESSAGE')
+          this.props.getChat(message[1])
+        }
+        //Block User
+        if (message[0] === 'b0') {
+          console.log('CLIENT BLOCKED')
+          this.props.removeUser(message[1])
+          this.props.removeUserChat(~~message[2])
+        }
+        //Send Hangout Request
+        if (message[0] === 'h0') {
+          console.log('CLIENT RECEIVED HANGOUT REQUEST')
+          const newUserLimited = await getUserLimited(message[1])
+          this.props.receiveHangoutRequest(newUserLimited)
+        }
+        //Accept Hangout Request
+        if (message[0] === 'h1') {
+          console.log('CLIENT HANGOUT REQUEST APPROVED')
+          const newChatMessages = await getUserChats(this.props.email)
+          const newChat = newChatMessages.pop()
+          const equipped_badges = await getUserEquippedBadges(
+            newChat.participants[0].email
+          )
+          this.props.acceptHangoutRequest(newChat, equipped_badges)
+          Alert.alert(
+            `${message[2]} has accepted your hangout request!`,
+            'Visit chats to start talking!'
+          )
+        }
+        //Start Hangout Request
+        if (message[0] === 's0') {
+          console.log('CLIENT RECEIVED START HANGOUT REQUEST')
+          Alert.alert(
+            'Please Confirm',
+            `Have you and ${message[2]} started your hangout?`,
+            [
+              {
+                text: 'No',
+                onPress: () => console.log('DENIED START HANGOUT REQUEST')
+              },
+              {
+                text: 'Yes',
+                onPress: async () => {
+                  console.log('CONFIRMED START HANGOUT')
+                  const hangout = this.props.acceptedHangouts.filter(
+                    hangout => hangout.email === message[1]
+                  )
+                  const participants = [
+                    this.props.currentUserLimited,
+                    hangout.pop()
+                  ]
+                  const hangoutId = await startHangout(participants)
+                  this.props.dispatchStartHangout(participants[1], hangoutId)
+                  this.props.socket.send(
+                    `s1 ${this.props.email} ${message[1]} ${hangoutId}`
+                  )
+                }
               }
-            }
-          ],
-          { cancelable: false }
-        )
-      }
-      //Confirm Start Hangout
-      if (message[0] === 's1') {
-        console.log('START HANGOUT CONFIRMED')
-        const user = await getUserLimited(message[1])
-        this.props.dispatchStartHangout(user, message[2])
-      }
-      //Hangout has been finished by other user
-      if (message[0] === 'f1') {
-        console.log('FINISH HANGOUT')
-        const user = await getUserLimited(message[1])
-        this.props.dispatchFinishHangout(user, message[2])
-      }
-      //Hangout partner has requested to play game
-      if (message[0] === 'q0') {
-        console.log('GAME REQUESTED')
-        Alert.alert(
-          "Let's play a game!",
-          'Would you like to play an icebreaker?',
-          [
-            {
-              text: 'Maybe later.',
-              onPress: () => console.log('User denied game request.')
-            },
-            {
-              text: 'Lets play!',
-              onPress: () =>
-                this.props.socket.send(`q1 ${this.props.email} ${message[1]}`)
-            }
-          ]
-        )
-      }
-      //Receive quiz question
-      if (message[0] === 'q1') {
-        console.log('RECEIVED GAME QUESTION')
-        Alert.alert('Icebreaker Question', questions[~~message[1]])
+            ],
+            { cancelable: false }
+          )
+        }
+        //Confirm Start Hangout
+        if (message[0] === 's1') {
+          console.log('START HANGOUT CONFIRMED')
+          const user = await getUserLimited(message[1])
+          this.props.dispatchStartHangout(user, message[2])
+        }
+        //Hangout has been finished by other user
+        if (message[0] === 'f1') {
+          console.log('FINISH HANGOUT')
+          const user = await getUserLimited(message[1])
+          this.props.dispatchFinishHangout(user, message[2])
+        }
+        //Hangout partner has requested to play game
+        if (message[0] === 'q0') {
+          console.log('GAME REQUESTED')
+          Alert.alert(
+            "Let's play a game!",
+            'Would you like to play an icebreaker?',
+            [
+              {
+                text: 'Maybe later.',
+                onPress: () => console.log('User denied game request.')
+              },
+              {
+                text: 'Lets play!',
+                onPress: () =>
+                  this.props.socket.send(`q1 ${this.props.email} ${message[1]}`)
+              }
+            ]
+          )
+        }
+        //Receive quiz question
+        if (message[0] === 'q1') {
+          console.log('RECEIVED GAME QUESTION')
+          Alert.alert('Icebreaker Question', questions[~~message[1]])
+        }
       }
     }
     this.props.getUsers(

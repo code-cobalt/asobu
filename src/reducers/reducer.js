@@ -310,7 +310,10 @@ const reducer = (state = initialState, action) => {
         receivedHangoutRequests,
         sentHangoutRequests,
         chats,
-        acceptedHangouts: updatedAcceptedHangouts
+        acceptedHangouts: updatedAcceptedHangouts,
+        allUsers: state.allUsers.filter(
+          user => user.email !== action.newChat.participants[0].email
+        )
       }
     }
     case 'RECEIVE_REQUEST': {
@@ -320,7 +323,10 @@ const reducer = (state = initialState, action) => {
           ...state.receivedHangoutRequests,
           action.userLimited
         ],
-        popupModal: true
+        popupModal: true,
+        allUsers: state.allUsers.filter(
+          user => user.email !== action.userLimited.email
+        )
       }
     }
     case 'OPEN_MAIN_MODAL': {
