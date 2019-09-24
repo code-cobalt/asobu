@@ -138,6 +138,20 @@ class EditProfile extends Component<Props, State> {
     })
   }
 
+  handleSubmit = () => {
+    if (this.state.updatedUser.first_name === '')
+      return alert('Please provide a first name')
+    if (this.state.updatedUser.last_name === '')
+      return alert('Please provide a last name')
+    if (this.state.updatedUser.email === '')
+      return alert('Please provide an email address')
+    if (!/\S+@\S+\.\S+/.test(this.state.updatedUser.email))
+      return alert('Please provide a valid email address')
+    if (this.state.updatedUser.phone_number === '')
+      return alert('Please provide a phone number')
+    this.props.updateProfile(this.props.user.email, this.state.updatedUser)
+  }
+
   render() {
     return (
       <>
@@ -153,7 +167,10 @@ class EditProfile extends Component<Props, State> {
             style={styles.imageBackground}
             source={require('../assets/login.jpg')}
           >
-            <ScrollView style={{ padding: 20, width: '100%' }} centerContent={true}>
+            <ScrollView
+              style={{ padding: 20, width: '100%' }}
+              centerContent={true}
+            >
               <View style={styles.profile__formgroup}>
                 <Text style={styles.field__text}>First Name</Text>
                 <TextInput
@@ -395,21 +412,16 @@ class EditProfile extends Component<Props, State> {
               </View>
 
               <View style={styles.button__formgroup}>
-              {this.state.loading ? (
-                <Spinner />
-              ) : (
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.updateProfile(
-                      this.props.user.email,
-                      this.state.updatedUser
-                    )
-                  }
-                  style={styles.profile__button}
-                >
-                  <Text style={styles.profile__button__text}>Submit</Text>
-                </TouchableOpacity>
-              )}
+                {this.state.loading ? (
+                  <Spinner />
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => this.handleSubmit()}
+                    style={styles.profile__button}
+                  >
+                    <Text style={styles.profile__button__text}>Submit</Text>
+                  </TouchableOpacity>
+                )}
                 <TouchableOpacity
                   onPress={() => this.props.closeEditProfileForm()}
                   style={styles.profile__button}

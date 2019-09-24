@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import EventList from '../components/EventList'
 import { getEvents } from '../src/actions/events'
 
-
 interface Props {
   getEvents: Function
 }
