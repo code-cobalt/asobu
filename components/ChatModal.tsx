@@ -71,7 +71,7 @@ const ChatModal: React.FunctionComponent<Props> = props => {
           <View
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           >
-            <Text style={{ color: '#fff' }}>
+            <Text style={{ fontSize: 16 }}>
               Be the first to send a message!
             </Text>
           </View>
