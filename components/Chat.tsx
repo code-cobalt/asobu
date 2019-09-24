@@ -29,6 +29,7 @@ interface Chat {
 }
 
 interface Participant {
+  id: string
   email: string
   first_name: string
   profile_photo: string
@@ -69,11 +70,12 @@ class Chat extends React.Component<Props> {
         style={styles.chat}
         onPress={() => this.props.getChat(this.props.chat.chat_id)}
       >
-        {this.props.chat.participants.map(participant => {
+        {this.props.chat.participants.map((participant, index) => {
           return (
             <Image
               source={{ uri: participant.profile_photo }}
               style={styles.chat__image}
+              key={index}
             />
           )
         })}
