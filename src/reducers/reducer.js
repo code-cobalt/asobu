@@ -355,7 +355,7 @@ const reducer = (state = initialState, action) => {
     case 'START_HANGOUT': {
       const updatedOngoingHangouts = [
         ...state.ongoingHangouts,
-        { hangout_id: action.hangoutId, participants: [action.participant] }
+        { id: action.hangoutId, participants: [action.participant] }
       ]
       const updatedAcceptedHangouts = state.acceptedHangouts.filter(
         hangout => hangout.email !== action.participant.email
@@ -368,7 +368,7 @@ const reducer = (state = initialState, action) => {
     }
     case 'FINISH_HANGOUT': {
       const updatedOngoingHangouts = state.ongoingHangouts.filter(
-        hangout => hangout.hangout_id !== action.hangoutId
+        hangout => hangout.id !== action.hangoutId
       )
       return {
         ...state,
