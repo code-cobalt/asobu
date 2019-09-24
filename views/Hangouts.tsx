@@ -94,7 +94,16 @@ class Hangouts extends React.Component<Props> {
     profileVisible: Object.keys(this.props.currentProfile).length > 0,
     visibleHangout:
       this.props.receivedHangoutRequests.length > 0 ? 'pending' : 'accepted',
-    active: this.props.isActive
+    active: this.props.isActive,
+    visible: false
+  }
+
+  renderAnimation() {
+    this.setState({visible: true})
+    setTimeout(() => {
+      this.setState({visible: false})
+      this.setUserLocation(true)
+    }, 2000)
   }
 
   setUserLocation(bool) {
@@ -128,15 +137,34 @@ class Hangouts extends React.Component<Props> {
         {this.props.allUsers.length > 0 ? (
           <SafeAreaView style={styles.userList}>
             <View>
-              <Text style={{ alignSelf: 'flex-end', marginRight: 5 }}>
-                You're currently {this.state.active ? 'active' : 'inactive'}
-              </Text>
+              <AnimatedLoader
+                visible={this.state.visible}
+                overlayColor="rgba(255,255,255,0.75)"
+                animationStyle={styles.lottie}
+                speed={1}
+                loop={true}
+                />
+              {this.state.active &&
               <Switch
-                value={this.state.active}
-                onValueChange={bool => this.setUserLocation(bool)}
-                thumbColor={'#73d961'}
+              style={{ margin: 5 }}
+              value={this.state.active}
+              onValueChange={bool => this.setUserLocation(bool)}
+              thumbColor={'#fff'}
               />
+            }
             </View>
+            {!this.state.active && 
+            <View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              {!this.state.visible &&
+              <TouchableOpacity 
+              style={styles.animation__button}
+              onPress={() => this.renderAnimation()}>
+                  <Text style={styles.animation__button__text}>Asobu</Text>
+              </TouchableOpacity>
+            }
+            </View>
+            }
+            
             <UserList />
             <Modal
               isVisible={
@@ -191,10 +219,34 @@ class Hangouts extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  animation__button__text: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 44,
+    fontWeight: '900'
+  },
+  animation__button: {
+    width: 300,
+    height: 300,
+    backgroundColor: '#ff4d4d',
+    bottom: 60, 
+    borderRadius: 155,
+    justifyContent: 'center',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    textShadowRadius: 2,
+    shadowColor: '#000'
+  },
+  lottie: {
+    width: 300,
+    height: 300,
+  },
   results__switch: {
     marginTop: 10
   },
   userList: {
+    height: '100%',
+    width: '100%',
     marginBottom: 85,
     backgroundColor: '#e5e6e5'
   },
@@ -221,22 +273,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 40,
     marginLeft: 10
-  },
-  accept__button: {
-    width: 50,
-    height: 50,
-    backgroundColor: 'green',
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  decline__button: {
-    width: 50,
-    height: 50,
-    backgroundColor: 'red',
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   start_button: {
     width: '50%',
