@@ -88,9 +88,8 @@ const AcceptedHangouts = props => {
                   style={styles.start_button}
                   onPress={() => {
                     Alert.alert(
-                      `Would you like to play an icebreaker activity with ${hangout.participants[0].first_name}?`,
-                      `Your game will start when ${hangout.participants[0].first_name} accepts.`
-                    ),
+                      `Would you like to do an icebreaker with ${hangout.participants[0].first_name}?`,
+                      `Make sure that both of you have the app open and your game will start when ${hangout.participants[0].first_name} accepts.`,
                       [
                         {
                           text: 'Nevermind',
@@ -99,15 +98,17 @@ const AcceptedHangouts = props => {
                         },
                         {
                           text: "Let's play!",
-                          onPress: () =>
+                          onPress: () => {
                             props.socket.send(
-                              `q0 ${props.user.email} ${props.user.first_name} ${hangout.id} ${hangout.participants[0].email}`
+                              `q0 ${props.user.email} ${props.user.first_name} ${hangout.participants[0].email}`
                             )
+                          }
                         }
                       ]
+                    )
                   }}
                 >
-                  <Text style={styles.button_text}>Play a game!</Text>
+                  <Text style={styles.button_text}>Break the Ice</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.start_button}

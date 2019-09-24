@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Alert, AlertIOS } from 'react-native'
+import { View, StyleSheet, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { getChat, getUserChats } from '../src/actions/chats'
 import {
@@ -12,7 +12,6 @@ import Profile from './Profile'
 import Results from './Results'
 import Inbox from './Inbox'
 import registerPush from '../registerPush'
-import DialogInput from 'react-native-dialog-input'
 
 interface Props {
   activeView: string
@@ -38,12 +37,6 @@ interface Props {
   longitude: number
 }
 
-interface State {
-  isDialogVisible: boolean
-  questionNum: number
-  targetEmail: string
-}
-
 interface Hangout {
   id: string
   participants: [UserLimited]
@@ -61,30 +54,21 @@ interface UserLimitedBadges {
   profile_photo: string
   equipped_badges: string[]
 }
-
 const questions = [
   "What's your most unique accomplishment?",
   'If you could instantly become an expert in something, what would it be?',
   "What is the scariest thing you've ever done for fun?",
   'Would you rather be able to talk with animals or speak all foreign languages?',
   'Would you rather mentally of physically never age?',
-  'If you have to sing karaoke, what song do you pick?',
   'If aliens landed on earth tomorrow and offered to take you home with them, would you go?',
   'Say you’re independently wealthy and don’t have to work, what would you do with your time?',
   'Teleportation or flying?',
   'If you had a time machine, would go back in time or into the future?',
   'Would you rather lose the ability to read or lose the ability to speak?',
   'Would you rather be covered in fur or covered in scales?',
-  'Would you rather have unlimited international first-class tickets or never have to pay for food at restaurants?'
+  'Would you rather have unlimited international first-class tickets for life or never have to pay for food at restaurants for ten years?'
 ]
-
-class Main extends Component<Props, State> {
-  state = {
-    isDialogVisible: false,
-    questionNum: 0,
-    targetEmail: ''
-  }
-
+class Main extends Component<Props> {
   async componentWillMount() {
     const pushRes = await registerPush(this.props.email)
     this.props.socket.send(`l0 ${this.props.email} ${pushRes}`)
@@ -179,7 +163,7 @@ class Main extends Component<Props, State> {
         console.log('GAME REQUESTED')
         Alert.alert(
           "Let's play a game!",
-          `Would you like to play an icebreaker game with ${message[2]}?`,
+          'Would you like to play an icebreaker?',
           [
             {
               text: 'Maybe later.',
@@ -196,15 +180,7 @@ class Main extends Component<Props, State> {
       //Receive quiz question
       if (message[0] === 'q1') {
         console.log('RECEIVED GAME QUESTION')
-        this.setState({
-          isDialogVisible: true,
-          questionNum: message[2],
-          targetEmail: message[1]
-        })
-      }
-      //View partner's answer
-      if (message[0] === 'q2') {
-        console.log('RECEIVED PARTNERS GAME RESPONSE')
+        Alert.alert('Icebreaker Question', questions[~~message[1]])
       }
     }
     this.props.getUsers(
@@ -226,20 +202,9 @@ class Main extends Component<Props, State> {
     } else if (this.props.activeView === 'chats') {
       mainView = <Inbox />
     }
+
     return (
       <>
-        <DialogInput
-          isDialogVisible={this.state.isDialogVisible}
-          title={`Round ${this.state.questionNum + 1}`}
-          message={questions[this.state.questionNum]}
-          submitInput={inputText =>
-            this.props.socket.send(
-              `q2 ${this.props.email} ${this.state.targetEmail} ${this.state
-                .questionNum + 1} ${inputText}`
-            )
-          }
-          closeDialog={() => this.setState({ isDialogVisible: false })}
-        ></DialogInput>
         <View style={styles.main}>{mainView}</View>
       </>
     )
