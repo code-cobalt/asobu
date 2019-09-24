@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, View, Text } from 'react-native'
 import { connect } from 'react-redux'
 import Chat from './Chat'
 import { SocketContext } from './SocketProvider'
@@ -21,16 +21,30 @@ interface UserLimited {
 
 const ChatList: React.FunctionComponent<Props> = props => {
   return (
-    <ScrollView style={styles.chat_list}>
-      {props.chats &&
-        props.chats.map(chat => {
-          return (
-            <SocketContext.Consumer key={chat.participants[0].email}>
-              {socket => <Chat chat={chat} socket={socket} />}
-            </SocketContext.Consumer>
-          )
-        })}
-    </ScrollView>
+    <>
+      {props.chats.length > 0 ? (
+        <ScrollView style={styles.chat_list}>
+          {props.chats &&
+            props.chats.map(chat => {
+              return (
+                <SocketContext.Consumer key={chat.participants[0].email}>
+                  {socket => <Chat chat={chat} socket={socket} />}
+                </SocketContext.Consumer>
+              )
+            })}
+        </ScrollView>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text>You have no active chats</Text>
+        </View>
+      )}
+    </>
   )
 }
 

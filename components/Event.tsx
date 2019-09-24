@@ -9,7 +9,7 @@ const Event = props => {
       onPress={() => props.showEvent(props.event)}
     >
       <View style={styles.photo__container}>
-        {props.event.cover_photo !== '' ? (
+        {props.event.cover_photo !== '' && props.event.cover_photo ? (
           <Image
             source={{ uri: props.event.cover_photo }}
             style={styles.event__photo}

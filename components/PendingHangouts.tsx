@@ -21,73 +21,95 @@ const PendingHangouts = props => {
   return (
     <>
       <View style={{ flex: 1 }}>
-        <Text style={styles.title}>
-          Other users would like to hangout with you!
-        </Text>
-        <ScrollView style={styles.request}>
-          {props.receivedHangoutRequests.map((request, index) => {
-            return (
-              <View style={{ marginBottom: 55 }} key={index}>
-                <Image
-                  source={{ uri: request.profile_photo }}
-                  style={styles.user__image}
-                />
-                <View
-                  style={{
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    flex: 1
-                  }}
-                >
-                  <Text style={styles.user__name}>{request.first_name}</Text>
-                  <View style={styles.badges}>
-                    <Badges badges={request.equipped_badges} />
-                  </View>
-                  <View style={styles.ionicons}>
-                    <TouchableOpacity
-                      onPress={async () => {
-                        const newChat = await acceptHangoutRequest(
-                          props.currentUserEmail,
-                          request.email
-                        )
-                        Alert.alert(
-                          `You have accepted ${request.first_name}'s hangout request!`,
-                          'Visit chats to start talking!'
-                        )
-                        props.dispatchHangoutRequest(
-                          newChat,
-                          request.equipped_badges
-                        )
-                        setTimeout(
-                          () =>
-                            props.socket.send(
-                              `h1 ${props.currentUserEmail} ${request.email} ${props.currentUserFirstName}`
-                            ),
-                          5000
-                        )
+        {props.receivedHangoutRequests.length > 0 ? (
+          <>
+            <Text style={styles.title}>
+              Other users would like to hangout with you!
+            </Text>
+            <ScrollView style={styles.request}>
+              {props.receivedHangoutRequests.map((request, index) => {
+                return (
+                  <View style={{ marginBottom: 55 }} key={index}>
+                    <Image
+                      source={{ uri: request.profile_photo }}
+                      style={styles.user__image}
+                    />
+                    <View
+                      style={{
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        flex: 1
                       }}
-                      style={styles.accept__button}
                     >
-                      <Ionicons name="md-checkmark" size={32} color="white" />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() =>
-                        props.declineHangoutRequest(
-                          props.currentUserEmail,
-                          request.email
-                        )
-                      }
-                      style={styles.decline__button}
-                    >
-                      <Ionicons name="md-close" size={32} color="white" />
-                    </TouchableOpacity>
+                      <Text style={styles.user__name}>
+                        {request.first_name}
+                      </Text>
+                      <View style={styles.badges}>
+                        <Badges badges={request.equipped_badges} />
+                      </View>
+                      <View style={styles.ionicons}>
+                        <TouchableOpacity
+                          onPress={async () => {
+                            const newChat = await acceptHangoutRequest(
+                              props.currentUserEmail,
+                              request.email
+                            )
+                            Alert.alert(
+                              `You have accepted ${request.first_name}'s hangout request!`,
+                              'Visit chats to start talking!'
+                            )
+                            props.dispatchHangoutRequest(
+                              newChat,
+                              request.equipped_badges
+                            )
+                            setTimeout(
+                              () =>
+                                props.socket.send(
+                                  `h1 ${props.currentUserEmail} ${request.email} ${props.currentUserFirstName}`
+                                ),
+                              5000
+                            )
+                          }}
+                          style={styles.accept__button}
+                        >
+                          <Ionicons
+                            name="md-checkmark"
+                            size={32}
+                            color="white"
+                          />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() =>
+                            props.declineHangoutRequest(
+                              props.currentUserEmail,
+                              request.email
+                            )
+                          }
+                          style={styles.decline__button}
+                        >
+                          <Ionicons name="md-close" size={32} color="white" />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
                   </View>
-                </View>
-              </View>
-            )
-          })}
-        </ScrollView>
+                )
+              })}
+            </ScrollView>
+          </>
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={{ color: '#fff' }}>
+              You have no pending hangout requests
+            </Text>
+          </View>
+        )}
       </View>
     </>
   )
