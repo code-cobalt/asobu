@@ -120,12 +120,6 @@ class Profile extends Component<Props> {
                 />
               </TouchableOpacity>
               {editButton}
-              {/* <TouchableOpacity
-                style={styles.edit__button}
-                onPress={() => this.props.editProfile()}
-              >
-                <Text style={styles.button__text}>Edit Profile</Text>
-              </TouchableOpacity> */}
               <View style={styles.basic_info_container}>
                 <Text style={styles.user__name}>
                   {this.props.user.first_name} {this.props.user.last_name}
