@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import ChatMessage from '../components/ChatMessage'
 import ChatInput from '../components/ChatInput'
@@ -48,7 +48,13 @@ const ChatModal: React.FunctionComponent<Props> = props => {
             </Text>
           </TouchableOpacity>
         </View>
-        <ScrollView style={styles.chat__messages}>
+        <ScrollView 
+          style={styles.chat__messages}
+          ref={ref => this.scrollView = ref}
+          onContentSizeChange={(contentWidth, contentHeight)=>{        
+            this.scrollView.scrollToEnd({animated: true});
+          }}
+          >
           {props.currentChatMessages.length > 0 &&
             props.currentChatMessages.map(message => {
               return (
@@ -85,7 +91,8 @@ const styles = StyleSheet.create({
   },
   input__container: {
     width: '100%',
-    backgroundColor: '#fff'
+    height: '10%',
+    backgroundColor: '#fff',
   },
   back__arrow: {
     borderRadius: 30
@@ -96,16 +103,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#fff',
   },
-  /* container: {
-    position: 'absolute',
-    height: (height / 100) * 91.7,
-    width: width,
-    bottom: -height,
-    backgroundColor: '#fff',
-    justifyContent: 'space-between'
-  }, */
   chat__messages: {
-    paddingTop: 25
+    paddingTop: 8,
+    paddingBottom: 10,
+    height: '100%',
+    width: '100%',
   }
 })
 
