@@ -21,11 +21,10 @@ const AcceptedHangouts = props => {
         <Text style={styles.title}>Meeting up with</Text>
         {props.acceptedHangouts.length > 0 ? (
           <ScrollView 
-          horizontal={true}
           style={styles.request}>
             {props.acceptedHangouts.map((hangout, index) => {
               return (
-                <View style={{ height: '50%' }} key={index}>
+                <View style={{ height: '70%' }} key={index}>
                   <Image
                     source={{ uri: hangout.profile_photo }}
                     style={styles.user__image}
@@ -77,7 +76,7 @@ const AcceptedHangouts = props => {
         <Text style={styles.title}>Currently hanging out</Text>
         {props.ongoingHangouts.length > 0 ? (
           <ScrollView 
-          horizontal={true}
+          // horizontal={true}
           style={styles.request}>
             {props.ongoingHangouts.map(hangout => (
               <View style={{height: '50%'}} key={hangout.participants[0].email}>
@@ -100,7 +99,7 @@ const AcceptedHangouts = props => {
                     <Badges badges={hangout.participants[0].equipped_badges} />
                   </View>
                   <TouchableOpacity
-                    style={styles.start_button}
+                    style={styles.hanging_button}
                     onPress={() => {
                       Alert.alert(
                         `Would you like to do an icebreaker with ${hangout.participants[0].first_name}?`,
@@ -126,7 +125,7 @@ const AcceptedHangouts = props => {
                     <Text style={styles.button_text}>Break the Ice</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={styles.start_button}
+                    style={styles.hanging_button}
                     onPress={() => {
                       {
                         Alert.alert(
@@ -187,13 +186,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 30,
     textAlign: 'center',
-    margin: 10
+    margin: 5
   },
   badges: {
     flexDirection: 'row'
   },
   request: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     margin: 10
   },
   user__image: {
@@ -233,13 +232,21 @@ const styles = StyleSheet.create({
   },
   start_button: {
     alignSelf: 'center',
-    width: '100%',
+    width: '40%',
     backgroundColor: 'blue',
     borderRadius: 10,
     marginTop: 5,
     alignItems: 'center',
     justifyContent: 'center',
-
+  },
+  hanging_button: {
+    alignSelf: 'center',
+    width: '40%',
+    backgroundColor: 'blue',
+    borderRadius: 10,
+    marginTop: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   button_text: {
     color: '#fff',
