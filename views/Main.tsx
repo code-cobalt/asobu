@@ -287,7 +287,7 @@ const mapDispatchToProps = dispatch => {
         messages: chat
       })
     },
-    getChat: chatId => dispatch(getChat(chatId)),
+    getChat: (chatId, partner) => dispatch(getChat(chatId, partner)),
     getUsers: (currentUserEmail, blockedUsers, hangouts, latitude, longitude) =>
       dispatch(
         getUsers(currentUserEmail, blockedUsers, hangouts, latitude, longitude)

@@ -2,15 +2,10 @@ import React from 'react'
 import {
   View,
   Text,
-  Image,
   StyleSheet,
-  Button,
   TouchableOpacity,
-  ScrollView,
-  TextInput,
   SafeAreaView,
-  Switch,
-  ActivityIndicator
+  Switch
 } from 'react-native'
 import UserList from '../components/UserList'
 import { connect } from 'react-redux'
@@ -27,8 +22,7 @@ import {
 import { SocketContext } from '../components/SocketProvider'
 import { toggleActive, getUsers } from '../src/actions/users'
 import Spinner from '../components/Spinner'
-import AnimatedLoader from "react-native-animated-loader";
-
+import AnimatedLoader from 'react-native-animated-loader'
 
 interface UserLimited {
   first_name: string
@@ -51,6 +45,7 @@ interface Profile {
 }
 
 interface Props {
+  isLoadingUsers: string
   receivedHangoutRequests: Array<UserLimited>
   acceptedHangouts: Array<UserLimited>
   ongoingHangouts: Array<UserLimited>
@@ -99,9 +94,9 @@ class Hangouts extends React.Component<Props> {
   }
 
   renderAnimation() {
-    this.setState({visible: true})
+    this.setState({ visible: true })
     setTimeout(() => {
-      this.setState({visible: false})
+      this.setState({ visible: false })
       this.setUserLocation(true)
     }, 2000)
   }
@@ -134,7 +129,7 @@ class Hangouts extends React.Component<Props> {
   render() {
     return (
       <>
-        {this.props.allUsers.length > 0 ? (
+        {!this.props.isLoadingUsers ? (
           <SafeAreaView style={styles.userList}>
             <View>
               <AnimatedLoader
@@ -143,28 +138,36 @@ class Hangouts extends React.Component<Props> {
                 animationStyle={styles.animation}
                 speed={1}
                 loop={true}
-                />
-              {this.state.active &&
-              <Switch
-              style={{ margin: 5 }}
-              value={this.state.active}
-              onValueChange={bool => this.setUserLocation(bool)}
-              thumbColor={'#fff'}
               />
-            }
+              {this.state.active && (
+                <Switch
+                  style={{ margin: 5 }}
+                  value={this.state.active}
+                  onValueChange={bool => this.setUserLocation(bool)}
+                  thumbColor={'#fff'}
+                />
+              )}
             </View>
-            {!this.state.active && 
-            <View style={{ height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-              {!this.state.visible &&
-              <TouchableOpacity 
-              style={styles.animation__button}
-              onPress={() => this.renderAnimation()}>
-                  <Text style={styles.animation__button__text}>Asobu</Text>
-              </TouchableOpacity>
-            }
-            </View>
-            }
-            
+            {!this.state.active && (
+              <View
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                {!this.state.visible && (
+                  <TouchableOpacity
+                    style={styles.animation__button}
+                    onPress={() => this.renderAnimation()}
+                  >
+                    <Text style={styles.animation__button__text}>Asobu</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
+
             <UserList />
             <Modal
               isVisible={
@@ -229,7 +232,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     backgroundColor: '#ff4d4d',
-    bottom: 60, 
+    bottom: 60,
     borderRadius: 155,
     justifyContent: 'center',
     shadowOffset: { width: 0, height: 2 },
@@ -239,7 +242,7 @@ const styles = StyleSheet.create({
   },
   animation: {
     width: 300,
-    height: 300,
+    height: 300
   },
   results__switch: {
     marginTop: 10
@@ -297,6 +300,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
+    isLoadingUsers: state.isLoadingUsers,
     receivedHangoutRequests: state.receivedHangoutRequests,
     currentUserEmail: state.user.email,
     currentProfile: state.currentProfile,
