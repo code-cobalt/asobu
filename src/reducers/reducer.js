@@ -318,7 +318,6 @@ const reducer = (state = initialState, action) => {
       }
     }
     case 'RECEIVE_REQUEST': {
-      debugger
       return {
         ...state,
         receivedHangoutRequests: [
