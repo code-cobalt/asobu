@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     backgroundColor: '#ff4d4d',
-    bottom: 40,
+    bottom: 40, 
     borderRadius: 155,
     justifyContent: 'center',
     shadowOffset: { width: 0, height: 2 },
