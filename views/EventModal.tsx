@@ -181,9 +181,9 @@ const EventModal: React.FunctionComponent<Props> = props => {
             </View>
             <View style={styles.text__block}>
               <Text style={styles.event__title}>{props.currentEvent.name}</Text>
-              <Text style={styles.event__subtitle}>Starts</Text>
+              <Text style={styles.event__subtitle}>Start</Text>
               <Text style={styles.event__text}>{moment(props.currentEvent.start).format('LLL')}</Text>
-              <Text style={styles.event__subtitle}>Ends</Text>
+              <Text style={styles.event__subtitle}>End</Text>
               <Text style={styles.event__text}>{moment(props.currentEvent.end).format('LLL')}</Text>
               <Text style={styles.event__subtitle}>Summary</Text>
               <Text style={styles.event__text}>
