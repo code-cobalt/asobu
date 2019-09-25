@@ -158,12 +158,15 @@ class Hangouts extends React.Component<Props> {
                 }}
               >
                 {!this.state.visible && (
+                  <>
                   <TouchableOpacity
                     style={styles.animation__button}
                     onPress={() => this.renderAnimation()}
                   >
                     <Text style={styles.animation__button__text}>Asobu</Text>
                   </TouchableOpacity>
+                  <Text style={{color: 'grey'}}>Tap 'Asobu' to join other users near you!</Text>
+                  </>
                 )}
               </View>
             )}
@@ -232,7 +235,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     backgroundColor: '#ff4d4d',
-    bottom: 60,
+    bottom: 40, 
     borderRadius: 155,
     justifyContent: 'center',
     shadowOffset: { width: 0, height: 2 },
