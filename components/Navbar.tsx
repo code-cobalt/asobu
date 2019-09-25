@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#fff',
     borderColor: 'grey',
-    borderWidth: 0.5,
+    borderWidth: 0.1,
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center'
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     borderLeftColor: 'white'
   },
   navbar__image: {
-    height: 40,
+    height: 38,
     aspectRatio: 1 / 1
   },
   navbar__text: {
