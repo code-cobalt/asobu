@@ -157,7 +157,7 @@ class Review extends Component<Props, State> {
           style={styles.review__button}
           onPress={() => this.reviewUser()}
         >
-          <Text style={styles.button__text}>Finish Review!</Text>
+          <Text style={styles.button__text}>Submit Compliment</Text>
         </TouchableOpacity>
       </Modal>
     )

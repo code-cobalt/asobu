@@ -184,7 +184,7 @@ class Signup extends Component<Props, State> {
                 onPress={() => this.handleSignup()}
                 style={styles.signup__button}
               >
-                <Text style={styles.signup__button__text}>Submit!</Text>
+                <Text style={styles.signup__button__text}>Submit</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => this.props.toggleAuth()}
