@@ -113,7 +113,7 @@ class Main extends Component<Props> {
         //Message Update
         if (message[0] === 'm0') {
           console.log('CLIENT RECEIVED MESSAGE')
-          this.props.getChat(message[1])
+          this.props.getChat(message[1], undefined)
         }
         //Block User
         if (message[0] === 'b0') {
@@ -287,7 +287,7 @@ const mapDispatchToProps = dispatch => {
         messages: chat
       })
     },
-    getChat: chatId => dispatch(getChat(chatId)),
+    getChat: (chatId, partner) => dispatch(getChat(chatId, partner)),
     getUsers: (currentUserEmail, blockedUsers, hangouts, latitude, longitude) =>
       dispatch(
         getUsers(currentUserEmail, blockedUsers, hangouts, latitude, longitude)
