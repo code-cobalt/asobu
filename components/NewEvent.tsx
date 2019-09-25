@@ -140,7 +140,7 @@ class NewEvent extends React.Component<Props, State> {
           >
             <ScrollView style={{ width: '100%' }} centerContent={true}>
               <View style={styles.text__formgroup}>
-                <Text style={styles.input__text}>Name your Event!</Text>
+                <Text style={styles.input__text}>Name your Event</Text>
                 <TextInput
                   style={styles.event__input}
                   onChangeText={text =>
@@ -149,7 +149,7 @@ class NewEvent extends React.Component<Props, State> {
                     })
                   }
                 />
-                <Text style={styles.input__text}>Set a Location!</Text>
+                <Text style={styles.input__text}>Set a Location</Text>
                 <TextInput
                   style={styles.event__input}
                   onChangeText={text =>
@@ -158,7 +158,7 @@ class NewEvent extends React.Component<Props, State> {
                     })
                   }
                 />
-                <Text style={styles.input__text}>Tell us about it!</Text>
+                <Text style={styles.input__text}>Tell us about it</Text>
                 <TextInput
                   multiline={true}
                   numberOfLines={5}
