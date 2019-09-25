@@ -37,7 +37,8 @@ const initialState = {
   isReviewing: false,
   activeSearch: false,
   badgeOptions: [],
-  chat_partner: ''
+  chat_partner: '',
+  isLoadingUsers: true
 }
 
 const reducer = (state = initialState, action) => {
@@ -46,7 +47,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, activeView: action.activeView }
     }
     case 'SET_ALL_USERS': {
-      return { ...state, allUsers: action.allUsers }
+      return { ...state, allUsers: action.allUsers, isLoadingUsers: false }
     }
     case 'REMOVE_USER': {
       return {
