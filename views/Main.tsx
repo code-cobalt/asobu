@@ -113,7 +113,7 @@ class Main extends Component<Props> {
         //Message Update
         if (message[0] === 'm0') {
           console.log('CLIENT RECEIVED MESSAGE')
-          this.props.getChat(message[1], undefined)
+          this.props.getChat(message[1])
         }
         //Block User
         if (message[0] === 'b0') {
