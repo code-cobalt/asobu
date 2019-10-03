@@ -14,6 +14,7 @@ import Comments from '../components/Comments'
 import Modal from 'react-native-modal'
 import EditEvent from '../components/EditEvent'
 import moment from 'moment'
+import { Divider } from 'react-native-elements'
 
 
 interface Props {
@@ -181,6 +182,7 @@ const EventModal: React.FunctionComponent<Props> = props => {
             </View>
             <View style={styles.text__block}>
               <Text style={styles.event__title}>{props.currentEvent.name}</Text>
+              <Divider style={styles.divider} />
               <Text style={styles.event__subtitle}>Start</Text>
               <Text style={styles.event__text}>{moment(props.currentEvent.start).format('LLL')}</Text>
               <Text style={styles.event__subtitle}>End</Text>
@@ -207,6 +209,7 @@ const EventModal: React.FunctionComponent<Props> = props => {
               :
               <Text style={styles.event__text}>{props.currentEvent.limit - props.currentEvent.attendees.length}/{props.currentEvent.limit}</Text>
               }
+              <Divider style={styles.divider} />
             </View>
             <View style={styles.button__block}>
               {attendeesButton}
@@ -233,6 +236,12 @@ const EventModal: React.FunctionComponent<Props> = props => {
 }
 
 const styles = StyleSheet.create({
+  divider: {
+    backgroundColor: '#acbdac',
+    height: 1.5,
+    width: '100%',
+    marginTop: 20
+  },
   back: {
     marginTop: 25,
     marginBottom: 25,
