@@ -29,61 +29,71 @@ interface Props {
 
 const User: React.FunctionComponent<Props> = props => {
   return (
-    <TouchableOpacity
-      key={props.user.email}
-      style={styles.user}
-      onPress={() => props.showProfile(props.user)}
-    >
-      <Image
-        source={{ uri: props.user.profile_photo }}
-        style={styles.user__image}
-      />
-
+    <>
       {props.user.equipped_badges === null ||
       props.user.equipped_badges === undefined ? (
         <>
-          <View style={{ alignItems: 'center' }}>
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 22,
-                marginRight: '40%',
-                alignSelf: 'center',
-                fontWeight: '700'
-              }}
-            >
-              {props.user.first_name}
-            </Text>
+          <View
+            key={props.user.email}
+            style={styles.user}
+          >
+            <Image
+              source={{ uri: props.user.profile_photo }}
+              style={styles.user__image}
+            />
+            <View style={{ alignItems: 'center' }}>
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: 22,
+                  marginRight: '40%',
+                  alignSelf: 'center',
+                  fontWeight: '700'
+                }}
+              >
+                {props.user.first_name}
+              </Text>
+            </View>
           </View>
         </>
       ) : (
         <>
-          <View style={styles.user__textcontainer}>
-            <Text style={styles.user__name}>{props.user.first_name}</Text>
-            <Text style={styles.user__text}>Level {props.user.lvl}</Text>
-          </View>
-          <View style={styles.user__badges}>
-            <Badges badges={props.user.equipped_badges} />
-          </View>
           <TouchableOpacity
-            style={styles.hangout__request}
-            onPress={() => {
-              props.sendHangoutRequest(props.currentUserEmail, {
-                first_name: props.user.first_name,
-                email: props.user.email,
-                profile_photo: props.user.profile_photo,
-                equipped_badges: props.user.equipped_badges
-              })
-              props.socket.send(
-                `h0 ${props.currentUserEmail} ${props.user.email}`
-              )
-            }}
+            key={props.user.email}
+            style={styles.user}
+            onPress={() => props.showProfile(props.user)}
           >
-            <Text style={styles.hangout__text}>Hang!</Text>
+            <Image
+              source={{ uri: props.user.profile_photo }}
+              style={styles.user__image}
+            />
+            <View style={styles.user__textcontainer}>
+              <Text style={styles.user__name}>{props.user.first_name}</Text>
+              <Text style={styles.user__text}>Level {props.user.lvl}</Text>
+            </View>
+            <View style={styles.user__badges}>
+              <Badges badges={props.user.equipped_badges} />
+            </View>
+            <TouchableOpacity
+              style={styles.hangout__request}
+              onPress={() => {
+                props.sendHangoutRequest(props.currentUserEmail, {
+                  first_name: props.user.first_name,
+                  email: props.user.email,
+                  profile_photo: props.user.profile_photo,
+                  equipped_badges: props.user.equipped_badges
+                })
+                props.socket.send(
+                  `h0 ${props.currentUserEmail} ${props.user.email}`
+                )
+              }}
+            >
+              <Text style={styles.hangout__text}>Hang!</Text>
+            </TouchableOpacity>
           </TouchableOpacity>
         </>
       )}
-    </TouchableOpacity>
+      </>
   )
 }
 
