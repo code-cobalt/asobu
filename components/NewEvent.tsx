@@ -234,7 +234,7 @@ class NewEvent extends React.Component<Props, State> {
                   <Text style={styles.input__text}>Upload Photo</Text>
                 </TouchableOpacity>
                 <ModalDropdown
-                  defaultValue="Tags"
+                  defaultValue="Pick a Tag"
                   options={this.state.tagOptions}
                   onSelect={(index, value) => this.addTag(value)}
                   textStyle={styles.modal__dropdown__text}
